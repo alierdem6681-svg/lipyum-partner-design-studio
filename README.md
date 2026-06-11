@@ -1,0 +1,1 @@
+# lipyum-partner-design-studio
