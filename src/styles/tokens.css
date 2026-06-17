@@ -19,4 +19,13 @@
   --lp-space-3: 12px;
   --lp-space-4: 16px;
   --lp-space-5: 20px;
+  --lp-page-x: 16px;
+  --lp-page-bottom: 124px;
+  --lp-header-height: 64px;
+  --lp-bottom-bar-height: 76px;
+  --lp-bottom-safe-height: 92px;
+  --lp-transition-fast: 160ms ease;
+  --lp-transition-med: 220ms ease;
+  --lp-z-header: 24;
+  --lp-z-bottom-bar: 40;
 }

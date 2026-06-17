@@ -2,6 +2,41 @@
 
 Tarih: 17 Haziran 2026
 
+## 0. Faz 2.2 - Navigation Core ve İlk Stabilizasyon
+
+- Navigation core `src/utils/navigation.js` içine taşındı.
+- `navigateTo`, `renderRoute`, `goBack`, `getCurrentRoute`, `setActiveTab` ve document title güncelleme davranışı merkezi controller üzerinden yönetiliyor.
+- `src/legacyApp.js` artık bu controller'ı kullanıyor; route hash, navigation stack ve browser back davranışı tek kaynaktan çalışıyor.
+- Sidebar menü item'ları `data-screen` önceliği yerine gerçek `data-route` önceliğiyle çalışacak şekilde güncellendi.
+- Sidebar aktif menü item'ı route'a göre `aria-current="page"` ve `is-active` sınıfı alıyor.
+- Bildirim kartına tıklanınca eski manuel `state.screen` değişimi yerine route tabanlı `navigateTo(getRouteForScreen(...))` kullanılıyor.
+- Bildirim seçenekleri içindeki "Bildirim Ayarları" artık `/notification-settings` route'una yönleniyor.
+- `/notifications` route'u placeholder olmaktan çıkarıldı ve `src/pages/NotificationsPage.js` üzerinden gerçek modüler içerik üretmeye başladı.
+- `/support` route'u placeholder olmaktan çıkarıldı ve `src/pages/SupportPage.js` üzerinden gerçek modüler içerik üretmeye başladı.
+- `src/data/mockData.js` içinde bildirim ve destek verileri merkezi mock data olarak genişletildi.
+
+Bu fazda eklenen componentler:
+
+- `src/components/NotificationActions.js`
+- `src/components/NotificationCard.js`
+- `src/components/NotificationList.js`
+- `src/components/SupportSearchBox.js`
+- `src/components/SupportActionList.js`
+
+Tasarım/stil düzenlemeleri:
+
+- Bildirim ekranı sticky header + sticky aksiyon satırı düzenine geçirildi.
+- Bildirim kartları sade, gölgesiz, nötr border'lı ve okunmuş/okunmamış görsel ayrımlı hale getirildi.
+- Bakiye uyarıları amber tonuyla ayrıştırıldı.
+- Destek sayfası hero, arama, hızlı işlemler ve bilgi merkezi bölümleriyle data-driven hale getirildi.
+- CSS tokenlarına page/safe-area/bottom-bar ile ilgili yeni değişkenler eklendi.
+
+Kapsam dışında kalanlar:
+
+- Home, Wallet, Reviews ve Leaderboard ekranlarının zengin legacy markup'ı bu fazda korunarak bırakıldı.
+- `legacyApp.js` içindeki eski `renderNotifications` ve `renderSupport` fonksiyonları regresyon riskini azaltmak için henüz silinmedi; canlı render artık page route üzerinden çalışıyor.
+- Tam sayfa bazlı ayrıştırma hâlâ devam eden refactor borcudur.
+
 ## 0. Faz 2.1 - ProfilePage Migration Başlangıcı
 
 - Profil sayfası ilk gerçek page migration adımı olarak placeholder olmaktan çıkarıldı.

@@ -255,3 +255,215 @@
   justify-content: center;
   gap: 16px;
 }
+
+.notifications-page {
+  gap: 10px;
+  min-height: 100%;
+  padding: 0 16px var(--lp-page-bottom);
+}
+
+.notifications-page .page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--lp-z-header);
+  min-height: 66px;
+  margin: 0 -16px;
+  padding: 8px 16px 10px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(248, 250, 252, 0.94));
+  border-bottom: 1px solid rgba(229, 231, 235, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.notifications-page .page-header h1 {
+  font-size: 21px;
+}
+
+.notifications-page .page-header p {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.notification-actions-bar {
+  position: sticky;
+  top: 66px;
+  z-index: calc(var(--lp-z-header) - 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 -16px;
+  padding: 8px 16px 9px;
+  background: rgba(248, 250, 252, 0.96);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.notification-card-row {
+  width: 100%;
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  padding: 12px 14px;
+  text-align: left;
+  box-shadow: none;
+}
+
+.notification-card-row.is-read {
+  background: #f8fafc;
+}
+
+.notification-card-row.is-warning {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.notification-card-copy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.notification-card-copy strong,
+.notification-card-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-card-copy strong {
+  font-size: 14.5px;
+  font-weight: 850;
+  line-height: 1.18;
+}
+
+.notification-card-copy small {
+  color: #475569;
+  font-size: 12.8px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.notification-card-row.is-read .notification-card-copy strong {
+  color: #475569;
+}
+
+.notification-card-row.is-read .notification-card-copy small {
+  color: #94a3b8;
+}
+
+.notification-card-cta {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  padding: 0 12px;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.notification-empty {
+  min-height: 230px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.52);
+  color: #475569;
+  text-align: center;
+}
+
+.notification-empty strong {
+  display: block;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.notification-empty small {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.notification-more-indicator {
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.notification-more-indicator span {
+  width: 34px;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d1d5db, #10b981, #d1d5db);
+  opacity: 0.72;
+}
+
+.notification-more-btn {
+  overflow: hidden;
+}
+
+.notification-more-btn span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0;
+}
+
+.support-page {
+  gap: 12px;
+  padding-bottom: var(--lp-page-bottom);
+}
+
+.support-action-section {
+  display: grid;
+  gap: 8px;
+}
+
+.support-action-card.is-primary {
+  border-color: #bbf7d0;
+  background: linear-gradient(135deg, #ecfdf5, #fff);
+}
+
+.drawer-menu-item.is-active {
+  background: linear-gradient(135deg, #ecfdf5, #ffffff);
+}
+
+.drawer-menu-item.is-active strong,
+.drawer-menu-item.is-active > .icon {
+  color: #047857;
+}
+
+@media (max-width: 360px) {
+  .notifications-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .notifications-page .page-header,
+  .notification-actions-bar {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .notification-card-copy strong {
+    font-size: 14px;
+  }
+}

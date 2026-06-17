@@ -2,13 +2,12 @@ import { mountAppShell } from "./components/AppShell.js";
 import { createUiState, navigationStack } from "./state.js";
 import { renderBottomBar } from "./components/BottomBar.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
+import { createNavigationController } from "./utils/navigation.js";
 import {
   pageRoutes,
   getRouteForScreen,
   getScreenForRoute,
-  getTitleForRoute,
   getCtaVariant,
-  normalizeRoute,
 } from "./router.js";
 
 mountAppShell();
@@ -93,83 +92,19 @@ mountAppShell();
       };
 
       const icon = (name) => `<svg class="icon"><use href="#i-${name}"></use></svg>`;
-      const getCurrentRoute = () => normalizeRoute(window.location.hash || getRouteForScreen(state.screen));
-
-      function updateDocumentTitle(route = getCurrentRoute()) {
-        document.title = `${getTitleForRoute(route)} · Lipyum Partner`;
-      }
-
-      function setActiveTab(route = getCurrentRoute()) {
-        state.screen = getScreenForRoute(route);
-      }
-
-      function syncRouteHash(route, replace = false) {
-        const normalized = normalizeRoute(route);
-        const hash = `#${normalized}`;
-        if (window.location.hash === hash) return;
-        const method = replace ? "replaceState" : "pushState";
-        window.history[method]({ route: normalized }, "", hash);
-      }
-
-      function renderRoute(route = getCurrentRoute(), options = {}) {
-        const normalized = normalizeRoute(route);
-        const nextScreen = getScreenForRoute(normalized);
-        if (nextScreen !== state.screen) state.previousScreen = state.screen;
-        state.screen = nextScreen;
-        updateDocumentTitle(normalized);
-        renderScreen(options);
-      }
-
-      function navigateTo(route, options = {}) {
-        const normalized = normalizeRoute(route);
-        if (!options.fromHistory) {
-          if (options.replace && navigationStack.length) {
-            navigationStack[navigationStack.length - 1] = normalized;
-          } else if (navigationStack[navigationStack.length - 1] !== normalized) {
-            navigationStack.push(normalized);
-          }
-          syncRouteHash(normalized, Boolean(options.replace));
-        }
-        renderRoute(normalized, options);
-      }
-
-      function goBack() {
-        if (navigationStack.length > 1) {
-          navigationStack.pop();
-          const previousRoute = navigationStack[navigationStack.length - 1] || "/home";
-          syncRouteHash(previousRoute, true);
-          renderRoute(previousRoute);
-          return;
-        }
-        navigateTo("/home", { replace: true });
-      }
-
-      function initRouter() {
-        const initialRoute = getCurrentRoute();
-        navigationStack.length = 0;
-        navigationStack.push(initialRoute);
-        syncRouteHash(initialRoute, true);
-        window.addEventListener("popstate", () => {
-          const route = getCurrentRoute();
-          const existingIndex = navigationStack.lastIndexOf(route);
-          if (existingIndex > -1) {
-            navigationStack.length = existingIndex + 1;
-          } else if (navigationStack[navigationStack.length - 1] !== route) {
-            navigationStack.push(route);
-          }
-          renderRoute(route, { fromHistory: true });
-        });
-      }
-
-      window.navigateToPage = (route) => navigateTo(route);
-      window.lipyumRouter = {
-        goBack,
+      const navigation = createNavigationController({ state, renderScreen, navigationStack });
+      const {
         getCurrentRoute,
+        goBack,
+        initRouter,
         navigateTo,
         renderRoute,
         setActiveTab,
         updateDocumentTitle,
-      };
+      } = navigation;
+
+      window.navigateToPage = (route) => navigateTo(route);
+      window.lipyumRouter = navigation;
 
       const escapeHtml = (value) => String(value)
         .replace(/&/g, "&amp;")
@@ -1228,8 +1163,8 @@ mountAppShell();
           invoices: renderInvoices,
           incomeExpense: renderIncomeExpense,
           bonus: renderBonus,
-          support: renderSupport,
-          messages: renderSupport,
+          support: () => pageRoutes["/support"]({ state, icon }),
+          messages: () => pageRoutes["/support"]({ state, icon }),
           referral: renderReferral,
           referralList: renderReferralList,
           referralEarnings: renderReferralEarnings,
@@ -1242,7 +1177,7 @@ mountAppShell();
           customers: renderCustomers,
           appointmentLink: renderAppointmentLink,
           performanceScore: renderPerformanceScore,
-          notifications: renderNotifications,
+          notifications: () => pageRoutes["/notifications"]({ state, icon }),
         };
         root.innerHTML = (screenMap[state.screen] || renderHome)();
         root.scrollTop = options.preserveScroll ? previousScrollTop : 0;
@@ -3481,11 +3416,14 @@ mountAppShell();
       }
 
       function drawerMenuItem(item) {
-        const target = item.screen
-          ? `data-screen="${item.screen}"`
-          : `data-action="${item.action || "menu-placeholder"}" data-label="${item.label}"`;
+        const target = item.route
+          ? `data-route="${item.route}"`
+          : item.screen
+            ? `data-screen="${item.screen}"`
+            : `data-action="${item.action || "menu-placeholder"}" data-label="${item.label}"`;
+        const activeRoute = item.route && getCurrentRoute() === item.route;
         return `
-          <button class="drawer-menu-item" type="button" ${target} style="--drawer-item-color:${item.color}" aria-label="${item.label}">
+          <button class="drawer-menu-item ${activeRoute ? "is-active" : ""}" type="button" ${target} style="--drawer-item-color:${item.color}" aria-label="${item.label}" ${activeRoute ? 'aria-current="page"' : ""}>
             <span class="drawer-menu-icon">${icon(item.icon)}</span>
             <strong>${item.label}</strong>
             ${icon("chevron-right")}
@@ -3510,22 +3448,22 @@ mountAppShell();
             <span class="drawer-promo-sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             <strong class="drawer-promo-title">Daha fazla iş fırsatı yakala</strong>
             <span class="drawer-package-pins">
-              <button class="drawer-package-pin" type="button" data-screen="growthPackages" style="--pin-color:#667085" aria-label="Ücretsiz paket">
+              <button class="drawer-package-pin" type="button" data-route="/packages" style="--pin-color:#667085" aria-label="Ücretsiz paket">
                 ${icon("navigation")}
                 <strong>Ücretsiz</strong>
                 <small>Başla</small>
               </button>
-              <button class="drawer-package-pin is-gold" type="button" data-screen="growthPackages" style="--pin-color:#d99a0b" aria-label="Gold paket">
+              <button class="drawer-package-pin is-gold" type="button" data-route="/packages" style="--pin-color:#d99a0b" aria-label="Gold paket">
                 ${icon("star")}
                 <strong>Gold</strong>
                 <small>Popüler</small>
               </button>
-              <button class="drawer-package-pin is-pro" type="button" data-screen="growthPackages" style="--pin-color:#12b76a" aria-label="Pro paket">
+              <button class="drawer-package-pin is-pro" type="button" data-route="/packages" style="--pin-color:#12b76a" aria-label="Pro paket">
                 ${icon("shield")}
                 <strong>Pro</strong>
                 <small>Profesyonel</small>
               </button>
-              <button class="drawer-package-pin is-vip" type="button" data-screen="growthPackages" style="--pin-color:#f59e0b" aria-label="VIP paket">
+              <button class="drawer-package-pin is-vip" type="button" data-route="/packages" style="--pin-color:#f59e0b" aria-label="VIP paket">
                 ${icon("crown")}
                 <strong>VIP</strong>
                 <small>En iyisi</small>
@@ -3537,7 +3475,7 @@ mountAppShell();
 
       function drawerUpgradeBanner() {
         return `
-          <button class="drawer-upgrade-banner" type="button" data-screen="subscription" aria-label="Plus avantajlarını keşfet">
+          <button class="drawer-upgrade-banner" type="button" data-route="/subscription" aria-label="Plus avantajlarını keşfet">
             <span class="drawer-upgrade-copy">
               <strong>Müşterilere Plus olarak görün</strong>
               <small>Plus ile %18 daha fazla iş al</small>
@@ -3549,7 +3487,7 @@ mountAppShell();
 
       function drawerSupportCard() {
         return `
-          <button class="drawer-support-card" type="button" data-screen="support" aria-label="Yardım ve Destek">
+          <button class="drawer-support-card" type="button" data-route="/support" aria-label="Yardım ve Destek">
             <span class="drawer-support-icon">${icon("headphones")}</span>
             <span>
               <strong>Yardım ve Destek</strong>
@@ -4406,8 +4344,19 @@ mountAppShell();
         const routeLink = event.target.closest("[data-route]");
         if (routeLink && !routeLink.matches("[data-screen]")) {
           event.preventDefault();
+          const route = routeLink.dataset.route;
+          const nextScreen = getScreenForRoute(route);
+          if (nextScreen === "reviews") {
+            state.reviewListMode = false;
+            state.reviewVisibleCount = 3;
+            state.reviewFilter = "all";
+          }
+          if (nextScreen === "notifications") {
+            state.showReadNotifications = false;
+            state.notificationVisibleCount = 7;
+          }
           closeSheet();
-          navigateTo(routeLink.dataset.route);
+          navigateTo(route);
           return;
         }
 
@@ -4475,10 +4424,8 @@ mountAppShell();
             showToast("Tüm bildirimler okundu");
           } else if (type === "notification-settings") {
             closeSheet();
-            state.previousScreen = "notifications";
-            state.screen = "profile";
-            renderScreen();
-            showToast("Bildirim ayarları profil menüsüne bağlandı");
+            navigateTo("/notification-settings");
+            showToast("Bildirim ayarları açıldı");
           } else if (type === "clear-notifications-request") {
             showSheet("notification-clear-confirm");
           } else if (type === "clear-notifications-confirm") {
@@ -4492,9 +4439,7 @@ mountAppShell();
             if (notificationId && !state.notificationReadIds.includes(notificationId)) {
               state.notificationReadIds = [...state.notificationReadIds, notificationId];
             }
-            state.previousScreen = "notifications";
-            state.screen = action.dataset.notificationScreen || "home";
-            renderScreen();
+            navigateTo(getRouteForScreen(action.dataset.notificationScreen || "home"));
           } else if (type === "performance-detail") {
             state.previousScreen = state.screen;
             state.screen = "performanceScore";
