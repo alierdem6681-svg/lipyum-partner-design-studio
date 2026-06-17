@@ -13,6 +13,8 @@ const screenshotRoutes = [
   "/leaderboard",
   "/referral",
   "/job-referral",
+  "/ui-kit",
+  "/vue-job-referral",
 ];
 
 test("screenshot smoke", async ({ page }) => {

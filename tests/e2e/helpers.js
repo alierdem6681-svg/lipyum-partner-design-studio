@@ -10,6 +10,8 @@ export const routes = [
   "/leaderboard",
   "/packages",
   "/subscription",
+  "/ui-kit",
+  "/vue-job-referral",
 ];
 
 export async function collectConsoleErrors(page) {

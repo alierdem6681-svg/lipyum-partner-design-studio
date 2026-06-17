@@ -4,6 +4,7 @@ import { renderBottomBar } from "./components/BottomBar.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
 import { fitTextToContainer } from "./utils/dom.js";
 import { createNavigationController } from "./utils/navigation.js";
+import { mountVueIslands } from "./vue/main.js";
 import {
   pageRoutes,
   getRouteForScreen,
@@ -106,6 +107,7 @@ mountAppShell();
       } = navigation;
 
       window.navigateToPage = (route) => navigateTo(route);
+      window.goBack = goBack;
       window.lipyumRouter = navigation;
 
       const escapeHtml = (value) => String(value)
@@ -1159,6 +1161,8 @@ mountAppShell();
           team: () => pageRoutes["/team"](),
           capacity: renderCapacity,
           strategy: () => pageRoutes["/strategy"](),
+          uiKit: () => pageRoutes["/ui-kit"](),
+          vueJobReferral: () => pageRoutes["/vue-job-referral"](),
           accountSettings: () => pageRoutes["/account-settings"](),
           notificationSettings: () => pageRoutes["/notification-settings"](),
           contactSettings: () => pageRoutes["/contact-settings"](),
@@ -1191,6 +1195,7 @@ mountAppShell();
         initReferralInfiniteScroll();
         initNotificationInfiniteScroll();
         initReferralTaskCarousel();
+        mountVueIslands(root, { currentRoute: getCurrentRoute(), navigateTo });
         fitTextToContainer(root);
         renderSidePanel();
         renderBottomNav();

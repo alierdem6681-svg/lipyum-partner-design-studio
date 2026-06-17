@@ -32,5 +32,7 @@ export { StrategyPage } from "./StrategyPage.js";
 export { SubscriptionPage } from "./SubscriptionPage.js";
 export { SupportPage } from "./SupportPage.js";
 export { TeamPage } from "./TeamPage.js";
+export { UiKitPage } from "./UiKitPage.js";
+export { VueJobReferralPage } from "./VueJobReferralPage.js";
 export { WalletPage } from "./WalletPage.js";
 export { WorkingHoursPage } from "./WorkingHoursPage.js";

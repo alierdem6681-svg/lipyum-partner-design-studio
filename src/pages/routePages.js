@@ -33,6 +33,8 @@ import {
   SubscriptionPage,
   SupportPage,
   TeamPage,
+  UiKitPage,
+  VueJobReferralPage,
   WalletPage,
   WorkingHoursPage,
 } from "./index.js";
@@ -74,4 +76,6 @@ export const pageRoutes = {
   "/team": TeamPage,
   "/capacity": CapacityPage,
   "/strategy": StrategyPage,
+  "/ui-kit": UiKitPage,
+  "/vue-job-referral": VueJobReferralPage,
 };

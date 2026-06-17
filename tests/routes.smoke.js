@@ -18,6 +18,8 @@ const requiredRoutes = [
   "/leaderboard",
   "/packages",
   "/subscription",
+  "/ui-kit",
+  "/vue-job-referral",
 ];
 
 for (const route of requiredRoutes) {

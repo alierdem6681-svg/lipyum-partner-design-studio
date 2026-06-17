@@ -8,7 +8,7 @@ for (const route of routes) {
     await waitForApp(page);
     await expect(page.locator("#appRoot")).not.toBeEmpty();
     await expect(page.locator("#bottomNav")).toBeVisible();
-    await expect(page.locator(".page-header, .app-header, .notifications-head, .back-head").first()).toBeVisible();
+    await expect(page.locator(".page-header, .app-header, .notifications-head, .back-head, .v-app-header").first()).toBeVisible();
     await expectNoAppHorizontalOverflow(page);
     expect(errors).toEqual([]);
   });

@@ -58,11 +58,19 @@
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --page-x-padding-mobile: 12px;
+  --page-x-padding-comfort: 14px;
+  --content-max-width-mobile: 100%;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-pill: 999px;
+  --radius-card-compact: 14px;
+  --radius-card: 16px;
+  --radius-hero: 20px;
+  --radius-sheet: 24px;
+  --radius-bottom-bar: 30px;
   --shadow-soft: 0 8px 20px rgba(16, 24, 40, 0.06);
   --shadow-card: 0 10px 28px rgba(15, 23, 42, 0.08);
   --shadow-elevated: 0 14px 34px rgba(15, 23, 42, 0.12);
@@ -70,7 +78,7 @@
   --header-height: 58px;
   --bottom-bar-height: 76px;
   --bottom-safe-height: 92px;
-  --page-x-padding: 16px;
+  --page-x-padding: var(--page-x-padding-comfort);
   --page-bottom-padding: 112px;
   --cta-home-size: 68px;
   --cta-subpage-size: 58px;
@@ -80,7 +88,7 @@
   --lp-ink: #101828;
   --lp-muted: #667085;
   --lp-card: #ffffff;
-  --lp-radius-card: 13px;
+  --lp-radius-card: var(--radius-card-compact);
   --lp-radius-pill: 999px;
   --lp-soft-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
   --lp-font-xs: var(--font-size-caption);

@@ -4,6 +4,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.js",
     "./src/**/*.html",
+    "./src/**/*.vue",
   ],
   corePlugins: {
     preflight: false,
@@ -64,8 +65,11 @@ module.exports = {
         cta: "0 10px 24px rgba(0, 122, 61, 0.30)",
       },
       borderRadius: {
+        compact: "14px",
         card: "16px",
-        xl2: "20px",
+        hero: "20px",
+        sheet: "24px",
+        bottom: "30px",
       },
     },
   },

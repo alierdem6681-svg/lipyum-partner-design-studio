@@ -2,6 +2,154 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 5 - Vue Foundation, UI Kit, Icon System ve Mobil Layout Standardizasyonu
+
+### 1. Genel durum
+
+- Vue 3 foundation kuruldu; uygulama tam rewrite edilmedi.
+- Mevcut vanilla/Vite/Tailwind runtime çalışmaya devam ediyor.
+- Vue tarafı güvenli ada modeliyle bağlandı: legacy render tamamlandıktan sonra `mountVueIslands()` sadece `data-vue-island` alanlarını mount ediyor.
+- HomePage bu fazda rewrite edilmedi.
+- `/ui-kit` yeni Vue UI kit preview route olarak eklendi.
+- `/vue-job-referral` mevcut `/job-referral` route'unu bozmadan Vue pilot page olarak eklendi.
+
+### 2. Vue foundation
+
+- Eklenen paketler:
+  - `vue`
+  - `@vitejs/plugin-vue`
+  - `lucide-vue-next`
+- `vite.config.js` Vue plugin ile güncellendi.
+- Cloudflare tüneli Vite dev server üzerinden çalışabilsin diye `server.allowedHosts: true` eklendi.
+- Oluşturulan ana yapı:
+  - `src/vue/main.js`
+  - `src/vue/App.vue`
+  - `src/vue/router/routes.js`
+  - `src/vue/layouts/MobileLayout.vue`
+  - `src/vue/pages/UiKitPreviewPage.vue`
+  - `src/vue/pages/JobReferralVuePage.vue`
+- Vanilla app shell ve mevcut hash router korunuyor.
+- Vue pilotlar mevcut router'a küçük JS wrapper sayfalarıyla bağlandı:
+  - `src/pages/UiKitPage.js`
+  - `src/pages/VueJobReferralPage.js`
+
+### 3. UI Kit
+
+- Oluşturulan UI componentleri:
+  - `AppPage`
+  - `AppHeader`
+  - `AppBottomBar`
+  - `AppButton`
+  - `AppCard`
+  - `AppChip`
+  - `AppBadge`
+  - `AppIcon`
+  - `AppSectionTitle`
+  - `AppListItem`
+  - `AppSelect`
+  - `AppSegmentedControl`
+  - `AppEmptyState`
+- Oluşturulan feature preview componentleri:
+  - `WalletMiniCard`
+  - `ReviewMiniCard`
+  - `LeaderboardMiniCard`
+- UI kit componentleri token uyumlu `v-` prefixli CSS ile izole edildi.
+- Componentlerde dinamik Tailwind class üretimi kullanılmadı; class map ve CSS token yaklaşımı korundu.
+
+### 4. Icon system
+
+- Yeni Vue componentlerinde ikonlar doğrudan kütüphaneden değil `AppIcon.vue` üzerinden çağrılıyor.
+- `src/vue/icons/iconMap.js` merkezi icon registry olarak eklendi.
+- Map edilen temel ikonlar arasında şunlar var:
+  - home
+  - briefcase
+  - wallet
+  - calendar
+  - bell
+  - user
+  - star
+  - message
+  - chevron-left
+  - chevron-right
+  - plus
+  - settings
+- Eski SVG sprite sistemi silinmedi; legacy ekranlar çalışmaya devam ediyor.
+
+### 5. Full-width standardı
+
+- Tokenlara mobil full-width standardı eklendi:
+  - `--page-x-padding-mobile: 12px`
+  - `--page-x-padding-comfort: 14px`
+  - `--content-max-width-mobile: 100%`
+- Vue `AppPage` bu standardı kullanıyor.
+- Kartlar `width: 100%` ve kontrollü horizontal padding ile tasarlandı.
+- 360, 390, 393 ve 430 px viewport testleri `/ui-kit` ve `/vue-job-referral` dahil geçti.
+
+### 6. Radius/compact standardı
+
+- Tokenlara V5 radius standardı eklendi:
+  - `--radius-card-compact: 14px`
+  - `--radius-card: 16px`
+  - `--radius-hero: 20px`
+  - `--radius-sheet: 24px`
+  - `--radius-bottom-bar: 30px`
+- Tailwind theme radius değerleri bu standarda yaklaştırıldı.
+- Vue kartları kompakt ama minimum dokunma alanını koruyacak şekilde yazıldı.
+
+### 7. Navbar/Header sorunları
+
+- Vue `AppHeader` fixed grid yapısında 44 px touch action ve tek satır ellipsis ile oluşturuldu.
+- Route smoke testleri `/reviews`, `/leaderboard`, `/wallet`, `/notifications`, `/ui-kit`, `/vue-job-referral` dahil header görünürlüğünü doğruluyor.
+- V4'ten gelen `/reviews` ve `/leaderboard` header yapısı bozulmadı; V5 testleri aynı rotalarda geçiyor.
+
+### 8. Vue pilot
+
+- Canlı `/job-referral` route'u güvenlik için vanilla haliyle bırakıldı.
+- Yeni pilot route: `/vue-job-referral`.
+- Pilot page şunları Vue UI kit ile render ediyor:
+  - AppHeader
+  - hero kart
+  - dört adımlı süreç
+  - kazanç türleri kartı
+  - primary CTA
+- `/ui-kit` route'u tüm temel UI kit componentlerini aynı ekranda smoke-test edilebilir hale getiriyor.
+
+### 9. Test sonuçları
+
+- `npm run check`: başarılı.
+- `npm run test`: başarılı.
+- `npm run test:e2e`: başarılı, 23 test geçti.
+- `npm run test:e2e:mobile`: başarılı, 52 test geçti.
+- `npm run test:accessibility`: başarılı, 8 test geçti.
+- `npm run test:screenshots`: başarılı, screenshot smoke geçti.
+- `npm run build`: başarılı.
+- `git diff --check`: başarılı.
+- İlk mobil test denemesinde `test:e2e` ve `test:e2e:mobile` aynı anda çalıştırıldığı için Playwright webserver port çakışması yaşandı; komutlar sıralı çalıştırılınca suite temiz geçti.
+
+### 10. Kalan teknik borç
+
+P0:
+
+- Yok. Bu faz mevcut V4 runtime'ı kırmadan tamamlandı.
+
+P1:
+
+- Kritik ekranların gerçek Vue migration sırası belirlenmeli.
+- `HomePage`, `Partner Davet Programı`, paket ve abonelik akışları hâlâ vanilla/legacy ağırlıklı.
+- Vue `AppBottomBar` henüz canlı global bottom bar'ın yerine geçmedi; preview/pilot seviyesinde.
+
+P2:
+
+- Eski SVG sprite sistemi ile yeni `AppIcon` registry arasında uzun vadeli birleşme planı yapılmalı.
+- Legacy CSS içindeki radius/spacing değerleri kademeli olarak token standardına çekilmeli.
+- Vue componentleri için unit veya visual regression snapshot standardı eklenebilir.
+
+### 11. Bir sonraki önerilen adım
+
+- En güvenli sonraki adım: `/job-referral` canlı route'unu Vue pilot ile değiştirmek.
+- Sonrasında `ReferralPage` içindeki Partner Davet Programı zengin akışı Vue componentlerine ayrılabilir.
+- HomePage migration en sona bırakılmalı.
+
 ## Faz 4 - Production Readiness, Tailwind Foundation, Test Altyapısı ve Page Migration
 
 ### 1. Genel durum
