@@ -14,6 +14,7 @@ export const initialUiState = {
   reviewVisibleCount: 3,
   reviewListMode: false,
   notificationVisibleCount: 7,
+  lazyListCounts: {},
   notificationReadIds: ["n3", "n6"],
   notificationsCleared: false,
   showReadNotifications: false,
@@ -38,5 +39,6 @@ export function createUiState(overrides = {}) {
     ...initialUiState,
     ...overrides,
     notificationReadIds: [...initialUiState.notificationReadIds],
+    lazyListCounts: { ...initialUiState.lazyListCounts, ...(overrides.lazyListCounts || {}) },
   };
 }

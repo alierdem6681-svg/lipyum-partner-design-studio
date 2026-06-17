@@ -42,6 +42,8 @@ export const walletSummary = {
   credit: 675,
   bonus: 240,
   estimatedJobs: "2-3",
+  lastTopUp: "12 Haz 2026",
+  creditStatus: "Aktif",
 };
 
 export const notifications = [
@@ -115,16 +117,70 @@ export const jobReferralProgram = {
   ],
 };
 
-export const reviews = [
-  { id: "r1", name: "Elif Y.", rating: 5, service: "Klima Tamiri", text: "Hızlı dönüş yaptı, servis süreci çok düzenliydi.", replied: false },
-  { id: "r2", name: "Murat K.", rating: 4, service: "Kombi Bakımı", text: "Randevu saatine uydu ve işlemi temiz anlattı.", replied: true },
-  { id: "r3", name: "Selin A.", rating: 5, service: "Petek Temizliği", text: "Beklentimin üstünde bir hizmet aldım.", replied: true },
+export const walletTransactions = [
+  { id: "w1", type: "credit-in", title: "Kredi yükleme", description: "Bakiye yükleme tamamlandı.", amount: "+250 kredi", date: "Bugün 11:20", tone: "success" },
+  { id: "w2", type: "credit-out", title: "Yeni iş kullanımı", description: "Karşıyaka klima arızası için kredi kullanıldı.", amount: "-260 kredi", date: "Bugün 09:44", tone: "neutral" },
+  { id: "w3", type: "bonus-convert", title: "Bonus krediye çevrildi", description: "Bonus bakiyeden krediye dönüşüm.", amount: "+120 kredi", date: "Dün 17:05", tone: "info" },
+  { id: "w4", type: "refund", title: "İade hareketi", description: "Müşteri kaynaklı iptal iadesi.", amount: "+90 kredi", date: "Dün 14:30", tone: "success" },
+  { id: "w5", type: "credit-out", title: "Teklif hakkı kullanıldı", description: "Ev temizliği teklifi için kullanım.", amount: "-40 kredi", date: "15 Haz 2026", tone: "neutral" },
+  { id: "w6", type: "credit-in", title: "Manuel bakiye yükleme", description: "Kart ile kredi yüklendi.", amount: "+500 kredi", date: "14 Haz 2026", tone: "success" },
+  { id: "w7", type: "bonus-in", title: "Partner bonusu", description: "Davet programından bonus kazancı.", amount: "+75 bonus", date: "13 Haz 2026", tone: "info" },
+  { id: "w8", type: "credit-out", title: "Havuz işi alındı", description: "Uygun havuz işi için kredi kullanıldı.", amount: "-180 kredi", date: "12 Haz 2026", tone: "neutral" },
+  { id: "w9", type: "bonus-in", title: "Yorum hedef bonusu", description: "5 yıldızlı yorum hedefi tamamlandı.", amount: "+30 bonus", date: "11 Haz 2026", tone: "info" },
 ];
 
-export const leaderboard = [
-  { rank: 34, name: "Mehmet Y.", score: 870 },
-  { rank: 35, name: "Ali C.", score: 860 },
-  { rank: 36, name: "Ahmet K.", score: 848 },
-  { rank: 37, name: "Sen", score: 845, self: true },
-  { rank: 38, name: "Hasan T.", score: 835 },
+export const walletActions = [
+  { label: "Bakiye Yükle", icon: "plus", route: "/wallet", tone: "success" },
+  { label: "Krediye Çevir", icon: "refresh", route: "/bonus", tone: "info" },
+  { label: "Hesap Hareketleri", icon: "list", route: "/wallet", tone: "neutral" },
+  { label: "Faturalarım", icon: "receipt", route: "/invoices", tone: "warning" },
 ];
+
+export const reviews = [
+  { id: "r1", name: "Elif Y.", rating: 5, service: "Klima Tamiri", text: "Hızlı dönüş yaptı, servis süreci çok düzenliydi.", date: "Bugün", replied: false },
+  { id: "r2", name: "Murat K.", rating: 4, service: "Kombi Bakımı", text: "Randevu saatine uydu ve işlemi temiz anlattı.", date: "Dün", replied: true, reply: "Geri bildiriminiz için teşekkür ederiz, yeniden yardımcı olmak isteriz." },
+  { id: "r3", name: "Selin A.", rating: 5, service: "Petek Temizliği", text: "Beklentimin üstünde bir hizmet aldım.", date: "2 gün önce", replied: true, reply: "Değerli yorumunuz için teşekkür ederiz." },
+  { id: "r4", name: "Burak T.", rating: 3, service: "Buzdolabı Tamiri", text: "İletişim iyiydi ama randevu biraz gecikti.", date: "3 gün önce", replied: false },
+  { id: "r5", name: "Nermin K.", rating: 5, service: "Çamaşır Makinesi", text: "Sorun hızlı çözüldü, servis personeli çok açıklayıcıydı.", date: "4 gün önce", replied: false },
+  { id: "r6", name: "Ali R.", rating: 4, service: "Klima Bakımı", text: "Temiz çalışıldı ve ücret bilgisi net verildi.", date: "5 gün önce", replied: true, reply: "Memnun kalmanıza sevindik." },
+  { id: "r7", name: "Ceren M.", rating: 2, service: "Kombi Servisi", text: "Tekrar kontrol için dönüş bekliyorum.", date: "6 gün önce", replied: false },
+  { id: "r8", name: "Hakan S.", rating: 5, service: "Fırın Tamiri", text: "Dakik ve güvenilir bir hizmet aldım.", date: "1 hafta önce", replied: true, reply: "Güzel yorumunuz için teşekkür ederiz." },
+  { id: "r9", name: "Pelin D.", rating: 5, service: "Klima Montajı", text: "Montaj süreci beklediğimden hızlı tamamlandı.", date: "1 hafta önce", replied: false },
+];
+
+export const reviewSummary = {
+  average: 4.8,
+  total: 126,
+  newLast30Days: 18,
+  satisfaction: 92,
+};
+
+export const leaderboard = {
+  period: "1 - 7 Haziran 2026",
+  sector: "Beyaz Eşya Tamiri",
+  city: "Şehirler",
+  myRank: 37,
+  myScore: 845,
+  myJobs: 18,
+  targetRank: "İlk 20",
+  targetProgress: 72,
+  nearby: [
+    { rank: 34, name: "Mehmet Y.", initials: "MY", score: 870 },
+    { rank: 35, name: "Ali C.", initials: "AC", score: 860 },
+    { rank: 36, name: "Ahmet K.", initials: "AK", score: 848 },
+    { rank: 37, name: "Sen", initials: "S", score: 845, self: true },
+    { rank: 38, name: "Hasan T.", initials: "HT", score: 835 },
+    { rank: 39, name: "Zeynep E.", initials: "ZE", score: 828 },
+    { rank: 40, name: "Murat A.", initials: "MA", score: 821 },
+  ],
+  topRankers: [
+    { rank: 1, name: "Hüseyin A.", initials: "HA", score: 10846 },
+    { rank: 2, name: "Emre D.", initials: "ED", score: 9650 },
+    { rank: 3, name: "Yusuf K.", initials: "YK", score: 8930 },
+  ],
+  rewards: [
+    { title: "1. Sıra", value: "3.000 Bonus", note: "+ Özel Rozet" },
+    { title: "İlk 3", value: "1.000 Bonus", note: "+ Özel Rozet" },
+    { title: "İlk 10", value: "500 Bonus", note: "+ Özel Rozet" },
+  ],
+};

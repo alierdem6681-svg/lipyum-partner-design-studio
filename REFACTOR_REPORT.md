@@ -2,6 +2,176 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 4 - Production Readiness, Tailwind Foundation, Test Altyapısı ve Page Migration
+
+### 1. Genel durum
+
+- V4 sonrası refactor tamamlanma seviyesi: yaklaşık %76.
+- `index.html` app shell olarak kalmaya devam ediyor; yeni build/test altyapısı Vite üzerinden kuruldu.
+- `legacyApp.js` aktif ama ReviewsPage, WalletPage ve LeaderboardPage artık gerçek page/component yapısından render ediliyor.
+- Gerçek page/component yapısında olan ana ekranlar: ProfilePage, NotificationsPage, SupportPage, ReviewsPage, WalletPage, LeaderboardPage, JobReferralPage ve çoğu alt scaffold page.
+- Hâlâ önemli legacy bağımlılığı olan ekranlar: HomePage, Partner Davet Programı zengin akışı, Packages/Subscription/Package Builder akışlarının bazı bölümleri.
+- Vercel için `vercel.json` eklendi; build çıktısı `dist` olarak sabitlendi. `/health.txt` Vite public kopyasıyla production çıktısına giriyor.
+
+### 2. Test altyapısı
+
+- Dev/build/test altyapısı için vanilla Vite kuruldu; framework eklenmedi.
+- Playwright test runner ve Chromium kuruldu.
+- `axe-core` dev dependency olarak eklendi; bu fazda temel DOM/accessibility smoke kontrolleri kullanıldı.
+- `package.json` scriptleri genişletildi:
+  - `check`
+  - `lint`
+  - `test`
+  - `test:unit`
+  - `test:routes`
+  - `test:e2e`
+  - `test:e2e:mobile`
+  - `test:screenshots`
+  - `test:accessibility`
+  - `build`
+  - `dev`
+  - `preview`
+- Sistem Node sürümü eski olduğu için proje içine Node 20 dev dependency olarak eklendi; scriptler `node_modules/node/bin/node` üzerinden çalışıyor.
+- Playwright config Chromium mobile profiline sabitlendi. İlk denemede iPhone device profili WebKit aradığı için düzeltildi.
+
+### 3. Tailwind
+
+- Tailwind foundation kuruldu:
+  - `tailwind.config.cjs`
+  - `postcss.config.cjs`
+  - `src/styles/tailwind.css`
+- `index.html` içine Tailwind giriş CSS'i eklendi.
+- `preflight: false` kullanıldı; mevcut legacy CSS reset ve görsel dil bozulmadı.
+- Content paths:
+  - `index.html`
+  - `src/**/*.js`
+  - `src/**/*.html`
+- Tailwind theme, mevcut tokenlara yakın primary/info/warning/danger/neutral renk ailesi, font ailesi, shadow ve radius değerleriyle hazırlandı.
+- Dynamic Tailwind class üretimi kullanılmadı; migration kademeli kalacak.
+
+### 4. Renk sistemi
+
+- `src/styles/tokens.css` V4 renk skalasıyla genişletildi:
+  - primary, primary-hover, primary-soft, primary-border
+  - info, info-soft, info-border
+  - warning, warning-soft, warning-border
+  - danger, danger-soft, danger-border
+  - neutral-50..neutral-900
+  - premium-gold, premium-gold-soft, premium-gold-border
+- Yeni componentlerde renkler mümkün olduğunca token/theme semantiğine bağlandı.
+- Eski legacy CSS içinde dağınık hex kullanımı hâlâ var; P1 teknik borç olarak duruyor.
+
+### 5. Tipografi
+
+- Font ailesi global token sistemiyle korunuyor:
+  `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Roboto", "Inter", "Noto Sans", "Segoe UI", sans-serif`
+- Yeni Reviews/Wallet/Leaderboard componentleri mevcut token ve responsive label sistemine uyacak şekilde yazıldı.
+- Page bazlı özel font kullanımı yeni migrationlarda azaltıldı.
+
+### 6. Lazy load
+
+- Pagination kullanılmadı.
+- `src/utils/lazyList.js` eklendi:
+  - `createLazyListState`
+  - `getVisibleItems`
+  - `hasMoreItems`
+  - `getNextVisibleCount`
+  - `LazyLoadButton`
+- `state.lazyListCounts` eklendi.
+- Reviews, Wallet ve Leaderboard listeleri mock data üzerinde load-more standardına geçti.
+- `legacyApp.js` içinde `data-action="load-more-list"` merkezi handler'ı eklendi.
+
+### 7. Reviews migration
+
+- `/reviews` gerçek page/component yapısına geçirildi.
+- Dosya: `src/pages/ReviewsPage.js`
+- Componentler:
+  - `ReviewSummaryCard`
+  - `ReviewCollectCard`
+  - `ReviewFilterChips`
+  - `ReviewCard`
+  - `ReviewList`
+- Data kaynağı: `src/data/mockData.js` içindeki `reviewSummary` ve `reviews`.
+- Filtreler: Tümü, Yanıt Bekleyen, Düşük Puan, 5 Yıldız, 4 Yıldız.
+- Liste pagination yerine lazy/load-more kullanıyor.
+
+### 8. Wallet migration
+
+- `/wallet` gerçek page/component yapısına geçirildi.
+- Dosya: `src/pages/WalletPage.js`
+- Componentler:
+  - `WalletSummaryCards`
+  - `WalletActionGrid`
+  - `TransactionCard`
+  - `TransactionList`
+- Data kaynağı: `walletSummary`, `walletActions`, `walletTransactions`.
+- İşlem geçmişi pagination yerine lazy/load-more kullanıyor.
+
+### 9. Leaderboard migration
+
+- `/leaderboard` gerçek page/component yapısına geçirildi.
+- Dosya: `src/pages/LeaderboardPage.js`
+- Componentler:
+  - `LeagueSelects`
+  - `LeaderboardHeroCard`
+  - `MyRankSummary`
+  - `NearbyRankList`
+  - `TopRankersCard`
+  - `RewardTiersCard`
+- Başkalarının iş sayısı gösterilmiyor; yakın sıralama ve haftanın iyileri lig puanı üzerinden gösteriliyor.
+- Kullanıcının kendi iş sayısı yalnızca kendi özet kartında gösteriliyor.
+- Sektör Ligi / Şehir Ligi select yapısı eklendi.
+- Yakın sıralama pagination yerine lazy/load-more kullanıyor.
+
+### 10. Legacy cleanup
+
+- `legacyApp.js` içindeki aktif render map şu ekranları artık page route'a delege ediyor:
+  - wallet
+  - reviews
+  - levels / leaderboard
+- HomePage ve Partner Davet Programı zengin akışı hâlâ legacy runtime içinde.
+- Legacy dosyası hâlâ büyük: yaklaşık 4.739 satır.
+- Kullanılmayan eski wallet/reviews/leaderboard helper bloklarının güvenli silinmesi bir sonraki temizlik fazına bırakıldı.
+
+### 11. Test sonuçları
+
+- `npm run check`: geçti.
+- `npm run test`: geçti.
+- `npm run test:routes`: `npm run test` kapsamında geçti; 11 route smoke geçti.
+- `npm run test:e2e`: geçti; 21 Playwright test geçti.
+- `npm run test:e2e:mobile`: geçti; 360x780, 390x844, 393x852, 430x932 viewportlarında 44 test geçti.
+- `npm run test:accessibility`: geçti; 8 accessibility smoke test geçti.
+- `npm run test:screenshots`: geçti; home, profile, notifications, support, reviews, wallet, leaderboard, referral ve job-referral screenshot smoke üretildi.
+- `npm run build`: geçti; `dist/health.txt` içeriği `OK Lipyum Partner` olarak doğrulandı.
+- `git diff --check`: geçti.
+
+### 12. Kalan teknik borç
+
+P0:
+
+- Canlıya çıkış öncesi HomePage migration ve eski büyük legacy render bloklarının en azından delegasyon sınırlarının netleştirilmesi.
+- Vercel Node sürümünün `>=20.19.0` ile uyumlu çalıştığının deployment sonrası doğrulanması.
+
+P1:
+
+- Partner Davet Programı zengin akışını gerçek `ReferralPage` componentlerine bölmek.
+- Packages/Subscription/Package Builder akışlarını page/component/data yapısına taşımak.
+- Legacy CSS içinde kalan random hex değerlerini token sistemine kademeli geçirmek.
+- Visual regression baseline karşılaştırması eklemek.
+
+P2:
+
+- Service layer'ı genişletmek: walletService, reviewsService, leaderboardService, referralService.
+- CI/CD içinde Playwright ve screenshot smoke testlerini GitHub Actions'a bağlamak.
+- Tailwind utility kullanımını yeni componentlerde kademeli artırmak.
+
+### 13. Bir sonraki önerilen adım
+
+1. HomePage migration planı ve component ayrıştırması.
+2. Partner Davet Programı'nı legacy dışına almak.
+3. Packages/Subscription akışlarını gerçek page/component yapısına geçirmek.
+4. GitHub Actions üzerinde check + e2e smoke pipeline kurmak.
+
 ## Faz 3 - V3 Layout, Typography, Sidebar ve Kazanç Ortaklığı Stabilizasyonu
 
 ### 1. Genel durum

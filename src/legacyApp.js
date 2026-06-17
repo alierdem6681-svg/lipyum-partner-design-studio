@@ -1149,7 +1149,7 @@ mountAppShell();
           work: renderWork,
           jobs: renderJobs,
           calendar: renderCalendar,
-          wallet: renderWallet,
+          wallet: () => pageRoutes["/wallet"]({ state, icon }),
           profile: renderProfile,
           about: () => pageRoutes["/about"](),
           photoGallery: () => pageRoutes["/photo-gallery"](),
@@ -1175,8 +1175,8 @@ mountAppShell();
           growthPackageBuilder: renderGrowthPackageBuilder,
           growthPackageCheckout: renderGrowthPackageCheckout,
           subscription: renderSubscription,
-          levels: renderLevels,
-          reviews: renderReviews,
+          levels: () => pageRoutes["/leaderboard"]({ state, icon }),
+          reviews: () => pageRoutes["/reviews"]({ state, icon }),
           customers: renderCustomers,
           appointmentLink: renderAppointmentLink,
           performanceScore: renderPerformanceScore,
@@ -2625,7 +2625,7 @@ mountAppShell();
           { label: "Bakiye Yüklet", value: "3", iconName: "wallet", filter: "needTopup", color: "#175cd3" },
         ];
         return `
-          <div class="partner-earn-head">
+          <div class="partner-earn-head app-header">
             <button class="back-btn" type="button" data-screen="home" aria-label="Ana sayfaya dön">${icon("chevron-left")}</button>
             <h2>Partner Davet Programı</h2>
             <button class="icon-btn" type="button" data-action="referral-info" aria-label="Partner kazan bilgi">${icon("help-circle")}</button>
@@ -4270,6 +4270,7 @@ mountAppShell();
           state.reviewFilter = reviewFilter.dataset.reviewFilter;
           state.reviewListMode = true;
           state.reviewVisibleCount = 5;
+          state.lazyListCounts = { ...(state.lazyListCounts || {}), reviews: 4 };
           renderScreen({ preserveScroll: true });
           return;
         }
@@ -4447,6 +4448,24 @@ mountAppShell();
               state.notificationReadIds = [...state.notificationReadIds, notificationId];
             }
             navigateTo(getRouteForScreen(action.dataset.notificationScreen || "home"));
+          } else if (type === "load-more-list") {
+            const listKey = action.dataset.listKey || "default";
+            const increments = {
+              reviews: 3,
+              wallet: 4,
+              leaderboard: 3,
+            };
+            const defaults = {
+              reviews: 4,
+              wallet: 5,
+              leaderboard: 5,
+            };
+            const current = state.lazyListCounts?.[listKey] || defaults[listKey] || 6;
+            state.lazyListCounts = {
+              ...(state.lazyListCounts || {}),
+              [listKey]: current + (increments[listKey] || 4),
+            };
+            renderScreen({ preserveScroll: true });
           } else if (type === "performance-detail") {
             state.previousScreen = state.screen;
             state.screen = "performanceScore";

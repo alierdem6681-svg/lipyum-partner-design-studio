@@ -5769,27 +5769,33 @@
 
       .wallet-tile-icon {
         position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 30px;
-        height: 30px;
+        top: 1px;
+        right: 1px;
+        width: 44px;
+        height: 44px;
         display: grid;
         place-items: center;
+        border: 0;
+        background: transparent;
+        color: #334155;
+        padding: 0;
+        box-shadow: none;
+      }
+
+      .wallet-tile-icon::before {
+        content: "";
+        position: absolute;
+        width: 30px;
+        height: 30px;
         border-radius: 10px;
         border: 1px solid #d8dee8;
         background: #fff;
-        color: #334155;
-        padding: 0;
         box-shadow: 0 4px 9px rgba(16, 24, 40, 0.045);
       }
 
-      .wallet-tile-icon::after {
-        content: "";
-        position: absolute;
-        inset: -7px;
-      }
-
       .wallet-tile-icon .icon {
+        position: relative;
+        z-index: 1;
         width: 17px;
         height: 17px;
         stroke-width: 2.1;
@@ -12027,6 +12033,7 @@
 
       button.partner-profile-chip {
         min-width: 44px;
+        height: 44px;
         appearance: none;
         cursor: pointer;
         font-family: inherit;
@@ -12065,9 +12072,20 @@
       .partner-profile-chip.is-more {
         flex: 0 0 42px;
         padding: 0;
-        border-color: #cbd5e1;
-        background: #ffffff;
+        border-color: transparent;
+        background: transparent;
         color: #334155;
+      }
+
+      .partner-profile-chip.is-more span {
+        width: 42px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        background: #ffffff;
       }
 
       .profile-menu-section {

@@ -36,7 +36,7 @@ export function renderProfileCard({
             data-action="toggle-profile-badges"
             aria-expanded="${badgesExpanded ? "true" : "false"}"
             aria-label="${badgesExpanded ? "Ek rozetleri gizle" : "Ek rozetleri göster"}"
-          >${badgesExpanded ? "−" : `+${moreCount}`}</button>
+          ><span>${badgesExpanded ? "−" : `+${moreCount}`}</span></button>
         ` : ""}
         ${badgesExpanded && extraBadges.length ? `
           <span class="partner-profile-chip-break" aria-hidden="true"></span>
