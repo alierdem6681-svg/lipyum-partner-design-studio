@@ -632,7 +632,7 @@
       }
 
       .header-actions--reserved {
-        pointer-events: none;
+        pointer-events: auto;
       }
 
       .notification-btn {
@@ -2913,6 +2913,18 @@
         justify-content: space-between;
         gap: 10px;
         margin-bottom: 10px;
+      }
+
+      .sheet-head .icon-btn[data-close],
+      .sheet-head .icon-only-btn[data-close] {
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
       }
 
       .sheet-head h3 {

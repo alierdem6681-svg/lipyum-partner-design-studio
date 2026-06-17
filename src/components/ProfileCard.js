@@ -43,6 +43,14 @@ export function renderProfileCard({
           ${extraBadges.map((badge) => `<span class="partner-profile-chip is-extra">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
         ` : ""}
       </div>
+      <div class="partner-profile-actions" aria-label="Partner kartı paylaşım aksiyonları">
+        <button class="partner-profile-action is-primary" type="button" data-action="open-partner-share" data-testid="partner-share-button">
+          ${icon("share")} Paylaş
+        </button>
+        <button class="partner-profile-action" type="button" data-route="/partner-card-preview" data-testid="partner-card-preview-button">
+          ${icon("eye")} Önizle
+        </button>
+      </div>
     </section>
   `;
 }

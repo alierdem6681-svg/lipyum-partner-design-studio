@@ -33,6 +33,7 @@ export const initialUiState = {
   drawerBadgesExpanded: false,
   profileBadgesExpanded: false,
   supportTicketCreated: false,
+  liveSupportStarted: false,
   satisfactionRating: 0,
   satisfactionSubmitted: false,
   satisfactionStoreOpened: false,

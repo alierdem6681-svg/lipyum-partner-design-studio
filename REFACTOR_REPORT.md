@@ -1437,3 +1437,126 @@ Arayüz kalite kapısı ve tıklanabilir readiness açısından yaklaşık %82. 
 ### 15. Bir sonraki adım
 
 En yüksek kaldıraçlı sonraki faz: HomePage, Jobs/MyJobs/Calendar ve Packages akışını gerçek Vue/Tailwind/UI Kit route’larına taşımak.
+
+## Faz 10 - Final App Shell, Visual QA Automation ve Product Completion Stabilizasyonu
+
+### 1. Genel durum
+
+V10 kapsamında full rewrite yerine çalışan V9 tabanı korunarak ölçülebilir final-app-shell iyileştirmeleri yapıldı. Tam Vue/Tailwind migration hâlâ tamamlanmadı; ancak header sağ slotu, sidebar destek IA, canlı destek, public partner kartı, bölge aktivite metinleri ve V10 QA otomasyonu eklendi.
+
+### 2. Header / navbar
+
+- Modüler `Header` componentinde sağ slot boş bırakılmıyor; default `header-info-button` eklendi.
+- Legacy subpage header da aynı sağ aksiyon slotu davranışına yaklaştırıldı.
+- `test:header-consistency` V10 kalite kapısına eklendi.
+
+### 3. Sidebar ve destek
+
+- Sidebar Destek grubu sadeleştirildi:
+  - `Talep Oluştur` → `/support/new`
+  - `Canlı Destek` → `/support/live`
+- Sidebar’daki eski `Yardım ve Destek` satırı kaldırıldı.
+- Kazanç Ortaklığı item açıklamaları sidebar içinde basılmıyor.
+
+### 4. Talep Oluştur ve Canlı Destek
+
+- `/support/new` başarı state’i `Yeni Talep Oluştur` CTA’sı ile tekrar forma dönebiliyor.
+- `/support/live` eklendi; başlık, açıklama ve `Canlı sohbete başla` CTA’sı mock `Temsilci bağlanıyor` state’i açıyor.
+
+### 5. Profil ve public partner kartı
+
+- Sidebar profil verisi `partnerProfile` mock datasına bağlandı.
+- Sidebar rozet `+N` davranışı tek yönlü hale getirildi.
+- Profil route’u dışına çıkıldığında rozet state’i sıfırlanıyor.
+- Partner share sheet, public badge, embed card ve `/partner-card-preview` route’u eklendi.
+
+### 6. Home bölge aktivitesi
+
+- Bölge alanı başlığı `Bölgendeki Son 3 Aktivite` olarak güncellendi.
+- Verilen üç aktivite cümlesi sabit, okunabilir liste olarak gösteriliyor.
+
+### 7. V10 QA automation
+
+Yeni testler:
+
+- `test:clickable-inventory`
+- `test:visual-regression`
+- `test:visual-qa-report`
+- `test:text-overflow`
+- `test:touch-targets`
+- `test:header-consistency`
+- `test:back-stack-stress`
+- `test:modal-sheet-drawer`
+- `test:all-routes-interactions`
+- `test:v10-quality-automation`
+
+Yeni rapor dosyaları:
+
+- `VISUAL_QA_REPORT.md`
+- `CLICKABLE_INVENTORY_REPORT.md`
+- `V10_QUALITY_AUTOMATION.md`
+
+### 8. Test sonuçları
+
+Final V10 kalite kapısı `npm run test:quality-gate` ile çalıştırıldı ve tüm adımlar geçti.
+
+- `npm run check` → başarılı
+- `npm run lint` → başarılı
+- `npm run test` → başarılı
+- `npm run test:routes` → 41 route smoke geçti
+- `npm run test:e2e` → 119 passed
+- `npm run test:e2e:mobile` → 328 passed
+- `npm run test:accessibility` → 8 passed
+- `npm run test:interactions` → 98 passed
+- `npm run test:sidebar` → 4 passed
+- `npm run test:bottom-bar` → 6 passed
+- `npm run test:navigation-contract` → 42 passed
+- `npm run test:forms` → 3 passed
+- `npm run test:device-matrix` → 7 passed
+- `npm run test:performance` → 1 passed
+- `npm run test:visual-alignment` → 1 passed
+- `npm run test:deeplinks` → 5 passed
+- `npm run test:satisfaction` → 2 passed
+- `npm run test:home-flow` → 1 passed
+- `npm run test:packages-flow` → 1 passed
+- `npm run test:referral-flow` → 1 passed
+- `npm run test:support-ticket` → 2 passed
+- `npm run test:profile-badges` → 1 passed
+- `npm run test:clickable-inventory` → 1 passed
+- `npm run test:visual-regression` → 1 passed
+- `npm run test:visual-qa-report` → 1 passed
+- `npm run test:text-overflow` → 1 passed
+- `npm run test:touch-targets` → 1 passed
+- `npm run test:header-consistency` → 1 passed
+- `npm run test:back-stack-stress` → 1 passed
+- `npm run test:modal-sheet-drawer` → 1 passed
+- `npm run test:all-routes-interactions` → 1 passed
+- `npm run test:v10-quality-automation` → 1 passed
+- `npm run test:screenshots` → 1 passed
+- `npm run build` → başarılı, `dist/assets/index-J5n3uBkC.js`, `dist/assets/index-CNXCKB3n.css`
+- `git diff --check` → başarılı
+
+### 9. Kalan teknik borç
+
+P0:
+
+- HomePage full Vue/Tailwind migration.
+- Jobs/MyJobs/Calendar full Vue/Tailwind migration.
+- Referral zengin akış full Vue/Tailwind migration.
+- Packages/Subscription/Builder/Checkout full Vue/Tailwind migration.
+- `legacyApp.js` kullanıcıya görünen ana route render sorumluluğunun azaltılması.
+
+P1:
+
+- Public partner badge/share bileşenini Vue UI Kit’e taşımak.
+- Live support/ticket flow’u Vue UI Kit componentlerine taşımak.
+- V10 visual smoke testlerine gerçek pixel threshold baseline eklemek.
+
+P2:
+
+- Partner public profile için gerçek public URL/native share adapter.
+- Embed preview için responsive desktop fixture.
+
+### 10. Finish yüzdesi
+
+Tıklanabilir prototip ve QA readiness açısından yaklaşık %84. Full Vue/Tailwind migration açısından yaklaşık %60 seviyesinde.

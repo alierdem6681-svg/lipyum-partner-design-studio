@@ -8,6 +8,7 @@ export const routes = [
   "/notifications",
   "/support",
   "/support/new",
+  "/support/live",
   "/satisfaction",
   "/messages",
   "/referral",
@@ -38,6 +39,7 @@ export const routes = [
   "/contact-settings",
   "/ui-kit",
   "/vue-job-referral",
+  "/partner-card-preview",
 ];
 
 export const criticalRoutes = [
@@ -49,6 +51,7 @@ export const criticalRoutes = [
   "/notifications",
   "/support",
   "/support/new",
+  "/support/live",
   "/satisfaction",
   "/referral",
   "/job-referral",
@@ -56,6 +59,7 @@ export const criticalRoutes = [
   "/leaderboard",
   "/packages",
   "/subscription",
+  "/partner-card-preview",
 ];
 
 export const ctaHiddenRoutes = new Set(["/package-checkout"]);

@@ -11,12 +11,16 @@ Lipyum Partner currently runs as a backend-free clickable mobile UI prototype. N
 | `/partner/reviews` | `#/reviews` |
 | `/partner/support` | `#/support` |
 | `/partner/support/new` | `#/support/new` |
+| `/partner/support/live` | `#/support/live` |
 | `/partner/referral` | `#/referral` |
 | `/partner/job-referral` | `#/job-referral` |
 | `/partner/packages` | `#/packages` |
 | `/partner/satisfaction` | `#/satisfaction` |
+| `/partner/card` | `#/partner-card-preview` |
 | `?route=/wallet` | `#/wallet` |
 | `?deeplink=support-new` | `#/support/new` |
+| `?deeplink=support-live` | `#/support/live` |
+| `?deeplink=partner-card` | `#/partner-card-preview` |
 
 Unknown routes fall back to `#/home`.
 

@@ -30,6 +30,19 @@ test("partner path deeplink opens support ticket page", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("new V10 deeplinks open live support and partner card preview", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/?deeplink=support-live");
+  await expectRoute(page, "/support/live");
+  await expect(page.getByTestId("live-support-page")).toBeVisible();
+
+  await page.goto("/partner/card");
+  await expectRoute(page, "/partner-card-preview");
+  await expect(page.getByTestId("partner-card-preview")).toBeVisible();
+
+  expect(errors).toEqual([]);
+});
+
 test("unknown deeplink falls back to home", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/?deeplink=does-not-exist");

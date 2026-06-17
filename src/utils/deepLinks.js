@@ -4,10 +4,12 @@ const deepLinkAliases = {
   reviews: "/reviews",
   support: "/support",
   "support-new": "/support/new",
+  "support-live": "/support/live",
   referral: "/referral",
   "job-referral": "/job-referral",
   packages: "/packages",
   satisfaction: "/satisfaction",
+  "partner-card": "/partner-card-preview",
 };
 
 const partnerPathRoutes = {
@@ -16,10 +18,12 @@ const partnerPathRoutes = {
   "/partner/reviews": "/reviews",
   "/partner/support": "/support",
   "/partner/support/new": "/support/new",
+  "/partner/support/live": "/support/live",
   "/partner/referral": "/referral",
   "/partner/job-referral": "/job-referral",
   "/partner/packages": "/packages",
   "/partner/satisfaction": "/satisfaction",
+  "/partner/card": "/partner-card-preview",
 };
 
 export function resolveDeepLinkRoute(urlLike = window.location.href) {

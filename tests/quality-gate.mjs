@@ -86,6 +86,50 @@ const steps = [
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/support-ticket.spec.js",
   },
   {
+    name: "test:profile-badges",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/profile-badges.spec.js",
+  },
+  {
+    name: "test:clickable-inventory",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/clickable-inventory.spec.js",
+  },
+  {
+    name: "test:visual-regression",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/visual-regression.spec.js",
+  },
+  {
+    name: "test:visual-qa-report",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/visual-qa-report.spec.js",
+  },
+  {
+    name: "test:text-overflow",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/text-overflow.spec.js",
+  },
+  {
+    name: "test:touch-targets",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/touch-targets.spec.js",
+  },
+  {
+    name: "test:header-consistency",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/header-consistency.spec.js",
+  },
+  {
+    name: "test:back-stack-stress",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/back-stack-stress.spec.js",
+  },
+  {
+    name: "test:modal-sheet-drawer",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/modal-sheet-drawer.spec.js",
+  },
+  {
+    name: "test:all-routes-interactions",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/all-routes-interactions.spec.js",
+  },
+  {
+    name: "test:v10-quality-automation",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v10-quality-automation.spec.js",
+  },
+  {
     name: "test:screenshots",
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
   },

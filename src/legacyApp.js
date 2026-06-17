@@ -1,7 +1,9 @@
 import { mountAppShell } from "./components/AppShell.js";
 import { createUiState, navigationStack } from "./state.js";
 import { renderBottomBar } from "./components/BottomBar.js";
+import { PartnerSharePanel } from "./components/PartnerPublicBadge.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
+import { partnerProfile } from "./data/mockData.js";
 import { fitTextToContainer } from "./utils/dom.js";
 import { createNavigationController } from "./utils/navigation.js";
 import { mountVueIslands } from "./vue/main.js";
@@ -79,6 +81,7 @@ mountAppShell();
         bonus: ["Bonus Cüzdanı", "Bonus bakiyeni ve krediye çevirme şartını takip et"],
         support: ["Yardım ve Destek", "Sorununu seç, hızlıca çözelim"],
         supportNew: ["Talep Oluştur", "Sorununu seç, hızlıca takip edelim"],
+        supportLive: ["Canlı Destek", "Temsilciyle hızlıca görüş"],
         satisfaction: ["Memnuniyet", "Lipyum deneyimini değerlendir"],
         messages: ["Destek / Mesaj Kutusu", "Danışman mesajları ve ticket takibi"],
         referral: ["Partner Davet Programı", "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan"],
@@ -94,6 +97,7 @@ mountAppShell();
         customers: ["Müşteri Defteri", "Kendi müşterilerini düzenli takip et"],
         appointmentLink: ["Randevu Linki / QR", "Kısa link ve QR paylaşımı"],
         performanceScore: ["Performans Skoru", "İş görünürlüğünü etkileyen kalite özeti"],
+        partnerCardPreview: ["Partner Kartı", "Public rozet ve paylaşım önizlemesi"],
       };
 
       const icon = (name) => `<svg class="icon"><use href="#i-${name}"></use></svg>`;
@@ -366,10 +370,9 @@ mountAppShell();
       };
 
       const regionActivityMessages = [
-        "Başka bir partner en son 2 dk önce iş yaptı.",
-        "Bölgede az önce yeni bir teklif verildi.",
-        "Son 10 dk içinde 3 partner iş fırsatı görüntüledi.",
-        "Yakındaki bir havuz işi kısa süre önce alındı.",
+        "Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.",
+        "Aydın Ç. Şişli ilçesindeki bir fırın tamiri işi için teklif verdi.",
+        "Huzeyfe A. Ümraniye ilçesinde bulunan bir işi havuzdan satın aldı.",
       ];
 
       function navAlertTicker() {
@@ -1137,7 +1140,9 @@ mountAppShell();
             <header class="app-header subpage-header" data-testid="app-header" data-header-variant="subpage">
               <button class="back-btn" type="button" data-action="go-back" data-testid="back-button" aria-label="Geri dön">${icon("chevron-left")}</button>
               ${headerTitle(title, subtitle)}
-              <span class="header-actions header-actions--reserved" aria-hidden="true"></span>
+              <div class="header-actions header-actions--reserved">
+                <button class="icon-btn icon-only-btn" type="button" data-action="header-info" data-testid="header-info-button" aria-label="Sayfa bilgisi">${icon("help-circle")}</button>
+              </div>
             </header>
           `;
         }
@@ -1167,12 +1172,14 @@ mountAppShell();
           "contactSettings",
           "support",
           "supportNew",
+          "supportLive",
           "satisfaction",
           "messages",
           "jobReferral",
           "levels",
           "reviews",
           "notifications",
+          "partnerCardPreview",
         ]);
         const screenMap = {
           home: renderHome,
@@ -1199,6 +1206,7 @@ mountAppShell();
           bonus: renderBonus,
           support: () => pageRoutes["/support"]({ state, icon }),
           supportNew: () => pageRoutes["/support/new"]({ created: state.supportTicketCreated, icon }),
+          supportLive: () => pageRoutes["/support/live"]({ started: state.liveSupportStarted, icon }),
           satisfaction: () => pageRoutes["/satisfaction"]({
             rating: state.satisfactionRating,
             submitted: state.satisfactionSubmitted,
@@ -1220,6 +1228,7 @@ mountAppShell();
           appointmentLink: renderAppointmentLink,
           performanceScore: () => pageRoutes["/performance-score"]({ state, icon }),
           notifications: () => pageRoutes["/notifications"]({ state, icon }),
+          partnerCardPreview: () => pageRoutes["/partner-card-preview"]({ icon }),
         };
         root.dataset.layout = modularScreens.has(state.screen) ? "page" : "legacy";
         root.dataset.screen = state.screen;
@@ -1678,7 +1687,7 @@ mountAppShell();
 
           <section class="card card-pad section region-home-card">
             <div class="region-card-head">
-              <h3>Bölgendeki İşler</h3>
+              <h3>Bölgendeki Son 3 Aktivite</h3>
               <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
                 ${["Bugün", "Dün"].map((d) => `<button class="chip-btn ${state.regionFilter === d ? "active" : ""}" type="button" data-region-filter="${d}">${d}</button>`).join("")}
               </div>
@@ -1688,7 +1697,9 @@ mountAppShell();
               <div class="kpi-tile"><span>Tamamlanan İş</span><strong>${regionJobCount()}</strong><em class="region-kpi-icon">${icon("briefcase")}</em></div>
               <div class="kpi-tile"><span>Teklifler</span><strong>128</strong><em class="region-kpi-icon">${icon("file-text")}</em></div>
             </div>
-            <p class="region-activity" data-region-activity aria-live="polite">${regionActivityMessages[0]}</p>
+            <ul class="region-activity-list" data-testid="home-region-activity">
+              ${regionActivityMessages.map((message) => `<li><span></span>${message}</li>`).join("")}
+            </ul>
           </section>
 
         `;
@@ -3365,6 +3376,7 @@ mountAppShell();
           "notification-menu": notificationMenuSheet,
           "notification-clear-confirm": notificationClearConfirmSheet,
           "notification-read-confirm": notificationReadConfirmSheet,
+          "partner-share": () => PartnerSharePanel({ partner: partnerProfile, icon }),
           status: statusSheet,
           ticket: ticketSheet,
         };
@@ -3390,32 +3402,32 @@ mountAppShell();
       }
 
       function drawerBadgesMarkup() {
-        const extraBadges = state.drawerBadgesExpanded
+        const visibleBadges = partnerProfile.badges.slice(0, 3);
+        const extraBadges = partnerProfile.badges.slice(3);
+        const extraBadgeMarkup = state.drawerBadgesExpanded
           ? `
-              <span class="drawer-mini-badge is-extra">${icon("clipboard")} Sonuç Bildiren</span>
-              <span class="drawer-mini-badge is-extra">${icon("calendar")} Randevu Düzenli</span>
+              ${extraBadges.map((badge) => `<span class="drawer-mini-badge is-extra">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
             `
           : "";
         return `
-          <span class="drawer-mini-badge badge-span-2">${icon("check")} Güvenilir</span>
-          <span class="drawer-mini-badge badge-span-2">${icon("sparkles")} Hızlı</span>
-          <span class="drawer-mini-badge badge-span-2">${icon("map-pin")} Bölge Aktifi</span>
-          <button class="drawer-mini-badge is-more" type="button" data-action="toggle-drawer-badges" aria-expanded="${state.drawerBadgesExpanded ? "true" : "false"}">${state.drawerBadgesExpanded ? "−" : "+2"}</button>
-          ${extraBadges}
+          ${visibleBadges.map((badge) => `<span class="drawer-mini-badge badge-span-2">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
+          ${!state.drawerBadgesExpanded && extraBadges.length ? `<button class="drawer-mini-badge is-more" type="button" data-action="toggle-drawer-badges" aria-expanded="false">+${extraBadges.length}</button>` : ""}
+          ${extraBadgeMarkup}
         `;
       }
 
       function drawerProfileCard() {
-        const partnerName = "Ahmet Kaya";
+        const partnerName = partnerProfile.name;
+        const initials = partnerName.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase();
         return `
           <section class="drawer-profile-card" aria-label="Partner profili">
-            <div class="drawer-avatar" aria-hidden="true">AK</div>
+            <div class="drawer-avatar" aria-hidden="true">${initials}</div>
             <div class="drawer-profile-copy">
               <div class="drawer-name-row">
                 <h3 style="--drawer-name-size:${drawerNameSize(partnerName)}px">${partnerName}</h3>
-                <span class="drawer-badge">${icon("crown")} Gold Partner</span>
+                <span class="drawer-badge">${icon("crown")} ${partnerProfile.tier}</span>
               </div>
-              <span class="drawer-rating">${icon("star")} 4.8 Puan · 126 Değerlendirme</span>
+              <span class="drawer-rating">${icon("star")} ${partnerProfile.rating} Puan · ${partnerProfile.reviewCount} Değerlendirme</span>
             </div>
             <span class="drawer-badges">
               ${drawerBadgesMarkup()}
@@ -4449,7 +4461,7 @@ mountAppShell();
           const type = action.dataset.action;
           if (type === "toggle-drawer-badges") {
             event.preventDefault();
-            state.drawerBadgesExpanded = !state.drawerBadgesExpanded;
+            state.drawerBadgesExpanded = true;
             const layer = document.getElementById("sheetLayer");
             const scroll = layer.querySelector(".drawer-scroll");
             const currentScrollTop = scroll ? scroll.scrollTop : 0;
@@ -4553,6 +4565,8 @@ mountAppShell();
           } else if (type === "menu-placeholder") {
             closeSheet();
             showToast(`${action.dataset.label || "Bu alan"} yakında aktif olacak`);
+          } else if (type === "header-info") {
+            showToast("Bu sayfa için hızlı bilgi alanı hazır");
           } else if (type === "subscribe-plan") {
             const planName = action.dataset.plan || "Seçili paket";
             showToast(`${planName} abonelik ödeme adımı açılıyor`);
@@ -4571,6 +4585,13 @@ mountAppShell();
             state.supportTicketCreated = true;
             renderScreen({ preserveScroll: true });
             showToast("Talebin oluşturuldu: LP-000123");
+          } else if (type === "reset-support-ticket") {
+            state.supportTicketCreated = false;
+            renderScreen({ preserveScroll: true });
+          } else if (type === "start-live-support") {
+            state.liveSupportStarted = true;
+            renderScreen({ preserveScroll: true });
+            showToast("Temsilci bağlanıyor");
           } else if (type === "mock-upload") {
             showToast("Dosya ekleme alanı mock olarak hazır");
           } else if (type === "set-satisfaction-rating") {
@@ -4678,6 +4699,18 @@ mountAppShell();
             showToast("Profil ayarları hazır");
           } else if (type === "profile-preview") {
             showToast("Müşteri profilini önizleme ekranı hazır");
+          } else if (type === "open-partner-share") {
+            showSheet("partner-share");
+          } else if (type === "copy-partner-profile-link") {
+            const profileLink = "https://lipyum.com/partner/ahmet-kaya";
+            if (navigator.clipboard) navigator.clipboard.writeText(profileLink).catch(() => {});
+            showToast("Partner profil linki kopyalandı");
+          } else if (type === "copy-partner-embed") {
+            const embed = '<iframe src="https://lipyum.com/partner/ahmet-kaya/badge" width="320" height="140" loading="lazy"></iframe>';
+            if (navigator.clipboard) navigator.clipboard.writeText(embed).catch(() => {});
+            showToast("Embed kodu kopyalandı");
+          } else if (type === "share-partner-whatsapp") {
+            showToast("WhatsApp paylaşımı mock olarak hazırlandı");
           } else if (type === "profile-shortcut") {
             if (action.dataset.route) {
               navigateTo(action.dataset.route);

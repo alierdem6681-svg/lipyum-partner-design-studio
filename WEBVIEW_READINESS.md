@@ -22,6 +22,9 @@ Bu proje backend'siz, tıklanabilir mobil arayüz prototipidir. Bu dosya WebView
 - V9 deep link resolver: `?route=`, `?deeplink=` ve `/partner/...` path mapping.
 - Native association placeholder dosyaları: `public/.well-known/apple-app-site-association.placeholder.json` ve `public/.well-known/assetlinks.placeholder.json`.
 - Satisfaction route: native in-app review entegrasyonuna hazır compliance-safe mock UI.
+- Canlı destek route'u: `/support/live` mock temsilci bağlantı state'iyle hazır.
+- Public partner kart önizleme route'u: `/partner-card-preview` share/embed mock UI ile hazır.
+- V10 visual/clickable QA raporları: `VISUAL_QA_REPORT.md`, `CLICKABLE_INVENTORY_REPORT.md`, `V10_QUALITY_AUTOMATION.md`.
 - Push notification placeholder: `/notifications`.
 - Keyboard/focus riski: destek arama ve input alanları P1 test kapsamına alınmalı.
 - Error state: `AppErrorState`.

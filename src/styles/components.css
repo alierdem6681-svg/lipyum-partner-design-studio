@@ -63,6 +63,10 @@
   height: var(--app-header-action-size, 44px);
 }
 
+.page-header-action {
+  justify-self: end;
+}
+
 .ui-card,
 .menu-list-card {
   border: 1px solid var(--lp-border);
@@ -146,6 +150,325 @@
   padding: 0 10px;
   font-size: 12px;
   font-weight: 700;
+}
+
+.partner-profile-actions,
+.partner-share-actions {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.partner-profile-actions {
+  margin-top: 12px;
+}
+
+.partner-profile-action {
+  min-height: 40px;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--lp-ink);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.partner-profile-action.is-primary {
+  border-color: rgba(18, 183, 106, 0.22);
+  background: var(--color-primary-soft);
+  color: var(--lp-green-dark);
+}
+
+.partner-public-badge,
+.partner-embed-card,
+.partner-preview-hero,
+.ticket-hero-card,
+.live-support-card {
+  width: 100%;
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius-card);
+  background: var(--lp-card);
+  box-shadow: var(--lp-soft-shadow);
+}
+
+.partner-public-badge {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px;
+}
+
+.partner-public-badge.is-compact {
+  grid-template-columns: 48px minmax(0, 1fr);
+  padding: 12px;
+  box-shadow: none;
+}
+
+.partner-public-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #0f172a;
+  color: #fbbf24;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.partner-public-badge.is-compact .partner-public-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.partner-public-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.partner-public-copy {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  align-content: center;
+}
+
+.partner-public-copy strong,
+.partner-public-copy small,
+.partner-public-copy em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-public-copy strong {
+  color: var(--lp-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.partner-public-copy small,
+.partner-public-copy em {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.partner-public-copy small {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 0 9px;
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.partner-public-copy em {
+  color: var(--lp-muted);
+}
+
+.partner-public-copy em .icon {
+  color: #f59e0b;
+}
+
+.partner-public-chips {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.partner-public-chips span {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.partner-embed-card,
+.partner-preview-hero,
+.live-support-card,
+.ticket-hero-card {
+  padding: 14px;
+}
+
+.partner-embed-card,
+.live-support-card {
+  display: grid;
+  gap: 12px;
+}
+
+.partner-embed-head,
+.ticket-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.partner-embed-head > span,
+.ticket-hero-icon,
+.live-support-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--color-primary-soft);
+  color: var(--lp-green-dark);
+}
+
+.partner-embed-head strong,
+.ticket-hero-card strong,
+.live-support-card h2,
+.partner-preview-hero h2 {
+  margin: 0;
+  color: var(--lp-ink);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.partner-embed-head small,
+.ticket-hero-card small,
+.live-support-card p,
+.partner-preview-hero p {
+  color: var(--lp-muted);
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.partner-embed-card code {
+  display: block;
+  max-width: 100%;
+  padding: 10px;
+  border: 1px dashed var(--lp-border);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 11px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.partner-preview-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: var(--lp-green-dark);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.partner-share-sheet {
+  display: grid;
+  gap: 12px;
+}
+
+.live-support-card {
+  text-align: left;
+}
+
+.live-support-card label {
+  display: grid;
+  gap: 7px;
+  color: var(--lp-ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.live-support-card input,
+.live-support-card textarea {
+  width: 100%;
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--lp-ink);
+  padding: 11px 12px;
+  outline: none;
+}
+
+.live-support-queue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+}
+
+.live-support-queue span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--lp-green);
+  animation: livePulse 900ms ease-in-out infinite;
+}
+
+.live-support-queue span:nth-child(2) {
+  animation-delay: 140ms;
+}
+
+.live-support-queue span:nth-child(3) {
+  animation-delay: 280ms;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+.region-activity-list {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.region-activity-list li {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.region-activity-list li span {
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: var(--color-primary);
 }
 
 .ui-badge--success,

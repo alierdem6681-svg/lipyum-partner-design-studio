@@ -63,10 +63,13 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 
 - Destek arama alanı yazı girişini korumalıdır; tek harfte klavye kapanmasına neden olmamalıdır.
 - Destek kategori kartları ilgili yardım akışına gider.
-- Temsilciye yaz aksiyonu canlı destek/chat sheet açar.
+- `Canlı Destek` aksiyonu `/support/live` route'unu açar.
+- `/support/live` başlık ve kısa açıklama alanlarını gösterir; `Canlı sohbete başla` butonu `Temsilci bağlanıyor` state'ini açar.
 - Açık talepler ilgili talepler ekranını veya sheet'ini açar.
 - `/support/new` mock talep formunu açar.
 - Talep Oluştur submit mock success gösterir ve `LP-000123` talep numarasını yazar.
+- Başarı state'indeki `Yeni Talep Oluştur` butonu formu yeniden açar.
+- Sidebar Destek grubunda yalnızca `Talep Oluştur` ve `Canlı Destek` route item'ları bulunur.
 
 ## Deep Links
 
@@ -107,6 +110,14 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - `referral-rail` yatay swipe/drag ile kaydırılabilir olmalıdır.
 - `referral-partner-card` partner detayını açar.
 - `referral-partner-detail` seçili partnerin telefon, WhatsApp, durum ve kazanç detaylarını gösterir.
+
+## Public Partner Card
+
+- Profil kartındaki `partner-share-button` partner paylaşım sheet'ini açar.
+- Partner share sheet profil linki kopyalama, WhatsApp paylaşım mock'u ve embed kodu kopyalama aksiyonlarını içerir.
+- `/partner-card-preview` public partner rozeti ve embed kartının önizlemesini gösterir.
+- Profil rozetlerindeki `+N` butonu tek yönlüdür: gizli rozetleri açar, buton kaybolur ve kapatma/collapse davranışı sunmaz.
+- Kullanıcı route değiştirip profile geri döndüğünde rozet state'i başlangıç durumuna döner.
 
 ## Packages
 

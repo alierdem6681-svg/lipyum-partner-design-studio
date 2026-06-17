@@ -14,13 +14,21 @@ export function CreateTicketPage({ created = false, icon = () => "" } = {}) {
         showBack: true,
         backIcon: icon("chevron-left"),
       })}
+      <section class="ticket-hero-card">
+        <span class="ticket-hero-icon" aria-hidden="true">${icon(created ? "check" : "file-text")}</span>
+        <span>
+          <strong>${created ? "Talep takipte" : "Hızlı destek talebi"}</strong>
+          <small>${created ? "Talebin oluşturuldu; ekibimiz konuya dönecek." : "Kategori, kısa konu ve öncelik seçerek destek kaydı aç."}</small>
+        </span>
+      </section>
       ${created ? `
         <section class="ticket-success-card" data-testid="support-ticket-success">
           <span class="ticket-success-icon">${icon("check")}</span>
           <h2>Talebin oluşturuldu</h2>
           <p>Ekibimiz konuyu takip edecek. Talep numaran:</p>
           <strong>LP-000123</strong>
-          <button class="primary-btn" type="button" data-route="/support">Destek merkezine dön</button>
+          <button class="primary-btn" type="button" data-action="reset-support-ticket" data-testid="support-ticket-new">${icon("plus")} Yeni Talep Oluştur</button>
+          <button class="secondary-btn" type="button" data-route="/support/live">${icon("message")} Canlı desteğe geç</button>
         </section>
       ` : `
         <form class="ticket-form-card" data-testid="support-ticket-form">

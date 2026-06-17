@@ -8,6 +8,7 @@ export const ROUTE_TO_SCREEN = {
   "/notifications": "notifications",
   "/support": "support",
   "/support/new": "supportNew",
+  "/support/live": "supportLive",
   "/satisfaction": "satisfaction",
   "/messages": "messages",
   "/reviews": "reviews",
@@ -39,6 +40,7 @@ export const ROUTE_TO_SCREEN = {
   "/bonus": "bonus",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
+  "/partner-card-preview": "partnerCardPreview",
 };
 
 export const ROUTE_TITLES = {
@@ -51,6 +53,7 @@ export const ROUTE_TITLES = {
   "/notifications": "Bildirimler",
   "/support": "Yardım ve Destek",
   "/support/new": "Talep Oluştur",
+  "/support/live": "Canlı Destek",
   "/satisfaction": "Memnuniyet",
   "/messages": "Mesaj Kutusu",
   "/reviews": "Müşteri Yorumları",
@@ -82,6 +85,7 @@ export const ROUTE_TITLES = {
   "/bonus": "Bonus Cüzdanı",
   "/appointment-link": "Randevu Linki",
   "/performance-score": "Performans Skoru",
+  "/partner-card-preview": "Partner Kartı Önizleme",
 };
 
 export const BOTTOM_TABS = [
@@ -134,8 +138,8 @@ export const DRAWER_SECTIONS = [
   {
     title: "Destek",
     items: [
-      { label: "Yardım ve Destek", icon: "headphones", route: "/support", screen: "support", color: "#067647" },
       { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", color: "#067647" },
+      { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", color: "#067647" },
     ],
   },
 ];

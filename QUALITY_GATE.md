@@ -28,6 +28,17 @@ npm run test:home-flow
 npm run test:packages-flow
 npm run test:referral-flow
 npm run test:support-ticket
+npm run test:profile-badges
+npm run test:clickable-inventory
+npm run test:visual-regression
+npm run test:visual-qa-report
+npm run test:text-overflow
+npm run test:touch-targets
+npm run test:header-consistency
+npm run test:back-stack-stress
+npm run test:modal-sheet-drawer
+npm run test:all-routes-interactions
+npm run test:v10-quality-automation
 npm run test:screenshots
 npm run build
 git diff --check
@@ -100,3 +111,21 @@ Her görev sonunda raporda veya final mesajında şu başlıklar yer almalıdır
 - `test:packages-flow`: paket builder/checkout mock akışı.
 - `test:referral-flow`: partner davet, rail ve partner detay akışı.
 - `test:support-ticket`: sidebar Talep Oluştur form ve success akışı.
+
+## V10 Ek Kapılar
+
+`npm run test:quality-gate` V10 itibarıyla şu kontrolleri de çalıştırır:
+
+- `test:profile-badges`: profil ve sidebar rozet `+N` davranışının tek yönlü açıldığını ve route-local kaldığını doğrular.
+- `test:clickable-inventory`: kritik route'larda görünür tıklanabilir öğeleri sayar ve `CLICKABLE_INVENTORY_REPORT.md` raporunu günceller.
+- `test:visual-regression`: core route'larda header, bottom bar, içerik ve yatay overflow smoke kontrolü yapar.
+- `test:visual-qa-report`: sampled route görsel sağlık durumunu `VISUAL_QA_REPORT.md` içine yazar.
+- `test:text-overflow`: kritik başlık, buton ve nav label'larında taşma/wrap smoke kontrolü yapar.
+- `test:touch-targets`: global navigation, sheet ve drawer kontrollerinin mobil touch target ölçülerini doğrular.
+- `test:header-consistency`: kritik route'larda header görünürlüğü, sağ aksiyon slotu ve title overflow durumunu kontrol eder.
+- `test:back-stack-stress`: derin route akışlarında geri davranışını zorlar.
+- `test:modal-sheet-drawer`: sheet, drawer ve partner share panel aç/kapat akışını kontrol eder.
+- `test:all-routes-interactions`: kritik route'larda güvenli header interaction smoke kontrolü yapar.
+- `test:v10-quality-automation`: V10 rapor dosyalarının ve partner kart önizleme route'unun varlığını doğrular.
+
+V10 sonrası görsel değişikliklerde `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVENTORY_REPORT.md` deterministik olarak yeniden üretilmelidir.

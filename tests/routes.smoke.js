@@ -16,6 +16,7 @@ const requiredRoutes = [
   "/notifications",
   "/support",
   "/support/new",
+  "/support/live",
   "/satisfaction",
   "/messages",
   "/referral",
@@ -46,6 +47,7 @@ const requiredRoutes = [
   "/contact-settings",
   "/ui-kit",
   "/vue-job-referral",
+  "/partner-card-preview",
 ];
 
 for (const route of requiredRoutes) {

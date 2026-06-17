@@ -135,3 +135,12 @@ Tam Vue/Tailwind migration bitene kadar legacy tarafına yalnızca hata düzeltm
 ## V9 Akış Kuralı
 
 Deep link, satisfaction, support ticket veya product flow gibi yeni tıklanabilir akışlar backend iddiası taşımamalıdır. Gerçek API yoksa mock/success state net belirtilmeli, market değerlendirme gibi hassas aksiyonlarda kullanıcı onayı olmadan otomatik işlem yapıldığı ima edilmemelidir.
+
+## V10 Public Partner ve QA Kuralı
+
+- Public partner kartı, profil kartı ve sidebar profil alanı aynı `partnerProfile` mock data kaynağından beslenmelidir.
+- Partner rozetleri en fazla üç adet görünür; `+N` tek yönlü expand davranışı sunar ve collapse/kapatma yoktur.
+- Public partner badge, embed card ve share sheet aynı görsel aileyi kullanmalıdır.
+- Header sağ slotu boş bırakılmamalı; aksiyon yoksa merkezli bilgi butonu veya ölçülü placeholder kullanılmalıdır.
+- Yeni icon-only button eklenirse merkezleme `visual-alignment` testinde yakalanabilecek geometriyle yazılmalıdır.
+- Görsel veya interaction değişikliği `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVENTORY_REPORT.md` üreten testlerle desteklenmelidir.

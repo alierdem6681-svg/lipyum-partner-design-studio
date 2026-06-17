@@ -81,6 +81,7 @@ export const notifications = [
 
 export const supportQuickActions = [
   { title: "Talep Oluştur", description: "Konu seç, ekibimiz takip etsin", icon: "file-text", route: "/support/new", primary: true },
+  { title: "Canlı Destek", description: "Temsilciyle hızlıca görüş", icon: "message", route: "/support/live", primary: true },
   { title: "İş İtirazı", description: "İşle ilgili bir sorun mu var?", icon: "file-text", topic: "İş İtirazı" },
   { title: "Ödeme Sorunu", description: "Ödemenizle ilgili yardım alın", icon: "credit-card", topic: "Ödeme Sorunu" },
   { title: "Bonus Sorunu", description: "Bonus ve kampanyalar", icon: "gift", topic: "Bonus Sorunu" },
@@ -91,7 +92,6 @@ export const supportQuickActions = [
 export const supportInfoActions = [
   { title: "Sık Sorulan Sorular", description: "Merak ettiklerin için cevaplar burada", icon: "help-circle", label: "Sık Sorulan Sorular" },
   { title: "Açık Taleplerim", description: "Taleplerini takip et", icon: "clipboard", label: "Açık Taleplerim", badge: "3" },
-  { title: "Temsilciye Yaz", description: "Canlı destek ekibimizle görüş", icon: "message", topic: "Temsilciye Yaz", dark: true },
 ];
 
 export const referralPartners = [
