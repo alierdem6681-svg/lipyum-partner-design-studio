@@ -2,9 +2,43 @@
 
 Tarih: 17 Haziran 2026
 
+## 0. Faz 2.1 - ProfilePage Migration Başlangıcı
+
+- Profil sayfası ilk gerçek page migration adımı olarak placeholder olmaktan çıkarıldı.
+- `/profile` route'u artık canlı HTML'ini `src/pages/ProfilePage.js` üzerinden üretiyor.
+- `src/legacyApp.js` içindeki `renderProfile()` fonksiyonu profil markup'ını üretmek yerine `pageRoutes["/profile"]` fonksiyonuna delegasyon yapıyor.
+- Diğer ana ekranlar bu fazda legacy runtime içinde bırakıldı; bu bilinçli olarak regresyon riskini azaltmak için yapıldı.
+- Ortak `Header`, `BackButton`, `PageContainer`, `MenuList` ve mevcut `BottomBar` akışı ProfilePage ile kullanılmaya başlandı.
+- `data-action="go-back"` merkezi `goBack()` fonksiyonuna bağlandı; böylece yeni page componentlerindeki geri butonu navigation stack ile uyumlu çalışıyor.
+- BottomBar componentine `ctaVariant` sınıfı eklendi; `/profile` gibi alt sayfalarda CTA `subpage` varyantı alıyor.
+
+Yeni/gerçekleştirilen component ayrımları:
+
+- `src/components/ProfileCard.js`: Avatar, Gold Partner rozeti, puan satırı ve rozet/chip alanı data-driven hale getirildi.
+- `src/components/ProfileStrengthCard.js`: Profil Gücü, eksik görevler ve "Müşteri Profilimi Önizle" butonu ayrı component olarak eklendi.
+- `src/components/ProfileMenuGrid.js`: 8'li müşteriye görünen profil menüsü tek data array üzerinden render ediliyor.
+- `src/pages/AccountSettingsPage.js`: Hesap Durumu için düşük vurgulu güvenli placeholder içeriği eklendi.
+
+Veri düzeni:
+
+- `src/data/mockData.js` içine `partnerProfile`, `profileStrength` ve `profileSettingsItems` verileri genişletildi.
+- `PROFILE_MENU_ITEMS` hâlâ `src/utils/constants.js` içinde merkezi route kaynağı olarak kullanılıyor.
+
+Kapsam dışında bırakılanlar:
+
+- `legacyApp.js` içindeki eski `PartnerProfileCard`, `ProfileStrengthCard` ve `ProfileMenuGrid` fonksiyonları henüz silinmedi; canlı regresyonu azaltmak için bir sonraki temizlik fazına bırakıldı.
+- Home, Notifications, Support, Reviews, Wallet ve diğer büyük ekranlar bu fazda migrate edilmedi.
+- `/services`, `/regions`, `/working-hours`, `/capacity` gibi hâlihazırda daha zengin legacy ekranlar korunarak bırakıldı.
+
+Doğrulama:
+
+- `npm run check` çalıştırıldı ve geçti.
+- `node --input-type=module` ile `/profile`, `/photo-gallery` ve `/account-settings` page route render fonksiyonları import edilip doğrulandı.
+- Canlı tunnel üzerinden yeni `src/pages/ProfilePage.js` ve `src/legacyApp.js` içeriklerinin servis edildiği doğrulandı.
+
 ## 1. Genel Durum
 
-- Refactor tamamlanma seviyesi: yaklaşık %45.
+- Refactor tamamlanma seviyesi: yaklaşık %50.
 - Proje artık tek `index.html` veya tek `app.js` merkezli değil; `index.html` app shell olarak kaldı, `src/app.js` ise sadece başlatıcı modül oldu.
 - Büyük render motoru geçiş güvenliği için `src/legacyApp.js` içine taşındı. Yani merkezi legacy bağımlılığı hâlâ var.
 - Canlıya alınabilirlik: görsel prototip canlı URL’de korunuyor; mimari canlıya yaklaşmaya başladı ancak `legacyApp.js` parçalanmadan production kalitesi tamamlanmış sayılmaz.
@@ -17,6 +51,8 @@ Oluşturulan dosyalar:
 - `src/utils/constants.js`
 - `src/components/Badge.js`
 - `src/components/Chip.js`
+- `src/components/ProfileMenuGrid.js`
+- `src/components/ProfileStrengthCard.js`
 - `src/components/SectionTitle.js`
 - `src/pages/PageScaffold.js`
 - `src/pages/index.js`
@@ -56,6 +92,7 @@ Değiştirilen dosyalar:
 - `src/pages/*.js`
 - `src/styles/tokens.css`
 - `src/styles/components.css`
+- `src/styles/pages.css`
 - `package.json`
 
 Silinen veya kullanılmayan dosyalar:
@@ -83,7 +120,7 @@ Hâlâ taşınmamış büyük fonksiyonlar `src/legacyApp.js` içinde:
 - `renderJobs`
 - `renderCalendar`
 - `renderWallet`
-- `renderProfile`
+- `renderProfile` (artık yeni `ProfilePage` modülüne delegasyon yapıyor)
 - `renderNotifications`
 - `renderSupport`
 - `renderReferral`
@@ -111,7 +148,7 @@ Neden tamamen taşınmadılar:
 | MyJobsPage.js | /my-jobs | placeholder scaffold | legacy | scaffold | Canlı işlerim legacy runtime’da |
 | CalendarPage.js | /calendar | placeholder scaffold | legacy | scaffold | Canlı takvim legacy runtime’da |
 | WalletPage.js | /wallet | placeholder scaffold | legacy | scaffold | Canlı cüzdan legacy runtime’da |
-| ProfilePage.js | /profile | placeholder scaffold | legacy | scaffold | Canlı profil legacy runtime’da |
+| ProfilePage.js | /profile | gerçek profil içeriği | shared component | shared BackButton | Canlı profil bu page modülünden geliyor |
 | NotificationsPage.js | /notifications | placeholder scaffold | legacy | scaffold | Canlı bildirim legacy runtime’da |
 | SupportPage.js | /support | placeholder scaffold | legacy | scaffold | Canlı destek legacy runtime’da |
 | ReviewsPage.js | /reviews | placeholder scaffold | legacy | scaffold | Canlı yorumlar legacy runtime’da |
@@ -120,17 +157,17 @@ Neden tamamen taşınmadılar:
 | ReferralPage.js | /referral | placeholder scaffold | legacy | scaffold | Canlı partner kazan legacy runtime’da |
 | PackagesPage.js | /packages | placeholder scaffold | legacy | scaffold | Canlı paketler legacy runtime’da |
 | SubscriptionPage.js | /subscription | placeholder scaffold | legacy | scaffold | Canlı abonelik legacy runtime’da |
-| AccountSettingsPage.js | /account-settings | placeholder scaffold | legacy | scaffold | Hesap güvenliği için hazır |
+| AccountSettingsPage.js | /account-settings | temel hesap güvenliği içeriği | shared component | shared BackButton | Hesap durumu için düşük vurgulu güvenli alan hazır |
 | NotificationSettingsPage.js | /notification-settings | placeholder scaffold | legacy | scaffold | Bildirim ayarları için hazır |
 | ContactSettingsPage.js | /contact-settings | placeholder scaffold | legacy | scaffold | İletişim bilgileri için hazır |
-| PhotoGalleryPage.js | /photo-gallery | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
-| AboutPage.js | /about | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
+| PhotoGalleryPage.js | /photo-gallery | placeholder scaffold | shared component | shared BackButton | Profil alt route yeni router üzerinden hazır |
+| AboutPage.js | /about | placeholder scaffold | shared component | shared BackButton | Profil alt route yeni router üzerinden hazır |
 | ServicesPage.js | /services | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
 | RegionsPage.js | /regions | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
 | WorkingHoursPage.js | /working-hours | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
-| TeamPage.js | /team | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
+| TeamPage.js | /team | placeholder scaffold | shared component | shared BackButton | Profil alt route yeni router üzerinden hazır |
 | CapacityPage.js | /capacity | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
-| StrategyPage.js | /strategy | placeholder scaffold | legacy | scaffold | Profil alt route hazır |
+| StrategyPage.js | /strategy | placeholder scaffold | shared component | shared BackButton | Profil alt route yeni router üzerinden hazır |
 | CustomersPage.js | /customers | placeholder scaffold | legacy | scaffold | Sidebar route hazır |
 | IncomeExpensePage.js | /income-expense | placeholder scaffold | legacy | scaffold | Sidebar route hazır |
 | InvoicesPage.js | /invoices | placeholder scaffold | legacy | scaffold | Sidebar route hazır |
@@ -147,17 +184,19 @@ Neden tamamen taşınmadılar:
 | Component | Gerçekten kullanılıyor mu? | Kullanıldığı yer | Eksik |
 |---|---|---|---|
 | AppShell | Evet | `legacyApp.js` | Yok |
-| BottomBar | Evet | `legacyApp.js` içindeki `renderBottomNav` | CTA variant ayrımı henüz tam bağlanmadı |
-| BackButton | Hazır | Page scaffold | Legacy header tamamen buna taşınmadı |
-| Header | Hazır | Page scaffold | Legacy header tamamen buna taşınmadı |
-| PageContainer | Hazır | Page scaffold | Yok |
+| BottomBar | Evet | `legacyApp.js` içindeki `renderBottomNav` | CTA variant sınıfı route'a göre bağlandı |
+| BackButton | Evet | `ProfilePage` ve yeni page scaffold | Legacy header’ların tamamı henüz taşınmadı |
+| Header | Evet | `ProfilePage` ve yeni page scaffold | Legacy header’ların tamamı henüz taşınmadı |
+| PageContainer | Evet | `ProfilePage` ve yeni page scaffold | Yok |
 | Card | Hazır | Page scaffold | Yok |
 | Button | Hazır | Yeni component sistemi | Legacy butonları henüz taşınmadı |
 | Badge | Hazır | Yeni component sistemi | Legacy rozetleri henüz taşınmadı |
 | Chip | Hazır | Yeni component sistemi | Legacy chipleri henüz taşınmadı |
 | MenuList | Hazır | Sidebar component | Legacy drawer markup henüz tamamen taşınmadı |
 | Sidebar | Hazır | Yeni component sistemi | Legacy drawer render edilmesi devam ediyor |
-| ProfileCard | Hazır | Yeni component sistemi | Canlı profile card hâlâ legacy |
+| ProfileCard | Evet | `ProfilePage` | Eski legacy helper temizliği sonraki faza bırakıldı |
+| ProfileStrengthCard | Evet | `ProfilePage` | Yok |
+| ProfileMenuGrid | Evet | `ProfilePage` | Yok |
 | StatusPill | Hazır | Yeni component sistemi | Canlı status pill hâlâ legacy |
 | SmartStatusCard | Hazır | Yeni component sistemi | Canlı smart card hâlâ legacy |
 | PerformanceCard | Hazır | Yeni component sistemi | Canlı performance card hâlâ legacy |
@@ -209,8 +248,9 @@ Route listesi `src/utils/constants.js` içinde, router fonksiyonları `src/route
 
 Placeholder route’lar:
 
-- Yeni page dosyaları scaffold olarak hazır.
-- Canlı rendering hâlâ legacy screen map üstünden yapıldığı için bu placeholder dosyalar migration hedefi olarak duruyor.
+- Yeni page dosyalarının çoğu scaffold olarak hazır.
+- `/profile` gerçek page içeriğine taşındı; `legacyApp.js` sadece bu route için yeni page modülüne delegasyon yapıyor.
+- Home, Notifications, Support, Reviews, Wallet ve diğer büyük ekranlar hâlâ legacy screen map üstünden çalışıyor ve sonraki migration hedefleri olarak duruyor.
 
 Bilinmeyen route fallback:
 
@@ -233,7 +273,7 @@ Test edilen mantık:
 - BottomBar component dosyası: `src/components/BottomBar.js`
 - `legacyApp.js` artık bottom bar HTML’ini bu component üzerinden alıyor.
 - CTA markup hâlâ bottom item verisiyle tek component içinde üretiliyor.
-- Home/subpage/disabled/hidden variant fonksiyonu `getCtaVariant()` olarak `router.js` içinde başladı ancak canlı runtime’a tam bağlanmadı.
+- Home/subpage/disabled/hidden variant fonksiyonu `getCtaVariant()` olarak `router.js` içinde başladı ve `renderBottomNav()` tarafından canlı runtime’a bağlandı.
 - CTA artık her sayfada ayrı yazılmıyor; legacy render içinde tek `renderBottomNav()` ve component çağrısı var.
 
 ## 9. Sidebar Durumu
@@ -245,8 +285,9 @@ Test edilen mantık:
 
 ## 10. Profil Sayfası Durumu
 
-- 8’li profil grid data-driven yapıya geçiş için `PROFILE_MENU_ITEMS` eklendi.
-- Canlı grid hâlâ legacy içindeki inline SVG data array ile korunuyor.
+- `/profile` artık `src/pages/ProfilePage.js` üzerinden render ediliyor.
+- Profil kartı, profil güçlendirme kartı, 8’li profil grid ve hesap ayarları listesi component/data-driven yapıya geçti.
+- 8’li profil grid `PROFILE_MENU_ITEMS` üzerinden `ProfileMenuGrid` componentiyle render ediliyor.
 - Route karşılıkları hazır:
   - `/about`
   - `/photo-gallery`
@@ -257,7 +298,7 @@ Test edilen mantık:
   - `/capacity`
   - `/strategy`
 - Hesabı dondur/sil ana ekranda büyük kırmızı buton olarak görünmüyor.
-- Hesap ve Güvenlik içinde detaylı hesap durumu akışı henüz placeholder.
+- Hesap ve Güvenlik içinde düşük vurgulu temel hesap durumu alanı hazır; gerçek silme/dondurma iş akışı backend gerektirdiği için mock seviyede tutuldu.
 
 ## 11. CSS / Tasarım Sistemi Durumu
 
@@ -303,14 +344,14 @@ Test edilen mantık:
 
 P0:
 
-- `legacyApp.js` içindeki canlı render fonksiyonları gerçek page dosyalarına taşınmalı.
-- Canlı runtime, `pageRoutes` üzerinden render etmeye başlamalı.
+- `legacyApp.js` içindeki profil dışındaki canlı render fonksiyonları gerçek page dosyalarına taşınmalı.
+- Canlı runtime, diğer ana ekranlar için de `pageRoutes` üzerinden render etmeye başlamalı.
 - Browser/ci görsel smoke test kurulmalı.
 
 P1:
 
-- Header, Sidebar, ProfileCard, PerformanceCard, WalletBonusCards canlı render içinde kullanılmalı.
-- CTA variant sistemi canlı BottomBar’a bağlanmalı.
+- Header ve ProfileCard profil sayfasında kullanılmaya başladı; Sidebar, PerformanceCard, WalletBonusCards canlı render içinde kullanılmalı.
+- CTA variant sistemi canlı BottomBar’a bağlandı; disabled/hidden senaryoları sonraki fazda davranışsal olarak genişletilmeli.
 - Inline style’lar azaltılmalı.
 - Mock data tamamen `mockData.js` içine alınmalı.
 
@@ -323,10 +364,10 @@ P2:
 
 ## 15. Bir Sonraki Adım Önerisi
 
-En mantıklı sonraki iş: `legacyApp.js` içinden önce profil sayfasını ayırmak.
+En mantıklı sonraki iş: `legacyApp.js` içinden bildirim veya destek sayfasını ayırmak.
 
 Neden:
 
-- Profil sayfası şu anda en çok çalışılmış, en net component sınırlarına sahip alan.
-- `ProfileCard`, profil güçlendirme kartı ve 8’li grid kolayca `ProfilePage.js` içine taşınabilir.
-- Bu taşımadan sonra aynı pattern notifications, support ve reviews sayfalarına uygulanabilir.
+- Profil sayfası bu fazda gerçek page/component pattern’ine taşındı.
+- Notifications ve Support ekranları hem ortak Header/PageContainer/BottomBar pattern’ini hem de liste/menu componentlerini doğrulamak için iyi sonraki adaylar.
+- Bu iki ekran ayrıldıktan sonra Reviews, Wallet ve Home gibi daha karmaşık sayfalara geçmek daha güvenli olur.

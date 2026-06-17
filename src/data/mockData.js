@@ -10,8 +10,33 @@ export const partnerProfile = {
   tier: "Gold Partner",
   rating: "4.8",
   reviewCount: 126,
-  badges: ["Güvenilir", "Hızlı", "Bölge Aktif", "Sonuç Bildiren", "Randevu Düzenli"],
+  avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=220&q=80",
+  badges: [
+    { label: "Güvenilir", icon: "shield" },
+    { label: "Hızlı", icon: "zap" },
+    { label: "Bölge Aktif", icon: "map-pin" },
+    { label: "Sonuç Bildiren", icon: "check" },
+    { label: "Randevu Düzenli", icon: "calendar" },
+  ],
 };
+
+export const profileStrength = {
+  score: 82,
+  title: "Profilini Güçlendir",
+  subtitle: "Daha fazla iş almak için profilini tamamla.",
+  tasks: [
+    { label: "Tam boy fotoğraf ekle", done: true },
+    { label: "Çalışma saatlerini güncelle", done: true },
+    { label: "2 iş fotoğrafı daha ekle", done: false },
+  ],
+};
+
+export const profileSettingsItems = [
+  { label: "İletişim Bilgileri", icon: "phone", route: "/contact-settings", color: "#0e7490" },
+  { label: "Hesap ve Güvenlik", icon: "shield", route: "/account-settings", color: "#175cd3" },
+  { label: "Bildirim Ayarları", icon: "bell", route: "/notification-settings", color: "#16a34a" },
+  { label: "Firma Bilgileri", icon: "briefcase", route: "/account-settings", color: "#667085" },
+];
 
 export const walletSummary = {
   credit: 675,

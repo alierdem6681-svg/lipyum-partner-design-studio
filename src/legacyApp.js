@@ -3,9 +3,11 @@ import { createUiState, navigationStack } from "./state.js";
 import { renderBottomBar } from "./components/BottomBar.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
 import {
+  pageRoutes,
   getRouteForScreen,
   getScreenForRoute,
   getTitleForRoute,
+  getCtaVariant,
   normalizeRoute,
 } from "./router.js";
 
@@ -1154,6 +1156,7 @@ mountAppShell();
         nav.innerHTML = renderBottomBar({
           items: bottomItems,
           activeScreen: state.screen,
+          ctaVariant: getCtaVariant(getRouteForScreen(state.screen)),
           icon,
           badgeSnapshot: bottomBadgeSnapshot,
         });
@@ -1211,17 +1214,17 @@ mountAppShell();
           calendar: renderCalendar,
           wallet: renderWallet,
           profile: renderProfile,
-          about: renderAbout,
-          photoGallery: renderPhotoGallery,
+          about: () => pageRoutes["/about"](),
+          photoGallery: () => pageRoutes["/photo-gallery"](),
           services: renderServices,
           regions: renderRegions,
           workPlan: renderWorkPlan,
-          team: renderTeam,
+          team: () => pageRoutes["/team"](),
           capacity: renderCapacity,
-          strategy: renderStrategy,
-          accountSettings: renderAccountSettings,
-          notificationSettings: renderNotificationSettings,
-          contactSettings: renderContactSettings,
+          strategy: () => pageRoutes["/strategy"](),
+          accountSettings: () => pageRoutes["/account-settings"](),
+          notificationSettings: () => pageRoutes["/notification-settings"](),
+          contactSettings: () => pageRoutes["/contact-settings"](),
           invoices: renderInvoices,
           incomeExpense: renderIncomeExpense,
           bonus: renderBonus,
@@ -2247,18 +2250,7 @@ mountAppShell();
       }
 
       function renderProfile() {
-        return `
-          <div class="profile-screen" aria-label="Profil sayfası">
-            <header class="profile-appbar">
-              <button class="back-btn" type="button" data-screen="home" aria-label="Ana sayfaya dön">${icon("chevron-left")}</button>
-              <div class="profile-appbar-title"><h2>Profilim</h2></div>
-              <button class="back-btn" type="button" data-action="profile-settings" aria-label="Profil ayarları">${icon("settings")}</button>
-            </header>
-            ${PartnerProfileCard()}
-            ${ProfileStrengthCard()}
-            ${ProfileMenuGrid()}
-          </div>
-        `;
+        return pageRoutes["/profile"]({ badgesExpanded: state.profileBadgesExpanded });
       }
 
       function renderProfileMenuPlaceholder(screenId, iconName, items) {
@@ -4471,8 +4463,7 @@ mountAppShell();
           } else if (type === "issue") {
             showSheet("issue");
           } else if (type === "go-back") {
-            state.screen = state.previousScreen || "home";
-            renderScreen();
+            goBack();
           } else if (type === "mark-notifications-read") {
             showSheet("notification-read-confirm");
           } else if (type === "mark-notifications-read-confirm") {

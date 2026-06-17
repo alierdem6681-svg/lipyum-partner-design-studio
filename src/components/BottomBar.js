@@ -1,6 +1,7 @@
 export function renderBottomBar({
   items = [],
   activeScreen = "home",
+  ctaVariant = "home",
   icon,
   badgeSnapshot = new Map(),
 } = {}) {
@@ -17,7 +18,7 @@ export function renderBottomBar({
 
       return `
         <button
-          class="bottom-item ${active ? "active" : ""} ${item.featured ? "featured" : ""}"
+          class="bottom-item ${active ? "active" : ""} ${item.featured ? `featured cta-fab cta-fab--${ctaVariant}` : ""}"
           type="button"
           data-screen="${item.id}"
           aria-label="${item.label}"
