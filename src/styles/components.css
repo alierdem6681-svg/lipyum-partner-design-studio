@@ -2,9 +2,10 @@
 
 .page-container {
   display: grid;
-  gap: var(--lp-space-4);
-  padding: var(--lp-space-4);
-  padding-bottom: var(--lp-page-bottom);
+  width: 100%;
+  min-width: 0;
+  gap: var(--lp-space-3);
+  padding: 0;
   overflow-x: hidden;
 }
 
@@ -74,12 +75,14 @@
   gap: var(--lp-space-2);
   border: 1px solid transparent;
   border-radius: 12px;
-  padding: 0 14px;
+  padding: 0 var(--button-padding-x-lg);
   font: inherit;
-  font-size: var(--lp-font-sm);
+  font-size: clamp(11px, 2.8vw, var(--lp-font-sm));
   font-weight: 750;
   cursor: pointer;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ui-btn > span,
@@ -282,16 +285,16 @@
 .notifications-page {
   gap: 10px;
   min-height: 100%;
-  padding: 0 16px var(--lp-page-bottom);
+  padding: 0;
 }
 
 .notifications-page .page-header {
   position: sticky;
-  top: 0;
+  top: var(--top-safe-space, 0px);
   z-index: var(--lp-z-header);
   min-height: var(--lp-header-height);
-  margin: 0 -16px;
-  padding: 8px 16px;
+  margin: 0;
+  padding: 8px 0;
   background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(248, 250, 252, 0.94));
   border-bottom: 1px solid rgba(229, 231, 235, 0.72);
   backdrop-filter: blur(12px);
@@ -308,14 +311,14 @@
 
 .notification-actions-bar {
   position: sticky;
-  top: var(--lp-header-height);
+  top: calc(var(--top-safe-space, 0px) + var(--lp-header-height));
   z-index: calc(var(--lp-z-header) - 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin: 0 -16px;
-  padding: 8px 16px 9px;
+  margin: 0;
+  padding: 8px 0 9px;
   background: rgba(248, 250, 252, 0.96);
   border-bottom: 1px solid rgba(229, 231, 235, 0.7);
   backdrop-filter: blur(10px);
@@ -335,6 +338,14 @@
   padding: 12px 14px;
   text-align: left;
   box-shadow: none;
+}
+
+.notification-card-row,
+.notification-card-row button,
+.notification-card-row span,
+.notification-card-row strong,
+.notification-card-row small {
+  min-width: 0;
 }
 
 .notification-card-row.is-read {
@@ -628,6 +639,9 @@
   color: var(--color-primary-dark);
   font-size: var(--font-size-small);
   font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: none;
 }
 
@@ -796,6 +810,8 @@
   font-size: var(--font-size-small);
   font-weight: var(--weight-extra-bold);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filter-chip-rail {
@@ -821,6 +837,9 @@
   padding: 0 12px;
   font-size: var(--font-size-small);
   font-weight: var(--weight-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filter-chip.is-active {
@@ -1083,6 +1102,8 @@
   font-size: var(--font-size-small);
   font-weight: var(--weight-extra-bold);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .wallet-card-action.is-primary {
@@ -1731,16 +1752,16 @@
 
 @media (max-width: 360px) {
   .notifications-page {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .notifications-page .page-header,
   .notification-actions-bar {
-    margin-left: -12px;
-    margin-right: -12px;
-    padding-left: 12px;
-    padding-right: 12px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .notification-card-copy strong {

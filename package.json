@@ -7,7 +7,7 @@
     "lint": "find src tests -name '*.js' -print0 2>/dev/null | xargs -0 -r -n1 node_modules/node/bin/node --check",
     "test": "node_modules/node/bin/node --test tests/unit/*.test.js && node_modules/node/bin/node tests/routes.smoke.js",
     "test:unit": "node_modules/node/bin/node --test tests/unit/*.test.js",
-    "test:e2e": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/routes.spec.js tests/e2e/back-button.spec.js tests/e2e/accessibility.spec.js",
+    "test:e2e": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/routes.spec.js tests/e2e/back-button.spec.js tests/e2e/accessibility.spec.js tests/e2e/geometry.spec.js",
     "test:e2e:mobile": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/mobile.spec.js",
     "test:screenshots": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
     "test:routes": "node_modules/node/bin/node tests/routes.smoke.js",

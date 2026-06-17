@@ -25,17 +25,17 @@
         --card-border: #e5e7eb;
         --shadow: 0 18px 48px rgba(16, 24, 40, 0.12);
         --soft-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
-        --radius-card: 13px;
-        --radius-button: 11px;
+        --radius-card: 16px;
+        --radius-button: 12px;
         --font-display: var(--font-family-base);
         --font-text: var(--font-family-base);
         --font-regular: var(--weight-regular);
         --font-medium: var(--weight-medium);
         --font-semibold: var(--weight-semibold);
         --font-bold: var(--weight-bold);
-        --iphone15-screen-width: 393px;
-        --iphone15-screen-height: 852px;
-        --iphone15-frame-padding: 14px;
+        --iphone15-screen-width: var(--simulator-screen-width, 393px);
+        --iphone15-screen-height: var(--simulator-screen-height, 852px);
+        --iphone15-frame-padding: var(--simulator-frame-padding, 14px);
         --iphone15-frame-width: calc(var(--iphone15-screen-width) + (var(--iphone15-frame-padding) * 2));
         --iphone15-frame-height: calc(var(--iphone15-screen-height) + (var(--iphone15-frame-padding) * 2));
         font-family: var(--font-text);
@@ -339,15 +339,7 @@
       }
 
       .phone-screen::after {
-        content: "";
-        position: absolute;
-        inset: 0 0 auto;
-        z-index: 29;
-        height: 58px;
-        pointer-events: none;
-        border-radius: 42px 42px 0 0;
-        background: #f6f8fa;
-        box-shadow: none;
+        display: none;
       }
 
       .dynamic-island-demo {
@@ -387,7 +379,7 @@
       .status-bar {
         position: absolute;
         inset: 0 0 auto;
-        height: 58px;
+        height: var(--simulator-status-height, 58px);
         z-index: 30;
         display: flex;
         align-items: flex-end;
@@ -465,7 +457,7 @@
       .app {
         position: absolute;
         inset: 0;
-        --pull-refresh-top: 58px;
+        --pull-refresh-top: var(--simulator-status-height, 58px);
         --bottom-nav-space: 110px;
         display: flex;
         flex-direction: column;
@@ -474,14 +466,18 @@
       }
 
       .app-scroll {
-        --top-safe-space: 58px;
+        --top-safe-space: var(--simulator-status-height, 58px);
         --sticky-header-top: 0px;
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        padding: 0 16px var(--bottom-nav-space);
+        padding: 0 var(--page-x-padding) var(--bottom-nav-space);
         overscroll-behavior-y: contain;
         scrollbar-width: none;
+      }
+
+      .app-scroll[data-layout="page"] {
+        padding-top: var(--top-safe-space);
       }
 
       .app-scroll::-webkit-scrollbar {
@@ -497,8 +493,8 @@
         align-items: center;
         justify-content: space-between;
         gap: 8px;
-        margin: 0 -16px 12px;
-        padding: var(--top-safe-space) 16px 9px;
+        margin: 0 calc(var(--page-x-padding) * -1) 12px;
+        padding: var(--top-safe-space) var(--page-x-padding) 9px;
         background: #f6f8fa;
         border-bottom: 1px solid rgba(229, 231, 235, 0.82);
         box-shadow: 0 8px 18px rgba(16, 24, 40, 0.05);
@@ -604,7 +600,9 @@
         font-size: 22px;
         line-height: 1.08;
         letter-spacing: 0;
-        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .app-title p {
@@ -1772,13 +1770,15 @@
         min-height: 46px;
         border-radius: var(--radius-button);
         border: 1px solid transparent;
-        padding: 0 12px;
-        font-size: 13.5px;
+        padding: 0 var(--button-padding-x-md);
+        font-size: clamp(11px, 2.8vw, 13.5px);
         font-weight: 800;
         line-height: 1.2;
         min-width: 0;
         text-align: center;
-        white-space: normal;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, color 140ms ease;
       }
 
@@ -1789,6 +1789,23 @@
         width: 17px;
         height: 17px;
         stroke-width: 2.25;
+      }
+
+      .primary-btn > span,
+      .primary-btn > strong,
+      .secondary-btn > span,
+      .secondary-btn > strong,
+      .ghost-btn > span,
+      .ghost-btn > strong,
+      .danger-btn > span,
+      .danger-btn > strong,
+      .chip-btn > span,
+      .tab-pill > span,
+      .segmented button > span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .primary-btn {
@@ -2424,7 +2441,7 @@
         gap: 2px;
         height: 92px;
         min-height: 92px;
-        padding: 8px 14px 16px;
+        padding: 8px var(--page-x-padding) 16px;
         background: transparent;
         border: 0;
         border-radius: 0;
@@ -2481,8 +2498,8 @@
       .bottom-item span {
         max-width: 100%;
         white-space: nowrap;
-        overflow: visible;
-        text-overflow: clip;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .bottom-item span[data-fit-text] {
@@ -12860,8 +12877,8 @@
         }
 
         .app-scroll {
-          --top-safe-space: 58px;
-          padding: 0 16px var(--bottom-nav-space);
+          --top-safe-space: 12px;
+          padding: 0 var(--page-x-padding) var(--bottom-nav-space);
           touch-action: pan-y;
           -webkit-overflow-scrolling: touch;
         }
@@ -12885,9 +12902,9 @@
         }
 
         .app-scroll {
-          --top-safe-space: calc(env(safe-area-inset-top, 0px) + 12px);
+          --top-safe-space: 12px;
           --sticky-header-top: 0px;
-          padding: 0 16px var(--bottom-nav-space);
+          padding: 0 var(--page-x-padding) var(--bottom-nav-space);
         }
       }
 

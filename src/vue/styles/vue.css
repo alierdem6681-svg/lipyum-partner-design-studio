@@ -5,14 +5,14 @@
 .v-page {
   width: 100%;
   min-height: 100%;
-  padding: var(--page-top-gap, 12px) var(--page-x-padding-comfort, 14px) var(--page-bottom-padding, 112px);
+  padding: 0 0 var(--page-bottom-padding, 112px);
   box-sizing: border-box;
   color: var(--text-primary);
   font-family: var(--font-family-base);
 }
 
 .v-page--compact {
-  padding-inline: var(--page-x-padding-mobile, 12px);
+  padding-inline: 0;
 }
 
 .v-stack {
@@ -106,7 +106,8 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 0 14px;
+  overflow: hidden;
+  padding: 0 var(--button-padding-x-lg, 14px);
   font-family: var(--font-family-base);
   font-weight: var(--weight-bold);
   line-height: 1;
@@ -127,17 +128,18 @@
 
 .v-btn--sm {
   min-height: 38px;
-  padding-inline: 12px;
-  font-size: var(--font-size-caption);
+  padding-inline: var(--button-padding-x-sm, 10px);
+  font-size: clamp(11px, 2.8vw, var(--font-size-caption));
 }
 
 .v-btn--md {
-  font-size: var(--font-size-small);
+  font-size: clamp(11px, 2.8vw, var(--font-size-small));
 }
 
 .v-btn--lg {
   min-height: 48px;
-  font-size: var(--font-size-body);
+  padding-inline: var(--button-padding-x-lg, 14px);
+  font-size: clamp(12px, 3vw, var(--font-size-body));
 }
 
 .v-btn--full {
@@ -148,6 +150,7 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .v-btn--primary {
@@ -293,6 +296,7 @@
 
 .v-list-item {
   width: 100%;
+  min-width: 0;
   min-height: 56px;
   border: 0;
   border-bottom: 1px solid var(--color-border);
@@ -305,6 +309,8 @@
   color: var(--text-primary);
   font-family: var(--font-family-base);
   text-align: left;
+  overflow: hidden;
+  box-sizing: border-box;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -326,9 +332,16 @@
 
 .v-list-item__copy {
   min-width: 0;
+  max-width: 100%;
+  display: grid;
+  gap: 4px;
+  overflow: hidden;
 }
 
 .v-list-item__title {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
   margin: 0;
   color: var(--text-primary);
   font-size: var(--font-size-body);
@@ -340,7 +353,10 @@
 }
 
 .v-list-item__subtitle {
-  margin: 4px 0 0;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
   color: var(--text-muted);
   font-size: var(--font-size-caption);
   font-weight: var(--weight-semibold);

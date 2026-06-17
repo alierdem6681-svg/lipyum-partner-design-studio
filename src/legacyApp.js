@@ -1146,6 +1146,25 @@ mountAppShell();
       function renderScreen(options = {}) {
         const root = document.getElementById("appRoot");
         const previousScrollTop = root.scrollTop;
+        const modularScreens = new Set([
+          "wallet",
+          "profile",
+          "about",
+          "photoGallery",
+          "team",
+          "strategy",
+          "uiKit",
+          "vueJobReferral",
+          "accountSettings",
+          "notificationSettings",
+          "contactSettings",
+          "support",
+          "messages",
+          "jobReferral",
+          "levels",
+          "reviews",
+          "notifications",
+        ]);
         const screenMap = {
           home: renderHome,
           work: renderWork,
@@ -1186,6 +1205,8 @@ mountAppShell();
           performanceScore: renderPerformanceScore,
           notifications: () => pageRoutes["/notifications"]({ state, icon }),
         };
+        root.dataset.layout = modularScreens.has(state.screen) ? "page" : "legacy";
+        root.dataset.screen = state.screen;
         root.innerHTML = (screenMap[state.screen] || renderHome)();
         root.scrollTop = options.preserveScroll ? previousScrollTop : 0;
         initTaskRail();
@@ -4207,6 +4228,14 @@ mountAppShell();
         clearTimeout(showToast.timer);
         showToast.timer = setTimeout(() => toast.classList.remove("show"), 2400);
       }
+
+      document.addEventListener("click", (event) => {
+        const backButton = event.target.closest('[data-action="go-back"]');
+        if (!backButton) return;
+        event.preventDefault();
+        event.stopPropagation();
+        goBack();
+      }, true);
 
       document.addEventListener("click", (event) => {
         const screenButton = event.target.closest("[data-screen]");

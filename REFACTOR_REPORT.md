@@ -2,6 +2,121 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 6 - Mobile Geometry, iPhone Simulator ve Layout Consistency
+
+### 1. Genel durum
+
+- V6 fazı mobil geometri, simulator tutarlılığı, header görünürlüğü, bottom bar standardı ve tek satır metin güvenliği üzerine tamamlandı.
+- Vue dependency/build uyumu doğrulandı; `vue` ve `@vitejs/plugin-vue` paketleri package.json içinde mevcut.
+- HomePage rewrite edilmedi; legacy ekranlarda global padding/header/bottom bar standardı token ve layout sınıfları üzerinden yamalandı.
+- Reviews, Leaderboard, Wallet, Profile, Notifications, Support, Referral, JobReferral ve UI Kit route'ları aynı geometri test kapsamına alındı.
+
+### 2. iPhone simulator
+
+- Desktop iPhone 15 preview ölçüleri tokenlaştırıldı:
+  - `--simulator-screen-width: 393px`
+  - `--simulator-screen-height: 852px`
+  - `--simulator-frame-padding: 14px`
+  - `--simulator-status-height: 58px`
+- Eski simulator overlay'i header alanını maskeleyebildiği için `.phone-screen::after` kapatıldı.
+- `app-scroll` için layout bazlı `data-layout="legacy|page"` ayrımı eklendi; modüler sayfalarda header üstten kesilmeden görünür hale geldi.
+- `/leaderboard`, `/reviews`, `/wallet`, `/profile`, `/notifications`, `/support`, `/home` desktop simulator içinde geometri testinden geçti.
+
+### 3. Full-width standardı
+
+- Mobil yatay padding standardı daraltıldı:
+  - `--page-x-padding-mobile: 10px`
+  - `--page-x-padding-comfort: 12px`
+  - `--card-width: 100%`
+- `PageContainer`, Vue `AppPage`, legacy `app-scroll`, bottom nav ve header hizaları aynı padding sistemine bağlandı.
+- Modüler sayfalarda iç container'lar artık ekstra yatay padding eklemiyor; kartlar full-width'e daha yakın davranıyor.
+
+### 4. Simetri ve hizalama
+
+- Global grid sıkılığı güncellendi:
+  - page gap: `var(--lp-space-3)`
+  - normal kart radius: 16px
+  - button radius: 12px
+- Header, section, kart ve liste başlangıçları aynı yatay grid üzerinden hizalanacak şekilde normalize edildi.
+- Notifications sticky header ve action row negatif margin kullanmadan aynı grid içinde sabitlendi.
+- Home gibi legacy ekranlar `data-layout="legacy"` ile, modüler sayfalar `data-layout="page"` ile farklı top-safe ihtiyacını merkezi olarak alıyor.
+
+### 5. Navbar/header
+
+- Reviews ve Leaderboard dahil tüm kritik route'larda header görünürlüğü Playwright geometri testiyle doğrulandı.
+- Header title/subtitle tek satır ellipsis güvenliğini koruyor.
+- Geri butonu click davranışında capture-phase guard eklendi; `goBack()` yine merkezi navigation controller üzerinden çalışıyor.
+- Back stack testleri tekrar temiz geçti:
+  - Home -> Profile -> Photo Gallery -> geri = Profile
+  - direkt Profile -> geri = Home
+
+### 6. Buton tek satır sistemi
+
+- Global `button` kuralı tek satır davranışıyla güçlendirildi.
+- `ui-btn`, wallet action, filter chip, lazy load button ve Vue `AppButton` label'ları `nowrap + ellipsis + clamp()` standardına bağlandı.
+- Button padding tokenları eklendi:
+  - `--button-padding-x-sm: 10px`
+  - `--button-padding-x-md: 12px`
+  - `--button-padding-x-lg: 14px`
+- Vue `AppListItem` title/subtitle alanlarında inline overflow bug'ı giderildi; `/ui-kit` yatay taşma hatası kapandı.
+
+### 7. Radius/compact standardı
+
+- Legacy radius değerleri V5/V6 token standardına yaklaştırıldı:
+  - normal kart: 16px
+  - küçük/normal buton: 12px
+  - bottom bar: mevcut 28-30px standardı korunuyor
+- Gölge ve glow değerleri bu fazda agresif değiştirilmedi; odak geometri ve stabiliteydi.
+- Kartlar kompakt ama okunabilir kalacak şekilde padding standardı daraltıldı.
+
+### 8. Vue UI Kit
+
+- Vue `AppPage`, `AppButton`, `AppListItem`, `AppSelect`, `AppSegmentedControl`, `AppBottomBar` geometri standardına uyacak şekilde güçlendirildi.
+- `/ui-kit` route'u hem iPhone 15 simulator hem 360/390/430 px mobil viewportlarda yatay taşma olmadan geçti.
+- Vue UI Kit ilerideki migrationlar için V6 layout standardını temsil ediyor.
+
+### 9. Legacy screen patch
+
+- `legacyApp.js` içinde modüler ekran seti tanımlandı ve `#appRoot` üzerine `data-layout` / `data-screen` yazılıyor.
+- Legacy ve modüler ekranlar aynı app shell içinde farklı safe-area ihtiyacını merkezi şekilde alıyor.
+- Referral ve Home gibi hâlâ legacy ağırlıklı ekranlar global padding/button standardından yararlanıyor.
+
+### 10. Test sonuçları
+
+- `npm run check`: başarılı.
+- `npm run test`: başarılı, unit testler ve route smoke geçti.
+- `npm run test:e2e`: başarılı, 63 test geçti.
+- `npm run test:e2e:mobile`: başarılı, 52 test geçti.
+- `npm run test:screenshots`: başarılı, 44 route/viewport screenshot smoke üretildi.
+- `npm run build`: başarılı, Vite production build üretildi.
+- `git diff --check`: başarılı.
+- Yeni geometry test:
+  - 10 route
+  - 4 viewport seti
+  - toplam 40 geometri kontrolü geçti.
+
+### 11. Kalan teknik borç
+
+P0:
+
+- Yok. V6 geometri ve build/test kabul kriterleri temiz geçti.
+
+P1:
+
+- HomePage hâlâ legacy runtime'da; tam component migration sonraki büyük adım olmalı.
+- Partner Davet Programı, paket ve abonelik akışları legacy ağırlıklı kalmaya devam ediyor.
+- Screenshot smoke görsel karşılaştırma yapmıyor; sadece görüntü üretimini doğruluyor.
+
+P2:
+
+- iPhone simulator için gerçek device frame / safe-area varyantları daha detaylı profil edilebilir.
+- Geometry testlerine kart hizası için daha fazla ölçüsel assertion eklenebilir.
+
+### 12. Bir sonraki önerilen adım
+
+- En mantıklı sonraki faz: HomePage migration hazırlığı ve Referral/Packages ekranlarının componentleşmesi.
+- Ardından WebView readiness için safe-area, keyboard, deep-link ve native bridge davranışları ayrıca ele alınmalı.
+
 ## Faz 5 - Vue Foundation, UI Kit, Icon System ve Mobil Layout Standardizasyonu
 
 ### 1. Genel durum

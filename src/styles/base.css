@@ -12,6 +12,17 @@ select {
   font: inherit;
 }
 
+button {
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+button > span,
+button > strong,
+button > small {
+  min-width: 0;
+}
+
 .u-nowrap {
   white-space: nowrap;
 }
