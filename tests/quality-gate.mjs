@@ -58,6 +58,34 @@ const steps = [
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/performance.spec.js",
   },
   {
+    name: "test:visual-alignment",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/visual-alignment.spec.js",
+  },
+  {
+    name: "test:deeplinks",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/deeplinks.spec.js",
+  },
+  {
+    name: "test:satisfaction",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/satisfaction.spec.js",
+  },
+  {
+    name: "test:home-flow",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/home-flow.spec.js",
+  },
+  {
+    name: "test:packages-flow",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/packages-flow.spec.js",
+  },
+  {
+    name: "test:referral-flow",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/referral-flow.spec.js",
+  },
+  {
+    name: "test:support-ticket",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/support-ticket.spec.js",
+  },
+  {
     name: "test:screenshots",
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
   },

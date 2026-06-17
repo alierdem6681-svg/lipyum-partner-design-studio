@@ -1293,9 +1293,20 @@
 
       .icon-btn .icon,
       .back-btn .icon {
+        display: block;
         width: var(--app-header-icon-size, 24px);
         height: var(--app-header-icon-size, 24px);
         stroke-width: 2.2;
+      }
+
+      .icon-only-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-only-btn .icon {
+        flex: 0 0 auto;
       }
 
       .icon-btn:hover,

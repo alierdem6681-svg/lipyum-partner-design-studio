@@ -15,6 +15,8 @@ const requiredRoutes = [
   "/profile",
   "/notifications",
   "/support",
+  "/support/new",
+  "/satisfaction",
   "/messages",
   "/referral",
   "/job-referral",

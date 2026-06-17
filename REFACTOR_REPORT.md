@@ -1318,3 +1318,122 @@ Neden:
 - Profil sayfası bu fazda gerçek page/component pattern’ine taşındı.
 - Notifications ve Support ekranları hem ortak Header/PageContainer/BottomBar pattern’ini hem de liste/menu componentlerini doğrulamak için iyi sonraki adaylar.
 - Bu iki ekran ayrıldıktan sonra Reviews, Wallet ve Home gibi daha karmaşık sayfalara geçmek daha güvenli olur.
+
+## Faz 9 - Final Core Migration, Deep Link Readiness ve Satisfaction Flow
+
+### 1. Genel durum
+
+V9 bu turda tam Vue rewrite yerine final ürün akışları için P0 kalite/readiness katmanını güçlendirdi. Profil rozet davranışı, sidebar sadeleştirme, Talep Oluştur, deep link readiness, satisfaction flow ve visual alignment testleri tamamlandı. Home/Jobs/Calendar/Referral/Packages için full Vue/Tailwind migration borcu hâlâ P0 olarak duruyor.
+
+### 2. Tamamlanan route migrationları
+
+- `/support/new`: mock Talep Oluştur formu ve success state eklendi.
+- `/satisfaction`: compliance-safe memnuniyet ve market değerlendirme yönlendirme akışı eklendi.
+- `/partner/...`, `?route=` ve `?deeplink=` deep link resolver eklendi.
+
+### 3. HomePage migration
+
+HomePage full Vue migration bu turda tamamlanmadı. Ancak home kritik akışları için regression testi eklendi: bonus/kredi dönüşüm sheet aç/kapat ve performans route geçişi.
+
+### 4. Jobs/MyJobs/Calendar migration
+
+Bu route’lar hâlâ legacy runtime ağırlıklı. V9’da mobile/device/route smoke ile korunmaya devam ediyorlar. Full Vue migration P0 olarak kaldı.
+
+### 5. Referral migration
+
+Partner Davet Programı hâlâ legacy ağırlıklı, ancak V9’da davet CTA, yatay rail ve partner detay sheet akışı test kapsamına alındı. Sidebar’daki Kazanç Ortaklığı açıklamaları kaldırıldı.
+
+### 6. Packages/Subscription migration
+
+Paket/abonelik akışı hâlâ legacy ağırlıklı. V9’da paket builder ve checkout mock flow için e2e test eklendi. Full Vue/Tailwind migration P0/P1 olarak devam ediyor.
+
+### 7. Support Ticket flow
+
+- Sidebar Destek grubuna `Talep Oluştur` eklendi.
+- `/support/new` form alanları: kategori, konu, açıklama, öncelik, dosya/görsel placeholder.
+- Submit sonrası `Talebin oluşturuldu` success state ve `LP-000123` mock talep no gösteriliyor.
+
+### 8. Deep Link readiness
+
+- `src/utils/deepLinks.js` eklendi.
+- `vercel.json` içinde `/partner/:path*` rewrite eklendi.
+- `DEEPLINKS.md` oluşturuldu.
+- `public/.well-known/apple-app-site-association.placeholder.json` ve `assetlinks.placeholder.json` eklendi.
+- Gerçek native app id/package/fingerprint bilgileri olmadığından association dosyaları placeholder olarak tutuldu.
+
+### 9. Satisfaction flow
+
+- `/satisfaction` route eklendi.
+- 5 yıldızda kullanıcı onayına bağlı store review mock CTA gösteriliyor.
+- 1-4 yıldızda iyileştirme formu ve mock destek kaydı success state gösteriliyor.
+- `SATISFACTION_FLOW.md` oluşturuldu.
+
+### 10. Visual alignment tests
+
+- Sheet close, drawer close, hamburger, notification, profile ve back icon-only button merkez hizası test edildi.
+- `sheet-close-button` data-testid eklendi.
+- Icon center ile button center farkı maksimum 1.5px olacak şekilde test eklendi.
+
+### 11. Legacy cleanup
+
+Bu turda riskli büyük silme yapılmadı. LegacyApp içinde yeni flow wiring ve compatibility kaldı. Güvenli olmayan full route rewrite ertelendi.
+
+### 12. Test sonuçları
+
+`npm run test:quality-gate`: başarılı.
+
+Quality gate içinde geçen ana adımlar:
+
+- `npm run check`
+- `npm run lint`
+- `npm run test`
+- `npm run test:routes` → 39 route
+- `npm run test:e2e` → 109 passed
+- `npm run test:e2e:mobile` → 312 passed
+- `npm run test:accessibility` → 8 passed
+- `npm run test:interactions` → 94 passed
+- `npm run test:sidebar` → 4 passed
+- `npm run test:bottom-bar` → 6 passed
+- `npm run test:navigation-contract` → 40 passed
+- `npm run test:forms` → 3 passed
+- `npm run test:device-matrix` → 7 passed
+- `npm run test:performance` → 1 passed
+- `npm run test:visual-alignment` → 1 passed
+- `npm run test:deeplinks` → 4 passed
+- `npm run test:satisfaction` → 2 passed
+- `npm run test:home-flow` → 1 passed
+- `npm run test:packages-flow` → 1 passed
+- `npm run test:referral-flow` → 1 passed
+- `npm run test:support-ticket` → 1 passed
+- `npm run test:screenshots` → 1 passed
+- `npm run build` → başarılı, `dist/assets/index-BDHZ3gt_.js`, `dist/assets/index-DeXfEfFi.css`
+- `git diff --check` → başarılı
+
+### 13. Kalan teknik borç
+
+P0:
+
+- HomePage full Vue/Tailwind migration.
+- Jobs/MyJobs/Calendar full Vue/Tailwind migration.
+- Referral zengin akışını Vue/Tailwind/UI Kit’e taşıma.
+- Packages/Subscription/Builder/Checkout full Vue/Tailwind migration.
+- LegacyApp’in kullanıcıya görünen ana route render sorumluluğunu azaltma.
+
+P1:
+
+- Satisfaction ve Support Ticket ekranlarını Vue UI Kit componentlerine taşıma.
+- Deep link resolver’ı native bridge/push payload mapping ile birleştirme.
+- Association placeholder dosyalarını gerçek native app bilgileriyle değiştirme.
+
+P2:
+
+- Visual diff threshold ekleme.
+- Store review native bridge mock’unu ayrı adapter katmanına alma.
+
+### 14. Finish yüzdesi
+
+Arayüz kalite kapısı ve tıklanabilir readiness açısından yaklaşık %82. Full Vue/Tailwind route migration açısından yaklaşık %55-60 seviyesinde.
+
+### 15. Bir sonraki adım
+
+En yüksek kaldıraçlı sonraki faz: HomePage, Jobs/MyJobs/Calendar ve Packages akışını gerçek Vue/Tailwind/UI Kit route’larına taşımak.

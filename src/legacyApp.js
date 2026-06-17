@@ -78,6 +78,8 @@ mountAppShell();
         incomeExpense: ["Gelir Gider Takibi", "Gelir ve gider kayıtlarını takip et"],
         bonus: ["Bonus Cüzdanı", "Bonus bakiyeni ve krediye çevirme şartını takip et"],
         support: ["Yardım ve Destek", "Sorununu seç, hızlıca çözelim"],
+        supportNew: ["Talep Oluştur", "Sorununu seç, hızlıca takip edelim"],
+        satisfaction: ["Memnuniyet", "Lipyum deneyimini değerlendir"],
         messages: ["Destek / Mesaj Kutusu", "Danışman mesajları ve ticket takibi"],
         referral: ["Partner Davet Programı", "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan"],
         referralList: ["Davet Ettiğin Partnerler", "Partner davetlerini ve bonus aşamalarını takip et"],
@@ -1164,6 +1166,8 @@ mountAppShell();
           "notificationSettings",
           "contactSettings",
           "support",
+          "supportNew",
+          "satisfaction",
           "messages",
           "jobReferral",
           "levels",
@@ -1194,6 +1198,13 @@ mountAppShell();
           incomeExpense: renderIncomeExpense,
           bonus: renderBonus,
           support: () => pageRoutes["/support"]({ state, icon }),
+          supportNew: () => pageRoutes["/support/new"]({ created: state.supportTicketCreated, icon }),
+          satisfaction: () => pageRoutes["/satisfaction"]({
+            rating: state.satisfactionRating,
+            submitted: state.satisfactionSubmitted,
+            storeOpened: state.satisfactionStoreOpened,
+            icon,
+          }),
           messages: () => pageRoutes["/support"]({ state, icon }),
           referral: renderReferral,
           jobReferral: () => pageRoutes["/job-referral"]({ state, icon }),
@@ -2131,7 +2142,7 @@ mountAppShell();
               <span class="partner-profile-chip">${icon("shield")} Güvenilir</span>
               <span class="partner-profile-chip">${icon("zap")} Hızlı</span>
               <span class="partner-profile-chip">${icon("map-pin")} Bölge Aktif</span>
-              <button class="partner-profile-chip is-more" type="button" data-action="toggle-profile-badges" aria-expanded="${state.profileBadgesExpanded ? "true" : "false"}" aria-label="${state.profileBadgesExpanded ? "Ek rozetleri gizle" : "Ek rozetleri göster"}">${state.profileBadgesExpanded ? "−" : "+2"}</button>
+              ${!state.profileBadgesExpanded ? `<button class="partner-profile-chip is-more" type="button" data-action="toggle-profile-badges" aria-expanded="false" aria-label="Ek rozetleri göster">+2</button>` : ""}
               ${extraBadges}
             </div>
           </section>
@@ -3358,6 +3369,10 @@ mountAppShell();
           ticket: ticketSheet,
         };
         layer.innerHTML = templates[kind] ? templates[kind]() : "";
+        layer.querySelectorAll(".sheet .icon-btn[data-close]").forEach((button) => {
+          button.dataset.testid = "sheet-close-button";
+          button.classList.add("icon-only-btn");
+        });
         layer.dataset.sheet = kind;
         layer.classList.add("show");
       }
@@ -4445,7 +4460,7 @@ mountAppShell();
             }
           } else if (type === "toggle-profile-badges") {
             event.preventDefault();
-            state.profileBadgesExpanded = !state.profileBadgesExpanded;
+            state.profileBadgesExpanded = true;
             renderScreen({ preserveScroll: true });
           } else if (type === "show-read-notifications") {
             state.showReadNotifications = !state.showReadNotifications;
@@ -4552,6 +4567,25 @@ mountAppShell();
           } else if (type === "bonus-convert") {
             closeSheet();
             showToast("Bonus krediye çevirme başvurusu oluşturuldu");
+          } else if (type === "submit-support-ticket") {
+            state.supportTicketCreated = true;
+            renderScreen({ preserveScroll: true });
+            showToast("Talebin oluşturuldu: LP-000123");
+          } else if (type === "mock-upload") {
+            showToast("Dosya ekleme alanı mock olarak hazır");
+          } else if (type === "set-satisfaction-rating") {
+            state.satisfactionRating = Number(action.dataset.rating || 0);
+            state.satisfactionSubmitted = false;
+            state.satisfactionStoreOpened = false;
+            renderScreen({ preserveScroll: true });
+          } else if (type === "submit-satisfaction") {
+            state.satisfactionSubmitted = true;
+            renderScreen({ preserveScroll: true });
+            showToast("Geri bildirimin destek ekibine iletildi");
+          } else if (type === "open-store-review") {
+            state.satisfactionStoreOpened = true;
+            renderScreen({ preserveScroll: true });
+            showToast("Mağaza değerlendirme akışı mock olarak hazır");
           } else if (type === "use-bonus") {
             showToast("Bonus kullanım seçenekleri açılmaya hazır");
           } else if (type === "copy-link") {

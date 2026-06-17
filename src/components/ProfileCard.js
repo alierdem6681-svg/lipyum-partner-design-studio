@@ -29,14 +29,14 @@ export function renderProfileCard({
       </div>
       <div class="partner-profile-chips ${badgesExpanded ? "is-expanded" : ""}" aria-label="Profil rozetleri">
         ${visibleBadges.map((badge) => `<span class="partner-profile-chip">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
-        ${moreCount ? `
+        ${moreCount && !badgesExpanded ? `
           <button
             class="partner-profile-chip is-more"
             type="button"
             data-action="toggle-profile-badges"
-            aria-expanded="${badgesExpanded ? "true" : "false"}"
-            aria-label="${badgesExpanded ? "Ek rozetleri gizle" : "Ek rozetleri göster"}"
-          ><span>${badgesExpanded ? "−" : `+${moreCount}`}</span></button>
+            aria-expanded="false"
+            aria-label="Ek rozetleri göster"
+          ><span>+${moreCount}</span></button>
         ` : ""}
         ${badgesExpanded && extraBadges.length ? `
           <span class="partner-profile-chip-break" aria-hidden="true"></span>

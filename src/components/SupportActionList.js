@@ -1,7 +1,9 @@
 import { escapeHtml } from "../utils/dom.js";
 
 function SupportActionItem({ item, icon = () => "" } = {}) {
-  const target = item.topic
+  const target = item.route
+    ? `data-route="${escapeHtml(item.route)}"`
+    : item.topic
     ? `data-action="ticket-topic" data-topic="${escapeHtml(item.topic)}"`
     : `data-action="menu-placeholder" data-label="${escapeHtml(item.label || item.title)}"`;
 

@@ -7,6 +7,8 @@ export const ROUTE_TO_SCREEN = {
   "/profile": "profile",
   "/notifications": "notifications",
   "/support": "support",
+  "/support/new": "supportNew",
+  "/satisfaction": "satisfaction",
   "/messages": "messages",
   "/reviews": "reviews",
   "/leaderboard": "levels",
@@ -48,6 +50,8 @@ export const ROUTE_TITLES = {
   "/profile": "Profilim",
   "/notifications": "Bildirimler",
   "/support": "Yardım ve Destek",
+  "/support/new": "Talep Oluştur",
+  "/satisfaction": "Memnuniyet",
   "/messages": "Mesaj Kutusu",
   "/reviews": "Müşteri Yorumları",
   "/leaderboard": "Liderlik Tablosu",
@@ -103,7 +107,6 @@ export const DRAWER_SECTIONS = [
     items: [
       {
         label: "Partner Davet Programı",
-        description: "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan.",
         icon: "users",
         route: "/referral",
         screen: "referral",
@@ -111,7 +114,6 @@ export const DRAWER_SECTIONS = [
       },
       {
         label: "İş Yönlendirme Programı",
-        description: "Servis talebi gönder, iş gerçekleşirse kazanç elde et.",
         icon: "briefcase",
         route: "/job-referral",
         screen: "jobReferral",
@@ -133,6 +135,7 @@ export const DRAWER_SECTIONS = [
     title: "Destek",
     items: [
       { label: "Yardım ve Destek", icon: "headphones", route: "/support", screen: "support", color: "#067647" },
+      { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", color: "#067647" },
     ],
   },
 ];

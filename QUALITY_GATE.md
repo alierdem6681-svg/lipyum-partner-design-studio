@@ -21,6 +21,13 @@ npm run test:navigation-contract
 npm run test:forms
 npm run test:device-matrix
 npm run test:performance
+npm run test:visual-alignment
+npm run test:deeplinks
+npm run test:satisfaction
+npm run test:home-flow
+npm run test:packages-flow
+npm run test:referral-flow
+npm run test:support-ticket
 npm run test:screenshots
 npm run build
 git diff --check
@@ -46,6 +53,9 @@ npm run test:quality-gate
 - Navigation, sidebar, CTA, form, filter veya route davranışı değiştiyse interaction testleri çalıştırılmalıdır.
 - Route, device coverage veya responsive davranış değiştiyse `npm run test:device-matrix` çalıştırılmalıdır.
 - Bundle, legacy cleanup veya render performansı etkileniyorsa `npm run test:performance` çalıştırılmalıdır.
+- Icon-only buton, sheet/modal/drawer close veya header aksiyonu değiştiyse `npm run test:visual-alignment` çalıştırılmalıdır.
+- Deep link, external link veya route fallback davranışı değiştiyse `npm run test:deeplinks` çalıştırılmalıdır.
+- Memnuniyet, market değerlendirme veya geri bildirim akışı değiştiyse `npm run test:satisfaction` çalıştırılmalıdır.
 - Yeni kritik aksiyonlara `data-testid` eklenmelidir.
 
 ## Rapor Zorunluluğu
@@ -78,3 +88,15 @@ Her görev sonunda raporda veya final mesajında şu başlıklar yer almalıdır
 - Form/filter/load-more testleri.
 - 320, 360, 375, 390, 393, 412, 430 ve 768 px viewport sınıfları.
 - Performans smoke: DOM node sayısı, JS/CSS resource bütçesi ve route switch süresi.
+
+## V9 Ek Kapılar
+
+`npm run test:quality-gate` V9 itibarıyla şu kontrolleri de çalıştırır:
+
+- `test:visual-alignment`: icon-only button center alignment.
+- `test:deeplinks`: query/path deep link fallback.
+- `test:satisfaction`: 5 yıldız market CTA ve 1-4 yıldız destek feedback mock akışı.
+- `test:home-flow`: ana sayfa kritik sheet/route aksiyonları.
+- `test:packages-flow`: paket builder/checkout mock akışı.
+- `test:referral-flow`: partner davet, rail ve partner detay akışı.
+- `test:support-ticket`: sidebar Talep Oluştur form ve success akışı.

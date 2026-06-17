@@ -19,6 +19,9 @@ Bu proje backend'siz, tıklanabilir mobil arayüz prototipidir. Bu dosya WebView
 - Safe-area ve iPhone simulator smoke testleri: Playwright geometry/mobile/device matrix.
 - Native back benzeri davranış: browser/hash back ve `back-button` testleri.
 - Deep link placeholder: hash route map.
+- V9 deep link resolver: `?route=`, `?deeplink=` ve `/partner/...` path mapping.
+- Native association placeholder dosyaları: `public/.well-known/apple-app-site-association.placeholder.json` ve `public/.well-known/assetlinks.placeholder.json`.
+- Satisfaction route: native in-app review entegrasyonuna hazır compliance-safe mock UI.
 - Push notification placeholder: `/notifications`.
 - Keyboard/focus riski: destek arama ve input alanları P1 test kapsamına alınmalı.
 - Error state: `AppErrorState`.
@@ -39,6 +42,7 @@ P1:
 - WebView user-agent özel smoke.
 - Native bridge placeholder API taslağı.
 - Route transition loading state standardı.
+- Gerçek Apple Team ID, bundle ID, Android package name ve SHA-256 fingerprint değerleriyle association dosyalarının doldurulması.
 
 P2:
 

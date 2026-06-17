@@ -1,0 +1,7 @@
+{
+  "comment": "Placeholder only. Replace with the real Apple Team ID, bundle ID and verified domain paths before enabling production Universal Links.",
+  "applinks": {
+    "apps": [],
+    "details": []
+  }
+}

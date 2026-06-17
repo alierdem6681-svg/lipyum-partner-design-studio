@@ -22,9 +22,11 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Sidebar menü item'ları route-driven çalışmalıdır.
 - Menü item seçildiğinde ilgili route açılmalı ve sidebar kapanmalıdır.
 - Sidebar içinde `Yardım ve Destek` yalnızca Destek grubu altında tek menü satırı olarak bulunur.
+- Destek grubu altında `Talep Oluştur` `/support/new` route'una gider.
 - Sticky/geniş `drawer-support-card` tekrar eklenmemelidir.
 - Kazanç Ortaklığı altında `Partner Davet Programı` `/referral` route'una gider.
 - Kazanç Ortaklığı altında `İş Yönlendirme Programı` `/job-referral` route'una gider.
+- Kazanç Ortaklığı item'ları sidebar içinde açıklama satırı göstermez.
 
 ## Header
 
@@ -40,7 +42,15 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Performans skoru alanındaki skor artır aksiyonu `/performance-score` route'una gider.
 - Bakiye yükle aksiyonu kredi yükleme sheet/akışını açar.
 - Bonus/kredi dönüştürme aksiyonu ilgili sheet/akışı açar.
+- Sheet close icon `sheet-close-button` içinde optik merkezde durur.
 - Bottom bar ve CTA hiçbir zaman ana içerik metnini kapatmamalıdır.
+
+## Profile
+
+- Profil rozetleri başlangıçta ilk 3 rozet + `+N` butonu olarak görünür.
+- `+N` butonuna basıldığında gizli rozetler görünür ve `+N` butonu DOM'dan kalkar.
+- Aynı route instance içinde rozetleri tekrar kapatma davranışı yoktur.
+- Başka route'a gidip profile dönünce rozetler tekrar başlangıç durumuna döner.
 
 ## Notifications
 
@@ -55,6 +65,22 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Destek kategori kartları ilgili yardım akışına gider.
 - Temsilciye yaz aksiyonu canlı destek/chat sheet açar.
 - Açık talepler ilgili talepler ekranını veya sheet'ini açar.
+- `/support/new` mock talep formunu açar.
+- Talep Oluştur submit mock success gösterir ve `LP-000123` talep numarasını yazar.
+
+## Deep Links
+
+- `?route=/wallet` gibi route parametreleri ilgili hash route'u açar.
+- `?deeplink=support-new` gibi alias parametreleri ilgili route'u açar.
+- `/partner/support/new` gibi external path'ler SPA shell üzerinden `/support/new` route'una çözülür.
+- Bilinmeyen deep link `/home` fallback kullanır.
+
+## Satisfaction
+
+- `/satisfaction` 1-5 yıldız memnuniyet akışını gösterir.
+- 5 yıldızda kullanıcı onayına bağlı market değerlendirme CTA'sı görünür.
+- 1-4 yıldızda iyileştirme formu ve mock destek kaydı success state'i görünür.
+- UI kullanıcı adına otomatik market yorumu gönderildiğini iddia etmez.
 
 ## Reviews
 

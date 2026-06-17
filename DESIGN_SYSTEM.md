@@ -98,6 +98,20 @@ Kritik kısa metinlerde şu kural geçerlidir:
 
 Tüm tıklanabilir alanlar minimum 44x44px hedeflemelidir. Görsel ikon küçük olabilir, touch area daraltılmamalıdır.
 
+## Icon-Only Button Alignment
+
+Sheet, modal, drawer, header action, back ve hamburger gibi icon-only butonlar aynı geometriyi kullanmalıdır:
+
+- `width: 44px`
+- `height: 44px`
+- `display: inline-flex`
+- `align-items: center`
+- `justify-content: center`
+- icon size: 20-24px
+- button center ve icon center farkı en fazla 1.5px olmalıdır.
+
+Bu kural `tests/e2e/visual-alignment.spec.js` ile korunur.
+
 ## Component Kullanım Kuralı
 
 Yeni geliştirmeler mümkün olduğunca şu ortak componentleri kullanmalıdır:
@@ -117,3 +131,7 @@ Legacy runtime içine yeni ürün geliştirmesi eklenmemeli; kalan legacy ekranl
 ## V8 Migration Kuralı
 
 Tam Vue/Tailwind migration bitene kadar legacy tarafına yalnızca hata düzeltmesi, compatibility veya güvenli temizlik amaçlı dokunulabilir. Yeni ürün ekranı veya yeni kullanıcı akışı Vue UI Kit üzerinde geliştirilmelidir.
+
+## V9 Akış Kuralı
+
+Deep link, satisfaction, support ticket veya product flow gibi yeni tıklanabilir akışlar backend iddiası taşımamalıdır. Gerçek API yoksa mock/success state net belirtilmeli, market değerlendirme gibi hassas aksiyonlarda kullanıcı onayı olmadan otomatik işlem yapıldığı ima edilmemelidir.

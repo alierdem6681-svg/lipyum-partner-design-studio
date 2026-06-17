@@ -80,7 +80,7 @@ export const notifications = [
 ];
 
 export const supportQuickActions = [
-  { title: "Talep Oluştur", description: "Konu seç, ekibimiz takip etsin", icon: "file-text", topic: "Talep Oluştur", primary: true },
+  { title: "Talep Oluştur", description: "Konu seç, ekibimiz takip etsin", icon: "file-text", route: "/support/new", primary: true },
   { title: "İş İtirazı", description: "İşle ilgili bir sorun mu var?", icon: "file-text", topic: "İş İtirazı" },
   { title: "Ödeme Sorunu", description: "Ödemenizle ilgili yardım alın", icon: "credit-card", topic: "Ödeme Sorunu" },
   { title: "Bonus Sorunu", description: "Bonus ve kampanyalar", icon: "gift", topic: "Bonus Sorunu" },

@@ -1,4 +1,5 @@
 import { getRouteForScreen, getScreenForRoute, getTitleForRoute, normalizeRoute } from "../router.js";
+import { resolveDeepLinkRoute } from "./deepLinks.js";
 
 export const isModifiedClick = (event) => event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 
@@ -20,7 +21,7 @@ export function createNavigationController({
     throw new Error("createNavigationController requires state and renderScreen.");
   }
 
-  const getCurrentRoute = () => normalizeRoute(window.location.hash || getRouteForScreen(state.screen));
+  const getCurrentRoute = () => normalizeRoute(window.location.hash || resolveDeepLinkRoute() || getRouteForScreen(state.screen));
 
   function updateDocumentTitle(route = getCurrentRoute()) {
     document.title = `${getTitleForRoute(route)} · Lipyum Partner`;
@@ -42,6 +43,13 @@ export function createNavigationController({
     const normalized = normalizeRoute(route);
     const nextScreen = getScreenForRoute(normalized);
     if (nextScreen !== state.screen) state.previousScreen = state.screen;
+    if (nextScreen !== "profile") state.profileBadgesExpanded = false;
+    if (nextScreen !== "supportNew") state.supportTicketCreated = false;
+    if (nextScreen !== "satisfaction") {
+      state.satisfactionRating = 0;
+      state.satisfactionSubmitted = false;
+      state.satisfactionStoreOpened = false;
+    }
     state.screen = nextScreen;
     updateDocumentTitle(normalized);
     renderScreen(options);

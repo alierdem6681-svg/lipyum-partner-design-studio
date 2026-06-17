@@ -32,6 +32,10 @@ export const initialUiState = {
   selectedEarningId: "earn-1",
   drawerBadgesExpanded: false,
   profileBadgesExpanded: false,
+  supportTicketCreated: false,
+  satisfactionRating: 0,
+  satisfactionSubmitted: false,
+  satisfactionStoreOpened: false,
 };
 
 export function createUiState(overrides = {}) {

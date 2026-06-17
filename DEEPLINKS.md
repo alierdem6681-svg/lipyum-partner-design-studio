@@ -1,0 +1,33 @@
+# Deep Link Readiness
+
+Lipyum Partner currently runs as a backend-free clickable mobile UI prototype. Native Universal Links/App Links are not activated yet because the real Apple Team ID, bundle ID, Android package name and signing fingerprints are not available.
+
+## Supported UI Mappings
+
+| External shape | App route |
+| --- | --- |
+| `/partner/home` | `#/home` |
+| `/partner/wallet` | `#/wallet` |
+| `/partner/reviews` | `#/reviews` |
+| `/partner/support` | `#/support` |
+| `/partner/support/new` | `#/support/new` |
+| `/partner/referral` | `#/referral` |
+| `/partner/job-referral` | `#/job-referral` |
+| `/partner/packages` | `#/packages` |
+| `/partner/satisfaction` | `#/satisfaction` |
+| `?route=/wallet` | `#/wallet` |
+| `?deeplink=support-new` | `#/support/new` |
+
+Unknown routes fall back to `#/home`.
+
+## Implementation Notes
+
+- `src/utils/deepLinks.js` resolves query and path based deep links before the hash router initializes.
+- `vercel.json` rewrites `/partner/:path*` to `index.html` so direct path links can boot the SPA shell.
+- Placeholder files live under `public/.well-known/` for future native-link setup.
+
+## Production TODO
+
+- Replace placeholder Apple and Android association files with real app identifiers.
+- Add verified store IDs/package names once the native shells exist.
+- Connect push notification payload route mapping to the same resolver.
