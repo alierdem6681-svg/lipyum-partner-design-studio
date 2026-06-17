@@ -57,6 +57,16 @@ Gölge düşük ve kontrollü olmalıdır. Neon hissi yalnızca ana CTA'da hafif
 ## Header
 
 - Tüm route'larda tek header familyası kullanılmalıdır.
+- Tokenlar:
+  - `--app-header-height`
+  - `--app-header-x-padding`
+  - `--app-header-action-size`
+  - `--app-header-icon-size`
+  - `--app-header-gap`
+- Varyantlar:
+  - `home`: hamburger, status pill, notification, profile.
+  - `section`: hamburger, title/subtitle, notification, profile.
+  - `subpage`: back, title/subtitle, reserved action slot.
 - Title/subtitle tek satır ellipsis alır.
 - Sol ve sağ aksiyon alanları minimum 44px touch target alır.
 - Header yüksekliği sayfa içeriğine göre büyümemelidir.
@@ -103,3 +113,7 @@ Yeni geliştirmeler mümkün olduğunca şu ortak componentleri kullanmalıdır:
 - AppIcon
 
 Legacy runtime içine yeni ürün geliştirmesi eklenmemeli; kalan legacy ekranlar kademeli olarak component/page yapısına taşınmalıdır.
+
+## V8 Migration Kuralı
+
+Tam Vue/Tailwind migration bitene kadar legacy tarafına yalnızca hata düzeltmesi, compatibility veya güvenli temizlik amaçlı dokunulabilir. Yeni ürün ekranı veya yeni kullanıcı akışı Vue UI Kit üzerinde geliştirilmelidir.

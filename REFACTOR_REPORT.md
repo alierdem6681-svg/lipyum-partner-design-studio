@@ -2,6 +2,175 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 8 - Full Vue/Tailwind Migration, Navbar Standardization ve Release Quality Gate
+
+### 1. Genel durum
+
+- V8 fazında ana odak, release kalite kapısını sertleştirmek, navbar/header standardını tek sözleşmeye yaklaştırmak, sidebar duplicate alanını kaldırmak ve cihaz/performance test kapsamını büyütmek oldu.
+- Refactor yüzdesi yaklaşık %72 seviyesine çıktı.
+- Tam Vue migration hedefi bu fazda tamamen bitmedi. Kullanıcıya görünen bazı zengin ekranlar hâlâ `legacyApp.js` üzerinden compatibility modunda render ediliyor; bu durum `MIGRATION_STATUS.md` içinde route bazında işaretlendi.
+- Bu fazda yeni ürün akışı eklenmedi; mevcut çalışan arayüzü koruyarak P0 header/sidebar/test altyapısı güçlendirildi.
+
+### 2. Vue migration
+
+- Mevcut Vue foundation ve Vue UI Kit korundu.
+- `/performance-score` route'u legacy headersız render yerine standart page route'a bağlandı.
+- Route migration durumu `MIGRATION_STATUS.md` dosyasına taşındı.
+- Hâlâ P0 legacy borç taşıyan ana alanlar:
+  - HomePage
+  - Jobs / MyJobs / Calendar
+  - Partner Davet Programı zengin listeleri
+  - Packages / Subscription / Package Builder / Checkout akışları
+- Bu route'lar çalışır durumda ve kalite kapısından geçiyor, ancak tam Vue/Tailwind migration için sonraki büyük fazda ele alınmalı.
+
+### 3. Tailwind migration
+
+- Tailwind foundation korunuyor.
+- Bu fazdaki değişiklikler ağırlıklı olarak legacy compatibility ve test sözleşmesi tarafında olduğu için aktif Vue componentlerinde büyük Tailwind rewrite yapılmadı.
+- Yeni test ve dokümanlar Tailwind dynamic class üretimi riskini artırmadı.
+- `DESIGN_SYSTEM.md` içine V8 migration kuralı eklendi: yeni ürün geliştirmesi legacy tarafına yapılmamalı.
+
+### 4. Navbar/header standardizasyon
+
+- Legacy header helper'ı home, section ve subpage varyantlarına ayrıldı.
+- Header tokenları eklendi:
+  - `--app-header-height`
+  - `--app-header-x-padding`
+  - `--app-header-action-size`
+  - `--app-header-icon-size`
+  - `--app-header-gap`
+- Header sol slot, title alanı ve sağ aksiyon alanı grid tabanlı tek geometriye çekildi.
+- Sağ aksiyon olmayan subpage header'larında reserved spacer kullanıldı.
+- `/referral`, `/referral-earnings` ve `/performance-score` header görünürlüğü kalite kapısında doğrulandı.
+- Tüm route'larda `data-testid="app-header"` görünürlüğü interaction ve route testleriyle kontrol ediliyor.
+
+### 5. Sidebar cleanup
+
+- Sidebar altındaki sticky/geniş ikinci `Yardım ve Destek` kartı kaldırıldı.
+- `Yardım ve Destek` artık yalnızca Destek grubu altında tek normal menü satırı olarak bulunuyor.
+- `drawer-support-card` markup'ı kaldırıldı.
+- Yeni sidebar testi eklendi:
+  - Tek support entry var.
+  - `.drawer-support-card` DOM'da yok.
+- Hamburger aç/kapat, overlay kapatma ve Kazanç Ortaklığı route testleri geçti.
+
+### 6. Interaction contract coverage
+
+- `INTERACTION_CONTRACT.md` header ve sidebar sözleşmeleriyle güncellendi.
+- Header varyantları sözleşmeye yazıldı:
+  - home
+  - section
+  - subpage
+- Duplicate sticky support kartının tekrar eklenmemesi sözleşmeye alındı.
+- Kritik test id'leri kalite kapısında route bazında doğrulanıyor.
+
+### 7. Device matrix testleri
+
+- Yeni test dosyası: `tests/e2e/device-matrix.spec.js`.
+- Test edilen cihaz/viewport sınıfları:
+  - iPhone SE: `320x568`
+  - iPhone mini: `375x812`
+  - iPhone 15: `393x852`
+  - iPhone Pro Max: `430x932`
+  - Pixel compact: `360x780`
+  - Pixel large: `412x915`
+  - Tablet: `768x1024`
+- Her cihazda kritik route'lar için:
+  - header görünürlüğü
+  - bottom bar görünürlüğü
+  - yatay overflow olmaması
+  - header box yüksekliği
+  - button label wrap kontrolü
+  doğrulandı.
+
+### 8. Performance
+
+- Yeni test dosyası: `tests/e2e/performance.spec.js`.
+- Performans smoke şunları kontrol ediyor:
+  - DOM node bütçesi
+  - Vite dev resource bütçesi
+  - route switch süresi
+  - console error yokluğu
+- Production asset kontrolü `npm run build` ile kalite kapısında ayrıca doğrulandı.
+- Son build çıktısı:
+  - CSS: `247.03 kB` gzip `43.51 kB`
+  - JS: `304.80 kB` gzip `87.98 kB`
+
+### 9. WebView readiness
+
+- Yeni dosya: `WEBVIEW_READINESS.md`.
+- Hazırlık başlıkları:
+  - safe-area
+  - route reload
+  - native back simulation
+  - offline/loading/error/empty state
+  - keyboard ve deep link notları
+  - push notification route placeholder
+- WebView tarafında gerçek native bridge yok; bu proje hâlâ backend'siz/tıklanabilir UI prototipi olarak ilerliyor.
+
+### 10. Dead code cleanup
+
+- Güvenli temizlik:
+  - Sidebar duplicate support card fonksiyonu ve çağrısı kaldırıldı.
+  - `/performance-score` headersız legacy route yerine standart page route'a bağlandı.
+- Kasıtlı olarak silinmeyenler:
+  - `legacyApp.js` içindeki zengin render blokları, tam route migration yapılmadan silinmedi.
+  - Eski CSS blokları aktif legacy ekranları kırmamak için korunuyor.
+
+### 11. Test sonuçları
+
+- `npm run test:quality-gate`: başarılı.
+- Quality gate içinde geçen ana setler:
+  - `npm run check`
+  - `npm run lint`
+  - `npm run test`
+  - `npm run test:routes`
+  - `npm run test:e2e` (`99` test)
+  - `npm run test:e2e:mobile` (`296` test)
+  - `npm run test:accessibility`
+  - `npm run test:interactions` (`90` test)
+  - `npm run test:sidebar`
+  - `npm run test:bottom-bar`
+  - `npm run test:navigation-contract`
+  - `npm run test:forms`
+  - `npm run test:device-matrix`
+  - `npm run test:performance`
+  - `npm run test:screenshots`
+  - `npm run build`
+  - `git diff --check`
+- Tüm kalite kapısı temiz geçti.
+
+### 12. Kalan P0/P1/P2 teknik borç
+
+P0:
+
+- HomePage tam Vue/Tailwind page migration.
+- Jobs / MyJobs / Calendar tam Vue/Tailwind migration.
+- Referral / Packages / Subscription akışlarının tam Vue/Tailwind migration'ı.
+- `legacyApp.js` kullanıcıya görünen ana route render etme sorumluluğundan çıkarılmalı.
+
+P1:
+
+- Legacy CSS içindeki unused class ve sayfa bazlı özel padding/radius blokları temizlenmeli.
+- Vue UI Kit aktif route'ların tamamında zorunlu hale getirilmeli.
+- Device matrix test dosyası hız için daha küçük dosyalara bölünebilir.
+
+P2:
+
+- WebKit/Firefox test projeleri eklenebilir.
+- Görsel regression karşılaştırma baseline'ları oluşturulabilir.
+- Native WebView bridge mock'u eklenebilir.
+
+### 13. Finish yüzdesi
+
+- UI kalite kapısı ve test altyapısı açısından güçlü seviye: yaklaşık `%85`.
+- Tam Vue/Tailwind migration açısından kalan iş nedeniyle genel ürün bitişi: yaklaşık `%72`.
+
+### 14. Bir sonraki adım
+
+- En mantıklı sonraki büyük iş: HomePage'i gerçek Vue/Tailwind page olarak taşımak.
+- Ardından Jobs/MyJobs/Calendar ve Referral/Packages akışları aynı pattern ile migrate edilmeli.
+
 ## Faz 7 - Full Vue/Tailwind Migration, Interaction QA ve Quality Gate
 
 ### 1. Genel durum

@@ -34,6 +34,30 @@ const steps = [
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js tests/e2e/bottom-bar.spec.js tests/e2e/core-interactions.spec.js tests/e2e/navigation-contract.spec.js tests/e2e/forms-and-filters.spec.js",
   },
   {
+    name: "test:sidebar",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js",
+  },
+  {
+    name: "test:bottom-bar",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/bottom-bar.spec.js",
+  },
+  {
+    name: "test:navigation-contract",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/navigation-contract.spec.js",
+  },
+  {
+    name: "test:forms",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/forms-and-filters.spec.js",
+  },
+  {
+    name: "test:device-matrix",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/device-matrix.spec.js",
+  },
+  {
+    name: "test:performance",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/performance.spec.js",
+  },
+  {
     name: "test:screenshots",
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
   },

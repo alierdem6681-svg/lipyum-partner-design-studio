@@ -18,7 +18,16 @@
 }
 
 .page-header {
-  min-height: var(--lp-header-height);
+  position: sticky;
+  top: var(--sticky-header-top, 0);
+  z-index: var(--lp-z-header);
+  min-height: var(--app-header-height, var(--lp-header-height));
+  display: grid;
+  grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) var(--app-header-action-size, 44px);
+  align-items: center;
+  gap: var(--app-header-gap, var(--lp-space-2));
+  padding: 0;
+  background: var(--color-background);
 }
 
 .page-header-copy {
@@ -50,8 +59,8 @@
 }
 
 .page-header-spacer {
-  width: 44px;
-  height: 44px;
+  width: var(--app-header-action-size, 44px);
+  height: var(--app-header-action-size, 44px);
 }
 
 .ui-card,

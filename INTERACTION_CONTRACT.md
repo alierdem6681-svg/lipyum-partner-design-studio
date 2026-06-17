@@ -21,8 +21,19 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Sidebar açıldığında `sidebar-drawer` görünür olmalıdır.
 - Sidebar menü item'ları route-driven çalışmalıdır.
 - Menü item seçildiğinde ilgili route açılmalı ve sidebar kapanmalıdır.
+- Sidebar içinde `Yardım ve Destek` yalnızca Destek grubu altında tek menü satırı olarak bulunur.
+- Sticky/geniş `drawer-support-card` tekrar eklenmemelidir.
 - Kazanç Ortaklığı altında `Partner Davet Programı` `/referral` route'una gider.
 - Kazanç Ortaklığı altında `İş Yönlendirme Programı` `/job-referral` route'una gider.
+
+## Header
+
+- Tüm route'larda `app-header` görünür olmalıdır.
+- Home varyantı hamburger + status pill + notification + profile düzenini kullanır.
+- Section varyantı hamburger + title/subtitle + notification/profile düzenini kullanır.
+- Subpage varyantı back + title/subtitle + reserved right action alanını kullanır.
+- Sol aksiyon, sağ aksiyon ve ikon touch target alanları minimum 44x44 px olmalıdır.
+- Title/subtitle tek satır ellipsis ile kalır; header yüksekliği metin yüzünden büyümez.
 
 ## Home
 

@@ -84,6 +84,11 @@
   --shadow-elevated: 0 14px 34px rgba(15, 23, 42, 0.12);
   --shadow-cta: 0 10px 24px rgba(0, 122, 61, 0.3);
   --header-height: 58px;
+  --app-header-height: 58px;
+  --app-header-x-padding: var(--page-x-padding);
+  --app-header-action-size: 44px;
+  --app-header-icon-size: 24px;
+  --app-header-gap: 8px;
   --bottom-bar-height: 76px;
   --bottom-safe-height: 92px;
   --page-x-padding: var(--page-x-padding-comfort);

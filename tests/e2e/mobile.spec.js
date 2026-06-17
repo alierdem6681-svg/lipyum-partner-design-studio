@@ -2,10 +2,14 @@ import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, routes, waitForApp } from "./helpers.js";
 
 const viewports = [
+  { width: 320, height: 568 },
   { width: 360, height: 780 },
+  { width: 375, height: 812 },
   { width: 390, height: 844 },
   { width: 393, height: 852 },
+  { width: 412, height: 915 },
   { width: 430, height: 932 },
+  { width: 768, height: 1024 },
 ];
 
 for (const viewport of viewports) {

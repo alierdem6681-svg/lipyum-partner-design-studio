@@ -489,10 +489,12 @@
         position: sticky;
         top: var(--sticky-header-top);
         z-index: 18;
-        display: flex;
+        display: grid;
+        grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
         align-items: center;
-        justify-content: space-between;
-        gap: 8px;
+        justify-content: stretch;
+        gap: var(--app-header-gap, 8px);
+        min-height: calc(var(--top-safe-space) + var(--app-header-height, 58px));
         margin: 0 calc(var(--page-x-padding) * -1) 12px;
         padding: var(--top-safe-space) var(--page-x-padding) 9px;
         background: #f6f8fa;
@@ -503,11 +505,16 @@
 
       .app-header.home-header {
         display: grid;
-        grid-template-columns: 44px minmax(0, 1fr) 94px;
+        grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
         align-items: center;
-        gap: 8px;
+        gap: var(--app-header-gap, 8px);
         border-bottom: 0;
         box-shadow: none;
+      }
+
+      .app-header.section-header,
+      .app-header.subpage-header {
+        grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
       }
 
       .app-header.home-header .nav-alert-ticker {
@@ -610,12 +617,22 @@
         color: var(--muted);
         font-size: 11.5px;
         font-weight: 550;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .header-actions {
+        width: 94px;
+        min-height: var(--app-header-action-size, 44px);
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 6px;
+      }
+
+      .header-actions--reserved {
+        pointer-events: none;
       }
 
       .notification-btn {
@@ -1264,8 +1281,8 @@
       .back-btn {
         display: inline-grid;
         place-items: center;
-        width: 44px;
-        height: 44px;
+        width: var(--app-header-action-size, 44px);
+        height: var(--app-header-action-size, 44px);
         border: 1px solid var(--border);
         border-radius: 12px;
         background: #fff;
@@ -1276,8 +1293,8 @@
 
       .icon-btn .icon,
       .back-btn .icon {
-        width: 24px;
-        height: 24px;
+        width: var(--app-header-icon-size, 24px);
+        height: var(--app-header-icon-size, 24px);
         stroke-width: 2.2;
       }
 

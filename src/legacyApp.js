@@ -1101,44 +1101,49 @@ mountAppShell();
         });
       }
 
+      function headerActions() {
+        return `
+          <div class="header-actions">
+            <button class="icon-btn notification-btn" type="button" data-screen="notifications" data-testid="notification-button" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
+            <button class="icon-btn" type="button" data-screen="profile" data-testid="profile-button" aria-label="Profil">${icon("user")}</button>
+          </div>
+        `;
+      }
+
+      function headerTitle(title, subtitle) {
+        return `
+          <div class="app-title">
+            <h2>${title}</h2>
+            <p>${subtitle}</p>
+          </div>
+        `;
+      }
+
       function header(titleId, back = false) {
         const [title, subtitle] = mainTitles[titleId] || mainTitles.home;
         if (titleId === "home") {
           return `
-            <header class="app-header home-header" data-testid="app-header">
+            <header class="app-header home-header" data-testid="app-header" data-header-variant="home">
               <button class="icon-btn" type="button" data-open="menu" data-testid="hamburger-button" aria-label="Menü">${icon("menu")}</button>
               ${navAlertTicker()}
-              <div class="header-actions">
-                <button class="icon-btn notification-btn" type="button" data-screen="notifications" data-testid="notification-button" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
-                <button class="icon-btn" type="button" data-screen="profile" data-testid="profile-button" aria-label="Profil">${icon("user")}</button>
-              </div>
+              ${headerActions()}
             </header>
           `;
         }
         if (back) {
           return `
-            <div class="back-head" data-testid="app-header">
+            <header class="app-header subpage-header" data-testid="app-header" data-header-variant="subpage">
               <button class="back-btn" type="button" data-action="go-back" data-testid="back-button" aria-label="Geri dön">${icon("chevron-left")}</button>
-              <div class="app-title">
-                <h2>${title}</h2>
-                <p>${subtitle}</p>
-              </div>
-            </div>
+              ${headerTitle(title, subtitle)}
+              <span class="header-actions header-actions--reserved" aria-hidden="true"></span>
+            </header>
           `;
         }
         return `
-          <header class="app-header" data-testid="app-header">
-            <div class="row" style="gap:8px;justify-content:flex-start;flex:1">
-              <button class="icon-btn" type="button" data-open="menu" data-testid="hamburger-button" aria-label="Menü">${icon("menu")}</button>
-              <div class="app-title">
-                <h2>${title}</h2>
-                <p>${subtitle}</p>
-              </div>
-            </div>
-            <div class="header-actions">
-              <button class="icon-btn notification-btn" type="button" data-screen="notifications" data-testid="notification-button" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
-              <button class="icon-btn" type="button" data-screen="profile" data-testid="profile-button" aria-label="Profil">${icon("user")}</button>
-            </div>
+          <header class="app-header section-header" data-testid="app-header" data-header-variant="section">
+            <button class="icon-btn" type="button" data-open="menu" data-testid="hamburger-button" aria-label="Menü">${icon("menu")}</button>
+            ${headerTitle(title, subtitle)}
+            ${headerActions()}
           </header>
         `;
       }
@@ -1202,7 +1207,7 @@ mountAppShell();
           reviews: () => pageRoutes["/reviews"]({ state, icon }),
           customers: renderCustomers,
           appointmentLink: renderAppointmentLink,
-          performanceScore: renderPerformanceScore,
+          performanceScore: () => pageRoutes["/performance-score"]({ state, icon }),
           notifications: () => pageRoutes["/notifications"]({ state, icon }),
         };
         root.dataset.layout = modularScreens.has(state.screen) ? "page" : "legacy";
@@ -2652,11 +2657,13 @@ mountAppShell();
         ];
         return `
           <span class="sr-only" data-testid="referral-page">Partner Davet Programı</span>
-          <div class="partner-earn-head app-header" data-testid="app-header">
+          <header class="app-header subpage-header referral-page-header" data-testid="app-header" data-header-variant="subpage">
             <button class="back-btn" type="button" data-action="go-back" data-testid="back-button" aria-label="Geri dön">${icon("chevron-left")}</button>
-            <h2>Partner Davet Programı</h2>
-            <button class="icon-btn" type="button" data-action="referral-info" aria-label="Partner kazan bilgi">${icon("help-circle")}</button>
-          </div>
+            ${headerTitle("Partner Davet Programı", "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan")}
+            <div class="header-actions">
+              <button class="icon-btn" type="button" data-action="referral-info" aria-label="Partner kazan bilgi">${icon("help-circle")}</button>
+            </div>
+          </header>
 
           <section class="referral-hero">
             <div class="referral-hero-copy">
@@ -2786,13 +2793,11 @@ mountAppShell();
           </button>
         `;
         return `
-          <div class="back-head">
-            <button class="back-btn" type="button" data-screen="referral" aria-label="Partner kazan ekranına dön">${icon("chevron-left")}</button>
-            <div class="app-title">
-              <h2>Kazançlarım</h2>
-              <p>Bonus geçmişi ve bekleyen hak edişler</p>
-            </div>
-          </div>
+          <header class="app-header subpage-header" data-testid="app-header" data-header-variant="subpage">
+            <button class="back-btn" type="button" data-route="/referral" data-testid="back-button" aria-label="Partner kazan ekranına dön">${icon("chevron-left")}</button>
+            ${headerTitle("Kazançlarım", "Bonus geçmişi ve bekleyen hak edişler")}
+            <span class="header-actions header-actions--reserved" aria-hidden="true"></span>
+          </header>
 
           <section class="referral-earnings-hero section">
             <span class="referral-earnings-kicker">Bu ay toplam kazancın</span>
@@ -3519,19 +3524,6 @@ mountAppShell();
         `;
       }
 
-      function drawerSupportCard() {
-        return `
-          <button class="drawer-support-card" type="button" data-route="/support" aria-label="Yardım ve Destek">
-            <span class="drawer-support-icon">${icon("headphones")}</span>
-            <span>
-              <strong>Yardım ve Destek</strong>
-              <small>Ticket, danışman ve mesaj takibi</small>
-            </span>
-            <span class="drawer-support-arrow">${icon("chevron-right")}</span>
-          </button>
-        `;
-      }
-
       function menuSheet() {
         return `
           <section class="sheet partner-menu" role="dialog" data-testid="sidebar-drawer" aria-label="Partner menüsü">
@@ -3544,7 +3536,6 @@ mountAppShell();
               ${drawerSections.map((section) => drawerMenuSection(section)).join("")}
             </div>
           </section>
-          ${drawerSupportCard()}
         `;
       }
 

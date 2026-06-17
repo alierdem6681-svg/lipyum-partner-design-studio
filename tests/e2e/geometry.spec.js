@@ -1,18 +1,7 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
+import { collectConsoleErrors, criticalRoutes, ctaHiddenRoutes, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-const geometryRoutes = [
-  "/home",
-  "/leaderboard",
-  "/reviews",
-  "/wallet",
-  "/profile",
-  "/notifications",
-  "/support",
-  "/referral",
-  "/job-referral",
-  "/ui-kit",
-];
+const geometryRoutes = criticalRoutes;
 
 const viewports = [
   { name: "iphone15-simulator", width: 960, height: 980 },
@@ -98,6 +87,11 @@ for (const viewport of viewports) {
       await expectRootGeometry(page);
 
       const cta = page.locator("#bottomNav .bottom-item.featured").first();
+      if (ctaHiddenRoutes.has(route)) {
+        await expect(cta).toBeHidden();
+        expect(errors).toEqual([]);
+        return;
+      }
       await expect(cta).toBeVisible();
       const className = await cta.getAttribute("class");
       if (route === "/home") {
