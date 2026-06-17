@@ -18,7 +18,7 @@ export function WalletSummaryCards({ summary = {}, icon = () => "" } = {}) {
         </div>
         <div class="wallet-card-metric"><strong>${formatCredit(summary.credit || 0)}</strong><span>kredi</span></div>
         <small><i></i> ≈ ${summary.estimatedJobs || "2-3"} iş alabilirsin</small>
-        <button class="wallet-card-action is-primary" type="button" data-open="credit">${icon("plus")} Bakiye Yükle</button>
+        <button class="wallet-card-action is-primary" type="button" data-open="credit" data-testid="wallet-topup-button">${icon("plus")} Bakiye Yükle</button>
       </article>
       <article class="wallet-summary-card-v4">
         <div class="wallet-card-title">
@@ -27,7 +27,7 @@ export function WalletSummaryCards({ summary = {}, icon = () => "" } = {}) {
         </div>
         <div class="wallet-card-metric"><strong>${formatCredit(summary.bonus || 0)}</strong><span>bonus</span></div>
         <small><i class="is-blue"></i> Kredi yüklerken kullanılır.</small>
-        <button class="wallet-card-action is-outline" type="button" data-open="bonus-convert">${icon("refresh")} Krediye Çevir</button>
+        <button class="wallet-card-action is-outline" type="button" data-open="bonus-convert" data-testid="wallet-convert-bonus-button">${icon("refresh")} Krediye Çevir</button>
       </article>
     </section>
   `;
@@ -49,7 +49,7 @@ export function WalletActionGrid({ actions = [], icon = () => "" } = {}) {
 export function TransactionCard({ transaction = {}, icon = () => "" } = {}) {
   const tone = transaction.tone || "neutral";
   return `
-    <article class="transaction-card-v4 is-${tone}">
+    <article class="transaction-card-v4 is-${tone}" data-testid="wallet-transaction-card">
       <span class="transaction-icon">${icon(toneIcon[tone] || "wallet")}</span>
       <span class="transaction-copy">
         <strong>${transaction.title}</strong>

@@ -43,6 +43,7 @@ export function LazyLoadButton({
       type="button"
       data-action="load-more-list"
       data-list-key="${listKey}"
+      data-testid="${listKey}-load-more"
     >
       <span class="responsive-button-label">${label}</span>
     </button>

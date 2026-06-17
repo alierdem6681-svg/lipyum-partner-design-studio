@@ -19,6 +19,7 @@ export function WalletPage({ state = {}, icon = () => "" } = {}) {
   return PageContainer({
     className: "wallet-page-v4",
     children: `
+      <span class="sr-only" data-testid="wallet-page">Cüzdan</span>
       ${Header({
         title: "Cüzdan",
         subtitle: "Kredi, bonus ve hareketlerin",

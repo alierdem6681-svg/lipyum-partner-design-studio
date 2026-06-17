@@ -12,11 +12,12 @@ defineProps({
 </script>
 
 <template>
-  <header class="v-header v-app-header">
+  <header class="v-header v-app-header" data-testid="app-header">
     <button
       v-if="showBack"
       class="v-header__action"
       type="button"
+      data-testid="back-button"
       aria-label="Geri dön"
       @click="emit('back')"
     >
@@ -33,6 +34,7 @@ defineProps({
       v-if="rightIcon"
       class="v-header__action"
       type="button"
+      data-testid="header-right-action"
       :aria-label="rightLabel || title"
       @click="emit('right')"
     >

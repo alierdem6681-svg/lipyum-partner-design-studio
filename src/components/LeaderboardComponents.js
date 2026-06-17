@@ -2,26 +2,21 @@ import { LazyLoadButton } from "../utils/lazyList.js";
 import { formatCredit } from "../utils/formatters.js";
 
 export function LeagueSelects({ leaderboard = {} } = {}) {
+  const sectorOptions = ["Beyaz Eşya Tamiri", "Klima Tamiri", "Kombi Servisi", "Ev Temizliği"];
+  const cityOptions = ["İstanbul", "Ankara", "İzmir", "Kayseri", "Antalya"];
   return `
     <section class="league-select-grid" aria-label="Lig filtreleri">
       <label>
         <span>Sektör Ligi</span>
-        <select data-leaderboard-sector aria-label="Sektör Ligi">
-          <option value="Beyaz Eşya Tamiri" selected>Beyaz Eşya Tamiri</option>
-          <option value="Klima Tamiri">Klima Tamiri</option>
-          <option value="Kombi Servisi">Kombi Servisi</option>
-          <option value="Ev Temizliği">Ev Temizliği</option>
+        <select data-leaderboard-sector data-testid="leaderboard-sector-select" aria-label="Sektör Ligi">
+          ${sectorOptions.map((sector) => `<option value="${sector}" ${leaderboard.sector === sector ? "selected" : ""}>${sector}</option>`).join("")}
         </select>
       </label>
       <label>
         <span>Şehir Ligi</span>
-        <select data-leaderboard-region aria-label="Şehir Ligi">
-          <option value="">Şehirler</option>
-          <option value="İstanbul">İstanbul</option>
-          <option value="Ankara">Ankara</option>
-          <option value="İzmir">İzmir</option>
-          <option value="Kayseri">Kayseri</option>
-          <option value="Antalya">Antalya</option>
+        <select data-leaderboard-region data-testid="leaderboard-city-select" aria-label="Şehir Ligi">
+          <option value="" ${leaderboard.city ? "" : "selected"}>Şehirler</option>
+          ${cityOptions.map((city) => `<option value="${city}" ${leaderboard.city === city ? "selected" : ""}>${city}</option>`).join("")}
         </select>
       </label>
     </section>
@@ -82,7 +77,7 @@ export function NearbyRankList({
       </div>
       <div class="nearby-rank-list">
         ${visibleItems.map((item) => `
-          <article class="nearby-rank-row ${item.self ? "is-self" : ""}">
+          <article class="nearby-rank-row ${item.self ? "is-self" : ""}" data-testid="leaderboard-rank-row">
             <span class="nearby-rank-number">#${item.rank}</span>
             <span class="nearby-rank-avatar">${item.initials}</span>
             <strong>${item.name}${item.self ? '<em>SEN</em>' : ""}</strong>

@@ -69,8 +69,8 @@ export function mountAppShell(root = document.getElementById("app")) {
                 <strong>Yenilemek için çek</strong>
               </div>
               <div class="app-scroll" id="appRoot"></div>
-              <nav class="bottom-nav" aria-label="Alt navigasyon" id="bottomNav"></nav>
-              <div class="sheet-layer" id="sheetLayer" aria-live="polite"></div>
+              <nav class="bottom-nav" aria-label="Alt navigasyon" id="bottomNav" data-testid="app-bottom-bar"></nav>
+              <div class="sheet-layer" id="sheetLayer" data-testid="sidebar-overlay" aria-live="polite"></div>
               <div class="toast" id="toast"><svg class="icon"><use href="#i-check"></use></svg><span></span></div>
             </div>
           </div>

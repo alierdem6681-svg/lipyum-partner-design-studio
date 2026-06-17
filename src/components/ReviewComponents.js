@@ -50,6 +50,7 @@ export function ReviewFilterChips({ filters = [], activeFilter = "all" } = {}) {
           class="filter-chip ${activeFilter === filter.key ? "is-active" : ""}"
           type="button"
           data-review-filter="${filter.key}"
+          data-testid="reviews-filter-chip"
         >
           <span class="responsive-button-label">${filter.label}</span>
         </button>
@@ -61,7 +62,7 @@ export function ReviewFilterChips({ filters = [], activeFilter = "all" } = {}) {
 export function ReviewCard({ review = {}, icon = () => "" } = {}) {
   const needsReply = !review.replied;
   return `
-    <article class="review-card-v4">
+    <article class="review-card-v4" data-testid="review-card">
       <div class="review-card-avatar" aria-hidden="true">${escapeHtml(review.name || "?").trim().slice(0, 1)}</div>
       <div class="review-card-body">
         <div class="review-card-head">
@@ -75,7 +76,7 @@ export function ReviewCard({ review = {}, icon = () => "" } = {}) {
         <div class="review-card-foot">
           <span class="review-service-tag-v4">${icon("settings")} ${escapeHtml(review.service)}</span>
           ${needsReply
-            ? `<button class="review-inline-action" type="button" data-action="reply-review" data-review-name="${escapeHtml(review.name)}" data-review-text="${escapeHtml(review.text)}">${icon("message")} Yanıtla</button>`
+            ? `<button class="review-inline-action" type="button" data-action="reply-review" data-testid="review-reply-button" data-review-name="${escapeHtml(review.name)}" data-review-text="${escapeHtml(review.text)}">${icon("message")} Yanıtla</button>`
             : `<span class="review-replied-pill">${icon("check")} Yanıtlandı</span>`}
         </div>
         ${review.reply ? `

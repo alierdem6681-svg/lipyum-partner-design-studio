@@ -8,7 +8,7 @@ export function Header({
   backIcon = "",
 } = {}) {
   return `
-    <header class="page-header">
+    <header class="page-header" data-testid="app-header">
       ${showBack ? BackButton({ icon: backIcon }) : '<span class="page-header-spacer" aria-hidden="true"></span>'}
       <div class="page-header-copy">
         <h1>${title}</h1>

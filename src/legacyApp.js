@@ -1105,20 +1105,20 @@ mountAppShell();
         const [title, subtitle] = mainTitles[titleId] || mainTitles.home;
         if (titleId === "home") {
           return `
-            <header class="app-header home-header">
-              <button class="icon-btn" type="button" data-open="menu" aria-label="Menü">${icon("menu")}</button>
+            <header class="app-header home-header" data-testid="app-header">
+              <button class="icon-btn" type="button" data-open="menu" data-testid="hamburger-button" aria-label="Menü">${icon("menu")}</button>
               ${navAlertTicker()}
               <div class="header-actions">
-                <button class="icon-btn notification-btn" type="button" data-screen="notifications" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
-                <button class="icon-btn" type="button" data-screen="profile" aria-label="Profil">${icon("user")}</button>
+                <button class="icon-btn notification-btn" type="button" data-screen="notifications" data-testid="notification-button" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
+                <button class="icon-btn" type="button" data-screen="profile" data-testid="profile-button" aria-label="Profil">${icon("user")}</button>
               </div>
             </header>
           `;
         }
         if (back) {
           return `
-            <div class="back-head">
-              <button class="back-btn" type="button" data-screen="home" aria-label="Ana sayfaya dön">${icon("chevron-left")}</button>
+            <div class="back-head" data-testid="app-header">
+              <button class="back-btn" type="button" data-action="go-back" data-testid="back-button" aria-label="Geri dön">${icon("chevron-left")}</button>
               <div class="app-title">
                 <h2>${title}</h2>
                 <p>${subtitle}</p>
@@ -1127,17 +1127,17 @@ mountAppShell();
           `;
         }
         return `
-          <header class="app-header">
+          <header class="app-header" data-testid="app-header">
             <div class="row" style="gap:8px;justify-content:flex-start;flex:1">
-              <button class="icon-btn" type="button" data-open="menu" aria-label="Menü">${icon("menu")}</button>
+              <button class="icon-btn" type="button" data-open="menu" data-testid="hamburger-button" aria-label="Menü">${icon("menu")}</button>
               <div class="app-title">
                 <h2>${title}</h2>
                 <p>${subtitle}</p>
               </div>
             </div>
             <div class="header-actions">
-              <button class="icon-btn notification-btn" type="button" data-screen="notifications" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
-              <button class="icon-btn" type="button" data-screen="profile" aria-label="Profil">${icon("user")}</button>
+              <button class="icon-btn notification-btn" type="button" data-screen="notifications" data-testid="notification-button" aria-label="Bildirimler">${icon("bell")}${notificationUnreadCount() ? '<span class="header-notify-dot"></span>' : ""}</button>
+              <button class="icon-btn" type="button" data-screen="profile" data-testid="profile-button" aria-label="Profil">${icon("user")}</button>
             </div>
           </header>
         `;
@@ -2605,7 +2605,7 @@ mountAppShell();
       function renderReferralTaskCard(task) {
         if (task.type === "guide") {
           return `
-            <section class="card referral-task-card ${task.className}" aria-label="İlk partnerini kazan bilgilendirmesi">
+            <section class="card referral-task-card ${task.className}" data-testid="referral-partner-card" aria-label="İlk partnerini kazan bilgilendirmesi">
               <div class="referral-candidate-main referral-guide-main">
                 <span class="referral-guide-visual">${icon("users")}</span>
                 <span class="referral-candidate-copy">
@@ -2624,7 +2624,7 @@ mountAppShell();
           `;
         }
         return `
-          <section class="card referral-task-card ${task.className}" data-action="view-referral-partner" data-referral-person="${task.id}">
+          <section class="card referral-task-card ${task.className}" data-action="view-referral-partner" data-testid="referral-partner-card" data-referral-person="${task.id}">
             <div class="referral-candidate-main">
               <span class="referral-avatar" style="--avatar-bg:${task.avatarBg}">${task.initials}</span>
               <span class="referral-candidate-copy">
@@ -2651,8 +2651,9 @@ mountAppShell();
           { label: "Bakiye Yüklet", value: "3", iconName: "wallet", filter: "needTopup", color: "#175cd3" },
         ];
         return `
-          <div class="partner-earn-head app-header">
-            <button class="back-btn" type="button" data-screen="home" aria-label="Ana sayfaya dön">${icon("chevron-left")}</button>
+          <span class="sr-only" data-testid="referral-page">Partner Davet Programı</span>
+          <div class="partner-earn-head app-header" data-testid="app-header">
+            <button class="back-btn" type="button" data-action="go-back" data-testid="back-button" aria-label="Geri dön">${icon("chevron-left")}</button>
             <h2>Partner Davet Programı</h2>
             <button class="icon-btn" type="button" data-action="referral-info" aria-label="Partner kazan bilgi">${icon("help-circle")}</button>
           </div>
@@ -2682,7 +2683,7 @@ mountAppShell();
             </div>
             <div class="referral-phone-form">
               <input class="referral-phone-input" type="tel" inputmode="tel" placeholder="05xx xxx xx xx" aria-label="Davet edilecek cep telefonu" />
-              <button class="primary-btn" type="button" data-action="send-partner-invite">Davet Gönder</button>
+              <button class="primary-btn" type="button" data-action="send-partner-invite" data-testid="referral-invite-button">Davet Gönder</button>
             </div>
             <span class="referral-phone-note">${icon("check")} Aynı cep numarasıyla kayıt olursa partner senin davetinle kazanılmış sayılır.</span>
           </section>
@@ -2691,7 +2692,7 @@ mountAppShell();
             <h3>Görevlerin</h3>
             <button type="button" data-referral-filter="all">Tümünü gör ${icon("chevron-right")}</button>
           </div>
-          <div class="referral-task-carousel" data-referral-task-rail>
+          <div class="referral-task-carousel" data-referral-task-rail data-testid="referral-rail">
             ${taskCards.map(renderReferralTaskCard).join("")}
           </div>
           <div class="referral-task-dots" data-referral-task-dots aria-hidden="true">
@@ -2751,7 +2752,7 @@ mountAppShell();
           </section>
           <section class="card referral-list-card section">
             ${visiblePartners.length ? visiblePartners.map((partner, index) => `
-              <button class="referral-list-row" type="button" data-action="view-referral-partner" data-referral-person="${partner.id}" data-referral-list-row data-referral-list-index="${index}" data-referral-search-text="${escapeHtml(`${partner.name} ${partner.city} ${partner.stage} ${partner.status}`)}" ${index >= state.referralVisibleCount ? "hidden" : ""}>
+              <button class="referral-list-row" type="button" data-action="view-referral-partner" data-testid="referral-partner-card" data-referral-person="${partner.id}" data-referral-list-row data-referral-list-index="${index}" data-referral-search-text="${escapeHtml(`${partner.name} ${partner.city} ${partner.stage} ${partner.status}`)}" ${index >= state.referralVisibleCount ? "hidden" : ""}>
                 <span class="referral-avatar" style="--avatar-bg:${partner.avatarBg}">${partner.initials}</span>
                 <span>
                   <strong>${partner.name}</strong>
@@ -3171,7 +3172,7 @@ mountAppShell();
         const partner = selectedReferralPartner();
         const canEarn = partner.bonus !== "Kazanıldı";
         return `
-          <section class="sheet" role="dialog" aria-label="${partner.name} partner detayı">
+          <section class="sheet" role="dialog" data-testid="referral-partner-detail" aria-label="${partner.name} partner detayı">
             <div class="sheet-handle"></div>
             <div class="sheet-head">
               <div><h3>Partner Detayı</h3><p>Davet, iletişim ve bonus takibi.</p></div>
@@ -3453,7 +3454,7 @@ mountAppShell();
             : `data-action="${item.action || "menu-placeholder"}" data-label="${item.label}"`;
         const activeRoute = item.route && getCurrentRoute() === item.route;
         return `
-          <button class="drawer-menu-item ${activeRoute ? "is-active" : ""}" type="button" ${target} style="--drawer-item-color:${item.color}" aria-label="${item.label}" ${activeRoute ? 'aria-current="page"' : ""}>
+          <button class="drawer-menu-item ${activeRoute ? "is-active" : ""}" type="button" ${target} data-testid="sidebar-menu-item" style="--drawer-item-color:${item.color}" aria-label="${item.label}" ${activeRoute ? 'aria-current="page"' : ""}>
             <span class="drawer-menu-icon">${icon(item.icon)}</span>
             <span class="drawer-menu-copy">
               <strong data-fit-text data-fit-min="11" data-fit-max="14">${item.label}</strong>
@@ -3533,10 +3534,10 @@ mountAppShell();
 
       function menuSheet() {
         return `
-          <section class="sheet partner-menu" role="dialog" aria-label="Partner menüsü">
+          <section class="sheet partner-menu" role="dialog" data-testid="sidebar-drawer" aria-label="Partner menüsü">
             <div class="drawer-menu-head">
               ${drawerUpgradeBanner()}
-              <button class="drawer-close-btn" type="button" data-close aria-label="Menüyü kapat">${icon("x")}</button>
+              <button class="drawer-close-btn" type="button" data-close data-testid="sidebar-close" aria-label="Menüyü kapat">${icon("x")}</button>
             </div>
             <div class="drawer-scroll">
               ${drawerProfileCard()}
@@ -4238,7 +4239,15 @@ mountAppShell();
       }, true);
 
       document.addEventListener("click", (event) => {
-        const screenButton = event.target.closest("[data-screen]");
+        const open = event.target.closest("[data-open]");
+        if (!open) return;
+        event.preventDefault();
+        event.stopPropagation();
+        showSheet(open.dataset.open);
+      }, true);
+
+      document.addEventListener("click", (event) => {
+        const screenButton = event.target.closest("button[data-screen], a[data-screen], [role='button'][data-screen]");
         if (screenButton) {
           if (screenButton.classList.contains("back-btn")) {
             event.preventDefault();
@@ -4728,7 +4737,7 @@ mountAppShell();
       });
 
       document.getElementById("sheetLayer").addEventListener("click", (event) => {
-        if (event.target.id === "sheetLayer" && event.currentTarget.dataset.sheet !== "menu") closeSheet();
+        if (event.target.id === "sheetLayer") closeSheet();
       });
 
       function disablePageZoom() {

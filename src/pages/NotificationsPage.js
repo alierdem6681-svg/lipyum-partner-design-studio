@@ -21,6 +21,7 @@ export function NotificationsPage({ state = {}, icon = () => "" } = {}) {
   return PageContainer({
     className: "notifications-page",
     children: `
+      <span class="sr-only" data-testid="notifications-page">Bildirimler</span>
       ${Header({
         title: "Bildirimler",
         subtitle: "Önemli gelişmeler için bildirimleri takip et",

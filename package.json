@@ -12,6 +12,12 @@
     "test:screenshots": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
     "test:routes": "node_modules/node/bin/node tests/routes.smoke.js",
     "test:accessibility": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/accessibility.spec.js",
+    "test:sidebar": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js",
+    "test:bottom-bar": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/bottom-bar.spec.js",
+    "test:navigation-contract": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/navigation-contract.spec.js",
+    "test:forms": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/forms-and-filters.spec.js",
+    "test:interactions": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js tests/e2e/bottom-bar.spec.js tests/e2e/core-interactions.spec.js tests/e2e/navigation-contract.spec.js tests/e2e/forms-and-filters.spec.js",
+    "test:quality-gate": "node_modules/node/bin/node tests/quality-gate.mjs",
     "build": "node_modules/node/bin/node node_modules/vite/bin/vite.js build",
     "dev": "node_modules/node/bin/node node_modules/vite/bin/vite.js --host 0.0.0.0",
     "preview": "node_modules/node/bin/node node_modules/vite/bin/vite.js preview --host 0.0.0.0"

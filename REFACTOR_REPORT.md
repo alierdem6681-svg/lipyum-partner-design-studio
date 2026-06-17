@@ -2,6 +2,178 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 7 - Full Vue/Tailwind Migration, Interaction QA ve Quality Gate
+
+### 1. Genel durum
+
+- V7 fazında ana odak, temel interaction hatalarının tekrar kaçmasını önleyecek kalıcı test ve kalite kapısı altyapısı oldu.
+- Hamburger/sidebar P0 bug'ı yakalandı ve düzeltildi.
+- `#appRoot[data-screen]` container'ı, içerideki filter/load-more tıklamalarını yanlışlıkla screen navigation gibi yakalıyordu. Selector yalnızca gerçek `button/a/[role=button][data-screen]` tetikleyicilerine daraltıldı.
+- Refactor yüzdesi bu fazla yaklaşık %68 seviyesine yaklaştı; ancak tam Vue migration tamamlanmadı.
+- Kullanıcıya görünen bazı route'lar hâlâ legacy runtime içinde render ediliyor. Bunlar P0/P1 teknik borç olarak açık tutuldu.
+
+### 2. Vue migration
+
+- Bu fazda güvenli olmayan tam rewrite yapılmadı.
+- Vue foundation korunuyor; Vue UI Kit genişletildi.
+- Hâlihazırda modüler page/component yapısında olan ekranlar:
+  - Profile
+  - Notifications
+  - Support
+  - Reviews
+  - Wallet
+  - Leaderboard
+  - JobReferral
+  - UI Kit / Vue pilot route'ları
+- Hâlâ legacy ağırlıklı kalan ekranlar:
+  - HomePage
+  - Jobs/MyJobs/Calendar
+  - Partner Davet Programı'nın zengin kart/list detayları
+  - Packages/Subscription/PackageBuilder/PackageCheckout akışlarının önemli bölümleri
+- HomePage bu fazda rewrite edilmedi; bu iş ayrı, kontrollü bir migration fazı olarak ele alınmalı.
+
+### 3. Tailwind migration
+
+- Tailwind foundation korunuyor.
+- Vue UI Kit'e yeni componentler eklendi:
+  - `AppModal`
+  - `AppSheet`
+  - `AppDrawer`
+  - `AppTabs`
+  - `AppFilterChips`
+  - `AppLazyList`
+  - `AppHorizontalRail`
+  - `AppMetricCard`
+  - `AppStatusPill`
+  - `AppToast`
+  - `AppLoadingState`
+  - `AppErrorState`
+  - `AppSkeleton`
+- Yeni Vue componentleri static class/class-map yaklaşımına uygun yazıldı; runtime dynamic Tailwind class üretimi eklenmedi.
+- Legacy CSS hâlâ aktif. Tam Tailwind standardizasyon için legacy ekran migrationları devam etmeli.
+
+### 4. Header/navbar
+
+- Global `Header`, `BackButton`, Vue `AppHeader` ve legacy header markup'larına `data-testid="app-header"` standardı eklendi.
+- Legacy `/referral` özel header'ı aynı test sözleşmesine bağlandı.
+- Header görünürlüğü interaction testlerinde route bazında doğrulanıyor.
+- Hamburger butonu `data-testid="hamburger-button"` ile test kapsamına alındı.
+
+### 5. Interaction contract
+
+- Yeni dosya: `INTERACTION_CONTRACT.md`.
+- Sözleşmeye alınan ana davranışlar:
+  - Hamburger sidebar açar.
+  - Sidebar close ve overlay kapatır.
+  - Bildirim/profil butonları doğru route'a gider.
+  - Back button stack/fallback mantığıyla çalışır.
+  - Bottom bar route'ları doğru route'a gider.
+  - Reviews, Wallet, Leaderboard filter/load-more aksiyonları çalışır.
+  - Referral ve Packages kritik aksiyonları test edilebilir isimlere sahiptir.
+
+### 6. Data-testid standardı
+
+- Eklenen/kullanıma alınan kritik test id'ler:
+  - `app-header`
+  - `app-bottom-bar`
+  - `hamburger-button`
+  - `sidebar-drawer`
+  - `sidebar-close`
+  - `sidebar-overlay`
+  - `notification-button`
+  - `profile-button`
+  - `back-button`
+  - `bottom-tab-home`
+  - `bottom-tab-jobs`
+  - `bottom-tab-calendar`
+  - `bottom-tab-wallet`
+  - `bottom-cta-job`
+  - `notifications-page`
+  - `notifications-filter-all`
+  - `notifications-mark-read`
+  - `notification-card`
+  - `reviews-page`
+  - `reviews-filter-chip`
+  - `review-card`
+  - `review-reply-button`
+  - `wallet-page`
+  - `wallet-topup-button`
+  - `wallet-convert-bonus-button`
+  - `wallet-transaction-card`
+  - `wallet-load-more`
+  - `leaderboard-page`
+  - `leaderboard-sector-select`
+  - `leaderboard-city-select`
+  - `leaderboard-rank-row`
+  - `leaderboard-load-more`
+  - `referral-page`
+  - `referral-invite-button`
+  - `referral-rail`
+  - `referral-partner-card`
+  - `referral-partner-detail`
+
+### 7. Test suite
+
+- Yeni test dosyaları:
+  - `tests/e2e/sidebar.spec.js`
+  - `tests/e2e/bottom-bar.spec.js`
+  - `tests/e2e/core-interactions.spec.js`
+  - `tests/e2e/navigation-contract.spec.js`
+  - `tests/e2e/forms-and-filters.spec.js`
+  - `tests/e2e/quality-gate.spec.js`
+- Yeni npm scriptleri:
+  - `test:sidebar`
+  - `test:bottom-bar`
+  - `test:navigation-contract`
+  - `test:forms`
+  - `test:interactions`
+  - `test:quality-gate`
+- `test:interactions` ilk koşuda gerçek hataları yakaladı; düzeltmelerden sonra 41 test temiz geçti.
+- Tam kalite kapısı koşusu tamamlandı; `npm run test:quality-gate` tüm alt komutlarla birlikte temiz geçti.
+
+### 8. Quality Gate
+
+- Yeni dosya: `QUALITY_GATE.md`.
+- Yeni tek komut: `npm run test:quality-gate`.
+- Kalite kapısı şu komutları sırayla çalıştırır:
+  - `npm run check`
+  - `npm run lint`
+  - `npm run test`
+  - `npm run test:routes`
+  - `npm run test:e2e`
+  - `npm run test:e2e:mobile`
+  - `npm run test:accessibility`
+  - `npm run test:interactions`
+  - `npm run test:screenshots`
+  - `npm run build`
+  - `git diff --check`
+- Bu fazda kalite kapısı sonucu: başarılı.
+
+### 9. Kalan teknik borç
+
+P0:
+
+- Full Vue migration kabul kriteri henüz tamamlanmadı. Kullanıcıya görünen tüm route'lar Vue page değil.
+- HomePage legacy runtime'da kalıyor.
+- Jobs/MyJobs/Calendar ekranları legacy ağırlıklı.
+
+P1:
+
+- Partner Davet Programı, Packages, Subscription, PackageBuilder ve PackageCheckout ekranları Vue/Tailwind page/component yapısına taşınmalı.
+- Legacy CSS bağımlılığı azaltılmalı.
+- `legacyApp.js` sadece compatibility katmanı olacak seviyeye düşürülmeli.
+
+P2:
+
+- Vue UI Kit yeni eklenen componentler canlı route'larda daha yaygın kullanılmalı.
+- Screenshot smoke görsel karşılaştırmaya dönüştürülebilir.
+- CI/CD üzerinde kalite kapısı zorunlu hale getirilebilir.
+
+### 10. Bir sonraki önerilen adım
+
+- En doğru sonraki faz: HomePage Vue migration ve Packages/Subscription akışlarının Vue component yapısına taşınması.
+- Ardından legacyApp.js içindeki kullanıcıya görünen render fonksiyonları tek tek kaldırılmalı.
+
 ## Faz 6 - Mobile Geometry, iPhone Simulator ve Layout Consistency
 
 ### 1. Genel durum

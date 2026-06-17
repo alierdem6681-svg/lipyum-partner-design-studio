@@ -27,6 +27,7 @@ export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
   return PageContainer({
     className: "leaderboard-page-v4",
     children: `
+      <span class="sr-only" data-testid="leaderboard-page">Liderlik Tablosu</span>
       ${Header({
         title: "Liderlik Tablosu",
         subtitle: `${activeLeaderboard.period} · Sıralamanı takip et`,

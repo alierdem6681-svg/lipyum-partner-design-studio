@@ -5,6 +5,13 @@ export function renderBottomBar({
   icon,
   badgeSnapshot = new Map(),
 } = {}) {
+  const testIdByItem = {
+    home: "bottom-tab-home",
+    jobs: "bottom-tab-jobs",
+    work: "bottom-cta-job",
+    calendar: "bottom-tab-calendar",
+    wallet: "bottom-tab-wallet",
+  };
   const renderIcon = (item) => item.featured
     ? `<span class="cta-lightning-wrap" aria-hidden="true">${icon(item.icon)}</span>`
     : icon(item.icon);
@@ -21,6 +28,7 @@ export function renderBottomBar({
           class="bottom-item ${active ? "active" : ""} ${item.featured ? `featured cta-fab cta-fab--${ctaVariant}` : ""}"
           type="button"
           data-screen="${item.id}"
+          data-testid="${testIdByItem[item.id] || `bottom-tab-${item.id}`}"
           aria-label="${item.label}"
           ${active ? 'aria-current="page"' : ""}
         >

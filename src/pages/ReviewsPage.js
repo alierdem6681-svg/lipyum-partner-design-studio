@@ -38,6 +38,7 @@ export function ReviewsPage({ state = {}, icon = () => "" } = {}) {
   return PageContainer({
     className: "reviews-page-v4",
     children: `
+      <span class="sr-only" data-testid="reviews-page">Müşteri Yorumları</span>
       ${Header({
         title: "Müşteri Yorumları",
         subtitle: "Değerlendirme ve geri bildirimler",
