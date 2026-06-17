@@ -10,6 +10,7 @@ export { HomePage } from "./HomePage.js";
 export { IncomeExpensePage } from "./IncomeExpensePage.js";
 export { InvoicesPage } from "./InvoicesPage.js";
 export { JobPage } from "./JobPage.js";
+export { JobReferralPage } from "./JobReferralPage.js";
 export { LeaderboardPage } from "./LeaderboardPage.js";
 export { MessagesPage } from "./MessagesPage.js";
 export { MyJobsPage } from "./MyJobsPage.js";

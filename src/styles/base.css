@@ -1,1 +1,35 @@
 /* Base reset layer for the modular app. Existing detailed reset is preserved in pages.css while screens migrate. */
+
+html,
+body {
+  font-family: var(--font-family-base);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.u-nowrap {
+  white-space: nowrap;
+}
+
+.u-ellipsis,
+.u-label-fit,
+.responsive-label,
+.responsive-button-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.responsive-label {
+  font-size: clamp(11.5px, 3vw, 14px);
+}
+
+.responsive-button-label {
+  font-size: clamp(11.5px, 3vw, 13.5px);
+}

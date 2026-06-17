@@ -11,6 +11,7 @@ import {
   IncomeExpensePage,
   InvoicesPage,
   JobPage,
+  JobReferralPage,
   LeaderboardPage,
   MessagesPage,
   MyJobsPage,
@@ -39,6 +40,7 @@ import {
 export const pageRoutes = {
   "/home": HomePage,
   "/jobs": JobPage,
+  "/job-referral": JobReferralPage,
   "/my-jobs": MyJobsPage,
   "/calendar": CalendarPage,
   "/wallet": WalletPage,

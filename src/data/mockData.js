@@ -99,6 +99,22 @@ export const referralPartners = [
   { id: "derya-aksoy", name: "Derya Aksoy", city: "Bursa", status: "Bakiye yüklet", reward: "%3" },
 ];
 
+export const jobReferralProgram = {
+  title: "İş Yönlendirme Programı",
+  description: "Servis talebi gönder, iş gerçekleşirse kazanç elde et.",
+  steps: [
+    { title: "Müşteri bilgisini gir", description: "Talep sahibinin temel iletişim ve servis bilgisini ekle." },
+    { title: "Lipyum işi doğrular", description: "Ekip talebi kontrol eder ve uygun hizmet akışına alır." },
+    { title: "Uygun partner işi yapar", description: "Bölgede müsait partner işi üstlenir ve süreci tamamlar." },
+    { title: "İş gerçekleşince kazan", description: "Tamamlanan işten bonus, nakit veya komisyon kazancı oluşur." },
+  ],
+  earnings: [
+    { title: "Bonus", description: "Tamamlanan yönlendirmeler bonus kazandırabilir.", icon: "gift" },
+    { title: "Nakit", description: "Uygun kampanyalarda nakit kazanç oluşabilir.", icon: "wallet" },
+    { title: "Komisyon", description: "İş bedeline göre komisyon modeli uygulanabilir.", icon: "trend-up" },
+  ],
+};
+
 export const reviews = [
   { id: "r1", name: "Elif Y.", rating: 5, service: "Klima Tamiri", text: "Hızlı dönüş yaptı, servis süreci çok düzenliydi.", replied: false },
   { id: "r2", name: "Murat K.", rating: 4, service: "Kombi Bakımı", text: "Randevu saatine uydu ve işlemi temiz anlattı.", replied: true },

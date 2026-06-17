@@ -27,12 +27,12 @@
         --soft-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
         --radius-card: 13px;
         --radius-button: 11px;
-        --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Roboto", "Inter", "Segoe UI", sans-serif;
-        --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Roboto", "Inter", "Segoe UI", sans-serif;
-        --font-regular: 400;
-        --font-medium: 500;
-        --font-semibold: 600;
-        --font-bold: 700;
+        --font-display: var(--font-family-base);
+        --font-text: var(--font-family-base);
+        --font-regular: var(--weight-regular);
+        --font-medium: var(--weight-medium);
+        --font-semibold: var(--weight-semibold);
+        --font-bold: var(--weight-bold);
         --iphone15-screen-width: 393px;
         --iphone15-screen-height: 852px;
         --iphone15-frame-padding: 14px;
@@ -2485,6 +2485,11 @@
         text-overflow: clip;
       }
 
+      .bottom-item span[data-fit-text] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .bottom-item .icon {
         width: 24px;
         height: 24px;
@@ -2577,28 +2582,11 @@
           inset 0 3px 5px rgba(255, 255, 255, 0.28),
           inset 0 -10px 16px rgba(0, 78, 38, 0.3),
           0 0 0 4px rgba(255, 255, 255, 0.98);
-        animation:
-          ctaFabBreathe 3.2s ease-in-out infinite,
-          ctaGradientDrift 8s ease-in-out infinite;
+        animation: ctaFabBreathe 3.2s ease-in-out infinite;
       }
 
       .cta-lightning-wrap::before {
-        content: "";
-        position: absolute;
-        inset: 6px;
-        z-index: 1;
-        border-radius: 999px;
-        background:
-          radial-gradient(ellipse at 16% 18%, rgba(255, 255, 255, 0.66) 0 9%, transparent 30%),
-          radial-gradient(ellipse at 84% 28%, rgba(255, 255, 255, 0.34) 0 12%, transparent 35%),
-          radial-gradient(ellipse at 70% 88%, rgba(255, 255, 255, 0.48) 0 10%, transparent 33%),
-          radial-gradient(ellipse at 26% 74%, rgba(255, 255, 255, 0.32) 0 14%, transparent 38%);
-        background-size: 220% 220%, 210% 210%, 230% 230%, 240% 240%;
-        filter: blur(3.6px);
-        opacity: 0;
-        transform: scale(1.03) rotate(0deg);
-        animation: ctaMistCloud 13.5s ease-in-out 2s infinite;
-        pointer-events: none;
+        content: none;
       }
 
       .cta-lightning-wrap::after {
@@ -4353,6 +4341,23 @@
         color: #1d2939;
         font-size: 13.2px;
         font-weight: 800;
+        line-height: 1.2;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .drawer-menu-copy {
+        min-width: 0;
+        display: grid;
+        gap: 2px;
+      }
+
+      .drawer-menu-copy small {
+        display: block;
+        overflow: hidden;
+        color: #667085;
+        font-size: 11px;
+        font-weight: 650;
         line-height: 1.2;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -7910,16 +7915,16 @@
 
       .referral-task-carousel {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         overflow-x: auto;
         overflow-y: hidden;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x proximity;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        touch-action: pan-x;
         overscroll-behavior-x: contain;
         scrollbar-width: none;
-        padding: 1px 1px 4px;
+        padding: 1px 12px 6px 1px;
         cursor: grab;
         user-select: none;
         -webkit-user-select: none;
@@ -7942,7 +7947,7 @@
         padding: 12px;
         border-radius: 14px;
         scroll-snap-align: start;
-        flex: 0 0 calc(100% - 18px);
+        flex: 0 0 min(86%, 330px);
       }
 
       .referral-task-card.invited {

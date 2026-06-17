@@ -25,7 +25,7 @@ export function renderBottomBar({
           ${active ? 'aria-current="page"' : ""}
         >
           ${renderIcon(item)}
-          <span>${item.label}</span>
+          <span data-fit-text data-fit-min="11" data-fit-max="12">${item.label}</span>
           ${item.badge ? `<em class="bottom-badge${badgeClass}">${item.badge}</em>` : ""}
         </button>
       `;

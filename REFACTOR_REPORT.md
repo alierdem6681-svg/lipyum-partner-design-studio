@@ -2,6 +2,144 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 3 - V3 Layout, Typography, Sidebar ve Kazanç Ortaklığı Stabilizasyonu
+
+### 1. Genel durum
+
+- V3 tamamlanma seviyesi: yaklaşık %62.
+- Global typography tokenları genişletildi ve yeni/eski ekranlar aynı sistem font ailesine bağlandı.
+- Tek satır/ellipsis utility sistemi eklendi.
+- Header ve PageContainer token bazlı sabit layout'a yaklaştırıldı.
+- Bildirimler ekranında header/sticky aksiyon satırı aynı yükseklik tokenlarını kullanacak şekilde stabilize edildi.
+- Sidebar bilgi mimarisi V3 yapısına taşındı.
+- Kazanç Ortaklığı artık üst grup başlığı oldu; altında Partner Davet Programı ve İş Yönlendirme Programı yer alıyor.
+- `/job-referral` route/page eklendi.
+- Partner Davet Programı yatay görev kartları PC ve mobilde daha kolay kaydırılacak şekilde iyileştirildi.
+
+Hâlâ legacy olan zengin ekranlar:
+
+- HomePage
+- WalletPage
+- ReviewsPage
+- LeaderboardPage
+- Packages/Subscription akışının büyük bölümü
+
+### 2. Global typography
+
+- `src/styles/tokens.css` içine merkezi font ailesi eklendi:
+  `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Roboto", "Inter", "Noto Sans", "Segoe UI", sans-serif`
+- Font size tokenları eklendi: micro, caption, small, body, body-lg, card-title, section-title, page-title, metric-md, metric-lg.
+- Line-height tokenları eklendi: tight, normal, relaxed.
+- Weight tokenları eklendi: regular, medium, semibold, bold, extra-bold.
+- Eski legacy `--font-display` ve `--font-text` değişkenleri yeni `--font-family-base` tokenına bağlandı.
+
+### 3. Text overflow / tek satır sistemi
+
+Eklenen utility class'lar:
+
+- `.u-nowrap`
+- `.u-ellipsis`
+- `.u-label-fit`
+- `.responsive-label`
+- `.responsive-button-label`
+
+Eklenen yardımcı:
+
+- `fitTextToContainer(root)` opt-in olarak `data-fit-text` verilen kritik etiketlerde fontu container'a göre küçültür.
+
+Uygulanan alanlar:
+
+- Bottom bar label'ları
+- Sidebar menu label'ları
+- Yeni component header title/subtitle alanları
+- Yeni buton label yapısı
+
+### 4. Layout stabilizasyon
+
+- `PageContainer` bottom padding'i token bazlı hale getirildi.
+- `Header` min-height, title/subtitle ellipsis ve 44px aksiyon alanı düzenine yaklaştırıldı.
+- Notifications header sticky alanı `--lp-header-height` kullanıyor.
+- Notification action row header altında aynı offset ile çalışıyor.
+- BottomBar component mimarisi korunarak label fit desteği eklendi.
+- CTA varyant sistemi mevcut `getCtaVariant()` ile devam ediyor: home/subpage/hidden.
+
+### 5. Sidebar
+
+- Sidebar'dan ayrı `Partnerlerim` menüsü kaldırıldı.
+- Büyüme grubu şu hale getirildi:
+  Liderlik Tablosu, Müşteri Yorumları, Paketler, Aboneliğim.
+- Yeni Kazanç Ortaklığı grubu eklendi:
+  Partner Davet Programı, İş Yönlendirme Programı.
+- Finans grubu genişletildi:
+  Hesap Hareketleri, Kredi Geçmişi, Bonus Geçmişi, Gelir / Gider, Faturalarım.
+- Destek grubu eklendi:
+  Yardım ve Destek.
+- Sidebar item'ları route-driven çalışmayı sürdürüyor.
+- Sidebar label ve açıklamaları tek satır ellipsis ile güvenli hale getirildi.
+
+### 6. Partner Davet Programı
+
+- Route: `/referral`
+- Başlık: Partner Davet Programı.
+- Açıklama: Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan.
+- Mevcut zengin Kazanç Ortaklığı içeriği bu route altında korunuyor.
+- Eski Partnerlerim listesi `/partners` route'u olarak erişilebilir kalıyor, ancak sidebar'dan kaldırıldı; programın alt akışı olarak korunacak.
+- Görev/kart rail için kaydırma iyileştirildi:
+  `overflow-x:auto`, `display:flex`, `gap:12px`, `scroll-snap-type:x proximity`, `-webkit-overflow-scrolling:touch`, `touch-action:pan-x`, kartlar `flex:0 0 min(86%,330px)`.
+- Mouse sürükleme eşiği 14px'ten 6px'e indirildi.
+
+### 7. İş Yönlendirme Programı
+
+- Route: `/job-referral`
+- Dosya: `src/pages/JobReferralPage.js`
+- Sayfa scaffold değil; gerçek temel içerik içeriyor:
+  İş yönlendirme hero alanı, dört adımlı süreç, kazanç türleri ve güvenli mock bilgi kartı.
+- CTA: İş Gönder.
+- Veri kaynağı: `src/data/mockData.js` içindeki `jobReferralProgram`.
+
+### 8. Navigation
+
+- `createNavigationController` merkezi yapı olarak korunuyor.
+- `ROUTE_TO_SCREEN` içine `/job-referral` eklendi.
+- `ROUTE_TITLES` yeni isimlerle güncellendi.
+- Sidebar ve yeni sayfa route map'e bağlandı.
+- `goBack()` merkezi davranışı korunuyor.
+- Legacy screen fallback hâlâ bazı zengin ekranlarda var.
+
+### 9. Test
+
+- `npm run check`: geçti.
+- `node --check`: `npm run check` kapsamında tüm `src/**/*.js` dosyalarında geçti.
+- `git diff --check`: geçti.
+- Route smoke test: `/home`, `/profile`, `/notifications`, `/support`, `/referral`, `/job-referral`, `/reviews`, `/wallet`, `/leaderboard` için route/screen/CTA map doğrulandı.
+- Responsive manuel görsel test: Bu ortamda Playwright/Puppeteer/Chromium yok; otomatik screenshot alınamadı.
+
+### 10. Kalan teknik borç
+
+P0:
+
+- ReviewsPage, WalletPage ve LeaderboardPage zengin legacy render'dan gerçek page/component yapısına taşınmalı.
+- HomePage migration planı çıkarılmalı; en son taşınmalı.
+
+P1:
+
+- Partner Davet Programı içindeki `/partners` liste/detay akışı `/referral` sayfası altında component sınırıyla yeniden düzenlenmeli.
+- Sidebar'ın legacy drawer markup'ı yeni `Sidebar` componentine tamamen taşınmalı.
+- Notification/Support dışındaki zengin ekranlarda Header/PageContainer standardı tam uygulanmalı.
+
+P2:
+
+- Mock service layer genişletilmeli: referralService, jobReferralService, walletService, reviewsService, leaderboardService.
+- CSS legacy blokları component dosyalarına kademeli taşınmalı.
+- Görsel regression test altyapısı eklenmeli.
+
+### 11. Bir sonraki önerilen adım
+
+1. ReviewsPage migration
+2. WalletPage migration
+3. LeaderboardPage migration
+4. HomePage migration hazırlığı
+
 ## 0. Faz 2.2 - Navigation Core ve İlk Stabilizasyon
 
 - Navigation core `src/utils/navigation.js` içine taşındı.

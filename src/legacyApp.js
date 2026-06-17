@@ -2,6 +2,7 @@ import { mountAppShell } from "./components/AppShell.js";
 import { createUiState, navigationStack } from "./state.js";
 import { renderBottomBar } from "./components/BottomBar.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
+import { fitTextToContainer } from "./utils/dom.js";
 import { createNavigationController } from "./utils/navigation.js";
 import {
   pageRoutes,
@@ -44,7 +45,7 @@ mountAppShell();
         { id: "bonus", label: "Bonus Cüzdanı", short: "240", icon: "wallet", desc: "Bonus ve krediye çevirme" },
         { id: "support", label: "Sorun Takibi", short: "LP", icon: "headphones", desc: "Ticket ve destek konuları" },
         { id: "messages", label: "Destek / Mesaj Kutusu", short: "Mesaj", icon: "message", desc: "Danışman ve mesaj takibi" },
-        { id: "referral", label: "Partnerlerim", short: "Davet", icon: "share", desc: "Partner davetleri ve ödüller" },
+        { id: "referral", label: "Partner Davet Programı", short: "Davet", icon: "share", desc: "Partner davetleri ve ödüller" },
         { id: "levels", label: "Partner Seviyeleri", short: "Rozet", icon: "sparkles", desc: "Seviye ve profesyonel rozetler" },
         { id: "customers", label: "Müşteri Defteri", short: "CRM", icon: "users", desc: "Kendi müşterilerini takip et" },
         { id: "appointmentLink", label: "Randevu Linki / QR", short: "QR", icon: "qr", desc: "Kısa link ve QR paylaşımı" },
@@ -77,8 +78,9 @@ mountAppShell();
         bonus: ["Bonus Cüzdanı", "Bonus bakiyeni ve krediye çevirme şartını takip et"],
         support: ["Yardım ve Destek", "Sorununu seç, hızlıca çözelim"],
         messages: ["Destek / Mesaj Kutusu", "Danışman mesajları ve ticket takibi"],
-        referral: ["Partner Kazan", "Davet, bonus ve partner özeti"],
-        referralList: ["Partnerlerim", "Davet ettiğin partnerler"],
+        referral: ["Partner Davet Programı", "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan"],
+        referralList: ["Davet Ettiğin Partnerler", "Partner davetlerini ve bonus aşamalarını takip et"],
+        jobReferral: ["İş Yönlendirme Programı", "Servis talebi gönder, iş gerçekleşirse kazanç elde et"],
         referralEarnings: ["Kazançlarım", "Bonus kazanç geçmişi ve detayları"],
         growthPackages: ["Büyüme Paketleri", "Premium paketlerle daha fazla iş fırsatı"],
         growthPackageBuilder: ["Paket Seçimi", "Sektör, il ve ilçe seçimi"],
@@ -1166,6 +1168,7 @@ mountAppShell();
           support: () => pageRoutes["/support"]({ state, icon }),
           messages: () => pageRoutes["/support"]({ state, icon }),
           referral: renderReferral,
+          jobReferral: () => pageRoutes["/job-referral"]({ state, icon }),
           referralList: renderReferralList,
           referralEarnings: renderReferralEarnings,
           growthPackages: renderGrowthPackages,
@@ -1188,6 +1191,7 @@ mountAppShell();
         initReferralInfiniteScroll();
         initNotificationInfiniteScroll();
         initReferralTaskCarousel();
+        fitTextToContainer(root);
         renderSidePanel();
         renderBottomNav();
       }
@@ -1308,7 +1312,7 @@ mountAppShell();
         let startScrollLeft = 0;
         let startIndex = 0;
         let lastDeltaX = 0;
-        const dragSnapThreshold = 14;
+        const dragSnapThreshold = 6;
         const closestIndex = () => {
           let index = 0;
           let closestDistance = Infinity;
@@ -1372,7 +1376,7 @@ mountAppShell();
           if (!isDragging) return;
           const deltaX = event.clientX - startX;
           lastDeltaX = deltaX;
-          if (Math.abs(deltaX) > 2) dragStarted = true;
+          if (Math.abs(deltaX) > 1) dragStarted = true;
           rail.scrollLeft = startScrollLeft - deltaX;
           if (dragStarted) event.preventDefault();
         });
@@ -2623,7 +2627,7 @@ mountAppShell();
         return `
           <div class="partner-earn-head">
             <button class="back-btn" type="button" data-screen="home" aria-label="Ana sayfaya dön">${icon("chevron-left")}</button>
-            <h2>Partner Kazan</h2>
+            <h2>Partner Davet Programı</h2>
             <button class="icon-btn" type="button" data-action="referral-info" aria-label="Partner kazan bilgi">${icon("help-circle")}</button>
           </div>
 
@@ -3425,7 +3429,10 @@ mountAppShell();
         return `
           <button class="drawer-menu-item ${activeRoute ? "is-active" : ""}" type="button" ${target} style="--drawer-item-color:${item.color}" aria-label="${item.label}" ${activeRoute ? 'aria-current="page"' : ""}>
             <span class="drawer-menu-icon">${icon(item.icon)}</span>
-            <strong>${item.label}</strong>
+            <span class="drawer-menu-copy">
+              <strong data-fit-text data-fit-min="11" data-fit-max="14">${item.label}</strong>
+              ${item.description ? `<small>${item.description}</small>` : ""}
+            </span>
             ${icon("chevron-right")}
           </button>
         `;

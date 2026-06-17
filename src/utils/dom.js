@@ -15,3 +15,18 @@ export function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+export function fitTextToContainer(root = document) {
+  const labels = qsa("[data-fit-text]", root);
+  labels.forEach((label) => {
+    const min = Number(label.dataset.fitMin || 11);
+    const max = Number(label.dataset.fitMax || parseFloat(getComputedStyle(label).fontSize) || 14);
+    label.style.fontSize = `${max}px`;
+
+    let next = max;
+    while (label.scrollWidth > label.clientWidth && next > min) {
+      next -= 0.5;
+      label.style.fontSize = `${next}px`;
+    }
+  });
+}
