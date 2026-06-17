@@ -1,0 +1,22 @@
+/* Design tokens are kept here for new modular components. Legacy-compatible styles live in pages.css during the migration. */
+:root {
+  --lp-green: #12b76a;
+  --lp-green-dark: #079455;
+  --lp-border: #e5e7eb;
+  --lp-ink: #101828;
+  --lp-muted: #667085;
+  --lp-card: #ffffff;
+  --lp-radius-card: 13px;
+  --lp-radius-pill: 999px;
+  --lp-soft-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
+  --lp-font-xs: 12px;
+  --lp-font-sm: 13px;
+  --lp-font-md: 15px;
+  --lp-font-lg: 18px;
+  --lp-font-xl: 22px;
+  --lp-space-1: 4px;
+  --lp-space-2: 8px;
+  --lp-space-3: 12px;
+  --lp-space-4: 16px;
+  --lp-space-5: 20px;
+}

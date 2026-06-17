@@ -1,0 +1,36 @@
+import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "./utils/constants.js";
+export { pageRoutes } from "./pages/routePages.js";
+
+export const routeToScreen = ROUTE_TO_SCREEN;
+
+export const screenToRoute = Object.entries(routeToScreen).reduce((routes, [route, screen]) => {
+  if (!routes[screen]) routes[screen] = route;
+  return routes;
+}, {});
+
+export const routeTitles = ROUTE_TITLES;
+
+export function normalizeRoute(route) {
+  const raw = String(route || "/home").replace(/^#/, "");
+  const withSlash = raw.startsWith("/") ? raw : `/${raw}`;
+  return routeToScreen[withSlash] ? withSlash : "/home";
+}
+
+export function getScreenForRoute(route) {
+  return routeToScreen[normalizeRoute(route)] || "home";
+}
+
+export function getRouteForScreen(screen) {
+  return screenToRoute[screen] || "/home";
+}
+
+export function getTitleForRoute(route) {
+  return routeTitles[normalizeRoute(route)] || routeTitles["/home"];
+}
+
+export function getCtaVariant(route) {
+  const normalized = normalizeRoute(route);
+  if (normalized === "/home") return "home";
+  if (["/package-checkout"].includes(normalized)) return "hidden";
+  return "subpage";
+}
