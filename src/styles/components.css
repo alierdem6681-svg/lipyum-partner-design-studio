@@ -444,33 +444,6 @@
   50% { opacity: 1; transform: translateY(-3px); }
 }
 
-.region-activity-list {
-  display: grid;
-  gap: 8px;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.region-activity-list li {
-  display: grid;
-  grid-template-columns: 8px minmax(0, 1fr);
-  align-items: start;
-  gap: 8px;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.region-activity-list li span {
-  width: 8px;
-  height: 8px;
-  margin-top: 4px;
-  border-radius: 999px;
-  background: var(--color-primary);
-}
-
 .ui-badge--success,
 .ui-chip--success {
   border: 1px solid #bbf7d0;

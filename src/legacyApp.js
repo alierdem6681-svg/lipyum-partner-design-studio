@@ -1279,19 +1279,20 @@ mountAppShell();
           regionActivityTimer = null;
         }
 
-        const activity = document.querySelector("[data-region-activity]");
-        if (!activity) return;
+        const activityText = document.querySelector("[data-region-activity-text]");
+        const activityMessage = document.querySelector("[data-region-activity-message]");
+        if (!activityText || !activityMessage) return;
 
         let index = 0;
-        activity.textContent = regionActivityMessages[index];
-        activity.classList.add("is-rolling");
+        activityText.textContent = regionActivityMessages[index];
+        activityMessage.classList.add("is-rolling");
         regionActivityTimer = setInterval(() => {
           index = (index + 1) % regionActivityMessages.length;
-          activity.textContent = regionActivityMessages[index];
-          activity.classList.remove("is-rolling");
-          void activity.offsetWidth;
-          activity.classList.add("is-rolling");
-        }, 5200);
+          activityText.textContent = regionActivityMessages[index];
+          activityMessage.classList.remove("is-rolling");
+          void activityMessage.offsetWidth;
+          activityMessage.classList.add("is-rolling");
+        }, 3600);
       }
 
       function initReviewInfiniteScroll() {
@@ -1687,7 +1688,7 @@ mountAppShell();
 
           <section class="card card-pad section region-home-card">
             <div class="region-card-head">
-              <h3>Bölgendeki Son 3 Aktivite</h3>
+              <h3>Bölgendeki İşler</h3>
               <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
                 ${["Bugün", "Dün"].map((d) => `<button class="chip-btn ${state.regionFilter === d ? "active" : ""}" type="button" data-region-filter="${d}">${d}</button>`).join("")}
               </div>
@@ -1697,9 +1698,12 @@ mountAppShell();
               <div class="kpi-tile"><span>Tamamlanan İş</span><strong>${regionJobCount()}</strong><em class="region-kpi-icon">${icon("briefcase")}</em></div>
               <div class="kpi-tile"><span>Teklifler</span><strong>128</strong><em class="region-kpi-icon">${icon("file-text")}</em></div>
             </div>
-            <ul class="region-activity-list" data-testid="home-region-activity">
-              ${regionActivityMessages.map((message) => `<li><span></span>${message}</li>`).join("")}
-            </ul>
+            <div class="region-activity-board" data-testid="home-region-activity" role="status" aria-live="polite" aria-label="Bölgedeki iş bildirimi">
+              <div class="region-activity-message" data-region-activity-message>
+                <span class="region-activity-dot" aria-hidden="true"></span>
+                <span data-region-activity-text>${regionActivityMessages[0]}</span>
+              </div>
+            </div>
           </section>
 
         `;
