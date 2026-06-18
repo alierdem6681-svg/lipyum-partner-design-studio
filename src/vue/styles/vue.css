@@ -52,9 +52,9 @@
   min-height: calc(var(--top-safe-space, 58px) + var(--header-height, 58px));
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) minmax(44px, auto);
-  align-items: center;
+  align-items: start;
   gap: 8px;
-  padding: var(--top-safe-space, 58px) var(--page-x-padding, 12px) 0;
+  padding: calc(var(--top-safe-space, 58px) + 2px) var(--page-x-padding, 12px) 0;
   margin-bottom: 12px;
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -67,6 +67,7 @@
 }
 
 .v-header__action {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -77,6 +78,19 @@
   box-shadow: var(--shadow-soft);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+.v-header__notify-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: var(--radius-pill);
+  background: #12b76a;
+  box-shadow: 0 0 0 2px rgba(18, 183, 106, 0.18), 0 2px 5px rgba(6, 118, 71, 0.22);
+  box-sizing: border-box;
 }
 
 .v-header__actions {
@@ -92,23 +106,27 @@
   text-align: center;
 }
 
+.v-header[data-header-variant="section"] .v-header__copy {
+  text-align: left;
+}
+
 .v-header__copy h1 {
   margin: 0;
   color: var(--text-primary);
-  font-size: var(--font-size-page-title);
-  font-weight: var(--weight-extra-bold);
-  line-height: var(--line-tight);
+  font-size: 22px;
+  font-weight: var(--weight-bold);
+  line-height: 1.08;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .v-header__copy p {
-  margin: 3px 0 0;
+  margin: 4px 0 0;
   color: var(--text-muted);
-  font-size: var(--font-size-caption);
-  font-weight: var(--weight-semibold);
-  line-height: var(--line-tight);
+  font-size: 11.5px;
+  font-weight: 550;
+  line-height: 1.42;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -295,8 +313,11 @@
 }
 
 .v-chip {
-  min-height: 28px;
-  padding: 0 10px;
+  min-height: 25.3px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 10.8px;
+  line-height: 1.42;
 }
 
 .v-chip > span,
@@ -341,6 +362,13 @@
   border-color: var(--color-danger-border);
 }
 
+.v-chip--purple,
+.v-badge--purple {
+  background: #f4f3ff;
+  color: #5925dc;
+  border-color: #d9d6fe;
+}
+
 .v-badge {
   min-height: 22px;
   padding: 0 8px;
@@ -374,8 +402,8 @@
   min-width: 0;
   color: var(--text-primary);
   font-size: var(--font-size-section-title);
-  font-weight: var(--weight-extra-bold);
-  line-height: var(--line-tight);
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -383,11 +411,15 @@
 
 .v-section-title__action {
   flex: 0 0 auto;
-  color: var(--color-primary-dark);
-  font-size: var(--font-size-caption);
+  color: var(--text-muted);
+  font-size: 10.5px;
   font-weight: var(--weight-bold);
   text-decoration: none;
   white-space: nowrap;
+}
+
+.v-section-title + .v-card {
+  margin-top: -4px;
 }
 
 .v-list-item {
@@ -1237,20 +1269,21 @@
 .v-calendar-list-card {
   display: grid;
   gap: 10px;
+  padding: 12px;
 }
 
 .v-appointment-row,
 .v-worker-row {
   width: 100%;
-  min-height: 54px;
-  border: 0;
-  border-radius: var(--radius-card-compact);
-  background: var(--color-neutral-50);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 51px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #fbfcfd;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px;
   color: var(--text-primary);
   font-family: var(--font-family-base);
   text-align: left;
@@ -1259,53 +1292,68 @@
 .v-appointment-row div,
 .v-worker-row div {
   min-width: 0;
-  display: grid;
-  gap: 3px;
+  display: block;
 }
 
 .v-appointment-row strong,
 .v-worker-row strong {
+  display: block;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text-primary);
-  font-size: var(--font-size-body);
-  font-weight: var(--weight-extra-bold);
-  line-height: var(--line-tight);
+  font-size: 12.5px;
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
 }
 
 .v-appointment-row small,
 .v-worker-row small {
+  display: block;
+  margin-top: 2px;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text-muted);
-  font-size: var(--font-size-caption);
-  font-weight: var(--weight-semibold);
+  font-size: 10.5px;
+  font-weight: var(--weight-regular);
+  line-height: 1.3;
 }
 
 .v-calendar-service-card {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  padding: 10px 12px 14px;
+}
+
+.v-calendar-service-card .v-section-title h2 {
+  font-size: var(--font-size-card-title);
+  line-height: 1.42;
 }
 
 .v-mini-table {
   display: grid;
-  border-radius: var(--radius-card-compact);
-  background: var(--color-neutral-50);
-  padding: 8px 10px;
+  gap: 7px;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
 }
 
 .v-mini-table > div {
-  min-height: 28px;
+  min-height: 33px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: var(--text-secondary);
-  font-size: var(--font-size-caption);
-  font-weight: var(--weight-semibold);
+  font-size: 11.5px;
+  font-weight: var(--weight-bold);
+}
+
+.v-mini-table > div:last-child {
+  border-bottom: 0;
 }
 
 .v-mini-table strong {
@@ -1316,6 +1364,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.v-calendar-service-card .v-chip-row {
+  margin-top: 2px;
 }
 
 .v-calendar-link-title {

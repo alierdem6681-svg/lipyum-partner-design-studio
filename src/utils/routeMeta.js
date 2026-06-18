@@ -1,6 +1,18 @@
 import { BOTTOM_TABS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./constants.js";
 
 const titleOverrides = {
+  "/jobs": {
+    title: "İş Al",
+    subtitle: "Bölgendeki uygun işleri incele",
+  },
+  "/my-jobs": {
+    title: "İşlerim",
+    subtitle: "Aktif işlerini ve tekliflerini yönet",
+  },
+  "/calendar": {
+    title: "Takvim",
+    subtitle: "Randevularını ve çalışan müsaitliğini yönet",
+  },
   "/referral": {
     title: "Partner Davet Programı",
     compactTitle: "Partner Davet",

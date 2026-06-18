@@ -67,7 +67,7 @@ function openSheet(title, description) {
       <AppCard padding="lg" class="v-calendar-service-card">
         <div class="v-section-title">
           <h2>Hizmet Süreleri</h2>
-          <AppChip tone="info">Kuaför</AppChip>
+          <AppChip tone="purple">Kuaför</AppChip>
         </div>
         <div class="v-mini-table">
           <div><span>Saç Boya</span><strong>90 dk</strong></div>

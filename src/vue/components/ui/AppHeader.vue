@@ -50,7 +50,7 @@ function statusAriaLabel(status) {
       aria-label="Geri dön"
       @click="emit('back')"
     >
-      <AppIcon name="chevron-left" :size="22" />
+      <AppIcon name="chevron-left" :size="24" />
     </button>
     <button
       v-else
@@ -61,7 +61,7 @@ function statusAriaLabel(status) {
       aria-label="Menü"
       @click="emit('menu')"
     >
-      <AppIcon name="menu" :size="22" />
+      <AppIcon name="menu" :size="24" />
     </button>
 
     <div v-if="variant === 'home'" class="v-header-status-viewport" aria-label="Çalışma durumu">
@@ -98,7 +98,8 @@ function statusAriaLabel(status) {
         :aria-label="rightLabel || labelForAction[action] || action"
         @click="rightIcon ? emit('right') : emit('action', action)"
       >
-        <AppIcon :name="iconForAction[action] || action" :size="22" />
+        <AppIcon :name="iconForAction[action] || action" :size="24" />
+        <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
       </button>
     </div>
   </header>

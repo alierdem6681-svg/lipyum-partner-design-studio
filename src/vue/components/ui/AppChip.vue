@@ -14,6 +14,7 @@ const toneClasses = {
   info: "v-chip--info",
   warning: "v-chip--warning",
   danger: "v-chip--danger",
+  purple: "v-chip--purple",
 };
 
 const classes = computed(() => [
