@@ -1,6 +1,6 @@
 # V12 Visual Parity Report
 
-Generated: 2026-06-18T17:16:11.899Z
+Generated: 2026-06-18T17:27:21.419Z
 
 Feature URL: `http://127.0.0.1:56389/?engine=vue`
 
