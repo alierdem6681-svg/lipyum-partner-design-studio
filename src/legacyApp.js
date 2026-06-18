@@ -3017,17 +3017,22 @@ mountAppShell();
         ];
         const filterOptions = [
           { key: "all", label: "Tümü" },
-          { key: "low", label: "Düşük puanlılar" },
-          { key: "five", label: "5 puanlılar" },
-          { key: "answered", label: "Yanıtlanmış olanlar" },
-          { key: "unanswered", label: "Yanıtlanmamış olanlar" },
+          { key: "five", label: "5 Yıldız" },
+          { key: "four", label: "4 Yıldız" },
+          { key: "three", label: "3 Yıldız" },
+          { key: "two", label: "2 Yıldız" },
+          { key: "one", label: "1 Yıldız" },
+          { key: "unanswered", label: "Cevaplanmamış" },
         ];
+        const activeReviewFilter = filterOptions.some((filter) => filter.key === state.reviewFilter) ? state.reviewFilter : "all";
         const filteredReviews = reviews.filter((review) => {
           if (!state.reviewListMode) return true;
-          if (state.reviewFilter === "low") return review.score < 4;
-          if (state.reviewFilter === "five") return review.score === 5;
-          if (state.reviewFilter === "answered") return !!review.reply;
-          if (state.reviewFilter === "unanswered") return !review.reply;
+          if (activeReviewFilter === "five") return review.score === 5;
+          if (activeReviewFilter === "four") return review.score === 4;
+          if (activeReviewFilter === "three") return review.score === 3;
+          if (activeReviewFilter === "two") return review.score === 2;
+          if (activeReviewFilter === "one") return review.score === 1;
+          if (activeReviewFilter === "unanswered") return !review.reply;
           return true;
         });
         const visibleReviews = state.reviewListMode
@@ -3086,7 +3091,7 @@ mountAppShell();
               <span>${reviews.filter((review) => !review.reply).length} yanıt bekliyor</span>
             </section>
             <section class="review-filter-row" aria-label="Yorum filtreleri">
-              ${filterOptions.map((filter) => `<button class="chip-btn ${state.reviewFilter === filter.key ? "active" : ""}" type="button" data-review-filter="${filter.key}">${filter.label}</button>`).join("")}
+              ${filterOptions.map((filter) => `<button class="chip-btn ${activeReviewFilter === filter.key ? "active" : ""}" type="button" data-review-filter="${filter.key}">${filter.label}</button>`).join("")}
             </section>
             <section class="review-modern-list">
               ${visibleReviews.map(reviewCard).join("")}

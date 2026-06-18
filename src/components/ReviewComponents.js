@@ -11,33 +11,31 @@ const renderStars = (rating = 0) => Array.from({ length: 5 }, (_, index) => (
 )).join("");
 
 export function ReviewSummaryCard({ summary = {}, icon = () => "" } = {}) {
+  const average = summary.average || "4.8";
+  const total = summary.total || 0;
+  const newLast30Days = summary.newLast30Days || 0;
+  const satisfaction = summary.satisfaction || 0;
+
   return `
     <section class="review-summary-card ui-card" aria-label="Yorum özeti">
       <div class="review-summary-score">
-        <strong>${summary.average || "4.8"} <span>★</span></strong>
-        <small>${summary.total || 0} değerlendirme</small>
-        <em>${icon("trend-up")} +${summary.newLast30Days || 0} yeni yorum · Son 30 gün</em>
+        <strong class="review-summary-rating">
+          <span class="review-summary-average">${average}</span>
+          <span class="review-summary-star" aria-hidden="true">★</span>
+        </strong>
+        <small class="review-summary-count">${total} değerlendirme</small>
+        <em class="review-summary-growth">
+          ${icon("trend-up")}
+          <span>+${newLast30Days} yeni yorum</span>
+          <small>Son 30 gün</small>
+        </em>
       </div>
-      <div class="review-summary-gauge" aria-label="Müşteri memnuniyeti ${summary.satisfaction || 0}">
-        <span style="--review-score:${summary.satisfaction || 0}"></span>
-        <strong>%${summary.satisfaction || 0}</strong>
+      <div class="review-summary-gauge" aria-label="Müşteri memnuniyeti yüzde ${satisfaction}">
+        <span class="review-summary-meter" style="--review-score:${satisfaction}" aria-hidden="true">
+          <strong>%${satisfaction}</strong>
+        </span>
         <small>Müşteri memnuniyeti</small>
       </div>
-    </section>
-  `;
-}
-
-export function ReviewCollectCard({ icon = () => "" } = {}) {
-  return `
-    <section class="review-collect-card" aria-label="Yorum toplama">
-      <span class="review-collect-icon">${icon("share")}</span>
-      <span class="review-collect-copy">
-        <strong>Yorum topla</strong>
-        <small>Daha çok iş al.</small>
-      </span>
-      <button class="review-collect-action" type="button" data-action="share-review-link">
-        ${icon("share")} Paylaş
-      </button>
     </section>
   `;
 }

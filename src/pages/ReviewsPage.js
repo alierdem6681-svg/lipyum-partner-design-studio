@@ -1,7 +1,6 @@
 import { Header } from "../components/Header.js";
 import { PageContainer } from "../components/PageContainer.js";
 import {
-  ReviewCollectCard,
   ReviewFilterChips,
   ReviewList,
   ReviewSummaryCard,
@@ -11,22 +10,27 @@ import { createLazyListState, getVisibleItems } from "../utils/lazyList.js";
 
 const filters = [
   { key: "all", label: "Tümü" },
-  { key: "unanswered", label: "Yanıt Bekleyen" },
-  { key: "low", label: "Düşük Puan" },
   { key: "five", label: "5 Yıldız" },
   { key: "four", label: "4 Yıldız" },
+  { key: "three", label: "3 Yıldız" },
+  { key: "two", label: "2 Yıldız" },
+  { key: "one", label: "1 Yıldız" },
+  { key: "unanswered", label: "Cevaplanmamış" },
 ];
 
 function filterReviews(items, filter) {
   if (filter === "unanswered") return items.filter((review) => !review.replied);
-  if (filter === "low") return items.filter((review) => review.rating <= 3);
   if (filter === "five") return items.filter((review) => review.rating === 5);
   if (filter === "four") return items.filter((review) => review.rating === 4);
+  if (filter === "three") return items.filter((review) => review.rating === 3);
+  if (filter === "two") return items.filter((review) => review.rating === 2);
+  if (filter === "one") return items.filter((review) => review.rating === 1);
   return items;
 }
 
 export function ReviewsPage({ state = {}, icon = () => "" } = {}) {
-  const activeFilter = state.reviewFilter || "all";
+  const selectedFilter = state.reviewFilter || "all";
+  const activeFilter = filters.some((filter) => filter.key === selectedFilter) ? selectedFilter : "all";
   const filteredReviews = filterReviews(reviews, activeFilter);
   const lazyState = createLazyListState({
     initialCount: 4,
@@ -44,7 +48,6 @@ export function ReviewsPage({ state = {}, icon = () => "" } = {}) {
         subtitle: "Değerlendirme ve geri bildirimler",
       })}
       ${ReviewSummaryCard({ summary: reviewSummary, icon })}
-      ${ReviewCollectCard({ icon })}
       ${ReviewFilterChips({ filters, activeFilter })}
       ${ReviewList({
         reviews: filteredReviews,
