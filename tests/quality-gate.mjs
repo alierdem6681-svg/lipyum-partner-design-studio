@@ -130,6 +130,22 @@ const steps = [
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v10-quality-automation.spec.js",
   },
   {
+    name: "test:cta-mist",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/cta-mist.spec.js",
+  },
+  {
+    name: "test:notification-header",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/notification-header.spec.js",
+  },
+  {
+    name: "test:profile-grid-geometry",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/profile-grid-geometry.spec.js",
+  },
+  {
+    name: "test:v11-audit",
+    command: "node_modules/node/bin/node tests/v11-audit.mjs",
+  },
+  {
     name: "test:screenshots",
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
   },

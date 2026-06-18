@@ -1560,3 +1560,89 @@ P2:
 ### 10. Finish yüzdesi
 
 Tıklanabilir prototip ve QA readiness açısından yaklaşık %84. Full Vue/Tailwind migration açısından yaklaşık %60 seviyesinde.
+
+## Faz 11 - Release Candidate Audit, CTA Mist ve V11 Quality Hardening
+
+### 1. Genel durum
+
+V11 talebi full Vue/Tailwind completion hedefliydi. Gerçek kod denetimi bu hedefin henüz tamamlanmadığını gösterdi: `src/app.js` hâlâ `legacyApp.js` ile boot ediyor ve yüksek değerli aktif route'larda legacy render fonksiyonları duruyor. Bu fazda “tamamlandı” iddiası yerine release-candidate hardening ve dürüst architecture audit uygulandı.
+
+### 2. Başlangıç durumu
+
+- Başlangıç commit: `9337ac2`
+- Main branch güncel: `git pull --ff-only`
+- Başlangıç route smoke: 41 route geçti
+- Başlangıç bulgusu: full Vue Router/SFC migration tamamlanmamış
+
+### 3. Ürün/UX düzeltmeleri
+
+- Bildirimler header sağ aksiyonu üç nokta yerine `/notification-settings` route'una giden ayar ikonuna çevrildi.
+- Cüzdan header sağ aksiyonu kredi/bonus bilgi sheet'ini açan `wallet-info-button` oldu.
+- Orta CTA sis efekti gerçek pseudo katmanlara taşındı; 2 saniye gecikmeli başlıyor, CTA içinde kırpılıyor ve reduced-motion modunda animasyon kapalı.
+- Profil 4x2 grid ve profil kartı için stabil `data-testid` eklendi; grid dış genişliği profil kartı ile ölçülüyor.
+
+### 4. Mimari ekler
+
+- `src/utils/routeMeta.js` eklendi.
+- `V11_ARCHITECTURE_AUDIT.md` eklendi.
+- `ARCHITECTURE.md` eklendi.
+- `V11_RELEASE_CANDIDATE.md` eklendi.
+
+### 5. Test ekleri
+
+- `test:cta-mist`
+- `test:notification-header`
+- `test:profile-grid-geometry`
+- `test:v11-audit`
+- `test:quality-gate:v11`
+
+### 6. Hedefli test sonuçları
+
+- `npm run check` → başarılı
+- `npm run test:cta-mist` → 2 passed
+- `npm run test:notification-header` → 1 passed
+- `npm run test:profile-grid-geometry` → 4 passed
+- `npm run test:v11-audit` → başarılı, kalan migration debt dokümante
+- `npm run test:quality-gate:v11` → başarılı
+- `npm run test:quality-gate:v11` → ikinci ardışık çalıştırma başarılı
+
+Not: İlk uzun gate denemesinde CTA mist opacity eşiği test zamanlaması nedeniyle flaky davrandı. Test, CSS contract'ı ve görünürlük evresini deterministik kontrol edecek şekilde düzeltildi; sonrasında iki tam V11 quality gate arka arkaya temiz geçti.
+
+### 6.1. Final kalite kapısı özeti
+
+- `npm run check` / `npm run lint` / unit test / route smoke → başarılı
+- `test:e2e` → 119 passed
+- `test:e2e:mobile` → 328 passed
+- `test:accessibility` → 8 passed
+- `test:interactions` → 98 passed
+- `test:sidebar` → 4 passed
+- `test:bottom-bar` → 6 passed
+- `test:navigation-contract` → 42 passed
+- `test:forms` → 3 passed
+- `test:device-matrix` → 7 passed
+- `test:performance` → 1 passed
+- `test:visual-alignment` → 1 passed
+- `test:deeplinks` → 5 passed
+- `test:satisfaction` → 2 passed
+- `test:home-flow` → 1 passed
+- `test:packages-flow` → 1 passed
+- `test:referral-flow` → 1 passed
+- `test:support-ticket` → 2 passed
+- `test:profile-badges` → 1 passed
+- `test:cta-mist` → 2 passed
+- `test:notification-header` → 1 passed
+- `test:profile-grid-geometry` → 4 passed
+- `test:screenshots` → 1 passed
+- `build` → başarılı (`index-dhaVWcuY.js`, `index-BuDWiDeJ.css`)
+- `git diff --check` → başarılı
+
+### 7. Kalan P0
+
+- Tek Vue root app + Vue Router.
+- Aktif route'ların Vue SFC page olarak taşınması.
+- `legacyApp.js` aktif render sorumluluğunun kaldırılması.
+- Legacy CSS'in aktif görünüm üretme sorumluluğunun bitirilmesi.
+
+### 8. Sonraki adım
+
+Bir sonraki gerçek V11 completion adımı, küçük hardening yerine tek Vue app shell + `/home`, `/jobs`, `/my-jobs`, `/calendar` SFC migration olmalıdır.

@@ -39,6 +39,10 @@ npm run test:back-stack-stress
 npm run test:modal-sheet-drawer
 npm run test:all-routes-interactions
 npm run test:v10-quality-automation
+npm run test:cta-mist
+npm run test:notification-header
+npm run test:profile-grid-geometry
+npm run test:v11-audit
 npm run test:screenshots
 npm run build
 git diff --check
@@ -48,6 +52,12 @@ Tek komutla tüm kapıyı çalıştırmak için:
 
 ```bash
 npm run test:quality-gate
+```
+
+V11 sertleştirilmiş kapı için:
+
+```bash
+npm run test:quality-gate:v11
 ```
 
 ## Başarısızlık Kuralı
@@ -129,3 +139,14 @@ Her görev sonunda raporda veya final mesajında şu başlıklar yer almalıdır
 - `test:v10-quality-automation`: V10 rapor dosyalarının ve partner kart önizleme route'unun varlığını doğrular.
 
 V10 sonrası görsel değişikliklerde `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVENTORY_REPORT.md` deterministik olarak yeniden üretilmelidir.
+
+## V11 Ek Kapılar
+
+`npm run test:quality-gate` ve `npm run test:quality-gate:v11` V11 itibarıyla şu ek kontrolleri de çalıştırır:
+
+- `test:cta-mist`: orta CTA sis efektinin gecikmeli başladığını, CTA içinde kırpıldığını ve reduced-motion modunda hareket etmediğini doğrular.
+- `test:notification-header`: Bildirimler header sağ aksiyonunun Bildirim Ayarları route'una giden anlamlı icon-only action olduğunu doğrular.
+- `test:profile-grid-geometry`: profil 4x2 gridinin profil kartı ile aynı sol/sağ genişliğe oturduğunu ve label'ların 320/360/390/430 px viewportlarda wrap olmadığını doğrular.
+- `test:v11-audit`: route map, route metadata ve page route eşleşmesini denetler; full Vue migration tamamlanmadıysa bunun P0 olarak dokümante edildiğini doğrular.
+
+V11 notu: Tam Vue Router/SFC migration bitene kadar `V11_ARCHITECTURE_AUDIT.md` içinde legacy boot ve aktif legacy render borcu açıkça P0 olarak kalır; bu borç gizlenmemelidir.

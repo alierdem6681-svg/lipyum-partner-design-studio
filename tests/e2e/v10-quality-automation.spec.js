@@ -39,6 +39,17 @@ test("V10 quality automation docs and preview route are present", async ({ page 
       "",
       "Status: automation files are present and the partner card preview route renders.",
       "",
+      "## V11 Superset",
+      "",
+      "V11 ile kalite otomasyonu genişletildi:",
+      "",
+      "- CTA sis efektinin gecikmeli/reduced-motion davranışı.",
+      "- Bildirimler header ayar aksiyonu.",
+      "- Profil 4x2 grid geometri testi.",
+      "- Route metadata ve legacy migration audit.",
+      "",
+      "Bu kontroller `npm run test:quality-gate` ve `npm run test:quality-gate:v11` içine dahil edildi.",
+      "",
     ].join("\n"),
   );
 

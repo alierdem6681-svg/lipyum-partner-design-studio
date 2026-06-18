@@ -13,7 +13,7 @@ test("V10 headers are visible, stable and keep a right-side action slot", async 
 
     const audit = await header.evaluate((element) => {
       const box = element.getBoundingClientRect();
-      const rightAction = element.querySelector('[data-testid="notification-button"], [data-testid="header-info-button"], [data-testid="profile-button"], [data-testid="notification-options-button"], .header-actions button, .icon-btn[data-action]');
+      const rightAction = element.querySelector('[data-testid="notification-button"], [data-testid="header-info-button"], [data-testid="profile-button"], [data-testid="notification-options-button"], [data-testid="notification-settings-button"], [data-testid="wallet-info-button"], .header-actions button, .page-header-action, .icon-btn[data-action]');
       const title = element.querySelector("h1, h2");
       const titleStyle = title ? window.getComputedStyle(title) : null;
       const titleLineHeight = titleStyle ? (parseFloat(titleStyle.lineHeight) || parseFloat(titleStyle.fontSize) * 1.2) : 0;

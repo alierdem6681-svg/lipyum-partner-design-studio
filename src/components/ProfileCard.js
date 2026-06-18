@@ -15,7 +15,7 @@ export function renderProfileCard({
   const moreCount = extraBadges.length;
 
   return `
-    <section class="partner-profile-card">
+    <section class="partner-profile-card" data-testid="partner-profile-card">
       <div class="partner-profile-main">
         <button class="partner-profile-avatar-btn" type="button" aria-label="Profil fotoğrafı ekle">
           ${avatar ? `<img src="${avatar}" alt="${name} profil fotoğrafı" />` : `<span>${name.slice(0, 2).toUpperCase()}</span>`}

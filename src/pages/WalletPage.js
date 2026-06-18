@@ -24,6 +24,11 @@ export function WalletPage({ state = {}, icon = () => "" } = {}) {
         title: "Cüzdan",
         subtitle: "Kredi, bonus ve hareketlerin",
         showBack: true,
+        rightAction: `
+          <button class="icon-btn icon-only-btn page-header-action" type="button" data-open="wallet-info" data-testid="wallet-info-button" aria-label="Cüzdan bilgisi">
+            <svg class="icon"><use href="#i-help-circle"></use></svg>
+          </button>
+        `,
       })}
       ${WalletSummaryCards({ summary: walletSummary, icon })}
       ${WalletActionGrid({ actions: walletActions, icon })}

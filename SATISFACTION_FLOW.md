@@ -24,3 +24,7 @@ The satisfaction flow is a compliance-safe mock UI for future native review and 
 
 - Connect 5-star CTA to native in-app review APIs when a native shell exists.
 - Connect low-score feedback to a real ticket/CRM endpoint when backend APIs exist.
+
+## V11 Verification
+
+V11 keeps `test:satisfaction` in the quality gate. The 5-star path must show only user-approved store review CTA, while the 1-4 star path must show the improvement form and mock support feedback success state.

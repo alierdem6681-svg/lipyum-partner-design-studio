@@ -26,8 +26,8 @@ export function NotificationsPage({ state = {}, icon = () => "" } = {}) {
         title: "Bildirimler",
         subtitle: "Önemli gelişmeler için bildirimleri takip et",
         rightAction: `
-          <button class="notification-more-btn" type="button" data-open="notification-menu" data-testid="notification-options-button" aria-label="Bildirim seçenekleri">
-            <span></span><span></span><span></span>
+          <button class="icon-btn icon-only-btn page-header-action" type="button" data-route="/notification-settings" data-testid="notification-settings-button" aria-label="Bildirim ayarları">
+            <svg class="icon"><use href="#i-settings"></use></svg>
           </button>
         `,
       })}

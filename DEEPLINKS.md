@@ -35,3 +35,7 @@ Unknown routes fall back to `#/home`.
 - Replace placeholder Apple and Android association files with real app identifiers.
 - Add verified store IDs/package names once the native shells exist.
 - Connect push notification payload route mapping to the same resolver.
+
+## V11 Verification
+
+V11 keeps `test:deeplinks` in the quality gate. `/support/live`, `/partner-card-preview`, `/support/new`, `/wallet`, `/reviews`, `/packages` and unknown fallback behavior must stay green before release-candidate handoff.

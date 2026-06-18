@@ -1,5 +1,6 @@
 import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "./utils/constants.js";
 export { pageRoutes } from "./pages/routePages.js";
+export { getRouteMeta, routeMeta } from "./utils/routeMeta.js";
 
 export const routeToScreen = ROUTE_TO_SCREEN;
 

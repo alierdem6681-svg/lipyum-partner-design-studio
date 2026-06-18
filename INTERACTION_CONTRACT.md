@@ -21,8 +21,9 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Sidebar açıldığında `sidebar-drawer` görünür olmalıdır.
 - Sidebar menü item'ları route-driven çalışmalıdır.
 - Menü item seçildiğinde ilgili route açılmalı ve sidebar kapanmalıdır.
-- Sidebar içinde `Yardım ve Destek` yalnızca Destek grubu altında tek menü satırı olarak bulunur.
 - Destek grubu altında `Talep Oluştur` `/support/new` route'una gider.
+- Destek grubu altında `Canlı Destek` `/support/live` route'una gider.
+- Sidebar içinde `Yardım ve Destek` menü adı kalmamalıdır.
 - Sticky/geniş `drawer-support-card` tekrar eklenmemelidir.
 - Kazanç Ortaklığı altında `Partner Davet Programı` `/referral` route'una gider.
 - Kazanç Ortaklığı altında `İş Yönlendirme Programı` `/job-referral` route'una gider.
@@ -44,6 +45,7 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Bonus/kredi dönüştürme aksiyonu ilgili sheet/akışı açar.
 - Sheet close icon `sheet-close-button` içinde optik merkezde durur.
 - Bottom bar ve CTA hiçbir zaman ana içerik metnini kapatmamalıdır.
+- Orta CTA sis efekti ilk açılışta görünmez; 2 saniye gecikmeyle CTA içinde hareket eder ve reduced-motion modunda animasyon çalışmaz.
 
 ## Profile
 
@@ -57,6 +59,7 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - `notifications-filter-all` okunan bildirimleri göster/gizle davranışını yönetir.
 - `notifications-mark-read` okundu yap akışını başlatır.
 - `notification-card` doğru bildirim aksiyonuna veya detayına gider.
+- Header sağ aksiyonu `notification-settings-button` ile `/notification-settings` route'una gider; anlamsız üç nokta aksiyonu kullanılmaz.
 - Bildirim listesi bottom bar altında kalmamalı ve güvenli alt boşluk bırakmalıdır.
 
 ## Support
@@ -96,6 +99,7 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - `wallet-topup-button` bakiye yükleme akışını açar.
 - `wallet-convert-bonus-button` bonusu krediye çevirme akışını açar.
 - `wallet-load-more` cüzdan hareketlerinde sonraki bölümü yükler.
+- Header sağ aksiyonu `wallet-info-button` ile kredi/bonus açıklama sheet'ini açar.
 
 ## Leaderboard
 

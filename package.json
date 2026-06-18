@@ -36,8 +36,13 @@
     "test:modal-sheet-drawer": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/modal-sheet-drawer.spec.js",
     "test:all-routes-interactions": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/all-routes-interactions.spec.js",
     "test:v10-quality-automation": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v10-quality-automation.spec.js",
+    "test:cta-mist": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/cta-mist.spec.js",
+    "test:notification-header": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/notification-header.spec.js",
+    "test:profile-grid-geometry": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/profile-grid-geometry.spec.js",
+    "test:v11-audit": "node_modules/node/bin/node tests/v11-audit.mjs",
     "test:interactions": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js tests/e2e/bottom-bar.spec.js tests/e2e/core-interactions.spec.js tests/e2e/navigation-contract.spec.js tests/e2e/forms-and-filters.spec.js",
     "test:quality-gate": "node_modules/node/bin/node tests/quality-gate.mjs",
+    "test:quality-gate:v11": "node_modules/node/bin/node tests/v11-quality-gate.mjs",
     "build": "node_modules/node/bin/node node_modules/vite/bin/vite.js build",
     "dev": "node_modules/node/bin/node node_modules/vite/bin/vite.js --host 0.0.0.0",
     "preview": "node_modules/node/bin/node node_modules/vite/bin/vite.js preview --host 0.0.0.0"

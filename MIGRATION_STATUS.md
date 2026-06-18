@@ -1,6 +1,6 @@
 # Lipyum Partner Migration Status
 
-Tarih: 17 Haziran 2026
+Tarih: 18 Haziran 2026
 
 Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu takip eder.
 
@@ -53,4 +53,16 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 - V8 ile navigation/header/sidebar/test standardı sertleştirildi.
 - V9 ile `/support/new`, `/satisfaction`, deep link resolver ve visual alignment testleri eklendi.
 - V10 ile `/support/live`, `/partner-card-preview`, public partner badge/share mock'u ve clickable/visual QA rapor testleri eklendi.
+- V11 hardening pass ile route metadata registry, Bildirimler/Cüzdan anlamlı header actions, CTA mist animation, profil grid geometry testi ve `V11_ARCHITECTURE_AUDIT.md` eklendi.
 - Bir sonraki büyük migration sırası: `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`.
+
+## V11 Gerçek Durum
+
+V11 full completion kriterleri henüz sağlanmadı. `src/app.js` hâlâ `legacyApp.js` ile boot ediyor ve yüksek değerli aktif route'larda legacy render fonksiyonları duruyor. Bu durum gizlenmedi; `npm run test:v11-audit` bu borcun P0 olarak dokümante edildiğini doğrular.
+
+P0 kalan ana iş:
+
+- Tek Vue root application + Vue Router hash history.
+- `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`, builder/checkout ve profil alt route'larının gerçek Vue SFC page olarak taşınması.
+- Aktif route'larda büyük HTML string render sorumluluğunun kaldırılması.
+- Legacy CSS'in aktif route görünüm üretme sorumluluğunun bitirilmesi.

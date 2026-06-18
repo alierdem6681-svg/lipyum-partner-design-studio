@@ -59,6 +59,7 @@ export const pageRoutes = {
   "/messages": MessagesPage,
   "/reviews": ReviewsPage,
   "/satisfaction": SatisfactionPage,
+  "/messages": MessagesPage,
   "/leaderboard": LeaderboardPage,
   "/partners": PartnersPage,
   "/customers": CustomersPage,

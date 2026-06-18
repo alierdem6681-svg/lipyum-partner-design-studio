@@ -144,3 +144,16 @@ Deep link, satisfaction, support ticket veya product flow gibi yeni tıklanabili
 - Header sağ slotu boş bırakılmamalı; aksiyon yoksa merkezli bilgi butonu veya ölçülü placeholder kullanılmalıdır.
 - Yeni icon-only button eklenirse merkezleme `visual-alignment` testinde yakalanabilecek geometriyle yazılmalıdır.
 - Görsel veya interaction değişikliği `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVENTORY_REPORT.md` üreten testlerle desteklenmelidir.
+
+## V11 Route Metadata ve CTA Sis Kuralı
+
+- Route başlıkları, compact title, header variant, trailing action, bottom bar ve CTA kararları `src/utils/routeMeta.js` içinde tek kaynak olarak izlenmelidir.
+- Bildirimler ekranı sağ aksiyonu anlamlı olmalıdır; üç nokta yerine Bildirim Ayarları route'una giden icon-only action kullanılır.
+- Cüzdan ekranı sağ aksiyonu boş kalmaz; kredi/bonus açıklaması için bilgi action kullanılır.
+- Orta CTA sis efekti yalnızca CTA dairesi içinde yaşamalıdır:
+  - ilk 1.5 saniyede görünmez,
+  - 2 saniye gecikmeyle yumuşak görünür,
+  - CTA dışına taşmaz,
+  - reduced-motion modunda hareket etmez,
+  - ana ikonun okunurluğunu bozmaz.
+- Profil 4x2 gridinin dış genişliği profil kartı ve diğer ana kartlarla aynı olmalıdır. İç wrapper ekstra daraltma yapmamalı, label'lar ikinci satıra düşmemelidir.

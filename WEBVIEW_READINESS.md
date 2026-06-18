@@ -25,6 +25,10 @@ Bu proje backend'siz, tıklanabilir mobil arayüz prototipidir. Bu dosya WebView
 - Canlı destek route'u: `/support/live` mock temsilci bağlantı state'iyle hazır.
 - Public partner kart önizleme route'u: `/partner-card-preview` share/embed mock UI ile hazır.
 - V10 visual/clickable QA raporları: `VISUAL_QA_REPORT.md`, `CLICKABLE_INVENTORY_REPORT.md`, `V10_QUALITY_AUTOMATION.md`.
+- V11 CTA mist animasyonu reduced-motion desteğiyle korunuyor; düşük performanslı WebView'lerde hareket kapatılabilir.
+- V11 Bildirimler header aksiyonu doğrudan `/notification-settings` route'una gider; üç nokta menüsüne bağımlılık yoktur.
+- V11 Cüzdan header bilgi aksiyonu sheet ile çalışır ve minimum 44px icon-only target standardını korur.
+- V11 architecture audit: `V11_ARCHITECTURE_AUDIT.md` release-candidate öncesi kalan legacy boot borcunu açıkça izler.
 - Push notification placeholder: `/notifications`.
 - Keyboard/focus riski: destek arama ve input alanları P1 test kapsamına alınmalı.
 - Error state: `AppErrorState`.

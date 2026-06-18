@@ -2631,11 +2631,40 @@
       }
 
       .cta-lightning-wrap::before {
-        content: none;
+        content: "";
+        position: absolute;
+        inset: -8%;
+        z-index: 1;
+        border-radius: inherit;
+        opacity: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.44) 0 8%, transparent 24%),
+          radial-gradient(circle at 88% 20%, rgba(255, 255, 255, 0.26) 0 10%, transparent 28%),
+          radial-gradient(circle at 72% 86%, rgba(255, 255, 255, 0.32) 0 12%, transparent 34%),
+          radial-gradient(circle at 20% 74%, rgba(255, 255, 255, 0.2) 0 9%, transparent 30%);
+        background-size: 132% 132%, 148% 148%, 142% 142%, 136% 136%;
+        filter: blur(2.5px);
+        mix-blend-mode: screen;
+        animation: ctaMistCloud 14s ease-in-out 2s infinite both;
       }
 
       .cta-lightning-wrap::after {
-        content: none;
+        content: "";
+        position: absolute;
+        inset: 4%;
+        z-index: 1;
+        border-radius: inherit;
+        opacity: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 80% 12%, rgba(255, 255, 255, 0.34) 0 9%, transparent 26%),
+          radial-gradient(circle at 28% 84%, rgba(255, 255, 255, 0.24) 0 11%, transparent 30%),
+          radial-gradient(circle at 56% 42%, rgba(255, 255, 255, 0.18) 0 14%, transparent 36%);
+        background-size: 150% 150%, 136% 136%, 128% 128%;
+        filter: blur(3px);
+        mix-blend-mode: screen;
+        animation: ctaMistCloudSecondary 17s ease-in-out 2.35s infinite both reverse;
       }
 
       .cta-lightning-wrap .icon {
@@ -2717,12 +2746,52 @@
         }
       }
 
+      @keyframes ctaMistCloudSecondary {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translate3d(-10%, -8%, 0) scale(0.82) rotate(0deg);
+          background-position: 82% 12%, 24% 88%, 48% 38%;
+        }
+        12% {
+          opacity: 0.46;
+          transform: translate3d(4%, -10%, 0) scale(1.04) rotate(-8deg);
+          background-position: 68% 30%, 42% 76%, 72% 28%;
+        }
+        28% {
+          opacity: 0.72;
+          transform: translate3d(12%, 6%, 0) scale(1.18) rotate(14deg);
+          background-position: 20% 18%, 74% 66%, 26% 82%;
+        }
+        48% {
+          opacity: 0.58;
+          transform: translate3d(-6%, 14%, 0) scale(1.28) rotate(-14deg);
+          background-position: 14% 78%, 86% 24%, 52% 66%;
+        }
+        70% {
+          opacity: 0.76;
+          transform: translate3d(10%, 10%, 0) scale(1.12) rotate(9deg);
+          background-position: 72% 86%, 18% 34%, 88% 54%;
+        }
+        90% {
+          opacity: 0.34;
+          transform: translate3d(-8%, -2%, 0) scale(0.94) rotate(-6deg);
+          background-position: 38% 28%, 62% 82%, 18% 26%;
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .bottom-item.featured,
         .bottom-item.featured .cta-lightning-wrap,
         .bottom-item.featured .cta-lightning-wrap::before,
         .bottom-item.featured .cta-lightning-wrap::after {
           animation: none;
+        }
+
+        .bottom-item.featured .cta-lightning-wrap::before,
+        .bottom-item.featured .cta-lightning-wrap::after {
+          opacity: 0.16;
+          transform: none;
         }
       }
 
