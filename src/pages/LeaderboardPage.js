@@ -36,7 +36,7 @@ export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
       ${NearbyRankList({
         items: activeLeaderboard.nearby,
       })}
-      ${TopRankersCard({ rankers: activeLeaderboard.topRankers })}
+      ${TopRankersCard({ rankers: activeLeaderboard.topRankers, icon })}
       ${RewardTiersCard({ rewards: activeLeaderboard.rewards, icon })}
     `,
   });

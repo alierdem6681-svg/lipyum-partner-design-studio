@@ -100,21 +100,39 @@ export function NearbyRankList({
   `;
 }
 
-export function TopRankersCard({ rankers = [] } = {}) {
+export function TopRankersCard({ rankers = [], icon = () => "" } = {}) {
+  const rankLabels = {
+    1: "Haftanın lideri",
+    2: "Gümüş seri",
+    3: "Bronz seri",
+  };
   return `
-    <section class="top-rankers-card ui-card" aria-label="Haftanın en iyileri">
-      <div class="section-title compact">
-        <h2>Haftanın En İyileri</h2>
-        <span>Lig puanı</span>
+    <section class="top-rankers-card ui-card" aria-label="Haftanın en iyileri" data-testid="leaderboard-top-rankers-card">
+      <span class="top-rankers-confetti confetti-one" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-two" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-three" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
+      <div class="top-rankers-head">
+        <div class="top-rankers-title">
+          <span>${icon("sparkles")} Haftanın vitrini</span>
+          <h2>Haftanın En İyileri</h2>
+        </div>
+        <span class="top-rankers-score-label">Lig puanı</span>
       </div>
-      <div class="top-rankers-grid">
-        ${rankers.map((ranker) => `
-          <article class="top-ranker is-rank-${ranker.rank}">
-            <span class="top-ranker-avatar">${ranker.initials}<em>${ranker.rank}</em></span>
-            <strong>${ranker.name}</strong>
-            <small>${formatCredit(ranker.score)} Puan</small>
-          </article>
-        `).join("")}
+      <div class="top-rankers-stage">
+        <div class="top-rankers-grid">
+          ${rankers.map((ranker) => `
+            <article class="top-ranker is-rank-${ranker.rank}">
+              <span class="top-ranker-medal">${ranker.rank}</span>
+              <span class="top-ranker-avatar">
+                <span>${ranker.initials}</span>
+              </span>
+              <strong>${ranker.name}</strong>
+              <small>${formatCredit(ranker.score)} Puan</small>
+              <em>${rankLabels[ranker.rank] || "Vitrinde"}</em>
+            </article>
+          `).join("")}
+        </div>
       </div>
     </section>
   `;
