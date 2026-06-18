@@ -64,14 +64,23 @@ export function ReviewCard({ review = {}, icon = () => "" } = {}) {
   return `
     <article class="review-card-v4" data-testid="review-card">
       <div class="review-card-avatar" aria-hidden="true">${escapeHtml(review.name || "?").trim().slice(0, 1)}</div>
-      <div class="review-card-body">
-        <div class="review-card-head">
-          <span>
-            <strong>${escapeHtml(review.name)}</strong>
-            <em class="review-stars">${renderStars(review.rating)}</em>
-          </span>
+      <div class="review-card-head">
+        <span>
+          <strong>${escapeHtml(review.name)}</strong>
+          <em class="review-stars">${renderStars(review.rating)}</em>
+        </span>
+        <span class="review-card-actions">
           <small>${escapeHtml(review.date || "")}</small>
-        </div>
+          <button
+            class="review-report-btn"
+            type="button"
+            data-action="report-review-comment"
+            data-testid="review-report-button"
+            aria-label="${escapeHtml(review.name || "Yorum")} yorumunu bildir"
+          >Bildir</button>
+        </span>
+      </div>
+      <div class="review-card-body">
         <p>${escapeHtml(review.text)}</p>
         <div class="review-card-foot">
           <span class="review-service-tag-v4">${icon("settings")} ${escapeHtml(review.service)}</span>
