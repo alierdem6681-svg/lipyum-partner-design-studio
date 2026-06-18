@@ -30,7 +30,7 @@ const list = [
       </div>
       <AppCard v-for="job in list" :key="job.title" padding="md" class="v-job-card">
         <div>
-          <AppChip :variant="job.status === 'Yeni' ? 'success' : job.status === 'Teklif' ? 'warning' : 'info'">{{ job.status }}</AppChip>
+          <AppChip :tone="job.status === 'Yeni' ? 'success' : job.status === 'Teklif' ? 'warning' : 'info'">{{ job.status }}</AppChip>
           <h3>{{ job.title }}</h3>
           <p>{{ job.area }} · {{ job.time }}</p>
         </div>

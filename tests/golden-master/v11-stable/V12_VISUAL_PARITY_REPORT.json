@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T16:10:18.503Z",
+  "generatedAt": "2026-06-18T17:16:11.896Z",
   "viewport": {
     "width": 393,
     "height": 852,
@@ -11,30 +11,32 @@
       "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/home.png",
       "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/home.png",
       "goldenHash": "266aec9f502471db6d5abbfd99f5be98c9130dc99078a57978f4855aef9329dc",
-      "featureHash": "508c7e9281e7a80136d49c76efdc2b50eab3164872358c950b31fa4edcb4e44d",
+      "featureHash": "29de7abb2508d15052b9d7bef7d4a6f9bb8ef275233c136860a7e83d62f44fe8",
       "consoleErrors": [],
       "pageErrors": [],
       "metrics": {
         "title": "Ana Sayfa · Lipyum Partner",
-        "bodyTextLength": 444,
+        "bodyTextLength": 401,
         "visibleSections": [
           "Ana Sayfa",
           "Performans Skoru",
           "Bölgendeki İşler"
         ],
         "buttonLabels": [
+          "Nedir?",
           "Skorumu Artır",
           "Bakiye Yükle",
           "Krediye Çevir",
-          "Havuzu Gör",
+          "Bugün",
+          "Dün",
           "Ana Sayfa",
           "İşlerim",
           "3İş Al",
           "Takvim",
           "Cüzdan"
         ],
-        "cardCount": 6,
-        "iconCount": 15,
+        "cardCount": 4,
+        "iconCount": 14,
         "headerHeight": 116,
         "bottomBarHeight": 92,
         "horizontalOverflow": false
@@ -292,7 +294,7 @@
       "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/my-jobs.png",
       "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/my-jobs.png",
       "goldenHash": "7f719563eeff803bfdad9fd744b045efbced8a8713f7ac452ae531ee1dc5ee83",
-      "featureHash": "cc430880e8af49eda1b8c24567b0d1571bf37a3deba956cca687d0c48b60824c",
+      "featureHash": "5adadedbe499496476c9db6cae4f8d8c5ddb6f4a66b79ac834478387c4d9236b",
       "consoleErrors": [],
       "pageErrors": [],
       "metrics": {

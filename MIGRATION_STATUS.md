@@ -85,3 +85,43 @@ V12 notu:
 - Pixel, content ve interaction parity henüz geçmedi.
 - `src/app.js` default olarak Vue root’a geçirilmedi.
 - `test:v12-parity` farkları raporlar ve fark varken default cutover yapılmadığını doğrular.
+
+## V12-B Strict Parity ve Cutover Hazırlığı
+
+V12-B sırasında route migration tamamlanmadı. Yeni strict parity sistemi, mevcut eksikleri artık completion gate olarak fail eder.
+
+| Route grubu | Durum | Contract parity | Visual parity | Cutover |
+| --- | --- | --- | --- | --- |
+| `/home` | Vue SFC var, Golden’a kısmen yaklaştırıldı | FAIL | FAIL | Kapalı |
+| `/jobs` | Vue SFC var, sade mock seviyesinde | FAIL | FAIL | Kapalı |
+| `/my-jobs` | Vue SFC var, sade mock seviyesinde | FAIL | FAIL | Kapalı |
+| `/calendar` | Vue SFC var, sade mock seviyesinde | FAIL | FAIL | Kapalı |
+| Finans/profil/destek/yorum/liderlik/referral/paket aktif route’ları | Vue preview’de `LegacyContentBridge` placeholder | FAIL | Ölçüm/contract FAIL | Kapalı |
+
+Yeni migration guardrail dosyaları:
+
+- `tests/golden-master/v11-stable/ROUTE_PARITY_CONTRACT.json`
+- `V12_ROUTE_CONTRACT_REPORT.md`
+- `tests/golden-master/v12-feature-preview/V12_ROUTE_CONTRACT_REPORT.json`
+- `scripts/generate-route-parity-contract.mjs`
+- `scripts/report-route-contract.mjs`
+- `scripts/assert-v12-strict-parity.mjs`
+
+Yeni scriptler:
+
+- `generate:route-contract`
+- `report:parity`
+- `test:parity:core`
+- `test:parity:all`
+- `test:parity:strict`
+- `test:content-contract`
+- `test:interaction-contract`
+- `test:visual-regression:v12`
+
+P0 kalan iş:
+
+- `/home` için card text, button label, filter label, click action ve pixel parity tamamlanmalı.
+- `/jobs`, `/my-jobs`, `/calendar` gerçek Golden content/action yapısına taşınmalı.
+- `LegacyContentBridge` aktif route listesinden kaldırılmalı.
+- Tüm aktif route’lar Tailwind/UI Kit Vue SFC olmalı.
+- Default boot Vue’ye ancak strict parity PASS sonrası geçirilmeli.

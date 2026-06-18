@@ -1808,3 +1808,119 @@ Bu aşamada çalıştırılan ve geçen kontroller:
 ### 9. Bir sonraki önerilen adım
 
 Golden Master screenshot ve manifest üzerinden `/home` route’unun tüm görünür section/card/action yapısı Vue SFC’ye birebir taşınmalı. `/home` parity PASS olmadan `/jobs`, `/my-jobs`, `/calendar` sırasına geçilmemeli.
+
+## Faz 12-B - Full Golden Parity Strict Gate Hazırlığı ve Controlled Cutover Başlangıcı
+
+Tarih: 18 Haziran 2026
+
+### 1. Genel durum
+
+V12-B tamamlanmadı ve tamamlandı olarak işaretlenmedi. Bu aşamada PR #3 üzerindeki mevcut V12 foundation yedeklendi, Golden Master içerik sözleşmesi çıkarıldı ve final strict parity kapısının fail-fast davranışı kuruldu. Production/default Vue cutover yapılmadı.
+
+### 2. Yedek ve çalışma alanı
+
+- Çalışılan branch: `feature/v12-golden-vue-cutover`
+- Başlangıç commit: `0223296fd075af6761572c7b78d7399f67497fb1`
+- Annotated tag: `v12-preview-foundation`
+- Archive branch: `archive/v12-preview-foundation`
+- Release manifest: `releases/v12-preview-foundation/RELEASE_MANIFEST.json`
+- Main branch ve stable Cloudflare/Vercel hattı değiştirilmedi.
+
+### 3. Golden Master contract
+
+Yeni dosya:
+
+- `tests/golden-master/v11-stable/ROUTE_PARITY_CONTRACT.json`
+
+Bu contract stabil V11 route’larından şunları çıkarır:
+
+- page title ve subtitle
+- heading/section sırası
+- kart metinleri
+- buton ve filtre label’ları
+- clickable action listesi
+- modal/sheet trigger listesi
+- header/bottom bar geometrisi
+- content height ve horizontal overflow durumu
+
+Contract üretim script’i:
+
+- `scripts/generate-route-parity-contract.mjs`
+
+### 4. Parity motoru
+
+Geliştirme raporu ve final strict gate ayrıldı.
+
+Yeni scriptler:
+
+- `report:parity`
+- `test:parity:core`
+- `test:parity:all`
+- `test:parity:strict`
+- `test:content-contract`
+- `test:interaction-contract`
+- `test:visual-regression:v12`
+
+Yeni dosyalar:
+
+- `scripts/report-route-contract.mjs`
+- `scripts/assert-v12-strict-parity.mjs`
+- `V12_ROUTE_CONTRACT_REPORT.md`
+- `tests/golden-master/v12-feature-preview/V12_ROUTE_CONTRACT_REPORT.json`
+
+`test:parity:strict` şu an fail verir ve bu beklenen doğru davranıştır; çünkü aktif route’larda P0/P1 parity farkları devam etmektedir.
+
+### 5. HomePage kısmi migration ilerlemesi
+
+`src/vue/pages/HomePage.vue` Golden contract’a daha yakın olacak şekilde yeniden düzenlendi:
+
+- Fazladan “Hazırsın” kartı kaldırıldı.
+- Performans kartına `Nedir?`, `Skorumu Artır`, 85/100 ölçeği ve progress düzeni eklendi.
+- Cüzdan ve Bonus tek birleşik kart altında toplandı.
+- Bölge işleri kartı gün sekmeleri, metrikler ve aktivite metni ile Golden yapıya yaklaştırıldı.
+- Home kart sayısı Golden contract ile 3/3 seviyesine geldi.
+
+Kalan fark:
+
+- `/home` hâlâ content/action parity FAIL.
+- Button/action label listesi ve card text birebir Golden Master ile eşleşmiyor.
+- Pixel parity hâlâ FAIL.
+
+### 6. Güncel parity sonucu
+
+Core route contract raporu:
+
+- `/home`: FAIL
+- `/jobs`: FAIL
+- `/my-jobs`: FAIL
+- `/calendar`: FAIL
+
+All-route contract raporunda aktif route’ların tamamı FAIL durumdadır; bunun ana nedeni core dışındaki route’ların Vue preview’de hâlâ `LegacyContentBridge` placeholder’ına düşmesidir.
+
+### 7. Testler
+
+Bu aşamada çalıştırılan kontroller:
+
+- `npm run report:parity` geçti ve visual + contract raporlarını üretti.
+- `npm run test:parity:all` geçti ve all-route development report üretti.
+- `npm run test:parity:strict` beklenen şekilde FAIL verdi.
+- `npm run build` geçti.
+- `npm run check` geçti.
+
+### 8. Kalan P0/P1 borçlar
+
+P0:
+
+- `Home`, `Jobs`, `MyJobs`, `Calendar` Golden visual/content/interaction parity PASS olmalı.
+- Aktif route’larda `LegacyContentBridge` kaldırılmalı.
+- Aktif route’lar gerçek Vue SFC olmalı.
+- Default boot Vue’ye yalnızca parity PASS sonrası geçirilmeli.
+
+P1:
+
+- Route contract tolerance ve visual regression threshold değerleri migration dalgaları sırasında route bazında rafine edilmeli.
+- Outcome clickable registry contract seviyesine taşınmalı.
+
+### 9. Bir sonraki zorunlu adım
+
+Önce `/home` parity PASS yapılmalı. Ardından sırayla `/jobs`, `/my-jobs`, `/calendar` Golden Master section/action/card yapısı eksiksiz Vue SFC’ye taşınmalı. Bu dört route PASS olmadan default Vue cutover yapılmamalıdır.

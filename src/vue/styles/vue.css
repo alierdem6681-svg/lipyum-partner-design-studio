@@ -715,6 +715,13 @@
   gap: 12px;
 }
 
+.v-home-performance-card .v-home-row > div:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
 .v-home-performance-copy {
   display: grid;
   justify-items: end;
@@ -757,6 +764,35 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #10b981, #22c55e);
+}
+
+.v-progress__fill--81 {
+  width: 81%;
+}
+
+.v-progress-scale {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-bold);
+}
+
+.v-home-wallet-summary-card {
+  overflow: hidden;
+}
+
+.v-home-wallet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.v-home-wallet-grid > div {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
 }
 
 .v-wallet-grid {
@@ -815,6 +851,38 @@
   font-size: 11px;
   font-weight: var(--weight-bold);
   white-space: nowrap;
+}
+
+.v-region-day-tabs {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-border);
+}
+
+.v-region-day-tabs button {
+  min-height: 30px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  padding: 0 10px;
+  color: var(--text-secondary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+}
+
+.v-region-day-tabs button.is-active {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.v-home-feed {
+  margin-top: 10px;
 }
 
 .v-filter-row {
