@@ -1924,3 +1924,47 @@ P1:
 ### 9. Bir sonraki zorunlu adım
 
 Önce `/home` parity PASS yapılmalı. Ardından sırayla `/jobs`, `/my-jobs`, `/calendar` Golden Master section/action/card yapısı eksiksiz Vue SFC’ye taşınmalı. Bu dört route PASS olmadan default Vue cutover yapılmamalıdır.
+
+## Faz 12-C - Core Route Golden Parity Execution
+
+### 1. Genel durum
+
+V12-C core route çalışması uygulama koduna geçti; yalnızca audit veya test altyapısı eklenmedi. `/home`, `/jobs`, `/my-jobs` ve `/calendar` Vue preview sayfaları Golden content/action contract’a göre düzenlendi.
+
+V12-C henüz tamamlanmadı. Sebep: strict visual parity hâlâ P0/P1 fail veriyor.
+
+### 2. Tamamlananlar
+
+- `v12-b-parity-infrastructure` annotated tag ve `archive/v12-b-parity-infrastructure` branch doğrulandı.
+- `releases/v12-b-parity-infrastructure/RELEASE_MANIFEST.json` eklendi.
+- Action extractor wrapper/container ve ignore edilen visual controls saymayacak şekilde temizlendi.
+- Pixel diff motoru exact hash yerine `pixelmatch` tabanlı gerçek diff üretmeye geçti.
+- `test:parity:core:strict` ve `test:quality-gate:v12-c` scriptleri eklendi.
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` card/action contract PASS durumuna geldi.
+- MyJobs `Tamamlananlar` label’ı tam görünür kaldı ve latest user requirement olarak contract normalizer’a işlendi.
+- Calendar appointment rows tıklanabilir ve keyboard erişilebilir kaldı.
+
+### 3. Test sonuçları
+
+- `npm run check`: geçti.
+- `npm run build`: geçti.
+- `npm run test:parity:core`: geçti.
+- `npm run test:quality-gate:v12-c`: route/a11y/shell Playwright kısmında 17/17 geçti, strict visual parity adımında FAIL.
+- `npm run test:parity:core:strict`: FAIL, visual parity nedeniyle.
+- `git diff --check`: ilk koşuda rapor EOF whitespace nedeniyle fail verdi; düzeltildi ve sonraki koşu geçti.
+
+### 4. Kalan P0/P1
+
+P0:
+
+- `/home` visual parity FAIL, diff ratio `0.101071`.
+- `/jobs` visual parity FAIL, diff ratio `0.089986`.
+- `/my-jobs` visual parity FAIL, diff ratio `0.081611`.
+
+P1:
+
+- `/calendar` visual parity FAIL, diff ratio `0.053301`.
+
+### 5. Sonraki zorunlu iş
+
+V12-C completion için route görselleri Golden Master’a yaklaştırılmalı; özellikle Home status pill/performance/wallet/region geometry, Jobs card density, MyJobs vertical rhythm ve Calendar card spacing üzerinde çalışılmalı. Strict visual parity PASS olmadan V12-C tamamlandı denemez ve default Vue boot açılamaz.

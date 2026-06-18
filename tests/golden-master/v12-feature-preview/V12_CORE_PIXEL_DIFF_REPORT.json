@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-06-18T18:27:56.525Z",
+  "featureBaseUrl": "http://127.0.0.1:56389/?engine=vue",
+  "viewport": "393x852",
+  "maxDiffPixelRatio": 0.015,
+  "results": [
+    {
+      "route": "/home",
+      "status": "FAIL",
+      "severity": "P0",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/home.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/home.png",
+      "diffScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/home.diff.png",
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 144266,
+      "totalPixels": 1427376,
+      "diffRatio": 0.101071,
+      "maxDiffPixelRatio": 0.015,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "route": "/jobs",
+      "status": "FAIL",
+      "severity": "P0",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/jobs.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/jobs.png",
+      "diffScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/jobs.diff.png",
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 128444,
+      "totalPixels": 1427376,
+      "diffRatio": 0.089986,
+      "maxDiffPixelRatio": 0.015,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "route": "/my-jobs",
+      "status": "FAIL",
+      "severity": "P0",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/my-jobs.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/my-jobs.png",
+      "diffScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/my-jobs.diff.png",
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 116490,
+      "totalPixels": 1427376,
+      "diffRatio": 0.081611,
+      "maxDiffPixelRatio": 0.015,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "route": "/calendar",
+      "status": "FAIL",
+      "severity": "P1",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/calendar.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/calendar.png",
+      "diffScreenshot": "tests/golden-master/v12-feature-preview/core-diff/393x852/calendar.diff.png",
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 76081,
+      "totalPixels": 1427376,
+      "diffRatio": 0.053301,
+      "maxDiffPixelRatio": 0.015,
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ]
+}

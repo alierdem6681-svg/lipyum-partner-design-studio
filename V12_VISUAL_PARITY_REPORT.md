@@ -21,3 +21,16 @@ P0/P1 parity differences are present. The Vue core routes must not be activated 
 - Content parity compares visible section lists and text length.
 - Interaction parity compares visible button/action labels.
 - A FAIL result is expected until each Vue SFC is visually matched to the Golden Master.
+
+## V12-C Core Pixel Diff Update
+
+`scripts/compare-core-visual-parity.mjs` now uses pixelmatch-based screenshot diff instead of exact hash equality. Latest result:
+
+| Route | Content/action contract | Visual status | Diff ratio |
+|---|---|---|---:|
+| /home | PASS | FAIL P0 | 0.101071 |
+| /jobs | PASS | FAIL P0 | 0.089986 |
+| /my-jobs | PASS | FAIL P0 | 0.081611 |
+| /calendar | PASS | FAIL P1 | 0.053301 |
+
+V12-C remains incomplete until these visual differences reach the strict threshold.

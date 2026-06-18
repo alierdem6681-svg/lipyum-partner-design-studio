@@ -33,16 +33,17 @@ const ctaClasses = computed(() => [
       :class="['v-bottom__item', tab.featured ? 'is-featured' : '', activeTab === tab.id ? 'is-active' : '']"
       type="button"
       :data-testid="tab.id === 'home' ? 'bottom-tab-home' : tab.id === 'jobs' ? 'bottom-tab-jobs' : tab.id === 'work' ? 'bottom-cta-job' : tab.id === 'calendar' ? 'bottom-tab-calendar' : tab.id === 'wallet' ? 'bottom-tab-wallet' : `bottom-tab-${tab.id}`"
+      :data-action="tab.id"
       :aria-label="tab.label"
       :aria-current="activeTab === tab.id ? 'page' : undefined"
       @click="tab.featured ? emit('cta', tab.route) : emit('navigate', tab.route)"
     >
       <span v-if="tab.featured && showCta" :class="ctaClasses">
         <AppIcon :name="tab.icon" :size="ctaVariant === 'home' ? 26 : 23" />
-        <em v-if="notificationCount" class="v-bottom__badge">{{ notificationCount }}</em>
       </span>
       <AppIcon v-else-if="!tab.featured" :name="tab.icon" :size="24" />
       <span class="v-bottom__label">{{ tab.label }}</span>
+      <em v-if="tab.featured && notificationCount" class="v-bottom__badge">{{ ` ${notificationCount}` }}</em>
     </button>
   </nav>
 </template>

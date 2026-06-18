@@ -6,10 +6,10 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 
 | Route | Ekran | Vue page | Tailwind/UI Kit | Legacy bağımlılığı | Test coverage | Not |
 | --- | --- | --- | --- | --- | --- | --- |
-| `/home` | Ana Sayfa | Hayır | Kısmi | Yüksek | Route, mobile, geometry, device, interaction | P0: Home Vue migration gerekli |
-| `/jobs` | İş Al | Hayır | Kısmi | Yüksek | Route, mobile, bottom bar | P0: Jobs Vue migration gerekli |
-| `/my-jobs` | İşlerim | Hayır | Kısmi | Yüksek | Route, mobile, bottom bar | P0: MyJobs Vue migration gerekli |
-| `/calendar` | Takvim | Hayır | Kısmi | Yüksek | Route, mobile, bottom bar | P0: Calendar Vue migration gerekli |
+| `/home` | Ana Sayfa | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, geometry, device, interaction, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
+| `/jobs` | İş Al | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
+| `/my-jobs` | İşlerim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
+| `/calendar` | Takvim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P1 FAIL |
 | `/wallet` | Cüzdan | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, forms, lazy list | P1: Vue UI Kit'e taşınmalı |
 | `/profile` | Profilim | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, back | P1: Vue UI Kit'e taşınmalı |
 | `/notifications` | Bildirimler | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, interaction | P1: Vue UI Kit'e taşınmalı |
@@ -120,8 +120,20 @@ Yeni scriptler:
 
 P0 kalan iş:
 
-- `/home` için card text, button label, filter label, click action ve pixel parity tamamlanmalı.
-- `/jobs`, `/my-jobs`, `/calendar` gerçek Golden content/action yapısına taşınmalı.
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` için pixel parity tamamlanmalı.
 - `LegacyContentBridge` aktif route listesinden kaldırılmalı.
 - Tüm aktif route’lar Tailwind/UI Kit Vue SFC olmalı.
 - Default boot Vue’ye ancak strict parity PASS sonrası geçirilmeli.
+
+## V12-C Core Route Golden Parity Durumu
+
+V12-C sırasında core route content/action contract tamamlandı:
+
+| Route | Vue preview | Content/action parity | Visual parity | Cutover |
+| --- | --- | --- | --- | --- |
+| `/home` | Evet | PASS | FAIL P0, diff `0.101071` | Kapalı |
+| `/jobs` | Evet | PASS | FAIL P0, diff `0.089986` | Kapalı |
+| `/my-jobs` | Evet | PASS | FAIL P0, diff `0.081611` | Kapalı |
+| `/calendar` | Evet | PASS | FAIL P1, diff `0.053301` | Kapalı |
+
+V12-C tamamlanmış sayılmadı. Default Vue boot kapalıdır.

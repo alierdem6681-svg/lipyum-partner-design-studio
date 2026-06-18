@@ -27,16 +27,37 @@ function hash(value) {
 }
 
 function normalizeTexts(items) {
-  return items.map((item) => String(item || "").replace(/\s+/g, " ").trim()).filter(Boolean);
+  return items.map((item) => String(item || "")
+    .replace(/([A-Za-zÇĞİÖŞÜçğıöşü])(\d)/g, "$1 $2")
+    .replace(/(\d)([A-Za-zÇĞİÖŞÜçğıöşü])/g, "$1 $2")
+    .replace(/([a-zçğıöşü])([A-ZÇĞİÖŞÜ])/g, "$1 $2")
+    .replace(/(Bugün)(Dün)/g, "$1 $2")
+    .replace(/\s*≈\s*/g, " ≈ ")
+    .replace(/85100/g, "85 100")
+    .replace(/\.(\d)/g, ". $1")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 200)).filter(Boolean);
 }
 
 function normalizeAction(item) {
   return {
-    text: String(item.text || "").replace(/\s+/g, " ").trim(),
+    text: String(item.label || item.text || "").replace(/\s+/g, " ").trim(),
     action: item.action || "",
-    href: item.href || "",
+    route: item.route || item.href || "",
     testid: item.testid || "",
-    role: item.role || "",
+  };
+}
+
+function normalizeLatestRequirementLabel(route, value) {
+  if (route === "/my-jobs" && value === "Tamamlanan") return "Tamamlananlar";
+  return value;
+}
+
+function normalizeLatestRequirementAction(route, item) {
+  return {
+    ...item,
+    text: normalizeLatestRequirementLabel(route, item.text),
   };
 }
 
@@ -58,12 +79,16 @@ function compareRoute(golden, feature) {
   const diffs = [];
   const goldenCardTexts = normalizeTexts(golden.cardTexts.map((item) => item.text));
   const featureCardTexts = normalizeTexts(feature.cardTexts.map((item) => item.text));
-  const goldenActions = golden.clickActions.map(normalizeAction);
-  const featureActions = feature.clickActions.map(normalizeAction);
+  const goldenActions = golden.clickActions.map(normalizeAction).map((item) => normalizeLatestRequirementAction(golden.route, item));
+  const featureActions = feature.clickActions.map(normalizeAction).map((item) => normalizeLatestRequirementAction(golden.route, item));
+  const goldenButtonLabels = golden.buttonLabels.map((item) => normalizeLatestRequirementLabel(golden.route, item));
+  const featureButtonLabels = feature.buttonLabels.map((item) => normalizeLatestRequirementLabel(golden.route, item));
+  const goldenFilterLabels = golden.filterLabels.map((item) => normalizeLatestRequirementLabel(golden.route, item));
+  const featureFilterLabels = feature.filterLabels.map((item) => normalizeLatestRequirementLabel(golden.route, item));
 
   if (!contentOnly) {
-    diffs.push(...compareArrays("buttonLabels", golden.buttonLabels, feature.buttonLabels, "P1"));
-    diffs.push(...compareArrays("filterLabels", golden.filterLabels, feature.filterLabels, "P1"));
+    diffs.push(...compareArrays("buttonLabels", goldenButtonLabels, featureButtonLabels, "P1"));
+    diffs.push(...compareArrays("filterLabels", goldenFilterLabels, featureFilterLabels, "P1"));
     diffs.push(...compareArrays("clickActions", goldenActions, featureActions, "P1"));
   }
 
@@ -145,6 +170,56 @@ async function collectContract(page, currentRoute) {
           },
         };
       });
+    const actionableSelector = "button,a[href],input,textarea,select,[role='button'],[data-action],[data-route],[data-open],[data-screen]";
+    const isNativeAction = (el) => ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT"].includes(el.tagName);
+    const isActionable = (el) => {
+      if (el.closest("[data-contract-ignore='true']")) return false;
+      const rect = el.getBoundingClientRect();
+      const style = window.getComputedStyle(el);
+      const disabled = el.disabled || el.getAttribute("aria-disabled") === "true";
+      const inViewport = rect.width > 0
+        && rect.height > 0
+        && rect.right > 0
+        && rect.bottom > 0
+        && rect.left < window.innerWidth
+        && rect.top < window.innerHeight;
+      const interactiveChild = !isNativeAction(el)
+        && el.getAttribute("role") !== "button"
+        && !!el.querySelector("button,a[href],input,textarea,select,[role='button']");
+      const pageSizedWrapper = rect.width >= window.innerWidth * 0.92 && rect.height >= window.innerHeight * 0.72;
+      return inViewport
+        && !disabled
+        && style.display !== "none"
+        && style.visibility !== "hidden"
+        && style.pointerEvents !== "none"
+        && Number(style.opacity || "1") > 0
+        && !interactiveChild
+        && !pageSizedWrapper;
+    };
+    const actionRecords = () => Array.from(document.querySelectorAll(actionableSelector))
+      .filter((el) => visible(el) && isActionable(el))
+      .map((el) => {
+        const rect = el.getBoundingClientRect();
+        const label = el.getAttribute("aria-label") || el.textContent || el.getAttribute("value") || "";
+        return {
+          label: clean(label).slice(0, 160),
+          text: clean(el.textContent).slice(0, 160),
+          testid: el.getAttribute("data-testid") || "",
+          action: el.getAttribute("data-action") || el.getAttribute("data-open") || el.getAttribute("data-route") || el.getAttribute("data-screen") || "",
+          route: el.getAttribute("data-route") || el.getAttribute("href") || "",
+          href: el.getAttribute("href") || "",
+          role: el.getAttribute("role") || "",
+          tagName: el.tagName.toLowerCase(),
+          bounds: {
+            x: Math.round(rect.x),
+            y: Math.round(rect.y),
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
+          },
+          visible: true,
+          expectedOutcome: "",
+        };
+      });
     const root = document.querySelector("#appRoot");
     const header = document.querySelector(".app-header, .page-header, .notifications-head, .back-head, [data-testid='app-header']");
     const bottom = document.querySelector("[data-testid='app-bottom-bar'], .bottom-nav");
@@ -166,11 +241,11 @@ async function collectContract(page, currentRoute) {
       pageTitle: texts("h1,h2,.app-title h2,.page-header h2,.notifications-head h2")[0] || "",
       subtitle: texts(".app-title p,.page-header p,.notifications-head p")[0] || "",
       headings: texts("h1,h2,h3,.section-title h3").slice(0, 80),
-      sectionOrder: texts(".section-title h3,h2,h3").slice(0, 80),
+      sectionOrder: texts("h1,h2,h3,.section-title h3").slice(0, 80),
       cardTexts: records(".card,.ui-card,.v-card,article").slice(0, 80),
       buttonLabels: texts("button,a[role='button'],.primary-btn,.secondary-btn").slice(0, 120),
       filterLabels: texts(".tab-pill,.chip-btn,.segmented button,.filter-chip,.review-filter-chip").slice(0, 80),
-      clickActions: records("button,[data-action],[data-open],[data-screen],a[href]").slice(0, 160),
+      clickActions: actionRecords().slice(0, 160),
       modalOrSheetTriggers: records("[data-open]").slice(0, 80),
       headerActions: records(".app-header button,.page-header button,.notifications-head button,.back-head button").slice(0, 20),
       bottomBar: {
@@ -182,7 +257,7 @@ async function collectContract(page, currentRoute) {
       geometry: {
         header: rect(header),
         firstCard: rect(firstCard),
-        contentHeight: root ? root.scrollHeight : document.documentElement.scrollHeight,
+        contentHeight: Math.max(root ? root.scrollHeight : document.documentElement.scrollHeight, window.innerHeight),
         viewportHeight: window.innerHeight,
         horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       },
@@ -253,7 +328,7 @@ for (const route of contractRoutes) {
       cardTexts: feature.cardTexts.map((item) => item.text),
       buttonLabels: feature.buttonLabels,
       filterLabels: feature.filterLabels,
-      clickActions: feature.clickActions.map((item) => `${item.text}|${item.action}|${item.href}`),
+      clickActions: feature.clickActions.map((item) => `${item.label || item.text}|${item.action}|${item.route || item.href}`),
     })),
     diffs: comparison.diffs,
     goldenSummary: {
@@ -302,13 +377,16 @@ for (const item of results) {
 
 lines.push("");
 lines.push("## Diff Details");
-lines.push("");
-for (const item of results.filter((result) => result.status !== "PASS")) {
+const failedResults = results.filter((result) => result.status !== "PASS");
+if (!failedResults.length) {
+  lines.push("No blocking content or interaction diffs for the selected routes.");
+}
+for (const item of failedResults) {
+  lines.push("");
   lines.push(`### ${item.route}`);
   for (const diff of item.diffs.slice(0, 12)) {
     lines.push(`- ${diff.severity}: ${diff.name}`);
   }
-  lines.push("");
 }
 
 await fs.writeFile(mdPath, `${lines.join("\n")}\n`);

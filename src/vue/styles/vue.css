@@ -114,6 +114,64 @@
   white-space: nowrap;
 }
 
+.v-header-status-viewport {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  gap: 4px;
+}
+
+.v-header-status-item {
+  flex: 0 0 213px;
+  width: 213px;
+  height: 46px;
+  border: 1px solid var(--color-border);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-soft);
+  color: var(--text-primary);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-content: center;
+  gap: 2px 8px;
+  padding: 6px 10px;
+  font-family: var(--font-family-base);
+  text-align: left;
+}
+
+.v-header-status-item span,
+.v-header-status-item strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v-header-status-item span {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+}
+
+.v-header-status-item strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  line-height: 1.05;
+}
+
+.v-header-status-item em {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  color: var(--color-primary-dark);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: var(--weight-extra-bold);
+}
+
 .v-card {
   width: 100%;
   min-width: 0;
@@ -806,7 +864,26 @@
   color: var(--text-secondary);
   font-size: var(--font-size-caption);
   font-weight: var(--weight-extra-bold);
-  margin-bottom: 8px;
+}
+
+.v-home-kicker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  margin-bottom: 5px;
+}
+
+.v-home-info-button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
 }
 
 .v-home-metric {
@@ -864,6 +941,7 @@
 }
 
 .v-region-day-tabs button {
+  width: auto;
   min-height: 30px;
   border: 0;
   border-radius: var(--radius-pill);
@@ -885,12 +963,56 @@
   margin-top: 10px;
 }
 
+.v-contract-space {
+  display: none;
+}
+
 .v-filter-row {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 2px;
   -webkit-overflow-scrolling: touch;
+}
+
+.v-jobs-segment {
+  flex: 0 0 auto;
+}
+
+.v-callout {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-soft);
+}
+
+.v-callout.is-soft {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary-border);
+}
+
+.v-callout h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+}
+
+.v-callout p {
+  margin: 2px 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: 1.16;
+  max-height: 28px;
+  overflow: hidden;
 }
 
 .v-tab-chip {
@@ -911,6 +1033,48 @@
   border-color: var(--color-primary-border);
   background: var(--color-primary-soft);
   color: var(--color-primary-dark);
+}
+
+.v-tab-scroll {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  padding: 0 0 3px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.v-tab-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.v-tab-pill {
+  width: auto;
+  min-height: 36px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  padding: 0 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-family-base);
+  font-size: 10.8px;
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+}
+
+.v-tab-pill.tab-pill,
+.v-jobs-segment .tab-pill,
+.v-region-day-tabs .tab-pill {
+  width: auto;
+}
+
+.v-tab-pill.active,
+.v-tab-pill.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
 }
 
 .v-job-card {
@@ -934,6 +1098,240 @@
   color: var(--color-primary-dark);
   font-size: var(--font-size-card-title);
   font-weight: var(--weight-extra-bold);
+}
+
+.v-golden-job-card {
+  display: grid;
+  gap: 7px;
+}
+
+.v-golden-job-top {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22px;
+  align-items: start;
+  gap: 10px;
+}
+
+.v-golden-job-title {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.v-golden-job-title h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v-golden-job-title p,
+.v-golden-note-list p,
+.v-meta-line,
+.v-assurance-line {
+  margin: 0;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: 1.22;
+}
+
+.v-golden-note-list {
+  display: grid;
+  gap: 3px;
+}
+
+.v-price-box {
+  border-radius: var(--radius-card-compact);
+  background: var(--color-neutral-50);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 6px;
+  padding: 6px;
+}
+
+.v-price-box > div {
+  min-height: 26px;
+  border-radius: 10px;
+  background: #fff;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-bold);
+}
+
+.v-price-box strong {
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.v-price-box .discount strong,
+.v-price-box .discount span {
+  color: #b45309;
+}
+
+.v-price-box .save strong,
+.v-price-box .save span {
+  color: var(--color-primary-dark);
+}
+
+.v-action-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.v-priority-card {
+  border-color: var(--color-primary-border);
+}
+
+.v-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.v-kpi-row > div {
+  min-width: 0;
+  min-height: 66px;
+  border-radius: var(--radius-card-compact);
+  background: var(--color-neutral-50);
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 8px;
+}
+
+.v-kpi-row span {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+}
+
+.v-kpi-row strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+}
+
+.v-assurance-line {
+  color: var(--color-primary-dark);
+}
+
+.v-calendar-list-card {
+  display: grid;
+  gap: 10px;
+}
+
+.v-appointment-row,
+.v-worker-row {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: var(--radius-card-compact);
+  background: var(--color-neutral-50);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  color: var(--text-primary);
+  font-family: var(--font-family-base);
+  text-align: left;
+}
+
+.v-appointment-row div,
+.v-worker-row div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.v-appointment-row strong,
+.v-worker-row strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+}
+
+.v-appointment-row small,
+.v-worker-row small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.v-calendar-service-card {
+  display: grid;
+  gap: 10px;
+}
+
+.v-mini-table {
+  display: grid;
+  border-radius: var(--radius-card-compact);
+  background: var(--color-neutral-50);
+  padding: 8px 10px;
+}
+
+.v-mini-table > div {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.v-mini-table strong {
+  color: var(--text-primary);
+}
+
+.v-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.v-calendar-link-title {
+  margin: 8px 0 4px;
+  color: var(--text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+}
+
+.v-calendar-link-copy {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
 }
 
 .v-mini-grid {

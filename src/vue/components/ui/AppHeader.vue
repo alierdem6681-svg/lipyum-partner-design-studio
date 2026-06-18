@@ -19,6 +19,24 @@ const iconForAction = {
   "wallet-info": "help-circle",
   "notification-settings": "settings",
 };
+
+const labelForAction = {
+  notifications: "Bildirimler",
+  profile: "Profil",
+  info: "Bilgi",
+};
+
+const homeStatuses = [
+  { action: "status", eyebrow: "Durum: Aktif", label: "675 kredi ≈ 2-3 iş" },
+  { action: "credit", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "Yükle" },
+  { action: "workPlan", eyebrow: "Durum: Pasif", label: "Çalışma Saati Dışı" },
+  { action: "support", eyebrow: "Durum: Pasif", label: "Hesap askıda", cta: "Destek" },
+  { action: "activate-dispatch", eyebrow: "Durum: Pasif", label: "Duraklatılmış", cta: "Aç" },
+];
+
+function statusAriaLabel(status) {
+  return `${status.eyebrow}${status.label}${status.cta ? ` ${status.cta}` : ""}`;
+}
 </script>
 
 <template>
@@ -28,6 +46,7 @@ const iconForAction = {
       class="v-header__action"
       type="button"
       data-testid="back-button"
+      data-action="go-back"
       aria-label="Geri dön"
       @click="emit('back')"
     >
@@ -38,13 +57,32 @@ const iconForAction = {
       class="v-header__action"
       type="button"
       data-testid="hamburger-button"
-      aria-label="Menüyü aç"
+      data-action="menu"
+      aria-label="Menü"
       @click="emit('menu')"
     >
       <AppIcon name="menu" :size="22" />
     </button>
 
-    <div class="v-header__copy">
+    <div v-if="variant === 'home'" class="v-header-status-viewport" aria-label="Çalışma durumu">
+      <div
+        v-for="status in homeStatuses"
+        :key="status.action"
+        class="v-header-status-item"
+        role="button"
+        tabindex="0"
+        :data-action="status.action"
+        :aria-label="statusAriaLabel(status)"
+        @click="emit('action', status.action)"
+        @keydown.enter.prevent="emit('action', status.action)"
+        @keydown.space.prevent="emit('action', status.action)"
+      >
+        <span>{{ status.eyebrow }}</span>
+        <strong>{{ status.label }}</strong>
+        <em v-if="status.cta">{{ status.cta }}</em>
+      </div>
+    </div>
+    <div v-else class="v-header__copy">
       <h1>{{ title }}</h1>
       <p v-if="subtitle">{{ subtitle }}</p>
     </div>
@@ -56,7 +94,8 @@ const iconForAction = {
         class="v-header__action"
         type="button"
         :data-testid="action === 'notifications' ? 'notification-button' : action === 'profile' ? 'profile-button' : 'header-right-action'"
-        :aria-label="rightLabel || action"
+        :data-action="action"
+        :aria-label="rightLabel || labelForAction[action] || action"
         @click="rightIcon ? emit('right') : emit('action', action)"
       >
         <AppIcon :name="iconForAction[action] || action" :size="22" />

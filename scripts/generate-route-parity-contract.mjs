@@ -91,6 +91,56 @@ for (const route of routes) {
           },
         };
       });
+    const actionableSelector = "button,a[href],input,textarea,select,[role='button'],[data-action],[data-route],[data-open],[data-screen]";
+    const isNativeAction = (el) => ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT"].includes(el.tagName);
+    const isActionable = (el) => {
+      if (el.closest("[data-contract-ignore='true']")) return false;
+      const rect = el.getBoundingClientRect();
+      const style = window.getComputedStyle(el);
+      const disabled = el.disabled || el.getAttribute("aria-disabled") === "true";
+      const inViewport = rect.width > 0
+        && rect.height > 0
+        && rect.right > 0
+        && rect.bottom > 0
+        && rect.left < window.innerWidth
+        && rect.top < window.innerHeight;
+      const interactiveChild = !isNativeAction(el)
+        && el.getAttribute("role") !== "button"
+        && !!el.querySelector("button,a[href],input,textarea,select,[role='button']");
+      const pageSizedWrapper = rect.width >= window.innerWidth * 0.92 && rect.height >= window.innerHeight * 0.72;
+      return inViewport
+        && !disabled
+        && style.display !== "none"
+        && style.visibility !== "hidden"
+        && style.pointerEvents !== "none"
+        && Number(style.opacity || "1") > 0
+        && !interactiveChild
+        && !pageSizedWrapper;
+    };
+    const actionRecords = () => Array.from(document.querySelectorAll(actionableSelector))
+      .filter((el) => visible(el) && isActionable(el))
+      .map((el) => {
+        const rect = el.getBoundingClientRect();
+        const label = el.getAttribute("aria-label") || el.textContent || el.getAttribute("value") || "";
+        return {
+          label: clean(label).slice(0, 160),
+          text: clean(el.textContent).slice(0, 160),
+          testid: el.getAttribute("data-testid") || "",
+          action: el.getAttribute("data-action") || el.getAttribute("data-open") || el.getAttribute("data-route") || el.getAttribute("data-screen") || "",
+          route: el.getAttribute("data-route") || el.getAttribute("href") || "",
+          href: el.getAttribute("href") || "",
+          role: el.getAttribute("role") || "",
+          tagName: el.tagName.toLowerCase(),
+          bounds: {
+            x: Math.round(rect.x),
+            y: Math.round(rect.y),
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
+          },
+          visible: true,
+          expectedOutcome: "",
+        };
+      });
     const root = document.querySelector("#appRoot");
     const header = document.querySelector(".app-header, .page-header, .notifications-head, .back-head, [data-testid='app-header']");
     const bottom = document.querySelector("[data-testid='app-bottom-bar'], .bottom-nav");
@@ -112,11 +162,11 @@ for (const route of routes) {
       pageTitle: texts("h1,h2,.app-title h2,.page-header h2,.notifications-head h2")[0] || "",
       subtitle: texts(".app-title p,.page-header p,.notifications-head p")[0] || "",
       headings: texts("h1,h2,h3,.section-title h3").slice(0, 80),
-      sectionOrder: texts(".section-title h3,h2,h3").slice(0, 80),
+      sectionOrder: texts("h1,h2,h3,.section-title h3").slice(0, 80),
       cardTexts: records(".card,.ui-card,.v-card,article").slice(0, 80),
       buttonLabels: texts("button,a[role='button'],.primary-btn,.secondary-btn").slice(0, 120),
       filterLabels: texts(".tab-pill,.chip-btn,.segmented button,.filter-chip,.review-filter-chip").slice(0, 80),
-      clickActions: records("button,[data-action],[data-open],[data-screen],a[href]").slice(0, 160),
+      clickActions: actionRecords().slice(0, 160),
       modalOrSheetTriggers: records("[data-open]").slice(0, 80),
       headerActions: records(".app-header button,.page-header button,.notifications-head button,.back-head button").slice(0, 20),
       bottomBar: {
@@ -128,7 +178,7 @@ for (const route of routes) {
       geometry: {
         header: rect(header),
         firstCard: rect(firstCard),
-        contentHeight: root ? root.scrollHeight : document.documentElement.scrollHeight,
+        contentHeight: Math.max(root ? root.scrollHeight : document.documentElement.scrollHeight, window.innerHeight),
         viewportHeight: window.innerHeight,
         horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       },
@@ -147,7 +197,7 @@ for (const route of routes) {
       cardTexts: contract.cardTexts.map((item) => item.text),
       buttonLabels: contract.buttonLabels,
       filterLabels: contract.filterLabels,
-      clickActions: contract.clickActions.map((item) => `${item.text}|${item.action}|${item.href}`),
+      clickActions: contract.clickActions.map((item) => `${item.label || item.text}|${item.action}|${item.route || item.href}`),
     })),
   });
   await page.close();

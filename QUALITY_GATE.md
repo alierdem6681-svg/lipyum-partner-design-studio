@@ -171,3 +171,25 @@ V12 parity kuralı:
 - Parity fail’in “beklenen” olması, V12’nin tamamlandığı anlamına gelmez; yalnızca güvenli şekilde cutover’ın engellendiğini kanıtlar.
 
 V12 final cutover için ayrıca gerçek Golden Master visual regression, content parity, interaction parity ve full quality gate iki ardışık koşuda geçmelidir.
+
+## V12-C Core Route Gate
+
+Core route çalışmaları için ek komutlar:
+
+```bash
+npm run test:parity:core
+npm run test:parity:core:strict
+npm run test:quality-gate:v12-c
+```
+
+Kurallar:
+
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` için `test:parity:core` content/action contract kapısıdır.
+- `test:parity:core:strict` visual parity dahil strict kapıdır ve P0/P1 görsel fark varken fail vermelidir.
+- `test:quality-gate:v12-c` strict visual parity fail iken tamamlandı sayılmaz.
+- Default Vue boot ve PR ready durumu bu komutlar iki kez kod değişmeden geçmeden açılamaz.
+
+Mevcut V12-C durumu:
+
+- `test:parity:core`: PASS.
+- `test:parity:core:strict`: FAIL, visual parity nedeniyle.

@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-06-18T18:20:00.000Z",
+  "scope": "V12-C core routes",
+  "routes": [
+    {
+      "route": "/home",
+      "criticalActions": [
+        { "testid": "hamburger-button", "label": "Menü", "action": "menu", "expectedState": "drawer-open", "reset": "close-drawer" },
+        { "testid": "notification-button", "label": "Bildirimler", "action": "notifications", "expectedRoute": "/notifications", "reset": "route:/home" },
+        { "testid": "profile-button", "label": "Profil", "action": "profile", "expectedRoute": "/profile", "reset": "route:/home" },
+        { "label": "Nedir?", "action": "performance-info", "expectedSheet": "Performans Skoru", "reset": "close-sheet" },
+        { "label": "Skorumu Artır", "action": "performanceScore", "expectedRoute": "/performance-score", "reset": "route:/home" },
+        { "label": "Bakiye Yükle", "action": "credit", "expectedRoute": "/wallet", "reset": "route:/home" },
+        { "label": "Krediye Çevir", "action": "bonus-convert", "expectedSheet": "Krediye Çevir", "reset": "close-sheet" },
+        { "testid": "bottom-cta-job", "label": "İş Al", "action": "work", "expectedRoute": "/jobs", "reset": "route:/home" }
+      ]
+    },
+    {
+      "route": "/jobs",
+      "criticalActions": [
+        { "label": "Havuzdaki İşler", "expectedState": "pool-tab", "reset": "none" },
+        { "label": "Teklif Verilecekler", "expectedState": "offer-tab", "reset": "click:Havuzdaki İşler" },
+        { "label": "Havuz nedir?", "action": "pool-info", "expectedSheet": "Havuz nedir?", "reset": "close-sheet" },
+        { "label": "Havuzdan Al", "action": "take-pool", "expectedSheet": "Buzdolabı Tamiri", "reset": "close-sheet" },
+        { "label": "Detay", "action": "detail", "expectedSheet": "Buzdolabı Tamiri", "reset": "close-sheet" }
+      ]
+    },
+    {
+      "route": "/my-jobs",
+      "criticalActions": [
+        { "label": "Yeni İşler", "expectedState": "incoming-tab", "reset": "none" },
+        { "label": "Aktif", "expectedState": "active-tab", "reset": "click:Yeni İşler" },
+        { "label": "Tekliflerim", "expectedState": "offers-tab", "reset": "click:Yeni İşler" },
+        { "label": "Tamamlananlar", "expectedState": "done-tab", "reset": "click:Yeni İşler" },
+        { "label": "Sorunlu", "expectedState": "issues-tab", "reset": "click:Yeni İşler" },
+        { "label": "Müşteriyi Ara", "action": "call", "expectedSheet": "Müşteriyi Ara", "reset": "close-sheet" },
+        { "label": "Sorun Bildir", "action": "issue", "expectedSheet": "Sorun Bildir", "reset": "close-sheet" }
+      ]
+    },
+    {
+      "route": "/calendar",
+      "criticalActions": [
+        { "label": "10:00 Ayşe Hanım", "expectedSheet": "Ayşe Hanım", "reset": "close-sheet" },
+        { "label": "11:30 Mehmet Bey", "expectedSheet": "Mehmet Bey", "reset": "close-sheet" },
+        { "label": "14:00 Zeynep Hanım", "expectedSheet": "Zeynep Hanım", "reset": "close-sheet" },
+        { "label": "Linki Paylaş", "action": "share", "expectedSheet": "Linki Paylaş", "reset": "close-sheet" },
+        { "label": "QR Göster", "action": "qr", "expectedSheet": "QR Göster", "reset": "close-sheet" }
+      ]
+    }
+  ]
+}

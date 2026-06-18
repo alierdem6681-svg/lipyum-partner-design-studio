@@ -48,3 +48,20 @@ Neden:
 
 Core dört route için Golden Master üzerinden birebir section/card/action taşıma yapılmalı. `V12_VISUAL_PARITY_REPORT.md` P0/P1 fark göstermeden `src/app.js` default Vue boot’a geçirilmemelidir.
 
+## V12-C Güncellemesi
+
+Core dört route için content/action contract ilerlemesi tamamlandı:
+
+- `/home`: contract PASS, visual FAIL P0.
+- `/jobs`: contract PASS, visual FAIL P0.
+- `/my-jobs`: contract PASS, visual FAIL P0.
+- `/calendar`: contract PASS, visual FAIL P1.
+
+Yeni raporlar:
+
+- `V12_C_CORE_VISUAL_REVIEW.md`
+- `V12_C_CORE_INTERACTION_REPORT.md`
+- `V12_C_COMPLETION_REPORT.md`
+- `tests/contracts/V12_CORE_INTERACTIONS.json`
+
+Cutover kararı değişmedi: default Vue boot kapalıdır ve PR #3 draft kalmalıdır.
