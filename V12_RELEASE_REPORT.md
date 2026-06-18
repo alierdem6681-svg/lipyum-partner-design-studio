@@ -65,3 +65,17 @@ Yeni raporlar:
 - `tests/contracts/V12_CORE_INTERACTIONS.json`
 
 Cutover kararı değişmedi: default Vue boot kapalıdır ve PR #3 draft kalmalıdır.
+
+## V12-E Güncellemesi
+
+V12-E ile paket ürünü aktif scope'tan kaldırıldı ve eski paket route'ları `/subscription` redirect'ine alındı. Jobs, MyJobs, Calendar ve Wallet route'ları eski Golden Master parity kapsamından çıkarılıp blank shell olarak yeniden tanımlandı.
+
+Korunanlar:
+
+- `/home` Golden parity P0 borcu.
+- `/subscription` route'u.
+- Default legacy boot ve draft PR güvenliği.
+
+Yeni gate:
+
+- `npm run test:quality-gate:v12-e`

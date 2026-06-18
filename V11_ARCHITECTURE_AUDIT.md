@@ -1,8 +1,8 @@
 # V11 Architecture Audit
 
-Generated: 2026-06-18T07:45:30.521Z
+Generated: 2026-06-18T21:39:57.402Z
 
-- Required route count: 39
+- Required route count: 36
 - Missing route map entries: none
 - Missing route metadata entries: none
 - Missing page route entries: none

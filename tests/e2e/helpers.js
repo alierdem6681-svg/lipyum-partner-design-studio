@@ -18,10 +18,7 @@ export const routes = [
   "/customers",
   "/reviews",
   "/leaderboard",
-  "/packages",
   "/subscription",
-  "/package-builder",
-  "/package-checkout",
   "/bonus",
   "/performance-score",
   "/invoices",
@@ -59,12 +56,11 @@ export const criticalRoutes = [
   "/job-referral",
   "/reviews",
   "/leaderboard",
-  "/packages",
   "/subscription",
   "/partner-card-preview",
 ];
 
-export const ctaHiddenRoutes = new Set(["/package-checkout"]);
+export const ctaHiddenRoutes = new Set();
 
 export async function collectConsoleErrors(page) {
   const errors = [];

@@ -20,10 +20,7 @@ const requiredRoutes = [
   "/referral",
   "/referral-earnings",
   "/job-referral",
-  "/packages",
   "/subscription",
-  "/package-builder",
-  "/package-checkout",
   "/bonus",
   "/performance-score",
   "/customers",
@@ -53,7 +50,7 @@ const legacySource = readFileSync("src/legacyApp.js", "utf8");
 const appSource = readFileSync("src/app.js", "utf8");
 const migrationStatus = readFileSync("MIGRATION_STATUS.md", "utf8");
 const stillLegacyBoot = appSource.includes("./legacyApp.js");
-const activeLegacyRender = /function render(Home|Work|Jobs|Calendar|Referral|GrowthPackages|Subscription)\b/.test(legacySource);
+const activeLegacyRender = /function render(Home|Work|Jobs|Calendar|Referral|Subscription)\b/.test(legacySource);
 const p0Recorded = migrationStatus.includes("P0") && migrationStatus.includes("Vue migration");
 
 const report = [

@@ -100,3 +100,14 @@ P1:
 Per the latest user instruction, V12-D work is stopped here and the non-PASS items are documented instead of being forced further.
 
 This is a partial closure, not a strict V12-D PASS.
+
+## V12-E Supersede Notu
+
+V12-E ürün kararıyla `/jobs`, `/my-jobs`, `/calendar` ve `/wallet` eski Golden Master parity kapsamı dışına çıkarıldı.
+
+- Calendar eski parity PASS -> `SUPERSEDED_BY_PRODUCT_SCOPE_V12_E`
+- MyJobs eski parity PASS -> `SUPERSEDED_BY_PRODUCT_SCOPE_V12_E`
+- Jobs eski parity FAIL -> `SUPERSEDED_BY_PRODUCT_SCOPE_V12_E`
+- Home eski P0 -> hâlâ aktif P0
+
+Paketler route ailesi de aktif üründen kaldırıldı ve `/subscription` redirect'ine alındı.

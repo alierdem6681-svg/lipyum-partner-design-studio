@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const coreRoutes = ["/home", "/jobs", "/my-jobs", "/calendar"];
+const coreRoutes = ["/home"];
 
 for (const route of coreRoutes) {
   test(`V12 visual smoke ${route}`, async ({ page }) => {

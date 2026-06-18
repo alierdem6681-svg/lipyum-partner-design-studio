@@ -5,6 +5,7 @@ import HomePage from "../pages/HomePage.vue";
 import JobsPage from "../pages/JobsPage.vue";
 import LegacyContentBridge from "../pages/LegacyContentBridge.vue";
 import MyJobsPage from "../pages/MyJobsPage.vue";
+import WalletPage from "../pages/WalletPage.vue";
 import UiKitPreviewPage from "../pages/UiKitPreviewPage.vue";
 import JobReferralVuePage from "../pages/JobReferralVuePage.vue";
 
@@ -13,6 +14,7 @@ const coreRoutes = [
   { path: "/jobs", name: "jobs", component: JobsPage },
   { path: "/my-jobs", name: "my-jobs", component: MyJobsPage },
   { path: "/calendar", name: "calendar", component: CalendarPage },
+  { path: "/wallet", name: "wallet", component: WalletPage },
 ];
 
 const compatibilityRoutes = Object.keys(ROUTE_TO_SCREEN)
@@ -35,6 +37,9 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     ...coreRoutes,
+    { path: "/packages", redirect: "/subscription" },
+    { path: "/package-builder", redirect: "/subscription" },
+    { path: "/package-checkout", redirect: "/subscription" },
     ...compatibilityRoutes,
     { path: "/", redirect: "/home" },
     { path: "/:pathMatch(.*)*", redirect: "/home" },

@@ -12,7 +12,6 @@ test("V12 core route interactions are wired", async ({ page }) => {
   await page.goto("/?engine=vue#/home");
   await page.getByTestId("bottom-cta-job").click();
   await expect(page).toHaveURL(/#\/jobs$/);
-
-  await page.getByText("Detay").first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByTestId("jobs-page")).toBeVisible();
+  await expect(page.locator('[data-testid="jobs-page"] > *')).toHaveCount(0);
 });

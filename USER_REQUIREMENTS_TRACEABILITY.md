@@ -135,6 +135,24 @@ The following groups were observed passing in the `npm run test:quality-gate` ba
 
 Core route contract work improved `/home`, `/jobs`, `/my-jobs`, and `/calendar` to content/action PASS in Vue preview. Visual parity remains open and blocks completion.
 
+## V12-E Product Scope Reset
+
+Latest requirement:
+
+- Paketler özelliği aktif üründen kaldırıldı.
+- `/my-jobs` label/title `İşler` oldu.
+- `/calendar` label/title `Randevu` oldu.
+- `/jobs`, `/my-jobs`, `/calendar`, `/wallet` içeriksiz blank shell olmalı.
+- `/subscription` ve Aboneliğim korunmalı.
+- Eski paket URL'leri `/subscription`a redirect olmalı.
+
+Implementation trace:
+
+- `BOTTOM_TABS` tek kaynak olarak güncellendi.
+- Paket route'ları aktif registry'den çıkarıldı.
+- `BlankBottomRoutePage.vue` ve legacy `BlankRoutePage.js` eklendi.
+- V12-E product scope contract ve targeted tests eklendi.
+
 ## Completion Statement
 
 V12 is not complete at this checkpoint. Phase 0 baseline, origin synchronization and traceability have been started, but the core V12 cutover blockers remain open.

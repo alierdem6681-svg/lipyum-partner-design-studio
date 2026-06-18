@@ -8,7 +8,7 @@ const visualRoutes = [
   "/support/new",
   "/support/live",
   "/referral",
-  "/packages",
+  "/subscription",
   "/partner-card-preview",
 ];
 

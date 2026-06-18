@@ -3,5 +3,5 @@ import BlankBottomRoutePage from "./BlankBottomRoutePage.vue";
 </script>
 
 <template>
-  <BlankBottomRoutePage title="İş Al" test-id="jobs-page" />
+  <BlankBottomRoutePage title="Cüzdan" test-id="wallet-page" />
 </template>

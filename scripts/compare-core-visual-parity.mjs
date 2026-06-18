@@ -10,7 +10,7 @@ const reportPath = path.join(root, "tests/golden-master/v12-feature-preview/V12_
 const markdownPath = path.join(root, "V12_C_CORE_VISUAL_REVIEW.md");
 const outputDir = path.join(root, "tests/golden-master/v12-feature-preview/core-diff/393x852");
 const featureBaseUrl = process.env.V12_FEATURE_URL || "http://127.0.0.1:56389/?engine=vue";
-const routes = (process.env.V12_CORE_ROUTES || "/home,/jobs,/my-jobs,/calendar").split(",").filter(Boolean);
+const routes = (process.env.V12_CORE_ROUTES || "/home").split(",").filter(Boolean);
 const viewport = { width: 393, height: 852, name: "393x852" };
 const strict = process.argv.includes("--strict");
 const maxDiffPixelRatio = Number(process.env.V12_CORE_MAX_DIFF_RATIO || "0.015");

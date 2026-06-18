@@ -9,7 +9,7 @@ const golden = new Map(
     .map((item) => [item.route, item]),
 );
 
-for (const route of ["/home", "/jobs", "/my-jobs", "/calendar"]) {
+for (const route of ["/home"]) {
   test(`V12 content parity ${route}`, async ({ page }) => {
     await page.goto(`/?engine=vue#${route}`);
     const current = await page.evaluate(() => ({

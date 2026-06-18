@@ -20,7 +20,7 @@ const explicitRoutes = [...args]
   .split(",")
   .map((route) => route.trim())
   .filter(Boolean);
-const defaultCoreRoutes = ["/home", "/jobs", "/my-jobs", "/calendar"];
+const defaultCoreRoutes = ["/home"];
 
 function hash(value) {
   return crypto.createHash("sha256").update(value).digest("hex");

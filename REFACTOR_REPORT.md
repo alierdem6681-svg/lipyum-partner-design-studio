@@ -2019,3 +2019,52 @@ P1:
 ### 6. Son karar
 
 V12-D, kullanıcı talimatı gereği raporlanarak kapatıldı. Bu durum strict V12-D PASS veya Golden Master visual lock anlamına gelmez.
+
+## Faz 12-E - Product Scope Reset, Package Feature Purge ve Empty Bottom Routes
+
+### 1. Genel durum
+
+V12-E ile ürün kapsamı sadeleştirildi. Paketler özelliği aktif üründen kaldırıldı; `/jobs`, `/my-jobs`, `/calendar` ve `/wallet` yeni ürün kararına göre boş shell ekranlara dönüştürüldü.
+
+### 2. Paketler purge
+
+- Sidebar'dan Paketler kaldırıldı.
+- `/packages`, `/package-builder`, `/package-checkout` aktif route registry'den çıkarıldı.
+- Eski package page dosyaları ve package flow testi silindi.
+- Eski package URL'leri `/subscription` route'una retired redirect olarak bağlandı.
+- `/subscription` ve Aboneliğim korunur.
+
+### 3. Bottom bar
+
+Bottom bar label'ları `BOTTOM_TABS` üzerinden tek kaynaktan yönetilir:
+
+- Ana Sayfa
+- İşler
+- İş Al
+- Randevu
+- Cüzdan
+
+### 4. Boş route'lar
+
+Hem legacy hem Vue preview için aşağıdaki route'lar blank shell'e alındı:
+
+- `/jobs`
+- `/my-jobs`
+- `/calendar`
+- `/wallet`
+
+Bu ekranlarda kart, filtre, buton, açıklama veya empty state gösterilmez.
+
+### 5. Golden scope
+
+Eski Jobs/MyJobs/Calendar/Wallet ve paket Golden parity beklentileri `SUPERSEDED_BY_PRODUCT_SCOPE_V12_E` olarak işaretlendi. `/home` Golden parity P0 borcu devam eder.
+
+### 6. Test
+
+- Static package purge testi PASS.
+- Route smoke PASS, 39 route.
+- V12-E targeted Playwright set PASS, 21/21.
+- `npm run test:quality-gate:v12-e` iki kez PASS.
+- Genel `npm run test:quality-gate`: obsolete wallet load-more testi düzeltildikten sonra yeniden koşuldu; yakalanan tüm adımlar PASS ilerledi. Son build ve `git diff --check` bağımsız PASS.
+
+Not: `/home` Golden visual parity V12-E kapsam dışı bırakıldı ve P0 olarak devam eder.

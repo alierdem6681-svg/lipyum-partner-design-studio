@@ -19,9 +19,6 @@ export const ROUTE_TO_SCREEN = {
   "/referral": "referral",
   "/job-referral": "jobReferral",
   "/referral-earnings": "referralEarnings",
-  "/packages": "growthPackages",
-  "/package-builder": "growthPackageBuilder",
-  "/package-checkout": "growthPackageCheckout",
   "/subscription": "subscription",
   "/account-settings": "accountSettings",
   "/notification-settings": "notificationSettings",
@@ -47,8 +44,8 @@ export const ROUTE_TO_SCREEN = {
 export const ROUTE_TITLES = {
   "/home": "Ana Sayfa",
   "/jobs": "İş Al",
-  "/my-jobs": "İşlerim",
-  "/calendar": "Takvim",
+  "/my-jobs": "İşler",
+  "/calendar": "Randevu",
   "/wallet": "Cüzdan",
   "/profile": "Profilim",
   "/notifications": "Bildirimler",
@@ -65,9 +62,6 @@ export const ROUTE_TITLES = {
   "/referral": "Partner Davet Programı",
   "/job-referral": "İş Yönlendirme Programı",
   "/referral-earnings": "Kazançlarım",
-  "/packages": "Büyüme Paketleri",
-  "/package-builder": "Paket Seçimi",
-  "/package-checkout": "Ödeme",
   "/subscription": "Aboneliğim",
   "/account-settings": "Hesap Ayarları",
   "/notification-settings": "Bildirim Ayarları",
@@ -92,11 +86,18 @@ export const ROUTE_TITLES = {
 
 export const BOTTOM_TABS = [
   { id: "home", route: "/home", label: "Ana Sayfa", icon: "home" },
-  { id: "jobs", route: "/my-jobs", label: "İşlerim", icon: "clipboard" },
+  { id: "jobs", route: "/my-jobs", label: "İşler", icon: "clipboard" },
   { id: "work", route: "/jobs", label: "İş Al", icon: "plus", featured: true, badge: 3 },
-  { id: "calendar", route: "/calendar", label: "Takvim", icon: "calendar" },
+  { id: "calendar", route: "/calendar", label: "Randevu", icon: "calendar" },
   { id: "wallet", route: "/wallet", label: "Cüzdan", icon: "wallet" },
 ];
+
+export const RETIRED_ROUTE_REDIRECTS = {
+  "/packages": "/subscription",
+  "/package-builder": "/subscription",
+  "/package-checkout": "/subscription",
+  "/partner/packages": "/subscription",
+};
 
 export const DRAWER_SECTIONS = [
   {
@@ -104,7 +105,6 @@ export const DRAWER_SECTIONS = [
     items: [
       { label: "Liderlik Tablosu", icon: "trophy", route: "/leaderboard", screen: "levels", color: "#b54708" },
       { label: "Müşteri Yorumları", icon: "message", route: "/reviews", screen: "reviews", color: "#175cd3" },
-      { label: "Paketler", icon: "package", route: "/packages", screen: "growthPackages", color: "#16a34a" },
       { label: "Aboneliğim", icon: "crown", route: "/subscription", screen: "subscription", color: "#d99a0b" },
     ],
   },

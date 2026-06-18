@@ -9,9 +9,6 @@ const baseUrl = process.env.V11_STABLE_URL || "http://127.0.0.1:56387";
 const viewport = { width: 393, height: 852 };
 const routes = [
   "/home",
-  "/jobs",
-  "/my-jobs",
-  "/calendar",
   "/wallet",
   "/profile",
   "/notifications",
@@ -27,10 +24,7 @@ const routes = [
   "/job-referral",
   "/partners",
   "/customers",
-  "/packages",
   "/subscription",
-  "/package-builder",
-  "/package-checkout",
   "/bonus",
   "/performance-score",
   "/invoices",

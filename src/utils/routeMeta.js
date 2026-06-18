@@ -3,15 +3,18 @@ import { BOTTOM_TABS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./constants.js";
 const titleOverrides = {
   "/jobs": {
     title: "İş Al",
-    subtitle: "Havuz ve teklif fırsatları",
+    compactTitle: "İş Al",
+    subtitle: "",
   },
   "/my-jobs": {
-    title: "İşlerim",
-    subtitle: "İşlerini takip et",
+    title: "İşler",
+    compactTitle: "İşler",
+    subtitle: "",
   },
   "/calendar": {
-    title: "Takvim",
-    subtitle: "Randevularını ve çalışan müsaitliğini yönet",
+    title: "Randevu",
+    compactTitle: "Randevu",
+    subtitle: "",
   },
   "/referral": {
     title: "Partner Davet Programı",
@@ -25,7 +28,8 @@ const titleOverrides = {
   },
   "/wallet": {
     title: "Cüzdan",
-    subtitle: "Kredi, bonus ve hareketlerin",
+    compactTitle: "Cüzdan",
+    subtitle: "",
     trailingActions: ["wallet-info"],
   },
 };
@@ -50,9 +54,9 @@ export const routeMeta = Object.fromEntries(
         headerVariant: isHome ? "home" : isBottomRoute ? "section" : "subpage",
         leadingAction: isHome || isBottomRoute ? "hamburger" : "back",
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
-        showBottomBar: route !== "/package-checkout",
+        showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
-        ctaVariant: isHome ? "home" : route === "/package-checkout" ? "hidden" : "subpage",
+        ctaVariant: isHome ? "home" : "subpage",
         parentRoute: route === "/home" ? null : "/home",
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,

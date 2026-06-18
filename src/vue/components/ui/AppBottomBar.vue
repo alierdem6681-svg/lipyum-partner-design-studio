@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue";
+import { BOTTOM_TABS } from "../../../utils/constants.js";
 import AppIcon from "./AppIcon.vue";
 
 const emit = defineEmits(["navigate", "cta"]);
@@ -11,13 +12,7 @@ const props = defineProps({
   showCta: { type: Boolean, default: true },
 });
 
-const tabs = [
-  { id: "home", label: "Ana Sayfa", icon: "home", route: "/home" },
-  { id: "jobs", label: "İşlerim", icon: "clipboard", route: "/my-jobs" },
-  { id: "work", label: "İş Al", icon: "plus", route: "/jobs", featured: true },
-  { id: "calendar", label: "Takvim", icon: "calendar", route: "/calendar" },
-  { id: "wallet", label: "Cüzdan", icon: "wallet", route: "/wallet" },
-];
+const tabs = BOTTOM_TABS;
 
 const ctaClasses = computed(() => [
   "v-bottom__cta",

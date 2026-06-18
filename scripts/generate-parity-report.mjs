@@ -7,7 +7,7 @@ const root = process.cwd();
 const goldenPath = path.join(root, "tests/golden-master/v11-stable/GOLDEN_MASTER_MANIFEST.json");
 const reportPath = path.join(root, "V12_VISUAL_PARITY_REPORT.md");
 const jsonPath = path.join(root, "tests/golden-master/v11-stable/V12_VISUAL_PARITY_REPORT.json");
-const routes = ["/home", "/jobs", "/my-jobs", "/calendar"];
+const routes = ["/home"];
 const viewport = { width: 393, height: 852, name: "393x852" };
 const featureBaseUrl = process.env.V12_FEATURE_URL || "http://127.0.0.1:56389/?engine=vue";
 

@@ -193,3 +193,42 @@ Mevcut V12-C durumu:
 
 - `test:parity:core`: PASS.
 - `test:parity:core:strict`: FAIL, visual parity nedeniyle.
+
+## V12-E Product Scope Gate
+
+V12-E itibarıyla Paketler ürünü aktif kapsamdan çıkarıldı. Quality Gate artık package builder/checkout flow'u beklemez.
+
+Yeni komut:
+
+```bash
+npm run test:quality-gate:v12-e
+```
+
+Kapsam:
+
+- syntax/check
+- architecture
+- package purge
+- route smoke
+- bottom label doğrulaması
+- blank bottom routes
+- retired package redirects
+- subscription retained
+- V12-E product scope
+- build
+- git diff check
+
+Kaldırılan gate adımı:
+
+- `test:packages-flow`
+
+Yeni adımlar:
+
+- `test:package-feature-removed`
+- `test:product-scope:v12-e`
+- `test:blank-bottom-routes`
+- `test:bottom-labels`
+- `test:retired-package-routes`
+- `test:subscription-retained`
+
+Not: `/home` Golden visual parity V12-E scope dışı bırakılmıştır; ayrı P0 olarak devam eder.

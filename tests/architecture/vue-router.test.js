@@ -11,6 +11,7 @@ const coreRoutes = [
   { route: "/jobs", component: "JobsPage" },
   { route: "/my-jobs", component: "MyJobsPage" },
   { route: "/calendar", component: "CalendarPage" },
+  { route: "/wallet", component: "WalletPage" },
 ];
 
 test("V12 router uses hash history and real Vue SFCs for core routes", () => {
@@ -30,4 +31,3 @@ test("V12 router uses hash history and real Vue SFCs for core routes", () => {
   );
   assert.doesNotMatch(coreRoutesBlock, /LegacyContentBridge/, "core routes must not use the compatibility bridge");
 });
-

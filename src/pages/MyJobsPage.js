@@ -1,5 +1,5 @@
-import { PlaceholderPage } from "./PageScaffold.js";
+import { BlankRoutePage } from "./BlankRoutePage.js";
 
 export function MyJobsPage() {
-  return PlaceholderPage({ title: "İşlerim", subtitle: "Aktif, geçmiş ve teklif işlerim.", route: "/my-jobs" });
+  return BlankRoutePage({ title: "İşler", route: "/my-jobs" });
 }

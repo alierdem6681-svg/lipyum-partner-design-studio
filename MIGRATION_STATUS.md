@@ -7,10 +7,10 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 | Route | Ekran | Vue page | Tailwind/UI Kit | Legacy bağımlılığı | Test coverage | Not |
 | --- | --- | --- | --- | --- | --- | --- |
 | `/home` | Ana Sayfa | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, geometry, device, interaction, V12-C contract | V12-D kapsamında atlandı; son bilinen visual P0 FAIL `0.101071` |
-| `/jobs` | İş Al | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D partial: visual P1 FAIL `0.016964`, content/action sayıları eşit |
-| `/my-jobs` | İşlerim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D visual PASS `0.014621`; content/action PASS |
-| `/calendar` | Takvim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D visual PASS `0.010982`; content/action PASS |
-| `/wallet` | Cüzdan | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, forms, lazy list | P1: Vue UI Kit'e taşınmalı |
+| `/jobs` | İş Al | Evet: blank shell | Evet | Legacy ve Vue aynı V12-E blank shell | Route, mobile, bottom bar, V12-E blank scope | V12-E: eski Golden parity superseded |
+| `/my-jobs` | İşler | Evet: blank shell | Evet | Legacy ve Vue aynı V12-E blank shell | Route, mobile, bottom bar, V12-E blank scope | V12-E: label/title İşler |
+| `/calendar` | Randevu | Evet: blank shell | Evet | Legacy ve Vue aynı V12-E blank shell | Route, mobile, bottom bar, V12-E blank scope | V12-E: label/title Randevu |
+| `/wallet` | Cüzdan | Evet: blank shell | Evet | Legacy ve Vue aynı V12-E blank shell | Route, mobile, forms, V12-E blank scope | V12-E: içerik bilinçli kaldırıldı |
 | `/profile` | Profilim | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, back | P1: Vue UI Kit'e taşınmalı |
 | `/notifications` | Bildirimler | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, interaction | P1: Vue UI Kit'e taşınmalı |
 | `/support` | Yardım ve Destek | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, accessibility | P1: Vue UI Kit'e taşınmalı |
@@ -21,10 +21,10 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 | `/leaderboard` | Liderlik Tablosu | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, forms | P1: Vue UI Kit'e taşınmalı |
 | `/referral` | Partner Davet Programı | Hayır | Kısmi | Yüksek | Route, mobile, sidebar | P0: zengin akış Vue migration gerekli |
 | `/job-referral` | İş Yönlendirme Programı | Kısmi/modüler JS | Kısmi | Düşük | Route, mobile | Vue pilot alternatifi var |
-| `/packages` | Paketler | Hayır | Kısmi | Yüksek | Route, mobile | P0/P1: paket akışı Vue migration gerekli |
 | `/subscription` | Aboneliğim | Hayır | Kısmi | Yüksek | Route, mobile | P0/P1: abonelik akışı Vue migration gerekli |
-| `/package-builder` | Paket Seçimi | Hayır | Kısmi | Yüksek | Route smoke | P1 |
-| `/package-checkout` | Paket Ödeme | Hayır | Kısmi | Yüksek | Route smoke | P1 |
+| `/packages` | Retired route | Yok | Yok | `/subscription` redirect | Retired redirect | V12-E: aktif ürün değil |
+| `/package-builder` | Retired route | Yok | Yok | `/subscription` redirect | Retired redirect | V12-E: aktif ürün değil |
+| `/package-checkout` | Retired route | Yok | Yok | `/subscription` redirect | Retired redirect | V12-E: aktif ürün değil |
 | `/bonus` | Bonus Cüzdanı | Hayır | Kısmi | Yüksek | Route smoke | P1 |
 | `/performance-score` | Performans Skoru | Hayır | Kısmi | Yüksek | Route smoke | P1 |
 | `/messages` | Mesajlar | Kısmi/modüler JS | Kısmi | Orta | Route smoke | Support route'a delege |
@@ -54,7 +54,7 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 - V9 ile `/support/new`, `/satisfaction`, deep link resolver ve visual alignment testleri eklendi.
 - V10 ile `/support/live`, `/partner-card-preview`, public partner badge/share mock'u ve clickable/visual QA rapor testleri eklendi.
 - V11 hardening pass ile route metadata registry, Bildirimler/Cüzdan anlamlı header actions, CTA mist animation, profil grid geometry testi ve `V11_ARCHITECTURE_AUDIT.md` eklendi.
-- Bir sonraki büyük migration sırası: `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`.
+- Bir sonraki büyük migration sırası: `/home`, `/referral`, `/subscription` ve aktif profil/finans/destek alt route'ları.
 
 ## V11 Gerçek Durum
 
@@ -63,7 +63,7 @@ V11 full completion kriterleri henüz sağlanmadı. `src/app.js` hâlâ `legacyA
 P0 kalan ana iş:
 
 - Tek Vue root application + Vue Router hash history.
-- `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`, builder/checkout ve profil alt route'larının gerçek Vue SFC page olarak taşınması.
+- `/home`, `/referral`, `/subscription` ve profil alt route'larının gerçek Vue SFC page olarak taşınması.
 - Aktif route'larda büyük HTML string render sorumluluğunun kaldırılması.
 - Legacy CSS'in aktif route görünüm üretme sorumluluğunun bitirilmesi.
 
@@ -150,3 +150,21 @@ V12-D, kullanıcının "PASS alamadığın konuları atla ve artık görevi tama
 | `/home` | `0.101071` | Ölçülmedi | Atlandı / P0 borç | Kapalı |
 
 V12-D tam Golden visual lock değildir. Default Vue boot kapalıdır ve PR draft kalmalıdır.
+
+## V12-E Product Scope Reset
+
+V12-E ile eski `/jobs`, `/my-jobs`, `/calendar`, `/wallet` Golden parity beklentileri ürün kararıyla supersede edildi. Bu route'lar artık aktif içerik taşımayan blank shell ekranlardır.
+
+| Route | Vue preview | Tailwind/UI Kit | Legacy default boot | V12-E kapsam | Cutover durumu |
+| --- | --- | --- | --- | --- | --- |
+| `/home` | Evet | Kısmi | V11 legacy | Golden parity aktif P0 | Kapalı |
+| `/jobs` | Evet: blank shell | Evet | Blank shell | SUPERSEDED_BY_PRODUCT_SCOPE_V12_E | Kapalı |
+| `/my-jobs` | Evet: blank shell | Evet | Blank shell | SUPERSEDED_BY_PRODUCT_SCOPE_V12_E | Kapalı |
+| `/calendar` | Evet: blank shell | Evet | Blank shell | SUPERSEDED_BY_PRODUCT_SCOPE_V12_E | Kapalı |
+| `/wallet` | Evet: blank shell | Evet | Blank shell | V12-E blank route | Kapalı |
+| `/subscription` | Mevcut route korunur | Kısmi | Korunur | Aktif abonelik | Kapalı |
+| `/packages` | Kaldırıldı | Yok | Retired redirect | `/subscription` redirect | Kapalı |
+| `/package-builder` | Kaldırıldı | Yok | Retired redirect | `/subscription` redirect | Kapalı |
+| `/package-checkout` | Kaldırıldı | Yok | Retired redirect | `/subscription` redirect | Kapalı |
+
+Not: Default Vue boot hâlâ kapalıdır.

@@ -1,5 +1,5 @@
-import { PlaceholderPage } from "./PageScaffold.js";
+import { BlankRoutePage } from "./BlankRoutePage.js";
 
 export function CalendarPage() {
-  return PlaceholderPage({ title: "Takvim", subtitle: "Randevularını ve çalışma planını yönet.", route: "/calendar" });
+  return BlankRoutePage({ title: "Randevu", route: "/calendar" });
 }

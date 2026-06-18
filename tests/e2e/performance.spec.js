@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, waitForApp } from "./helpers.js";
 
-const measuredRoutes = ["/home", "/reviews", "/wallet", "/leaderboard", "/referral", "/packages"];
+const measuredRoutes = ["/home", "/reviews", "/wallet", "/leaderboard", "/referral", "/subscription"];
 
 test("performance smoke keeps bundle, DOM and route switch within mobile prototype limits", async ({ page }) => {
   const errors = await collectConsoleErrors(page);

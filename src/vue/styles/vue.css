@@ -20,6 +20,11 @@
   padding-inline: 0;
 }
 
+.v-blank-route {
+  width: 100%;
+  min-height: calc(100vh - var(--top-safe-space, 58px) - var(--header-height, 58px) - var(--bottom-safe-height, 92px));
+}
+
 .v-stack {
   display: grid;
   gap: 12px;

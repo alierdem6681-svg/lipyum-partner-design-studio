@@ -1,3 +1,5 @@
+import { RETIRED_ROUTE_REDIRECTS } from "./constants.js";
+
 const deepLinkAliases = {
   home: "/home",
   wallet: "/wallet",
@@ -8,7 +10,6 @@ const deepLinkAliases = {
   "support-customer-service": "/support/customer-service",
   referral: "/referral",
   "job-referral": "/job-referral",
-  packages: "/packages",
   satisfaction: "/satisfaction",
   "partner-card": "/partner-card-preview",
 };
@@ -23,7 +24,6 @@ const partnerPathRoutes = {
   "/partner/support/customer-service": "/support/customer-service",
   "/partner/referral": "/referral",
   "/partner/job-referral": "/job-referral",
-  "/partner/packages": "/packages",
   "/partner/satisfaction": "/satisfaction",
   "/partner/card": "/partner-card-preview",
 };
@@ -31,11 +31,13 @@ const partnerPathRoutes = {
 export function resolveDeepLinkRoute(urlLike = window.location.href) {
   const url = new URL(urlLike, window.location.origin);
   const route = url.searchParams.get("route");
-  if (route && route.startsWith("/")) return route;
+  if (route && route.startsWith("/")) return RETIRED_ROUTE_REDIRECTS[route] || route;
 
   const deepLink = url.searchParams.get("deeplink");
   if (deepLink && deepLinkAliases[deepLink]) return deepLinkAliases[deepLink];
+  if (deepLink === "packages") return "/subscription";
 
+  if (RETIRED_ROUTE_REDIRECTS[url.pathname]) return RETIRED_ROUTE_REDIRECTS[url.pathname];
   return partnerPathRoutes[url.pathname] || "";
 }
 
@@ -43,5 +45,6 @@ export function deepLinkMappings() {
   return {
     aliases: { ...deepLinkAliases },
     paths: { ...partnerPathRoutes },
+    retired: { ...RETIRED_ROUTE_REDIRECTS },
   };
 }
