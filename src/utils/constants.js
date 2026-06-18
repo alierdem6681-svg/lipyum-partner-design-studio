@@ -9,6 +9,7 @@ export const ROUTE_TO_SCREEN = {
   "/support": "support",
   "/support/new": "supportNew",
   "/support/live": "supportLive",
+  "/support/customer-service": "supportCustomerService",
   "/satisfaction": "satisfaction",
   "/messages": "messages",
   "/reviews": "reviews",
@@ -54,6 +55,7 @@ export const ROUTE_TITLES = {
   "/support": "Yardım ve Destek",
   "/support/new": "Talep Oluştur",
   "/support/live": "Canlı Destek",
+  "/support/customer-service": "Müşteri Hizmetleri",
   "/satisfaction": "Memnuniyet",
   "/messages": "Mesaj Kutusu",
   "/reviews": "Müşteri Yorumları",
@@ -140,6 +142,7 @@ export const DRAWER_SECTIONS = [
     items: [
       { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", color: "#067647" },
       { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", color: "#067647" },
+      { label: "Müşteri Hizmetleri", icon: "phone", route: "/support/customer-service", screen: "supportCustomerService", color: "#175cd3" },
     ],
   },
 ];

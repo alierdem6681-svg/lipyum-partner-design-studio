@@ -59,7 +59,24 @@ test("sidebar has V10 support entries without duplicate sticky support card", as
   await expect(page.getByRole("button", { name: "Yardım ve Destek" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Talep Oluştur" })).toHaveCount(1);
   await expect(page.getByRole("button", { name: "Canlı Destek" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: /Müşteri Hizmetleri/ })).toHaveCount(1);
   await expect(page.locator(".drawer-support-card")).toHaveCount(0);
+
+  expect(errors).toEqual([]);
+});
+
+test("customer service sidebar item opens sales page", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/home");
+  await waitForApp(page);
+
+  await openSidebar(page);
+  await page.getByRole("button", { name: /Müşteri Hizmetleri/ }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/customer-service");
+  await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
+  await expect(page.getByTestId("customer-service-page")).toBeVisible();
+  await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
+  await expect(page.getByTestId("customer-service-upgrade")).toBeVisible();
 
   expect(errors).toEqual([]);
 });

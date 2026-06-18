@@ -6,6 +6,7 @@ export { CalendarPage } from "./CalendarPage.js";
 export { CapacityPage } from "./CapacityPage.js";
 export { ContactSettingsPage } from "./ContactSettingsPage.js";
 export { CreateTicketPage } from "./CreateTicketPage.js";
+export { CustomerServicePage } from "./CustomerServicePage.js";
 export { CustomersPage } from "./CustomersPage.js";
 export { HomePage } from "./HomePage.js";
 export { IncomeExpensePage } from "./IncomeExpensePage.js";
