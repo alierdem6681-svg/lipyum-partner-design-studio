@@ -1646,3 +1646,83 @@ Not: İlk uzun gate denemesinde CTA mist opacity eşiği test zamanlaması neden
 ### 8. Sonraki adım
 
 Bir sonraki gerçek V11 completion adımı, küçük hardening yerine tek Vue app shell + `/home`, `/jobs`, `/my-jobs`, `/calendar` SFC migration olmalıdır.
+
+## Faz 12 - Full Vue/Tailwind Cutover Başlangıç Denetimi
+
+Tarih: 18 Haziran 2026
+
+### 1. Genel durum
+
+V12 talimatları tam release-candidate kesim şartı koyuyor: tek Vue root app, Vue Router ile tüm aktif route yönetimi, tüm aktif route'ların Vue SFC olması, legacy route rendering'in bitmesi, gerçek pixel visual regression ve outcome doğrulayan clickable inventory. Bu checkpoint bu fazın tamamlandığını iddia etmez; mevcut gerçek durumu kanıtlı şekilde kayıt altına alır.
+
+### 2. Başlangıç ve main güncelleme
+
+- Başlangıç lokal SHA: `345adaa18f9e3ae7decf58166f729ca6748c745b`
+- Origin güncel SHA: `945495a90f8318a7ccd3cd32ca57930cf98a86da`
+- Main branch `origin/main` ile fast-forward güncellendi.
+- Güncelleme öncesindeki kirli worktree `stash@{0}` altında `v12-phase0-pre-pull-dirty-worktree` adıyla korundu.
+- Güncelleme sonrası gerçek farklılıklar geri uygulandı; kullanıcı/önceki çalışma değişiklikleri geri çevrilmedi.
+
+### 3. Yeni izlenebilirlik dosyası
+
+- `USER_REQUIREMENTS_TRACEABILITY.md` oluşturuldu.
+- Kullanıcı talepleri `pending` / `in-progress` / `verified` durumlarıyla listelendi.
+- Her talep için dosya alanı, test/visual proof ve kabul kanıtı alanı eklendi.
+- V12 completion blocker'ları ayrı tablo olarak kaydedildi.
+
+### 4. Baseline kalite kapısı
+
+`npm run test:quality-gate` baseline çalışması tamamlandı ve `[quality-gate] all checks passed` sonucunu verdi. Çalışan ana gruplar:
+
+- `check`, `lint`, unit test ve route smoke
+- `test:e2e`
+- `test:e2e:mobile` → 336 passed
+- `test:accessibility`
+- `test:interactions`
+- `test:sidebar`
+- `test:bottom-bar`
+- `test:navigation-contract`
+- `test:forms`
+- `test:device-matrix`
+- `test:performance`
+- `test:visual-alignment`
+- `test:deeplinks`
+- `test:satisfaction`
+- `test:home-flow`
+- `test:packages-flow`
+- `test:referral-flow`
+- `test:support-ticket`
+- `test:profile-badges`
+- `test:clickable-inventory`
+- `test:visual-regression`
+- `test:visual-qa-report`
+- `test:text-overflow`
+- `test:touch-targets`
+- `test:header-consistency`
+- `test:back-stack-stress`
+- `test:modal-sheet-drawer`
+- `test:all-routes-interactions`
+- `test:v10-quality-automation`
+- `test:cta-mist`
+- `test:notification-header`
+- `test:profile-grid-geometry`
+- `test:v11-audit`
+- `test:screenshots`
+- `build`
+- `git diff --check`
+
+### 5. V12 tamamlanma durumu
+
+V12 tamamlanmadı. Başlıca açık blocker'lar:
+
+- `src/app.js` hâlâ `./legacyApp.js` import ediyor.
+- Vue şu an root application değil, island/pilot düzeyinde.
+- `MIGRATION_STATUS.md` birçok aktif route için `Hayır` veya `Kısmi/modüler JS` diyor.
+- `V11_ARCHITECTURE_AUDIT.md`, `App still boots legacy shell: yes` ve `Active high-value legacy render functions present: yes` sonucunu veriyor.
+- Clickable inventory kritik route'larda UI sayıyor; her öğenin beklenen sonucunu doğrulayan tam contract seviyesi değildir.
+- Visual regression testi gerçek baseline screenshot karşılaştırması değil, framed/nonblank smoke seviyesindedir.
+- Final V12 quality gate henüz iki kez arka arkaya, kod değişmeden çalıştırılmadı.
+
+### 6. Sonraki zorunlu adım
+
+Gerçek V12 completion için önce app boot mimarisi kesilmeli: `src/app.js` tek Vue root app'i başlatmalı, Vue Router hash history aktif route registry'i devralmalı ve `legacyApp.js` kullanıcıya görünen route render sorumluluğunu bırakmalıdır.
