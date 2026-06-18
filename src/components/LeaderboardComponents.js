@@ -139,21 +139,34 @@ export function TopRankersCard({ rankers = [], icon = () => "" } = {}) {
 }
 
 export function RewardTiersCard({ rewards = [], icon = () => "" } = {}) {
+  const rewardStyles = [
+    { className: "is-gold", iconName: "crown", label: "Zirve" },
+    { className: "is-emerald", iconName: "trophy", label: "Podyum" },
+    { className: "is-amber", iconName: "gift", label: "Hedef" },
+  ];
   return `
-    <section class="reward-tiers-card ui-card" aria-label="Ödüller">
-      <div class="section-title compact">
+    <section class="reward-tiers-card ui-card" aria-label="Ödüller" data-testid="leaderboard-rewards-card">
+      <span class="reward-tiers-spark spark-one" aria-hidden="true"></span>
+      <span class="reward-tiers-spark spark-two" aria-hidden="true"></span>
+      <span class="reward-tiers-spark spark-three" aria-hidden="true"></span>
+      <div class="reward-tiers-head">
+        <span>${icon("sparkles")} Kazanılacak ödüller</span>
         <h2>Ödüller</h2>
-        <span>Hafta sonu</span>
+        <p>Sıralamada yüksel, bonusu ve özel rozeti kap.</p>
       </div>
       <div class="reward-tier-grid">
-        ${rewards.map((reward) => `
-          <article>
-            <span>${icon("gift")}</span>
+        ${rewards.map((reward, index) => {
+          const style = rewardStyles[index] || rewardStyles[2];
+          return `
+          <article class="${style.className}">
+            <span class="reward-tier-ribbon">${style.label}</span>
+            <span class="reward-tier-icon">${icon(style.iconName)}</span>
             <strong>${reward.title}</strong>
             <small>${reward.value}</small>
-            <em>${reward.note}</em>
+            <em>${reward.note.replace(/^\+\s*/, "")}</em>
           </article>
-        `).join("")}
+        `;
+        }).join("")}
       </div>
     </section>
   `;
