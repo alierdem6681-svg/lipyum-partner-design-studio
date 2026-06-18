@@ -7444,42 +7444,76 @@
         stroke-width: 2.35;
       }
 
-      .region-activity {
-        min-height: 18px;
-        display: flex;
+      .region-activity-board {
+        position: relative;
+        min-height: 48px;
+        display: grid;
         align-items: center;
-        gap: 6px;
-        margin: 10px 2px 0;
+        overflow: hidden;
+        margin: 11px 0 0;
+        border: 1px solid #d1fadf;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #ffffff, #f7fef9);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .region-activity-board::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: #12b76a;
+      }
+
+      .region-activity-message {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 8px minmax(0, 1fr);
+        align-items: center;
+        gap: 9px;
+        padding: 9px 12px 9px 13px;
         color: var(--neutral-text);
-        font-size: 11.4px;
-        font-weight: 760;
-        line-height: 1.24;
+        font-size: 12px;
+        font-weight: 780;
+        line-height: 1.28;
         transform: translateY(0);
         will-change: transform, opacity;
       }
 
-      .region-activity::before {
-        content: "";
-        width: 7px;
-        height: 7px;
-        flex: 0 0 7px;
+      .region-activity-dot {
+        width: 8px;
+        height: 8px;
         border-radius: 999px;
         background: #12b76a;
-        box-shadow: 0 0 0 3px rgba(18, 183, 106, 0.1);
+        box-shadow: 0 0 0 4px rgba(18, 183, 106, 0.11);
       }
 
-      .region-activity.is-rolling {
-        animation: regionActivityRoll 760ms cubic-bezier(.16, .84, .28, 1);
+      .region-activity-message [data-region-activity-text] {
+        min-width: 0;
+      }
+
+      .region-activity-message.is-rolling {
+        animation: regionActivityRoll 680ms cubic-bezier(.16, .84, .28, 1);
       }
 
       @keyframes regionActivityRoll {
         0% {
           opacity: 0;
-          transform: translateY(12px);
+          transform: translateY(26px);
+        }
+        72% {
+          opacity: 1;
+          transform: translateY(-2px);
         }
         100% {
           opacity: 1;
           transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .region-activity-message.is-rolling {
+          animation: none;
         }
       }
 
