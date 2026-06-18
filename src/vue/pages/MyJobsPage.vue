@@ -25,7 +25,7 @@ function openSheet(title, description) {
 <template>
   <AppPage title="İşlerim">
     <div class="v-stack">
-      <div class="v-tab-scroll" role="tablist" aria-label="İş durumu">
+      <div class="v-tab-scroll v-myjobs-tabs" role="tablist" aria-label="İş durumu">
         <button
           v-for="tab in tabs"
           :key="tab.id"
@@ -38,10 +38,10 @@ function openSheet(title, description) {
         </button>
       </div>
 
-      <AppCard padding="md" class="v-golden-job-card v-priority-card">
+      <AppCard padding="md" class="v-golden-job-card v-priority-card v-myjobs-card">
         <div class="v-golden-job-top">
           <div class="v-golden-job-title">
-            <AppChip tone="success">Yeni İş</AppChip>
+            <AppChip tone="success" class="v-myjobs-status-chip">Yeni İş</AppChip>
             <h3>Klima Montajı</h3>
             <p><AppIcon name="map-pin" :size="15" /> Sakarya / Karasu</p>
           </div>

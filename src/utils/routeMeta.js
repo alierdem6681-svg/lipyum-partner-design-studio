@@ -7,7 +7,7 @@ const titleOverrides = {
   },
   "/my-jobs": {
     title: "İşlerim",
-    subtitle: "Aktif işlerini ve tekliflerini yönet",
+    subtitle: "İşlerini takip et",
   },
   "/calendar": {
     title: "Takvim",
