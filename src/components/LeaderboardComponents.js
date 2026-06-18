@@ -24,21 +24,33 @@ export function LeagueSelects({ leaderboard = {} } = {}) {
 }
 
 export function LeaderboardHeroCard({ leaderboard = {}, icon = () => "" } = {}) {
+  const leagueLabel = leaderboard.city && leaderboard.city !== "Şehirler" ? `${leaderboard.city} Ligi` : "Sektör Ligi";
+  const progress = Math.max(0, Math.min(100, Number(leaderboard.targetProgress) || 0));
   return `
-    <section class="leaderboard-hero-card-v4">
+    <section class="leaderboard-hero-card-v4" data-testid="leaderboard-hero-card" style="--leaderboard-progress:${progress}%">
+      <span class="leaderboard-hero-glow glow-one" aria-hidden="true"></span>
+      <span class="leaderboard-hero-glow glow-two" aria-hidden="true"></span>
+      <span class="leaderboard-hero-spark spark-one" aria-hidden="true"></span>
+      <span class="leaderboard-hero-spark spark-two" aria-hidden="true"></span>
       <div class="leaderboard-hero-copy">
-        <span>Bu haftaki sıralaman</span>
-        <strong>#${leaderboard.myRank}</strong>
-        <p>İlk 20 hedefi için performansını artırmaya devam et.</p>
+        <span class="leaderboard-hero-eyebrow">Bu haftaki sıralaman</span>
+        <div class="leaderboard-rank-line">
+          <strong>#${leaderboard.myRank}</strong>
+        </div>
+        <p><b>İlk 20’ye çok yakınsın.</b> 2 güçlü iş daha seni vitrine taşır.</p>
+        <div class="leaderboard-hero-chips" aria-label="Lig motivasyonu">
+          <span>${icon("zap")} +${Math.max(1, leaderboard.myRank - 20)} sıra hedef</span>
+          <span>${icon("trophy")} ${formatCredit(leaderboard.myScore)} puan</span>
+        </div>
       </div>
       <div class="leaderboard-medal-art" aria-hidden="true">
         <span>${icon("star")}</span>
-        <em>${leaderboard.city && leaderboard.city !== "Şehirler" ? `${leaderboard.city} Ligi` : "Sektör Ligi"}</em>
+        <em>${leagueLabel}</em>
       </div>
       <div class="leaderboard-progress">
         <span>İlk 20 hedefine yakınlık</span>
-        <div><i style="width:${leaderboard.targetProgress || 0}%"></i></div>
-        <strong>%${leaderboard.targetProgress || 0}</strong>
+        <strong>%${progress}</strong>
+        <div aria-hidden="true"><i></i></div>
       </div>
     </section>
   `;

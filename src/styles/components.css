@@ -1624,24 +1624,109 @@
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 118px;
-  gap: 10px;
-  border-radius: 18px;
+  grid-template-columns: minmax(0, 1fr) 106px;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-hero);
   background:
-    radial-gradient(circle at 86% 18%, rgba(255,255,255,.22), transparent 34%),
-    linear-gradient(135deg, #007a3d, #12b76a 58%, #0b7a41);
+    radial-gradient(circle at 82% 13%, rgba(255, 241, 174, 0.36), transparent 28%),
+    radial-gradient(circle at 14% 88%, rgba(34, 197, 94, 0.42), transparent 34%),
+    linear-gradient(135deg, #007a3d 0%, #059669 44%, #10b981 72%, #057a45 100%);
+  background-size: 120% 120%, 130% 130%, 160% 160%;
   color: #fff;
-  padding: 16px;
-  box-shadow: var(--shadow-card);
+  padding: 16px 16px 14px;
+  box-shadow:
+    0 18px 34px rgba(0, 122, 61, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  isolation: isolate;
+  animation: leaderboardHeroDrift 9s ease-in-out infinite alternate;
+}
+
+.leaderboard-hero-card-v4::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(115deg, transparent 0 32%, rgba(255, 255, 255, 0.18) 46%, transparent 62%),
+    radial-gradient(circle at 44% 18%, rgba(255, 255, 255, 0.16), transparent 28%);
+  transform: translateX(-46%);
+  animation: leaderboardHeroShine 7s ease-in-out infinite;
+}
+
+.leaderboard-hero-card-v4::after {
+  content: "";
+  position: absolute;
+  inset: auto -18% -38% 24%;
+  z-index: -1;
+  height: 120px;
+  border-radius: 999px;
+  background: rgba(5, 150, 105, 0.42);
+  filter: blur(20px);
+}
+
+.leaderboard-hero-glow,
+.leaderboard-hero-spark {
+  position: absolute;
+  pointer-events: none;
+}
+
+.leaderboard-hero-glow {
+  z-index: -1;
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.13);
+  filter: blur(4px);
+}
+
+.leaderboard-hero-glow.glow-one {
+  top: -54px;
+  right: 68px;
+  animation: leaderboardGlowFloat 7s ease-in-out infinite;
+}
+
+.leaderboard-hero-glow.glow-two {
+  right: -44px;
+  bottom: 18px;
+  opacity: 0.74;
+  animation: leaderboardGlowFloat 8s ease-in-out infinite reverse;
+}
+
+.leaderboard-hero-spark {
+  z-index: 1;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #fde68a;
+  box-shadow:
+    0 0 0 5px rgba(253, 230, 138, 0.12),
+    0 0 18px rgba(253, 230, 138, 0.55);
+  animation: leaderboardSparkPulse 2.8s ease-in-out infinite;
+}
+
+.leaderboard-hero-spark.spark-one {
+  top: 24px;
+  left: 58%;
+}
+
+.leaderboard-hero-spark.spark-two {
+  right: 28px;
+  bottom: 46px;
+  transform: scale(0.72);
+  animation-delay: 0.75s;
 }
 
 .leaderboard-hero-copy {
   min-width: 0;
   display: grid;
-  gap: 7px;
+  align-content: start;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
-.leaderboard-hero-copy span,
+.leaderboard-hero-eyebrow,
 .leaderboard-hero-copy p,
 .leaderboard-progress span {
   font-size: var(--font-size-small);
@@ -1649,15 +1734,70 @@
   line-height: var(--line-tight);
 }
 
-.leaderboard-hero-copy strong {
-  font-size: 44px;
+.leaderboard-hero-eyebrow {
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.01em;
+}
+
+.leaderboard-rank-line {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.leaderboard-rank-line strong {
+  flex: 0 0 auto;
+  font-size: clamp(44px, 15vw, 58px);
   font-weight: var(--weight-extra-bold);
-  line-height: 0.95;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  text-shadow: 0 10px 24px rgba(3, 72, 44, 0.28);
 }
 
 .leaderboard-hero-copy p {
   margin: 0;
-  max-width: 170px;
+  max-width: 210px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.leaderboard-hero-copy p b {
+  display: block;
+  color: #fff;
+  font-weight: var(--weight-extra-bold);
+}
+
+.leaderboard-hero-chips {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.leaderboard-hero-chips span {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  min-height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ecfdf5;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-hero-chips .icon {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
 }
 
 .leaderboard-medal-art {
@@ -1666,33 +1806,43 @@
   place-items: center;
   align-content: center;
   gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 .leaderboard-medal-art span {
-  width: 86px;
-  height: 86px;
+  width: 82px;
+  height: 82px;
   display: grid;
   place-items: center;
-  border-radius: 24px;
-  background: linear-gradient(145deg, #fff7cd, #fbbf24);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 25px;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255,255,255,.5), transparent 26%),
+    linear-gradient(145deg, #fff1a8 0%, #facc15 52%, #f59e0b 100%);
   color: #fff;
   transform: rotate(8deg);
-  box-shadow: 0 14px 24px rgba(146, 64, 14, 0.22);
+  box-shadow:
+    0 16px 26px rgba(146, 64, 14, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
+  animation: leaderboardMedalFloat 4.8s ease-in-out infinite;
 }
 
 .leaderboard-medal-art .icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 4px 8px rgba(146, 64, 14, 0.22));
 }
 
 .leaderboard-medal-art em {
   display: inline-flex;
-  min-height: 30px;
+  min-height: 28px;
   align-items: center;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
   color: var(--color-primary-dark);
-  padding: 0 12px;
+  box-shadow: 0 10px 18px rgba(5, 46, 22, 0.12);
+  padding: 0 11px;
   font-size: var(--font-size-caption);
   font-style: normal;
   font-weight: var(--weight-extra-bold);
@@ -1705,30 +1855,116 @@
   grid-template-columns: minmax(0, 1fr) 42px;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
+  position: relative;
+  z-index: 2;
+  margin-top: 2px;
 }
 
 .leaderboard-progress > span {
-  grid-column: 1 / -1;
+  color: rgba(255, 255, 255, 0.94);
 }
 
 .leaderboard-progress div {
-  height: 7px;
+  grid-column: 1 / -1;
+  height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(3, 72, 44, 0.28);
+  box-shadow: inset 0 1px 3px rgba(3, 72, 44, 0.18);
 }
 
 .leaderboard-progress i {
   display: block;
+  width: var(--leaderboard-progress, 0%);
   height: 100%;
   border-radius: inherit;
-  background: #fbbf24;
+  background: linear-gradient(90deg, #facc15 0%, #f59e0b 48%, #fde68a 100%);
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.42);
+  animation: leaderboardProgressGlow 2.8s ease-in-out infinite;
 }
 
 .leaderboard-progress strong {
   font-size: var(--font-size-card-title);
   font-weight: var(--weight-extra-bold);
+  text-align: right;
+}
+
+@keyframes leaderboardHeroDrift {
+  0% {
+    background-position: 84% 12%, 10% 88%, 0% 50%;
+  }
+  100% {
+    background-position: 70% 20%, 22% 72%, 100% 50%;
+  }
+}
+
+@keyframes leaderboardHeroShine {
+  0%,
+  36% {
+    transform: translateX(-58%);
+    opacity: 0;
+  }
+  54% {
+    opacity: 0.9;
+  }
+  82%,
+  100% {
+    transform: translateX(48%);
+    opacity: 0;
+  }
+}
+
+@keyframes leaderboardMedalFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(8deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(4deg);
+  }
+}
+
+@keyframes leaderboardGlowFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-10px, 8px, 0) scale(1.08);
+  }
+}
+
+@keyframes leaderboardSparkPulse {
+  0%,
+  100% {
+    opacity: 0.32;
+    transform: scale(0.72);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes leaderboardProgressGlow {
+  0%,
+  100% {
+    filter: saturate(1);
+  }
+  50% {
+    filter: saturate(1.25) brightness(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaderboard-hero-card-v4,
+  .leaderboard-hero-card-v4::before,
+  .leaderboard-medal-art span,
+  .leaderboard-hero-glow,
+  .leaderboard-hero-spark,
+  .leaderboard-progress i {
+    animation: none;
+  }
 }
 
 .rank-summary-grid {
