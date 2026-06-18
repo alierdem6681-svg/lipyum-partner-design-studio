@@ -1,49 +1,28 @@
 {
-  "generatedAt": "2026-06-18T18:29:46.208Z",
-  "mode": "report",
+  "generatedAt": "2026-06-18T19:56:26.702Z",
+  "mode": "strict",
   "featureBaseUrl": "http://127.0.0.1:56389/?engine=vue",
-  "routeCount": 4,
+  "routeCount": 3,
   "results": [
     {
-      "route": "/home",
+      "route": "/calendar",
       "status": "PASS",
-      "goldenContentHash": "7f7d0f87ff8cfd983e930bfa962a4e3e00024587ae905ea92bef82c5cc460b68",
-      "featureContentHash": "1cfac136c5827f04aedc708b62ee392991a4009dd8e4eedcb20a52ca386ad0e3",
+      "goldenContentHash": "f76f84c7f312d3ee37e9067b19c438dc8cfc5664a081e012b513451a58ba4b4a",
+      "featureContentHash": "f884558ececc2405503b9ccfb4a91727d2bb8c9fcd185512d0141a9ce778e52d",
       "diffs": [],
       "goldenSummary": {
-        "headingCount": 1,
-        "cardCount": 3,
-        "buttonCount": 11,
-        "actionCount": 18,
-        "contentHeight": 852
+        "headingCount": 5,
+        "cardCount": 4,
+        "buttonCount": 7,
+        "actionCount": 8,
+        "contentHeight": 1067
       },
       "featureSummary": {
-        "headingCount": 1,
-        "cardCount": 3,
-        "buttonCount": 11,
-        "actionCount": 18,
-        "contentHeight": 852
-      }
-    },
-    {
-      "route": "/jobs",
-      "status": "PASS",
-      "goldenContentHash": "0793123a226859832243258ff61b06a75369237e1d5dd6e586d0ce6fba17c70d",
-      "featureContentHash": "b3f1b4a5eaa58793f1765c00b6579e74fddb26474abd950c38427e0410614504",
-      "diffs": [],
-      "goldenSummary": {
-        "headingCount": 4,
-        "cardCount": 2,
-        "buttonCount": 12,
-        "actionCount": 15,
-        "contentHeight": 987
-      },
-      "featureSummary": {
-        "headingCount": 4,
-        "cardCount": 2,
-        "buttonCount": 12,
-        "actionCount": 15,
-        "contentHeight": 933
+        "headingCount": 5,
+        "cardCount": 4,
+        "buttonCount": 7,
+        "actionCount": 8,
+        "contentHeight": 993
       }
     },
     {
@@ -68,24 +47,32 @@
       }
     },
     {
-      "route": "/calendar",
-      "status": "PASS",
-      "goldenContentHash": "f76f84c7f312d3ee37e9067b19c438dc8cfc5664a081e012b513451a58ba4b4a",
-      "featureContentHash": "f884558ececc2405503b9ccfb4a91727d2bb8c9fcd185512d0141a9ce778e52d",
-      "diffs": [],
+      "route": "/jobs",
+      "status": "FAIL",
+      "goldenContentHash": "0793123a226859832243258ff61b06a75369237e1d5dd6e586d0ce6fba17c70d",
+      "featureContentHash": "b3f1b4a5eaa58793f1765c00b6579e74fddb26474abd950c38427e0410614504",
+      "diffs": [
+        {
+          "name": "contentHeight",
+          "severity": "P1",
+          "golden": 987,
+          "feature": 906,
+          "tolerance": 79
+        }
+      ],
       "goldenSummary": {
-        "headingCount": 5,
-        "cardCount": 4,
-        "buttonCount": 7,
-        "actionCount": 8,
-        "contentHeight": 1067
+        "headingCount": 4,
+        "cardCount": 2,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 987
       },
       "featureSummary": {
-        "headingCount": 5,
-        "cardCount": 4,
-        "buttonCount": 7,
-        "actionCount": 8,
-        "contentHeight": 1034
+        "headingCount": 4,
+        "cardCount": 2,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 906
       }
     }
   ]

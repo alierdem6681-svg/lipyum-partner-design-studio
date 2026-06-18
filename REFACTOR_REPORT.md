@@ -1968,3 +1968,54 @@ P1:
 ### 5. Sonraki zorunlu iş
 
 V12-C completion için route görselleri Golden Master’a yaklaştırılmalı; özellikle Home status pill/performance/wallet/region geometry, Jobs card density, MyJobs vertical rhythm ve Calendar card spacing üzerinde çalışılmalı. Strict visual parity PASS olmadan V12-C tamamlandı denemez ve default Vue boot açılamaz.
+
+## Faz 12-D - Core Pixel Parity Closure ve Sonuç Raporu
+
+### 1. Genel durum
+
+V12-D çalışması strict Golden Master visual lock olarak tamamlanmadı. Kullanıcının "PASS alamadığın konuları atla ve artık görevi tamamla sonuçları rapora yaz" talimatı üzerine kalan non-PASS işler raporlanarak kapatıldı.
+
+Golden Master baseline değiştirilmedi, default Vue boot açılmadı, main merge/deploy yapılmadı.
+
+### 2. Yedek durumu
+
+- `v12-c-content-parity` annotated tag target commit: `2a5354686785a7b1b60f3a2b8d917f1455ee673e`
+- `archive/v12-c-content-parity` branch: `2a5354686785a7b1b60f3a2b8d917f1455ee673e`
+- Release manifest: `releases/v12-c-content-parity/RELEASE_MANIFEST.json`
+
+### 3. Route sonuçları
+
+| Route | Başlangıç diff | Son diff | Durum |
+| --- | ---: | ---: | --- |
+| `/calendar` | `0.053301` | `0.010982` | PASS |
+| `/my-jobs` | `0.081611` | `0.014621` | PASS |
+| `/jobs` | `0.089986` | `0.016964` | FAIL P1 |
+| `/home` | `0.101071` | Ölçülmedi | Atlandı / P0 borç |
+
+### 4. Test sonuçları
+
+- `V12_CORE_ROUTES=/calendar,/my-jobs,/jobs node_modules/node/bin/node scripts/compare-core-visual-parity.mjs`: Calendar PASS, MyJobs PASS, Jobs FAIL P1.
+- `node_modules/node/bin/node scripts/report-route-contract.mjs --routes=/calendar,/my-jobs,/jobs --strict`: FAIL; yalnız `/jobs` contentHeight P1 kaldı.
+
+Çalıştırılmayanlar:
+
+- `test:parity:core:strict`
+- `test:quality-gate:v12-c`
+- full Quality Gate
+- iki ardışık değişikliksiz final gate
+
+### 5. Kalan borç
+
+P0:
+
+- `/home` visual parity hâlâ kapatılmalı.
+
+P1:
+
+- `/jobs` diff `0.016964` değerinden `<= 0.015` eşiğine indirilmeli.
+- `/jobs` contentHeight contract farkı giderilmeli.
+- Sonrasında core strict parity ve V12-C Quality Gate tekrar çalıştırılmalı.
+
+### 6. Son karar
+
+V12-D, kullanıcı talimatı gereği raporlanarak kapatıldı. Bu durum strict V12-D PASS veya Golden Master visual lock anlamına gelmez.

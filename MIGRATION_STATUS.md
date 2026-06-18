@@ -6,10 +6,10 @@ Bu dosya V8 itibarıyla kullanıcıya görünen route'ların migration durumunu 
 
 | Route | Ekran | Vue page | Tailwind/UI Kit | Legacy bağımlılığı | Test coverage | Not |
 | --- | --- | --- | --- | --- | --- | --- |
-| `/home` | Ana Sayfa | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, geometry, device, interaction, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
-| `/jobs` | İş Al | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
-| `/my-jobs` | İşlerim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P0 FAIL |
-| `/calendar` | Takvim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C contract | V12-C content/action PASS; visual P1 FAIL |
+| `/home` | Ana Sayfa | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, geometry, device, interaction, V12-C contract | V12-D kapsamında atlandı; son bilinen visual P0 FAIL `0.101071` |
+| `/jobs` | İş Al | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D partial: visual P1 FAIL `0.016964`, content/action sayıları eşit |
+| `/my-jobs` | İşlerim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D visual PASS `0.014621`; content/action PASS |
+| `/calendar` | Takvim | Evet: Vue preview | Kısmi/Tailwind UI Kit | Preview'de düşük, default boot'ta V11 legacy | Route, mobile, bottom bar, V12-C/D contract | V12-D visual PASS `0.010982`; content/action PASS |
 | `/wallet` | Cüzdan | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, forms, lazy list | P1: Vue UI Kit'e taşınmalı |
 | `/profile` | Profilim | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, back | P1: Vue UI Kit'e taşınmalı |
 | `/notifications` | Bildirimler | Kısmi/modüler JS | Kısmi | Orta | Route, mobile, interaction | P1: Vue UI Kit'e taşınmalı |
@@ -137,3 +137,16 @@ V12-C sırasında core route content/action contract tamamlandı:
 | `/calendar` | Evet | PASS | FAIL P1, diff `0.053301` | Kapalı |
 
 V12-C tamamlanmış sayılmadı. Default Vue boot kapalıdır.
+
+## V12-D Core Pixel Parity Closure Durumu
+
+V12-D, kullanıcının "PASS alamadığın konuları atla ve artık görevi tamamla sonuçları rapora yaz" talimatıyla strict completion yapılmadan kapatıldı.
+
+| Route | V12-C başlangıç diff | V12-D son diff | Son durum | Cutover |
+| --- | ---: | ---: | --- | --- |
+| `/calendar` | `0.053301` | `0.010982` | Visual PASS | Kapalı |
+| `/my-jobs` | `0.081611` | `0.014621` | Visual PASS | Kapalı |
+| `/jobs` | `0.089986` | `0.016964` | Visual FAIL P1 | Kapalı |
+| `/home` | `0.101071` | Ölçülmedi | Atlandı / P0 borç | Kapalı |
+
+V12-D tam Golden visual lock değildir. Default Vue boot kapalıdır ve PR draft kalmalıdır.

@@ -45,7 +45,7 @@ function openSheet(title, description) {
 </script>
 
 <template>
-  <AppPage title="İş Al">
+  <AppPage title="İş Al" class="v-jobs-page">
     <div class="v-stack">
       <div class="v-segment v-jobs-segment" role="tablist" aria-label="İş türü">
         <button type="button" class="tab-pill" :class="activeTab === 'pool' ? 'is-active' : ''" @click="activeTab = 'pool'">Havuzdaki İşler</button>
@@ -72,12 +72,12 @@ function openSheet(title, description) {
             <div class="v-golden-job-title">
               <AppChip tone="warning">{{ job.type }}</AppChip>
               <h3>{{ job.title }}</h3>
-              <p><AppIcon name="map-pin" :size="15" /> {{ job.area }}</p>
+              <p><AppIcon name="map-pin" :size="14" /> {{ job.area }}</p>
             </div>
-            <AppIcon name="chevron-right" :size="20" />
+            <AppIcon name="chevron-right" :size="18" />
           </div>
           <div class="v-golden-note-list">
-            <p v-for="note in job.notes" :key="note"><AppIcon name="check" :size="15" /> {{ note }}</p>
+            <p v-for="note in job.notes" :key="note"><AppIcon name="check" :size="14" /> {{ note }}</p>
           </div>
           <div class="v-price-box">
             <div><span>Normal</span><strong>{{ job.normal }}</strong></div>
@@ -87,10 +87,10 @@ function openSheet(title, description) {
           </div>
           <div class="v-action-row">
             <AppButton full-width data-action="take-pool" @click="openSheet(job.title, 'Havuzdan alma onayı mock akışı.')">
-              <AppIcon name="briefcase" :size="16" /> Havuzdan Al
+              <AppIcon name="briefcase" :size="17" /> Havuzdan Al
             </AppButton>
             <AppButton full-width variant="secondary" data-action="detail" @click="openSheet(job.title, job.area)">
-              <AppIcon name="search" :size="16" /> Detay
+              <AppIcon name="search" :size="17" /> Detay
             </AppButton>
           </div>
         </AppCard>
@@ -102,16 +102,16 @@ function openSheet(title, description) {
             <div class="v-golden-job-title">
               <AppChip tone="info">Teklif</AppChip>
               <h3>{{ job.title }}</h3>
-              <p><AppIcon name="map-pin" :size="15" /> {{ job.area }}</p>
+              <p><AppIcon name="map-pin" :size="14" /> {{ job.area }}</p>
             </div>
-            <AppIcon name="edit" :size="20" />
+            <AppIcon name="edit" :size="18" />
           </div>
           <div class="v-golden-note-list">
-            <p><AppIcon name="message" :size="15" /> Müşteri teklif toplamak istiyor</p>
-            <p><AppIcon name="clock" :size="15" /> Talep zamanı: {{ job.time }}</p>
-            <p><AppIcon name="users" :size="15" /> Teklif sayısı: {{ job.count }}</p>
-            <p><AppIcon name="check" :size="15" /> Telefon doğrulandı</p>
-            <p><AppIcon name="wallet" :size="15" /> Müşteri bütçesi: {{ job.budget }}</p>
+            <p><AppIcon name="message" :size="14" /> Müşteri teklif toplamak istiyor</p>
+            <p><AppIcon name="clock" :size="14" /> Talep zamanı: {{ job.time }}</p>
+            <p><AppIcon name="users" :size="14" /> Teklif sayısı: {{ job.count }}</p>
+            <p><AppIcon name="check" :size="14" /> Telefon doğrulandı</p>
+            <p><AppIcon name="wallet" :size="14" /> Müşteri bütçesi: {{ job.budget }}</p>
           </div>
           <div class="v-price-box">
             <div><span>Normal</span><strong>{{ job.normal }}</strong></div>
@@ -121,10 +121,10 @@ function openSheet(title, description) {
           </div>
           <div class="v-action-row">
             <AppButton full-width data-open="offer" @click="openSheet(job.title, 'Teklif verme mock akışı.')">
-              <AppIcon name="edit" :size="16" /> Teklif Ver
+              <AppIcon name="edit" :size="17" /> Teklif Ver
             </AppButton>
             <AppButton full-width variant="secondary" data-action="detail" @click="openSheet(job.title, job.area)">
-              <AppIcon name="search" :size="16" /> Detay
+              <AppIcon name="search" :size="17" /> Detay
             </AppButton>
           </div>
         </AppCard>
