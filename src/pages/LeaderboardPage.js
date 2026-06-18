@@ -9,7 +9,6 @@ import {
 } from "../components/LeaderboardComponents.js";
 import { PageContainer } from "../components/PageContainer.js";
 import { leaderboard } from "../data/mockData.js";
-import { createLazyListState, getVisibleItems } from "../utils/lazyList.js";
 
 export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
   const activeLeaderboard = {
@@ -17,12 +16,6 @@ export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
     sector: state.leaderboardSector || leaderboard.sector,
     city: state.leaderboardRegion || leaderboard.city,
   };
-  const lazyState = createLazyListState({
-    initialCount: 5,
-    incrementCount: 3,
-    visibleCount: state.lazyListCounts?.leaderboard || 5,
-  });
-  const visibleNearby = getVisibleItems(activeLeaderboard.nearby, lazyState.visibleCount);
 
   return PageContainer({
     className: "leaderboard-page-v4",
@@ -42,9 +35,6 @@ export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
       </section>
       ${NearbyRankList({
         items: activeLeaderboard.nearby,
-        visibleItems: visibleNearby,
-        visibleCount: visibleNearby.length,
-        icon,
       })}
       ${TopRankersCard({ rankers: activeLeaderboard.topRankers })}
       ${RewardTiersCard({ rewards: activeLeaderboard.rewards, icon })}

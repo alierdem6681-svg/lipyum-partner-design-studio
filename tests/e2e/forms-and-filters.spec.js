@@ -28,7 +28,7 @@ test("wallet load more reveals additional transaction cards", async ({ page }) =
   expect(errors).toEqual([]);
 });
 
-test("leaderboard selects and load more work", async ({ page }) => {
+test("leaderboard selects and nearby rank window work", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/leaderboard");
   await waitForApp(page);
@@ -38,9 +38,11 @@ test("leaderboard selects and load more work", async ({ page }) => {
   await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Klima Tamiri");
   await page.getByTestId("leaderboard-city-select").selectOption("Ankara");
   await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("Ankara");
-  const before = await page.getByTestId("leaderboard-rank-row").count();
-  await page.getByTestId("leaderboard-load-more").click();
-  await expect.poll(() => page.getByTestId("leaderboard-rank-row").count()).toBeGreaterThan(before);
+  await expect(page.getByTestId("leaderboard-rank-row")).toHaveCount(5);
+  await expect(page.getByTestId("leaderboard-load-more")).toHaveCount(0);
+  await expect(page.getByTestId("leaderboard-nearby-card")).not.toContainText("Sen SEN");
+  await expect(page.getByTestId("leaderboard-nearby-card")).toContainText("#35");
+  await expect(page.getByTestId("leaderboard-nearby-card")).toContainText("#39");
 
   expect(errors).toEqual([]);
 });

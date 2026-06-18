@@ -1,4 +1,3 @@
-import { LazyLoadButton } from "../utils/lazyList.js";
 import { formatCredit } from "../utils/formatters.js";
 
 export function LeagueSelects({ leaderboard = {} } = {}) {
@@ -77,31 +76,26 @@ export function MyRankSummary({ leaderboard = {}, icon = () => "" } = {}) {
 
 export function NearbyRankList({
   items = [],
-  visibleItems = [],
-  visibleCount = 0,
-  icon = () => "",
 } = {}) {
+  const selfIndex = items.findIndex((item) => item.self);
+  const windowStart = selfIndex >= 0 ? Math.max(0, selfIndex - 2) : 0;
+  const windowItems = items.slice(windowStart, windowStart + 5);
   return `
-    <section class="nearby-rank-card ui-card" aria-label="Sıralamadaki konumun">
+    <section class="nearby-rank-card ui-card" aria-label="Sıralamadaki konumun" data-testid="leaderboard-nearby-card">
       <div class="section-title compact">
         <h2>Sıralamadaki Konumun</h2>
         <span>Lig puanı</span>
       </div>
       <div class="nearby-rank-list">
-        ${visibleItems.map((item) => `
+        ${windowItems.map((item) => `
           <article class="nearby-rank-row ${item.self ? "is-self" : ""}" data-testid="leaderboard-rank-row">
             <span class="nearby-rank-number">#${item.rank}</span>
             <span class="nearby-rank-avatar">${item.initials}</span>
-            <strong>${item.name}${item.self ? '<em>SEN</em>' : ""}</strong>
+            <strong>${item.self ? "Sen" : item.name}</strong>
             <span>${formatCredit(item.score)} puan</span>
           </article>
         `).join("")}
       </div>
-      ${LazyLoadButton({
-        listKey: "leaderboard",
-        hasMore: visibleCount < items.length,
-        label: "Daha Fazla Sıra Göster",
-      })}
     </section>
   `;
 }
