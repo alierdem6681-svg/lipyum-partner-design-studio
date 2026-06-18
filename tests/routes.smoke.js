@@ -17,6 +17,7 @@ const requiredRoutes = [
   "/support",
   "/support/new",
   "/support/live",
+  "/support/customer-service",
   "/satisfaction",
   "/messages",
   "/referral",

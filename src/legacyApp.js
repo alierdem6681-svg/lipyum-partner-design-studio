@@ -82,6 +82,7 @@ mountAppShell();
         support: ["Yardım ve Destek", "Sorununu seç, hızlıca çözelim"],
         supportNew: ["Talep Oluştur", "Sorununu seç, hızlıca takip edelim"],
         supportLive: ["Canlı Destek", "Temsilciyle hızlıca görüş"],
+        supportCustomerService: ["Müşteri Hizmetleri", "Telefonla öncelikli destek"],
         satisfaction: ["Memnuniyet", "Lipyum deneyimini değerlendir"],
         messages: ["Destek / Mesaj Kutusu", "Danışman mesajları ve ticket takibi"],
         referral: ["Partner Davet Programı", "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan"],
@@ -587,6 +588,15 @@ mountAppShell();
 
       function currentPackage() {
         return packageTabs[state.packageTab] || packageTabs.free;
+      }
+
+      function hasPaidPackage() {
+        return Boolean(state.paidPackage) || state.packageTab !== "free";
+      }
+
+      function paidPackageLabel() {
+        if (state.paidPackage) return state.paidPackage;
+        return state.packageTab !== "free" ? currentPackage().label : "";
       }
 
       function checkoutPackage() {
@@ -1173,6 +1183,7 @@ mountAppShell();
           "support",
           "supportNew",
           "supportLive",
+          "supportCustomerService",
           "satisfaction",
           "messages",
           "jobReferral",
@@ -1207,6 +1218,12 @@ mountAppShell();
           support: () => pageRoutes["/support"]({ state, icon }),
           supportNew: () => pageRoutes["/support/new"]({ created: state.supportTicketCreated, icon }),
           supportLive: () => pageRoutes["/support/live"]({ started: state.liveSupportStarted, icon }),
+          supportCustomerService: () => pageRoutes["/support/customer-service"]({
+            hasAccess: hasPaidPackage(),
+            callStarted: state.customerServiceCallStarted,
+            packageLabel: paidPackageLabel(),
+            icon,
+          }),
           satisfaction: () => pageRoutes["/satisfaction"]({
             rating: state.satisfactionRating,
             submitted: state.satisfactionSubmitted,
@@ -4578,7 +4595,9 @@ mountAppShell();
             showToast("Bu sayfa için hızlı bilgi alanı hazır");
           } else if (type === "subscribe-plan") {
             const planName = action.dataset.plan || "Seçili paket";
-            showToast(`${planName} abonelik ödeme adımı açılıyor`);
+            state.paidPackage = planName;
+            renderScreen({ preserveScroll: true });
+            showToast(`${planName} aboneliğin aktif edildi`);
           } else if (type === "cancel-subscription") {
             showToast("Abonelik iptal talebi ekranı hazırlandı");
           } else if (type === "dismiss-platform") {
@@ -4601,6 +4620,16 @@ mountAppShell();
             state.liveSupportStarted = true;
             renderScreen({ preserveScroll: true });
             showToast("Temsilci bağlanıyor");
+          } else if (type === "start-customer-service-call") {
+            if (!hasPaidPackage()) {
+              event.preventDefault();
+              navigateTo("/subscription");
+              showToast("Telefon desteği ücretli paketlere özel.");
+              return;
+            }
+            state.customerServiceCallStarted = true;
+            renderScreen({ preserveScroll: true });
+            showToast("Müşteri Hizmetleri aranıyor");
           } else if (type === "mock-upload") {
             showToast("Dosya ekleme alanı mock olarak hazır");
           } else if (type === "set-satisfaction-rating") {

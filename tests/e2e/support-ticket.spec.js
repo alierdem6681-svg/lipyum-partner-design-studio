@@ -50,3 +50,20 @@ test("sidebar support group opens live support flow", async ({ page }) => {
 
   expect(errors).toEqual([]);
 });
+
+test("sidebar support group opens customer service sales flow", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/home");
+  await waitForApp(page);
+
+  await openSidebar(page);
+  await page.getByRole("button", { name: /Müşteri Hizmetleri/ }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/customer-service");
+  await expect(page.getByTestId("customer-service-page")).toBeVisible();
+  await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
+  await expect(page.getByText("telefonla ulaşım sadece ücretli abonelerde aktifleşir")).toBeVisible();
+  await page.getByTestId("customer-service-upgrade").click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
+
+  expect(errors).toEqual([]);
+});

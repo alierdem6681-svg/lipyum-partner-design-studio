@@ -34,6 +34,8 @@ export const initialUiState = {
   profileBadgesExpanded: false,
   supportTicketCreated: false,
   liveSupportStarted: false,
+  customerServiceCallStarted: false,
+  paidPackage: "",
   satisfactionRating: 0,
   satisfactionSubmitted: false,
   satisfactionStoreOpened: false,
