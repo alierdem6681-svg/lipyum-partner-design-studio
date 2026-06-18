@@ -1749,7 +1749,7 @@ mountAppShell();
       }
 
       function regionJobCount() {
-        return { "Bugün": "18 iş", "Dün": "22 iş", "Son 7 Gün": "146 iş", "Son 30 Gün": "612 iş" }[state.regionFilter] || "18 iş";
+        return { "Bugün": "18", "Dün": "22", "Son 7 Gün": "146", "Son 30 Gün": "612" }[state.regionFilter] || "18";
       }
 
       function jobCard(job) {
