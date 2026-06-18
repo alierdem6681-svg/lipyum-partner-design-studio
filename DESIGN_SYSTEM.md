@@ -157,3 +157,13 @@ Deep link, satisfaction, support ticket veya product flow gibi yeni tıklanabili
   - reduced-motion modunda hareket etmez,
   - ana ikonun okunurluğunu bozmaz.
 - Profil 4x2 gridinin dış genişliği profil kartı ve diğer ana kartlarla aynı olmalıdır. İç wrapper ekstra daraltma yapmamalı, label'lar ikinci satıra düşmemelidir.
+
+## V12 Golden Master Token Kuralı
+
+V12’de tasarım yeniden yorumlanmaz. Vue/Tailwind tarafına taşınacak değerler V11 Golden Master’dan çıkarılır:
+
+- Görsel kaynak: `tests/golden-master/v11-stable/`
+- Karşılaştırma raporu: `V12_VISUAL_PARITY_REPORT.md`
+- Token eşleme: `DESIGN_TOKEN_MIGRATION_MAP.md`
+
+Header ve bottom bar geometry değerleri Vue preview’da Golden Master ile aynı metriklere getirilmiştir. Buna rağmen core route içerik ve interaction parity’si geçmeden token veya shell uyumu production cutover için yeterli kabul edilmez.

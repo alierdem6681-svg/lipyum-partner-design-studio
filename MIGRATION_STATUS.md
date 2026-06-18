@@ -66,3 +66,22 @@ P0 kalan ana iş:
 - `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`, builder/checkout ve profil alt route'larının gerçek Vue SFC page olarak taşınması.
 - Aktif route'larda büyük HTML string render sorumluluğunun kaldırılması.
 - Legacy CSS'in aktif route görünüm üretme sorumluluğunun bitirilmesi.
+
+## V12 Golden Master Safe Preview Durumu
+
+V12 Golden çalışması default production boot’u değiştirmeden paralel Vue preview kurdu. Aşağıdaki durum yalnızca `?engine=vue` preview için geçerlidir.
+
+| Route | Vue preview page | Tailwind/UI Kit | Legacy default boot | Visual parity | Cutover durumu |
+| --- | --- | --- | --- | --- | --- |
+| `/home` | Evet: `HomePage.vue` | Kısmi | V11 legacy | FAIL | Kapalı |
+| `/jobs` | Evet: `JobsPage.vue` | Kısmi | V11 legacy | FAIL | Kapalı |
+| `/my-jobs` | Evet: `MyJobsPage.vue` | Kısmi | V11 legacy | FAIL | Kapalı |
+| `/calendar` | Evet: `CalendarPage.vue` | Kısmi | V11 legacy | FAIL | Kapalı |
+| Diğer route’lar | `LegacyContentBridge.vue` | Kısmi | V11 legacy | Ölçülmedi | Kapalı |
+
+V12 notu:
+
+- Header ve bottom bar geometry parity’si core route’larda eşleşti.
+- Pixel, content ve interaction parity henüz geçmedi.
+- `src/app.js` default olarak Vue root’a geçirilmedi.
+- `test:v12-parity` farkları raporlar ve fark varken default cutover yapılmadığını doğrular.

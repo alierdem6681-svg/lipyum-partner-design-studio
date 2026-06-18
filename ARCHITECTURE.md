@@ -35,6 +35,31 @@ Vue 3, Vite, Tailwind and the Vue UI Kit foundation exist under:
 
 At V11 hardening time, Vue remains island/preview/pilot level rather than the sole app runtime.
 
+## V12 Safe Vue Preview
+
+V12 Golden Master introduces a safe parallel Vue root behind an explicit query flag:
+
+```text
+/?engine=vue#/home
+```
+
+The default URL without `engine=vue` still boots the V11 stable legacy runtime. This is intentional: core route visual/content/interaction parity has not passed yet, so production cutover is blocked.
+
+The V12 preview stack includes:
+
+- `src/vue/main.js` with `createApp(App).use(createPinia()).use(router)`.
+- `src/vue/router/index.js` with `createWebHashHistory()`.
+- `src/vue/layouts/AppShell.vue` as shared shell.
+- `src/vue/layouts/MobileLayout.vue` using the same phone simulator frame classes as the legacy shell.
+- Real Vue SFC core pages for `/home`, `/jobs`, `/my-jobs`, `/calendar`.
+- `LegacyContentBridge.vue` for non-core routes, explicitly marked temporary and not production-cutover ready.
+
+V12 architecture tests are available through:
+
+```bash
+npm run test:v12-architecture
+```
+
 ## Route Metadata
 
 `src/utils/routeMeta.js` is the V11 route metadata registry. It centralizes:

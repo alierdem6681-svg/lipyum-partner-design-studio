@@ -150,3 +150,24 @@ V10 sonrası görsel değişikliklerde `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVEN
 - `test:v11-audit`: route map, route metadata ve page route eşleşmesini denetler; full Vue migration tamamlanmadıysa bunun P0 olarak dokümante edildiğini doğrular.
 
 V11 notu: Tam Vue Router/SFC migration bitene kadar `V11_ARCHITECTURE_AUDIT.md` içinde legacy boot ve aktif legacy render borcu açıkça P0 olarak kalır; bu borç gizlenmemelidir.
+
+## V12 Golden Master Ek Kapıları
+
+V12 Golden Master çalışmasında production cutover’dan önce aşağıdaki komutlar zorunludur:
+
+```bash
+npm run test:v12-architecture
+npm run test:v12-core
+npm run test:v12-compatibility
+npm run test:v12-parity
+npm run test:quality-gate:v12
+```
+
+V12 parity kuralı:
+
+- `test:v12-parity` `V12_VISUAL_PARITY_REPORT.md` ve JSON raporunu üretir.
+- Core route’larda P0/P1 parity farkı varsa default Vue cutover kapalı kalmalıdır.
+- Parity fail varken `src/app.js` default Vue boot’a geçirilirse V12 parity gate fail olmalıdır.
+- Parity fail’in “beklenen” olması, V12’nin tamamlandığı anlamına gelmez; yalnızca güvenli şekilde cutover’ın engellendiğini kanıtlar.
+
+V12 final cutover için ayrıca gerçek Golden Master visual regression, content parity, interaction parity ve full quality gate iki ardışık koşuda geçmelidir.

@@ -1726,3 +1726,85 @@ V12 tamamlanmadı. Başlıca açık blocker'lar:
 ### 6. Sonraki zorunlu adım
 
 Gerçek V12 completion için önce app boot mimarisi kesilmeli: `src/app.js` tek Vue root app'i başlatmalı, Vue Router hash history aktif route registry'i devralmalı ve `legacyApp.js` kullanıcıya görünen route render sorumluluğunu bırakmalıdır.
+
+## Faz 12 Golden Master - Safe Vue Core Cutover ve Visual Parity
+
+Tarih: 18 Haziran 2026
+
+### 1. Genel durum
+
+Bu bölüm V12 Golden Master çalışmasının güvenli paralel aşamasını kayıt altına alır. V12 production cutover tamamlanmadı ve tamamlandı olarak işaretlenmedi. Stabil `origin/main` preview hattı korunurken çalışma ayrı `feature/v12-golden-vue-cutover` branch/worktree üzerinde yürütüldü.
+
+### 2. Golden Master ve sürüm yedeği
+
+- `origin/main` stable SHA: `ef4a21545cd7112a4fef5d41c58fae4c0bac4f70`
+- Annotated tag: `v11-stable`
+- Archive branch: `archive/v11-stable`
+- Release manifest: `releases/v11-stable/RELEASE_MANIFEST.json`
+- Görsel baseline: `tests/golden-master/v11-stable/`
+- Vercel ve temiz local stable için 16 route x 8 viewport screenshot seti oluşturuldu.
+
+### 3. Paralel geliştirme izolasyonu
+
+- Stable worktree: `/home/alierdem6681/lipyum-stable-preview`
+- V12 worktree: `/home/alierdem6681/lipyum-v12-golden-cutover`
+- V12 branch: `feature/v12-golden-vue-cutover`
+- Stable Cloudflare tunnel ve stable Vite portu değiştirilmedi.
+- V12 preview ayrı portta çalıştırıldı: `56389`
+
+### 4. Vue foundation
+
+- `vue-router` ve `pinia` eklendi.
+- `src/app.js` feature flag boot stratejisine geçti:
+  - `?engine=vue` varsa Vue root preview açılır.
+  - Query yoksa V11 legacy app default kalır.
+- `src/vue/main.js`, `src/vue/router/index.js`, `src/vue/stores/` ve `src/vue/layouts/AppShell.vue` oluşturuldu.
+- Core route SFC’leri oluşturuldu:
+  - `/home` → `HomePage.vue`
+  - `/jobs` → `JobsPage.vue`
+  - `/my-jobs` → `MyJobsPage.vue`
+  - `/calendar` → `CalendarPage.vue`
+
+### 5. Simulator ve shell parity iyileştirmesi
+
+- Vue `MobileLayout` legacy telefon frame sınıflarına bağlandı.
+- `#appRoot` scroll konteyneri Vue shell içinde geri getirildi.
+- Header safe-area metriği Golden Master ile hizalandı.
+- Güncel parity metriklerinde header ve bottom bar yükseklikleri V11 ile eşleşiyor.
+
+### 6. Visual parity sonucu
+
+`npm run test:v12-parity` sonucu:
+
+- `/home`: FAIL
+- `/jobs`: FAIL
+- `/my-jobs`: FAIL
+- `/calendar`: FAIL
+
+Bu fail’ler beklenen ve faydalı fail’lerdir: Vue preview hâlâ Golden Master’daki içerik, bölüm ve action yoğunluğunu birebir taşımıyor. Bu nedenle default Vue cutover yapılmadı.
+
+Detay rapor:
+
+- `V12_VISUAL_PARITY_REPORT.md`
+- `tests/golden-master/v11-stable/V12_VISUAL_PARITY_REPORT.json`
+
+### 7. Testler
+
+Bu aşamada çalıştırılan ve geçen kontroller:
+
+- `npm run build`
+- `npm run test:v12-architecture`
+- `npm run test:v12-core`
+- `npm run test:v12-compatibility`
+- `npm run test:v12-parity` (parity farklarını raporlayıp default cutover’ın kapalı olduğunu doğruladı)
+
+### 8. Kalan P0 borçlar
+
+- Core dört route Golden Master ile pixel/content/interaction parity sağlamalı.
+- Compatibility bridge gerçek stable içerik adapter’ına dönüşmeli; placeholder gövde production cutover için yeterli değildir.
+- `src/app.js` default Vue boot’a yalnızca parity PASS sonrası geçirilmeli.
+- Cutover sonrası full quality gate iki ardışık koşuda geçmeli.
+
+### 9. Bir sonraki önerilen adım
+
+Golden Master screenshot ve manifest üzerinden `/home` route’unun tüm görünür section/card/action yapısı Vue SFC’ye birebir taşınmalı. `/home` parity PASS olmadan `/jobs`, `/my-jobs`, `/calendar` sırasına geçilmemeli.

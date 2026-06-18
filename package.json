@@ -43,6 +43,15 @@
     "test:interactions": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js tests/e2e/bottom-bar.spec.js tests/e2e/core-interactions.spec.js tests/e2e/navigation-contract.spec.js tests/e2e/forms-and-filters.spec.js",
     "test:quality-gate": "node_modules/node/bin/node tests/quality-gate.mjs",
     "test:quality-gate:v11": "node_modules/node/bin/node tests/v11-quality-gate.mjs",
+    "test:golden-parity": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/golden-master-parity.spec.js",
+    "test:content-parity": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/core-route-content-parity.spec.js",
+    "test:interaction-parity": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/core-route-interaction-parity.spec.js",
+    "report:visual-parity": "node_modules/node/bin/node scripts/generate-parity-report.mjs",
+    "test:v12-architecture": "node_modules/node/bin/node --test tests/architecture/*.test.js",
+    "test:v12-core": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js",
+    "test:v12-parity": "node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs",
+    "test:v12-compatibility": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-compatibility.spec.js",
+    "test:quality-gate:v12": "find src tests -name '*.js' -print0 2>/dev/null | xargs -0 -r -n1 node_modules/node/bin/node --check && node_modules/node/bin/node --test tests/architecture/*.test.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-compatibility.spec.js && node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs && node_modules/node/bin/node node_modules/vite/bin/vite.js build && git diff --check",
     "build": "node_modules/node/bin/node node_modules/vite/bin/vite.js build",
     "dev": "node_modules/node/bin/node node_modules/vite/bin/vite.js --host 0.0.0.0",
     "preview": "node_modules/node/bin/node node_modules/vite/bin/vite.js preview --host 0.0.0.0"
@@ -62,6 +71,8 @@
   },
   "dependencies": {
     "lucide-vue-next": "^1.0.0",
-    "vue": "^3.5.38"
+    "pinia": "^3.0.4",
+    "vue": "^3.5.38",
+    "vue-router": "^4.6.4"
   }
 }
