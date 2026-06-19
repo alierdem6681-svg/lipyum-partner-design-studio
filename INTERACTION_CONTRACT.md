@@ -132,3 +132,29 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 ## Test Kuralı
 
 Bu sözleşmedeki global navigasyon, sidebar, bottom bar, back stack ve form/filter davranışları Playwright interaction testleri ile korunur. Yeni kritik etkileşim eklendiğinde `data-testid`, test ve bu dosya aynı commit içinde güncellenmelidir.
+## V12-A Interaction Contract
+
+Global shell:
+
+- `hamburger-button` Pinia `drawerOpen` state'i ile `AppDrawer` açar.
+- `sidebar-close` ve `sidebar-overlay` drawer kapatır.
+- `notification-button` `/notifications` route'una gider.
+- `profile-button` `/profile` route'una gider.
+- `back-button` önce açık sheet/modal/drawer kapatır; aksi halde browser stack veya parent fallback kullanır.
+- `bottom-tab-home` `/home` route'una gider.
+- `bottom-tab-jobs` `/my-jobs` route'una gider.
+- `bottom-cta-job` `/jobs` route'una gider.
+- `bottom-tab-calendar` `/calendar` route'una gider.
+- `bottom-tab-wallet` `/wallet` route'una gider.
+
+Core route'lar:
+
+- `/home` içinde `Krediye Çevir` global `AppSheet` açar.
+- `/home` içindeki `home-score-boost-button` `/performance-score` route'una gider.
+- `/jobs` ve `/my-jobs` job card aksiyonları global detail sheet açar.
+- `/calendar` appointment card aksiyonu global appointment sheet açar.
+
+Compatibility bridge:
+
+- Bridge içindeki `data-route`, `data-screen`, `data-open`, `data-action` kontrolleri Vue shell içinde yakalanır.
+- Bu köprü geçici olup yeni ürün geliştirmeleri için hedef değildir.

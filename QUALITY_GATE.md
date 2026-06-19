@@ -150,3 +150,16 @@ V10 sonrası görsel değişikliklerde `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVEN
 - `test:v11-audit`: route map, route metadata ve page route eşleşmesini denetler; full Vue migration tamamlanmadıysa bunun P0 olarak dokümante edildiğini doğrular.
 
 V11 notu: Tam Vue Router/SFC migration bitene kadar `V11_ARCHITECTURE_AUDIT.md` içinde legacy boot ve aktif legacy render borcu açıkça P0 olarak kalır; bu borç gizlenmemelidir.
+## V12-A Quality Gate
+
+V12-A için ek scriptler:
+
+- `npm run test:v12-shell`
+- `npm run test:v12-core-routes`
+- `npm run test:v12-legacy-boundary`
+- `npm run test:v12-a`
+- `npm run test:quality-gate:v12-a`
+
+`test:v12-a` sırasıyla `check`, mimari boundary testleri, shell e2e, core route e2e, build ve `git diff --check` çalıştırır.
+
+`test:quality-gate:v12-a`, V12-A kabul koşuluna yaklaşmak için `test:v12-a` komutunu iki kez arka arkaya çalıştırır. Kod değişirse bu çift çalışma yeniden başlatılmalıdır.

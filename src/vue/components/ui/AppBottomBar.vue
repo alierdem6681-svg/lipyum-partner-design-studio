@@ -26,23 +26,24 @@ const ctaClasses = computed(() => [
 </script>
 
 <template>
-  <nav class="v-bottom" data-testid="app-bottom-bar" aria-label="Alt menü">
+  <nav class="bottom-nav v-bottom" id="bottomNav" data-testid="app-bottom-bar" aria-label="Alt menü">
     <button
       v-for="tab in tabs"
       :key="tab.id"
-      :class="['v-bottom__item', tab.featured ? 'is-featured' : '', activeTab === tab.id ? 'is-active' : '']"
+      v-show="!tab.featured || showCta"
+      :class="['bottom-item', 'v-bottom__item', activeTab === tab.id ? 'active is-active' : '', tab.featured ? `featured cta-fab cta-fab--${ctaVariant}` : '']"
       type="button"
       :data-testid="tab.id === 'home' ? 'bottom-tab-home' : tab.id === 'jobs' ? 'bottom-tab-jobs' : tab.id === 'work' ? 'bottom-cta-job' : tab.id === 'calendar' ? 'bottom-tab-calendar' : tab.id === 'wallet' ? 'bottom-tab-wallet' : `bottom-tab-${tab.id}`"
       :aria-label="tab.label"
       :aria-current="activeTab === tab.id ? 'page' : undefined"
       @click="tab.featured ? emit('cta', tab.route) : emit('navigate', tab.route)"
     >
-      <span v-if="tab.featured && showCta" :class="ctaClasses">
+      <span v-if="tab.featured && showCta" :class="['cta-lightning-wrap', ...ctaClasses]">
         <AppIcon :name="tab.icon" :size="ctaVariant === 'home' ? 26 : 23" />
         <em v-if="notificationCount" class="v-bottom__badge">{{ notificationCount }}</em>
       </span>
       <AppIcon v-else-if="!tab.featured" :name="tab.icon" :size="24" />
-      <span class="v-bottom__label">{{ tab.label }}</span>
+      <span class="v-bottom__label" data-fit-text data-fit-min="11" data-fit-max="12">{{ tab.label }}</span>
     </button>
   </nav>
 </template>

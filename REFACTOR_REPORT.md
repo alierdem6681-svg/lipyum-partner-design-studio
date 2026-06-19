@@ -1726,3 +1726,69 @@ V12 tamamlanmadı. Başlıca açık blocker'lar:
 ### 6. Sonraki zorunlu adım
 
 Gerçek V12 completion için önce app boot mimarisi kesilmeli: `src/app.js` tek Vue root app'i başlatmalı, Vue Router hash history aktif route registry'i devralmalı ve `legacyApp.js` kullanıcıya görünen route render sorumluluğunu bırakmalıdır.
+## Faz 12-A - Single Vue Root Cutover, Core Navigation ve Core Route Migration
+
+Tarih: 18 Haziran 2026
+
+### Genel durum
+
+V12-A tamamlanma seviyesi: kök mimari ve core route migration tamamlandı; tam ürün migration devam ediyor.
+
+Çözülen ana problem: uygulama artık `legacyApp.js` boot etmiyor. `src/app.js` tek Vue root girişine indirildi ve Vue Router hash history uygulama route sahipliğini aldı.
+
+### Yapılan mimari değişiklikler
+
+- `src/app.js` artık yalnızca `src/vue/main.js` import eder.
+- `src/vue/main.js` Vue app, Pinia ve Vue Router kurulumunu yapar.
+- `src/vue/App.vue` global shell oldu.
+- `src/vue/router/index.js` route map, core route ayrımı ve compatibility bridge sahipliğini üstlendi.
+- `src/vue/stores/*` Pinia UI, navigation, home, jobs ve calendar state katmanlarını başlattı.
+- `src/legacy/legacyRouteAdapter.js` eski page renderer'larını boot etmeden gövde içeriği olarak kullanır.
+- `src/vue/pages/LegacyContentBridge.vue` henüz taşınmayan route'ları geçici olarak Vue shell içinde çalıştırır.
+
+### Vue SFC olan route'lar
+
+- `/home`
+- `/jobs`
+- `/my-jobs`
+- `/calendar`
+
+### Compatibility bridge route'ları
+
+Şu an `/wallet`, `/profile`, `/notifications`, `/support`, `/referral`, `/packages` dahil diğer route'lar `LegacyContentBridge` üzerinden çalışır. Bu bir final durum değil, V12-A sınırları içindeki geçici köprüdür.
+
+### Testler
+
+Eklenen V12-A testleri:
+
+- `tests/architecture/vue-root-cutover.test.js`
+- `tests/architecture/no-legacy-boot.test.js`
+- `tests/architecture/vue-router-ownership.test.js`
+- `tests/e2e/v12-shell.spec.js`
+- `tests/e2e/v12-home.spec.js`
+- `tests/e2e/v12-jobs.spec.js`
+- `tests/e2e/v12-my-jobs.spec.js`
+- `tests/e2e/v12-calendar.spec.js`
+- `tests/e2e/v12-compatibility-routes.spec.js`
+
+Çalıştırılan kontroller:
+
+- `npm run check` geçti.
+- `npm run build` geçti.
+- `node_modules/node/bin/node --test tests/architecture/*.test.js` geçti.
+- `npm run test:v12-shell` geçti.
+- `npm run test:v12-core-routes` geçti.
+- `npm run test:v12-legacy-boundary` geçti.
+- `npm run test:v12-a` geçti.
+
+Not: V12-A talimatındaki "final full quality gate iki kez arka arkaya" koşulu için `test:quality-gate:v12-a` scripti eklendi; final kapanış öncesi kod/doküman değişmeden çalıştırılmalıdır.
+
+### Kalan borç
+
+P0:
+- Bridge route'larının gerçek Vue SFC migration'ı.
+- Full quality gate'in iki kez, kod değişmeden çalıştırılması.
+
+P1:
+- Legacy CSS ve eski page renderer bağımlılığını azaltma.
+- Route-level visual regression baseline'larını V12 shell sonrası yenileme.

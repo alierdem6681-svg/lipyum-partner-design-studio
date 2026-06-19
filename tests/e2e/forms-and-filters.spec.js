@@ -34,10 +34,19 @@ test("leaderboard selects and nearby rank window work", async ({ page }) => {
   await waitForApp(page);
 
   await expect(page.getByTestId("leaderboard-page")).toHaveCount(1);
+  await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Beyaz Eşya Tamiri");
+  await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("");
   await page.getByTestId("leaderboard-sector-select").selectOption("Klima Tamiri");
   await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Klima Tamiri");
+  await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("");
   await page.getByTestId("leaderboard-city-select").selectOption("Ankara");
   await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("Ankara");
+  await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("");
+  await expect(page.getByTestId("leaderboard-sector-select").locator("option:checked")).toHaveText("Sektör Ligi");
+  await expect(page.getByTestId("leaderboard-hero-card")).toContainText("Ankara Ligi");
+  await page.getByTestId("leaderboard-sector-select").selectOption("Kombi Servisi");
+  await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Kombi Servisi");
+  await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("");
   await expect(page.getByTestId("leaderboard-rank-row")).toHaveCount(5);
   await expect(page.getByTestId("leaderboard-load-more")).toHaveCount(0);
   await expect(page.getByTestId("leaderboard-nearby-card")).not.toContainText("Sen SEN");

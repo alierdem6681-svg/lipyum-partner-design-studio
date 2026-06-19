@@ -1,5 +1,3 @@
-import { LazyLoadButton } from "../utils/lazyList.js";
-
 const escapeHtml = (value) => String(value ?? "")
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
@@ -69,13 +67,15 @@ export function ReviewCard({ review = {}, icon = () => "" } = {}) {
         </span>
         <span class="review-card-actions">
           <small>${escapeHtml(review.date || "")}</small>
-          <button
-            class="review-report-btn"
-            type="button"
-            data-action="report-review-comment"
-            data-testid="review-report-button"
-            aria-label="${escapeHtml(review.name || "Yorum")} yorumunu bildir"
-          >Bildir</button>
+          ${needsReply ? `
+            <button
+              class="review-report-btn"
+              type="button"
+              data-action="report-review-comment"
+              data-testid="review-report-button"
+              aria-label="${escapeHtml(review.name || "Yorum")} yorumunu uygunsuz içerik olarak bildir"
+            >Bildir</button>
+          ` : ""}
         </span>
       </div>
       <div class="review-card-body">
@@ -103,6 +103,7 @@ export function ReviewList({
   visibleCount = 0,
   icon = () => "",
 } = {}) {
+  const hasMore = visibleCount < reviews.length;
   return `
     <section class="review-list-v4" aria-label="Yorum listesi">
       <div class="section-title compact">
@@ -112,11 +113,9 @@ export function ReviewList({
       ${visibleReviews.length
         ? visibleReviews.map((review) => ReviewCard({ review, icon })).join("")
         : `<div class="empty-state-card">Bu filtrede yorum bulunmuyor.</div>`}
-      ${LazyLoadButton({
-        listKey: "reviews",
-        hasMore: visibleCount < reviews.length,
-        label: "Daha Fazla Yorum Göster",
-      })}
+      <div class="review-load-note" data-review-load-note data-complete="${hasMore ? "false" : "true"}">
+        ${hasMore ? "Aşağı kaydırdıkça yeni yorumlar yüklenir." : "Tüm yorumlar gösterildi."}
+      </div>
     </section>
   `;
 }

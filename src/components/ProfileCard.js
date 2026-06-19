@@ -8,6 +8,9 @@ export function renderProfileCard({
   avatar = "",
   badges = [],
   badgesExpanded = false,
+  badgeToggleAction = "toggle-profile-badges",
+  testId = "partner-profile-card",
+  extraAttrs = "",
   icon = spriteIcon,
 } = {}) {
   const visibleBadges = badges.slice(0, 3);
@@ -15,7 +18,7 @@ export function renderProfileCard({
   const moreCount = extraBadges.length;
 
   return `
-    <section class="partner-profile-card" data-testid="partner-profile-card">
+    <section class="partner-profile-card" data-testid="${testId}" ${extraAttrs}>
       <div class="partner-profile-main">
         <button class="partner-profile-avatar-btn" type="button" aria-label="Profil fotoğrafı ekle">
           ${avatar ? `<img src="${avatar}" alt="${name} profil fotoğrafı" />` : `<span>${name.slice(0, 2).toUpperCase()}</span>`}
@@ -26,30 +29,27 @@ export function renderProfileCard({
           <span class="partner-profile-tier">${icon("crown")} ${tier}</span>
           <span class="partner-profile-rating">${icon("star")} ${rating} Puan <span aria-hidden="true">·</span> ${reviewCount} Değerlendirme</span>
         </div>
+        <div class="partner-profile-actions" aria-label="Partner kartı aksiyonları">
+          <button class="partner-profile-action is-preview" type="button" data-route="/partner-card-preview" data-testid="partner-card-preview-button">
+            ${icon("eye")} Önizle
+          </button>
+        </div>
       </div>
       <div class="partner-profile-chips ${badgesExpanded ? "is-expanded" : ""}" aria-label="Profil rozetleri">
         ${visibleBadges.map((badge) => `<span class="partner-profile-chip">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
         ${moreCount && !badgesExpanded ? `
-          <button
-            class="partner-profile-chip is-more"
-            type="button"
-            data-action="toggle-profile-badges"
-            aria-expanded="false"
-            aria-label="Ek rozetleri göster"
-          ><span>+${moreCount}</span></button>
+            <button
+              class="partner-profile-chip is-more"
+              type="button"
+              data-action="${badgeToggleAction}"
+              aria-expanded="false"
+              aria-label="Ek rozetleri göster"
+            ><span>+${moreCount}</span></button>
         ` : ""}
         ${badgesExpanded && extraBadges.length ? `
           <span class="partner-profile-chip-break" aria-hidden="true"></span>
           ${extraBadges.map((badge) => `<span class="partner-profile-chip is-extra">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
         ` : ""}
-      </div>
-      <div class="partner-profile-actions" aria-label="Partner kartı paylaşım aksiyonları">
-        <button class="partner-profile-action is-primary" type="button" data-action="open-partner-share" data-testid="partner-share-button">
-          ${icon("share")} Paylaş
-        </button>
-        <button class="partner-profile-action" type="button" data-route="/partner-card-preview" data-testid="partner-card-preview-button">
-          ${icon("eye")} Önizle
-        </button>
       </div>
     </section>
   `;

@@ -1,25 +1,23 @@
+import { createPinia } from "pinia";
 import { createApp } from "vue";
-import { resolveVuePage } from "./router/routes.js";
+import App from "./App.vue";
+import { router } from "./router/index.js";
 import "./styles/vue.css";
 
-const mountedIslands = new WeakMap();
+const root = document.getElementById("app");
 
-export function mountVueIslands(root = document, context = {}) {
-  const islands = Array.from(root.querySelectorAll("[data-vue-island]"));
-
-  islands.forEach((node) => {
-    if (mountedIslands.has(node)) return;
-
-    const componentName = node.dataset.vueIsland || "ui-kit";
-    const Component = resolveVuePage(componentName);
-    const app = createApp(Component, {
-      currentRoute: context.currentRoute || `/${componentName}`,
-      navigateTo: context.navigateTo || window.navigateToPage,
-    });
-
-    app.mount(node);
-    mountedIslands.set(node, app);
-  });
+if (!root) {
+  throw new Error("Lipyum Partner root container (#app) bulunamadı.");
 }
 
-export default mountVueIslands;
+const app = createApp(App);
+
+app.config.errorHandler = (error) => {
+  console.error("[Lipyum Vue]", error);
+};
+
+app.use(createPinia());
+app.use(router);
+app.mount(root);
+
+window.__LIPYUM_VUE_ROOT__ = true;

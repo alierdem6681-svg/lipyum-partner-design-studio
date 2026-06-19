@@ -132,3 +132,15 @@ The following groups were observed passing in the `npm run test:quality-gate` ba
 ## Completion Statement
 
 V12 is not complete at this checkpoint. Phase 0 baseline, origin synchronization and traceability have been started, but the core V12 cutover blockers remain open.
+## V12-A Traceability
+
+| Gereksinim | Durum | Kanıt |
+| --- | --- | --- |
+| Tek Vue root app | Tamamlandı | `src/app.js`, `src/vue/main.js`, `tests/architecture/vue-root-cutover.test.js` |
+| `legacyApp.js` boot kesilsin | Tamamlandı | `tests/architecture/no-legacy-boot.test.js` |
+| Vue Router hash history | Tamamlandı | `src/vue/router/index.js`, `tests/architecture/vue-router-ownership.test.js` |
+| Pinia UI state | Tamamlandı | `src/vue/stores/appShell.js`, `navigation.js`, `home.js`, `jobs.js`, `calendar.js` |
+| Global AppShell/Header/BottomBar/Drawer/Sheet/Modal/Toast | Tamamlandı | `src/vue/App.vue`, V12 shell e2e |
+| `/home`, `/jobs`, `/my-jobs`, `/calendar` Vue SFC | Tamamlandı | İlgili SFC dosyaları ve V12 core route e2e |
+| Diğer route'lar compatibility bridge | Tamamlandı | `LegacyContentBridge.vue`, `v12-compatibility-routes.spec.js` |
+| Final quality gate iki kez | Bekliyor | `test:quality-gate:v12-a` eklendi; final kapanış öncesi çalıştırılmalı |

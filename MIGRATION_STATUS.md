@@ -66,3 +66,16 @@ P0 kalan ana iş:
 - `/home`, `/jobs`, `/my-jobs`, `/calendar`, `/referral`, `/packages`, `/subscription`, builder/checkout ve profil alt route'larının gerçek Vue SFC page olarak taşınması.
 - Aktif route'larda büyük HTML string render sorumluluğunun kaldırılması.
 - Legacy CSS'in aktif route görünüm üretme sorumluluğunun bitirilmesi.
+## V12-A Migration Update
+
+Tarih: 18 Haziran 2026
+
+| Route | Durum | Not |
+| --- | --- | --- |
+| `/home` | Vue SFC | `HomePage.vue`; global AppHeader/AppBottomBar altında çalışır. |
+| `/jobs` | Vue SFC | `JobsPage.vue`; filtre ve job detail sheet çalışır. |
+| `/my-jobs` | Vue SFC | `MyJobsPage.vue`; filtre ve job detail sheet çalışır. |
+| `/calendar` | Vue SFC | `CalendarPage.vue`; gün seçimi ve appointment detail sheet çalışır. |
+| Diğer route'lar | Compatibility bridge | `LegacyContentBridge.vue` eski page render çıktılarını global Vue shell içinde gösterir. |
+
+V12-A sonrası kullanıcıya görünen uygulama tek Vue root tarafından mount edilir. Tam ürün migration için `/wallet`, `/profile`, `/notifications`, `/support`, `/referral`, `/packages`, `/subscription` ve alt akışlar sonraki fazlarda SFC'ye taşınmalıdır.

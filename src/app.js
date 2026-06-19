@@ -1,1 +1,1 @@
-import "./legacyApp.js";
+import "./vue/main.js";

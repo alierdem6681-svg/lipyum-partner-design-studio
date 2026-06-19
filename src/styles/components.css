@@ -160,31 +160,40 @@
 }
 
 .partner-profile-actions {
-  margin-top: 12px;
+  align-self: start;
+  justify-content: flex-end;
 }
 
 .partner-profile-action {
-  min-height: 40px;
-  flex: 1 1 0;
+  min-height: 34px;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
-  border: 1px solid var(--lp-border);
-  border-radius: 12px;
-  background: #fff;
-  color: var(--lp-ink);
+  border: 1px solid rgba(18, 183, 106, 0.2);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(236, 253, 245, 0.92)),
+    #fff;
+  color: var(--lp-green-dark);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72), 0 8px 18px rgba(6, 118, 71, 0.1);
   font-size: 12px;
   font-weight: 800;
+  padding: 0 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.partner-profile-action.is-primary {
-  border-color: rgba(18, 183, 106, 0.22);
-  background: var(--color-primary-soft);
-  color: var(--lp-green-dark);
+.partner-profile-action .icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.35;
+}
+
+.partner-profile-action:active {
+  transform: scale(0.98);
 }
 
 .partner-public-badge,
@@ -236,6 +245,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 35%;
 }
 
 .partner-public-copy {
@@ -310,6 +320,68 @@
   font-size: 11.5px;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.partner-public-badge.is-partner-seal {
+  overflow: hidden;
+  border-color: rgba(18, 183, 106, 0.22);
+  background:
+    linear-gradient(135deg, rgba(236, 253, 245, 0.96), rgba(255, 255, 255, 0.98) 48%, rgba(255, 251, 235, 0.86)),
+    #fff;
+}
+
+.partner-public-seal {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(18, 183, 106, 0.22);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(6, 118, 71, 0.94), rgba(18, 183, 106, 0.9)),
+    var(--lp-green-dark);
+  color: #fff;
+  padding: 10px;
+  box-shadow: 0 12px 22px rgba(6, 118, 71, 0.18);
+}
+
+.partner-public-seal > .icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.16);
+  padding: 9px;
+  color: #fff;
+}
+
+.partner-public-seal span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.partner-public-seal strong,
+.partner-public-seal small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-public-seal strong {
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.partner-public-seal small {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .partner-embed-card,
@@ -391,6 +463,128 @@
 .partner-share-sheet {
   display: grid;
   gap: 12px;
+}
+
+.partner-card-preview-page {
+  min-height: 100%;
+  gap: 0;
+  padding: 0;
+  background: #f8fafc;
+}
+
+.partner-card-preview-shell {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 12px;
+  padding: 12px 0 0;
+}
+
+.partner-preview-topbar {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.partner-preview-close,
+.partner-preview-share {
+  border: 1px solid var(--lp-border);
+  background: #fff;
+  color: var(--lp-ink);
+  box-shadow: var(--lp-soft-shadow);
+}
+
+.partner-preview-close {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.partner-preview-share {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 999px;
+  padding: 0 14px;
+  color: var(--lp-green-dark);
+  font-size: 12.5px;
+  font-weight: 850;
+}
+
+.partner-preview-close .icon,
+.partner-preview-share .icon {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2.35;
+}
+
+.partner-preview-empty {
+  min-height: 280px;
+}
+
+.partner-share-option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.partner-share-option {
+  width: 100%;
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--lp-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--lp-ink);
+  padding: 10px;
+  text-align: left;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+}
+
+.partner-share-option > span:first-child {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--color-primary-soft);
+  color: var(--lp-green-dark);
+}
+
+.partner-share-option > span:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.partner-share-option strong,
+.partner-share-option small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-share-option strong {
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.partner-share-option small {
+  color: var(--lp-muted);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .live-support-card {
@@ -1232,7 +1426,7 @@
 }
 
 .leaderboard-page-v4 {
-  padding-bottom: 96px;
+  padding-bottom: 0;
 }
 
 .review-summary-card {
@@ -1472,7 +1666,12 @@
 
 .review-card-actions {
   flex: 0 0 auto;
-  justify-items: end;
+  width: 52px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 5px;
+  text-align: center;
 }
 
 .review-card-head strong,
@@ -1490,19 +1689,26 @@
 }
 
 .review-card-head small {
+  width: 100%;
+  display: block;
   color: var(--text-muted);
   font-size: var(--font-size-caption);
   font-weight: var(--weight-semibold);
+  text-align: center;
 }
 
 .review-report-btn {
-  min-width: 48px;
+  width: 44px;
+  min-width: 44px;
   min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: #fff;
   color: var(--text-secondary);
-  padding: 0 9px;
+  padding: 0;
   font-size: 11px;
   font-weight: var(--weight-bold);
   line-height: 1;

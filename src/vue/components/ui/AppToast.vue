@@ -15,7 +15,7 @@ const toneClasses = {
 </script>
 
 <template>
-  <output v-if="message" class="fixed bottom-28 left-1/2 z-50 flex min-h-11 max-w-[86vw] -translate-x-1/2 items-center gap-2 rounded-pill px-4 text-caption font-bold shadow-elevated" :class="toneClasses[tone] || toneClasses.success">
+  <output id="toast" v-if="message" class="toast show fixed bottom-28 left-1/2 z-50 flex min-h-11 max-w-[86vw] -translate-x-1/2 items-center gap-2 rounded-pill px-4 text-caption font-bold shadow-elevated" :class="toneClasses[tone] || toneClasses.success">
     <AppIcon name="check" :size="17" />
     <span class="truncate">{{ message }}</span>
   </output>

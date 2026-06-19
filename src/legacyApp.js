@@ -2,6 +2,7 @@ import { mountAppShell } from "./components/AppShell.js";
 import { createUiState, navigationStack } from "./state.js";
 import { renderBottomBar } from "./components/BottomBar.js";
 import { PartnerSharePanel } from "./components/PartnerPublicBadge.js";
+import { renderProfileCard } from "./components/ProfileCard.js";
 import { BOTTOM_TABS, DRAWER_SECTIONS } from "./utils/constants.js";
 import { partnerProfile } from "./data/mockData.js";
 import { fitTextToContainer } from "./utils/dom.js";
@@ -1107,6 +1108,14 @@ mountAppShell();
       function renderBottomNav() {
         const nav = document.getElementById("bottomNav");
         if (!nav) return;
+        const fullscreenRoute = state.screen === "partnerCardPreview";
+        const phoneScreen = document.querySelector(".phone-screen");
+        if (phoneScreen) phoneScreen.classList.toggle("is-fullscreen-route", fullscreenRoute);
+        nav.hidden = fullscreenRoute;
+        if (fullscreenRoute) {
+          nav.innerHTML = "";
+          return;
+        }
         nav.innerHTML = renderBottomBar({
           items: bottomItems,
           activeScreen: state.screen,
@@ -1309,7 +1318,7 @@ mountAppShell();
           activityMessage.classList.remove("is-rolling");
           void activityMessage.offsetWidth;
           activityMessage.classList.add("is-rolling");
-        }, 3600);
+        }, 5000);
       }
 
       function initReviewInfiniteScroll() {
@@ -1319,11 +1328,17 @@ mountAppShell();
         root.addEventListener("scroll", () => {
           if (state.screen !== "reviews" || reviewLoadTimer) return;
           const note = root.querySelector("[data-review-load-note]");
-          if (!note || note.textContent.includes("Tüm")) return;
+          if (!note || note.dataset.complete === "true" || note.textContent.includes("Tüm")) return;
           const remaining = root.scrollHeight - root.scrollTop - root.clientHeight;
           if (remaining > 90) return;
           reviewLoadTimer = window.setTimeout(() => {
-            state.reviewVisibleCount += 2;
+            const current = state.lazyListCounts?.reviews || Math.max(state.reviewVisibleCount || 0, 4);
+            const nextCount = current + 3;
+            state.reviewVisibleCount = nextCount;
+            state.lazyListCounts = {
+              ...(state.lazyListCounts || {}),
+              reviews: nextCount,
+            };
             reviewLoadTimer = null;
             renderScreen({ preserveScroll: true });
           }, 220);
@@ -2885,7 +2900,7 @@ mountAppShell();
           { rank: 3, initials: "YK", name: "Yusuf K.", points: "8.930 Puan", bg: "#fff7ed", medal: "#d97706", score: "#c2410c" },
         ];
         const sectorOptions = [
-          { value: "", label: "Sektörler" },
+          { value: "", label: "Sektör Ligi" },
           { value: "Beyaz Eşya Tamiri", label: "Beyaz Eşya Tamiri" },
           { value: "Klima Tamiri", label: "Klima Tamiri" },
           { value: "Kombi Servisi", label: "Kombi Servisi" },
@@ -2902,6 +2917,7 @@ mountAppShell();
           { value: "Antalya", label: "Antalya" },
         ];
         const optionHtml = (items, selected) => items.map((item) => `<option value="${item.value}" ${selected === item.value ? "selected" : ""}>${item.label}</option>`).join("");
+        const activeSectorValue = state.leaderboardRegion ? "" : state.leaderboardSector;
         const activeLeagueLabel = state.leaderboardRegion ? `${state.leaderboardRegion} Ligi` : "Sektör Ligi";
         const rivalRow = (rival) => `
           <article class="rival-row ${rival.current ? "current" : ""}">
@@ -2939,7 +2955,7 @@ mountAppShell();
             <label class="leaderboard-select-wrap">
               <span class="leaderboard-select-title">${icon("trophy")} Sektör Ligi</span>
               <select data-leaderboard-sector aria-label="Sektör ligi seç">
-                ${optionHtml(sectorOptions, state.leaderboardSector)}
+                ${optionHtml(sectorOptions, activeSectorValue)}
               </select>
             </label>
             <label class="leaderboard-select-wrap">
@@ -3422,43 +3438,19 @@ mountAppShell();
         layer.innerHTML = "";
       }
 
-      function drawerNameSize(name) {
-        const overflowChars = Math.max(0, name.length - 14);
-        return Math.max(14, 19.5 - overflowChars * 0.38).toFixed(1);
-      }
-
-      function drawerBadgesMarkup() {
-        const visibleBadges = partnerProfile.badges.slice(0, 3);
-        const extraBadges = partnerProfile.badges.slice(3);
-        const extraBadgeMarkup = state.drawerBadgesExpanded
-          ? `
-              ${extraBadges.map((badge) => `<span class="drawer-mini-badge is-extra">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
-            `
-          : "";
-        return `
-          ${visibleBadges.map((badge) => `<span class="drawer-mini-badge badge-span-2">${badge.icon ? icon(badge.icon) : ""} ${badge.label}</span>`).join("")}
-          ${!state.drawerBadgesExpanded && extraBadges.length ? `<button class="drawer-mini-badge is-more" type="button" data-action="toggle-drawer-badges" aria-expanded="false">+${extraBadges.length}</button>` : ""}
-          ${extraBadgeMarkup}
-        `;
+      function drawerPartnerProfileCard() {
+        return renderProfileCard({
+          ...partnerProfile,
+          badgesExpanded: state.drawerBadgesExpanded,
+          badgeToggleAction: "toggle-drawer-badges",
+          extraAttrs: "data-sidebar-profile-card",
+          icon,
+        });
       }
 
       function drawerProfileCard() {
-        const partnerName = partnerProfile.name;
-        const initials = partnerName.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase();
         return `
-          <section class="drawer-profile-card" aria-label="Partner profili">
-            <div class="drawer-avatar" aria-hidden="true">${initials}</div>
-            <div class="drawer-profile-copy">
-              <div class="drawer-name-row">
-                <h3 style="--drawer-name-size:${drawerNameSize(partnerName)}px">${partnerName}</h3>
-                <span class="drawer-badge">${icon("crown")} ${partnerProfile.tier}</span>
-              </div>
-              <span class="drawer-rating">${icon("star")} ${partnerProfile.rating} Puan · ${partnerProfile.reviewCount} Değerlendirme</span>
-            </div>
-            <span class="drawer-badges">
-              ${drawerBadgesMarkup()}
-            </span>
-          </section>
+          ${drawerPartnerProfileCard()}
           <section class="drawer-work-status-card ${state.dispatchOn ? "is-working" : "is-resting"}" aria-label="Çalışma durumu">
             <div class="row">
               <span class="drawer-status-copy">
@@ -3505,18 +3497,22 @@ mountAppShell();
       }
 
       function drawerMenuItem(item) {
+        const locked = item.requiresPaidPackage && !hasPaidPackage();
         const target = item.route
-          ? `data-route="${item.route}"`
+          ? locked
+            ? `data-action="paid-support-required" data-label="${escapeHtml(item.label)}"`
+            : `data-route="${item.route}"`
           : item.screen
             ? `data-screen="${item.screen}"`
             : `data-action="${item.action || "menu-placeholder"}" data-label="${item.label}"`;
         const activeRoute = item.route && getCurrentRoute() === item.route;
+        const description = locked ? "Ücretli paketlere özel" : item.description;
         return `
-          <button class="drawer-menu-item ${activeRoute ? "is-active" : ""}" type="button" ${target} data-testid="sidebar-menu-item" style="--drawer-item-color:${item.color}" aria-label="${item.label}" ${activeRoute ? 'aria-current="page"' : ""}>
+          <button class="drawer-menu-item ${activeRoute ? "is-active" : ""} ${locked ? "is-locked" : ""}" type="button" ${target} data-testid="sidebar-menu-item" style="--drawer-item-color:${item.color}" aria-label="${item.label}${locked ? " - ücretli paket gerekli" : ""}" ${activeRoute ? 'aria-current="page"' : ""}>
             <span class="drawer-menu-icon">${icon(item.icon)}</span>
             <span class="drawer-menu-copy">
               <strong data-fit-text data-fit-min="11" data-fit-max="14">${item.label}</strong>
-              ${item.description ? `<small>${item.description}</small>` : ""}
+              ${description ? `<small>${description}</small>` : ""}
             </span>
             ${icon("chevron-right")}
           </button>
@@ -3927,8 +3923,7 @@ mountAppShell();
               <button class="icon-btn" type="button" data-close aria-label="Kapat">${icon("x")}</button>
             </div>
             <div class="review-reply-sheet">
-              <div class="review-reply-preview">${state.selectedReviewText}</div>
-              <textarea class="review-reply-input" data-review-reply-input placeholder="Nazik yanıtını yaz. Örn: Değerli yorumunuz için teşekkür ederiz, memnun kalmanıza sevindik.">${escapeHtml(state.selectedReviewReply || "")}</textarea>
+              <textarea class="review-reply-input" data-review-reply-input placeholder="Kibar ve resmi bir iletişim tercih etmelisiniz.">${escapeHtml(state.selectedReviewReply || "")}</textarea>
               <div class="review-reply-suggestions" aria-label="Hazır yanıt önerileri">
                 <button class="secondary-btn" type="button" data-action="use-review-reply-template" data-template="Değerli yorumunuz için teşekkür ederiz, memnun kalmanıza sevindik.">Teşekkür yanıtı kullan</button>
                 <button class="secondary-btn" type="button" data-action="use-review-reply-template" data-template="Geri bildiriminiz için teşekkür ederiz. Bir sonraki hizmette daha iyi bir deneyim sunmak isteriz.">Gelişim yanıtı kullan</button>
@@ -4491,9 +4486,9 @@ mountAppShell();
             const layer = document.getElementById("sheetLayer");
             const scroll = layer.querySelector(".drawer-scroll");
             const currentScrollTop = scroll ? scroll.scrollTop : 0;
-            const badges = layer.querySelector(".drawer-badges");
-            if (badges) {
-              badges.innerHTML = drawerBadgesMarkup();
+            const profileCard = layer.querySelector("[data-sidebar-profile-card]");
+            if (profileCard) {
+              profileCard.outerHTML = drawerPartnerProfileCard();
               if (scroll) requestAnimationFrame(() => { scroll.scrollTop = currentScrollTop; });
             }
           } else if (type === "toggle-profile-badges") {
@@ -4591,6 +4586,11 @@ mountAppShell();
           } else if (type === "menu-placeholder") {
             closeSheet();
             showToast(`${action.dataset.label || "Bu alan"} yakında aktif olacak`);
+          } else if (type === "paid-support-required") {
+            event.preventDefault();
+            closeSheet();
+            navigateTo("/subscription");
+            showToast("Müşteri Hizmetleri ücretli paketlere özel.");
           } else if (type === "header-info") {
             showToast("Bu sayfa için hızlı bilgi alanı hazır");
           } else if (type === "subscribe-plan") {
@@ -4710,8 +4710,7 @@ mountAppShell();
             state.selectedReviewReply = action.dataset.reviewReply || "";
             showSheet("review-reply");
           } else if (type === "report-review-comment") {
-            state.selectedIssue = "Yorum bildirimi";
-            showSheet("issue");
+            showToast("Yorum bildirildi. Uygunsuz içerik incelemeye alındı.");
           } else if (type === "use-review-reply-template") {
             const replyInput = document.querySelector("[data-review-reply-input]");
             if (replyInput) {
@@ -4749,6 +4748,10 @@ mountAppShell();
             showToast("Embed kodu kopyalandı");
           } else if (type === "share-partner-whatsapp") {
             showToast("WhatsApp paylaşımı mock olarak hazırlandı");
+          } else if (type === "share-partner-social-post") {
+            showToast("Sosyal medya gönderisi mock olarak hazırlandı");
+          } else if (type === "share-partner-story") {
+            showToast("Hikaye paylaşımı mock olarak hazırlandı");
           } else if (type === "profile-shortcut") {
             if (action.dataset.route) {
               navigateTo(action.dataset.route);

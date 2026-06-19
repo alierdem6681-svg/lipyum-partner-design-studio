@@ -20,7 +20,7 @@ const emit = defineEmits(["close"]);
             <h2 class="truncate text-card-title font-bold text-slate-950">{{ title }}</h2>
             <p v-if="description" class="mt-1 truncate text-caption font-semibold text-slate-500">{{ description }}</p>
           </span>
-          <button class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200" type="button" aria-label="Kapat" @click="emit('close')">
+          <button class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200" type="button" data-testid="sheet-close-button" aria-label="Kapat" @click="emit('close')">
             <AppIcon name="x" :size="20" />
           </button>
         </div>

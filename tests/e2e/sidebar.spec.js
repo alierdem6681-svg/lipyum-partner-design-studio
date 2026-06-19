@@ -12,6 +12,9 @@ test("hamburger opens and close button closes sidebar", async ({ page }) => {
   await waitForApp(page);
 
   await openSidebar(page);
+  await expect(page.getByTestId("partner-profile-card")).toBeVisible();
+  await expect(page.getByTestId("partner-card-preview-button")).toBeVisible();
+  await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await page.getByTestId("sidebar-close").click();
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
 

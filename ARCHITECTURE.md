@@ -74,3 +74,18 @@ npm run test:quality-gate:v11
 ```
 
 The audit intentionally passes only when the remaining full Vue migration debt is explicitly documented.
+## V12-A Single Vue Root Cutover
+
+Tarih: 18 Haziran 2026
+
+V12-A ile uygulama boot sahipliği `legacyApp.js` dosyasından tek Vue root uygulamasına taşındı.
+
+- `src/app.js` yalnızca `./vue/main.js` dosyasını yükler.
+- `src/vue/main.js` `createApp(App)`, Pinia ve Vue Router kurulumu yapar.
+- `src/vue/App.vue` global uygulama kabuğunu sahiplenir: simulator frame, `AppHeader`, `RouterView`, `AppBottomBar`, `AppDrawer`, `AppSheet`, `AppModal`, `AppToast`.
+- Hash URL yapısı korunur; router `createWebHashHistory()` kullanır.
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` core Vue SFC route oldu.
+- Diğer route'lar geçici `LegacyContentBridge` ile Vue shell içinde render edilir.
+- `legacyApp.js` artık app boot path üzerinde değildir; compatibility bridge yalnızca eski page renderer çıktısını gövde içeriği olarak kullanır.
+
+V12-A bilinçli sınır: tüm ürün route'ları henüz tam SFC değildir. Bu fazın amacı root ownership, global shell ve core bottom tab route'larının Vue'ye geçişidir.

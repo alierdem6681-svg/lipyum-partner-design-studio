@@ -4,17 +4,18 @@ import {
   LeagueSelects,
   MyRankSummary,
   NearbyRankList,
-  RewardTiersCard,
   TopRankersCard,
 } from "../components/LeaderboardComponents.js";
 import { PageContainer } from "../components/PageContainer.js";
 import { leaderboard } from "../data/mockData.js";
 
 export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
+  const activeCity = state.leaderboardRegion || "";
+  const activeSector = activeCity ? "" : state.leaderboardSector || leaderboard.sector;
   const activeLeaderboard = {
     ...leaderboard,
-    sector: state.leaderboardSector || leaderboard.sector,
-    city: state.leaderboardRegion || leaderboard.city,
+    sector: activeSector,
+    city: activeCity,
   };
 
   return PageContainer({
@@ -37,7 +38,6 @@ export function LeaderboardPage({ state = {}, icon = () => "" } = {}) {
         items: activeLeaderboard.nearby,
       })}
       ${TopRankersCard({ rankers: activeLeaderboard.topRankers, icon })}
-      ${RewardTiersCard({ rewards: activeLeaderboard.rewards, icon })}
     `,
   });
 }

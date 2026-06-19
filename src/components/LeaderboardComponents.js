@@ -3,12 +3,14 @@ import { formatCredit } from "../utils/formatters.js";
 export function LeagueSelects({ leaderboard = {} } = {}) {
   const sectorOptions = ["Beyaz Eşya Tamiri", "Klima Tamiri", "Kombi Servisi", "Ev Temizliği"];
   const cityOptions = ["İstanbul", "Ankara", "İzmir", "Kayseri", "Antalya"];
+  const activeSector = leaderboard.city ? "" : leaderboard.sector;
   return `
     <section class="league-select-grid" aria-label="Lig filtreleri">
       <label>
         <span>Sektör Ligi</span>
         <select data-leaderboard-sector data-testid="leaderboard-sector-select" aria-label="Sektör Ligi">
-          ${sectorOptions.map((sector) => `<option value="${sector}" ${leaderboard.sector === sector ? "selected" : ""}>${sector}</option>`).join("")}
+          <option value="" ${activeSector ? "" : "selected"}>Sektör Ligi</option>
+          ${sectorOptions.map((sector) => `<option value="${sector}" ${activeSector === sector ? "selected" : ""}>${sector}</option>`).join("")}
         </select>
       </label>
       <label>
@@ -114,8 +116,7 @@ export function TopRankersCard({ rankers = [], icon = () => "" } = {}) {
       <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
       <div class="top-rankers-head">
         <div class="top-rankers-title">
-          <span>${icon("sparkles")} Haftanın vitrini</span>
-          <h2>Haftanın En İyileri</h2>
+          <span>${icon("sparkles")} Haftanın En İyileri</span>
         </div>
         <span class="top-rankers-score-label">Lig puanı</span>
       </div>
