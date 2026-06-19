@@ -11,13 +11,37 @@ Tarih: 19 Haziran 2026
 
 ## GitHub Pages Canary
 
-Feature branch push sonrasi dogrulanacaktir.
+Feature branch push sonrasi GitHub Pages workflow dogrulandi.
+
+Canary URL: `https://alierdem6681-svg.github.io/lipyum-partner-design-studio/#/home`
+Rollback URL: `https://alierdem6681-svg.github.io/lipyum-partner-design-studio/?engine=legacy#/home`
+Workflow run: `27825343900`
+Workflow sonucu: `SUCCESS`
+Kod commit'i: `b2764eb88c5f724d700813863a7c630234765b43`
 
 | Kontrol | Durum |
 | --- | --- |
-| GitHub Pages workflow | PENDING |
-| Normal canary URL Vue marker | PENDING |
-| Rollback URL legacy marker | PENDING |
+| GitHub Pages workflow | PASS |
+| Normal canary URL Vue marker | PASS |
+| Rollback URL legacy marker | PASS |
+
+## Route Canary Kontrolleri
+
+| Route | Runtime | Durum |
+| --- | --- | --- |
+| `/#/home` | Vue | PASS |
+| `/#/profile` | Vue | PASS |
+| `/#/support/live` | Vue | PASS |
+| `/#/referral` | Vue | PASS |
+| `/#/subscription` | Vue | PASS |
+| `/?engine=legacy#/home` | Legacy | PASS |
+
+## Tarayici Bulgulari
+
+- Normal canary acilisinda `data-runtime="vue"` goruldu.
+- Rollback URL acilisinda `data-runtime="legacy"` goruldu.
+- Kritik canary route'larda horizontal overflow gorulmedi.
+- Kritik canary route'larda console/page error gorulmedi.
 
 ## Not
 

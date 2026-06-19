@@ -30,11 +30,13 @@ PR: `#3`
 
 - `7141b16` - `Switch default runtime to Vue release candidate`
 - `f8fecb3` - `Complete V12-J acceptance and release gate`
-- Final evidence commit: PENDING
+- `b2764eb` - `Record V12-J final gate evidence`
 
 ## Deploy
 
-- GitHub Pages feature canary: PENDING.
+- GitHub Pages feature canary: PASS, workflow run `27825343900`.
+- Canary normal URL: `https://alierdem6681-svg.github.io/lipyum-partner-design-studio/#/home`.
+- Canary rollback URL: `https://alierdem6681-svg.github.io/lipyum-partner-design-studio/?engine=legacy#/home`.
 - Production Vercel deploy: yapilmadi.
 - Main merge: yapilmadi.
 
