@@ -1,0 +1,329 @@
+{
+  "contractId": "V12-K-STABLE-DESIGN-CONTRACT",
+  "createdDate": "2026-06-19",
+  "branch": "feature/v12-golden-vue-cutover",
+  "scope": "Stable legacy design surfaces that Vue preview must preserve before any default Vue cutover.",
+  "sourceOfTruth": {
+    "legacyCss": [
+      "src/styles/tokens.css",
+      "src/styles/components.css",
+      "src/styles/pages.css"
+    ],
+    "legacyComponents": [
+      "src/components/Header.js",
+      "src/components/BottomBar.js",
+      "src/components/Sidebar.js",
+      "src/components/ProfileCard.js",
+      "src/components/ProfileStrengthCard.js",
+      "src/components/ProfileMenuGrid.js"
+    ],
+    "vuePreviewComponents": [
+      "src/vue/components/ui/AppHeader.vue",
+      "src/vue/components/ui/AppBottomBar.vue",
+      "src/vue/components/ui/AppDrawer.vue",
+      "src/vue/components/profile/PartnerProfileCard.vue",
+      "src/vue/components/profile/ProfileStrengthCard.vue",
+      "src/vue/components/profile/ProfileMenuGrid.vue",
+      "src/vue/components/drawer/DrawerProfileCard.vue",
+      "src/vue/components/drawer/DrawerMenuCard.vue"
+    ]
+  },
+  "measurement": {
+    "method": "Local Windows Playwright DOM/CSS geometry measurement against Vite; no screenshot baselines generated.",
+    "viewport": {
+      "width": 393,
+      "height": 852,
+      "deviceScaleFactor": 3,
+      "isMobile": true,
+      "hasTouch": true
+    },
+    "tolerances": {
+      "exactCssString": "CSS token and selector identity assertions must match exactly unless browser serialization differs.",
+      "geometryPx": 1,
+      "headerShellDeltaPx": 3,
+      "horizontalOverflowPx": 1,
+      "drawerAnimationWaitMs": 260
+    }
+  },
+  "coreTokens": {
+    "fontFamilyBase": "-apple-system, BlinkMacSystemFont, SF Pro Text, SF Pro Display, Roboto, Inter, Noto Sans, Segoe UI, sans-serif",
+    "colorPrimary": "#12b76a",
+    "colorPrimaryDark": "#079455",
+    "colorBackground": "#f5f7fb",
+    "textPrimary": "#101828",
+    "textMuted": "#667085",
+    "pageXPadding": "12px",
+    "headerHeight": "58px",
+    "appHeaderActionSize": "44px",
+    "appHeaderGap": "8px",
+    "bottomSafeHeight": "92px",
+    "bottomBarHeight": "76px",
+    "pageBottomPadding": "112px",
+    "ctaHomeTokenSize": "68px",
+    "ctaSubpageTokenSize": "58px"
+  },
+  "surfaces": {
+    "header": {
+      "stableSelectors": [
+        "[data-testid='app-header']",
+        "[data-testid='hamburger-button']",
+        "[data-testid='back-button']",
+        "[data-testid='notification-button']",
+        "[data-testid='profile-button']",
+        "[data-testid='header-info-button']"
+      ],
+      "legacyClasses": [
+        ".app-header",
+        ".page-header",
+        ".icon-btn"
+      ],
+      "vueClasses": [
+        ".v-header",
+        ".v-app-header",
+        ".top-nav",
+        ".v-header__action"
+      ],
+      "homeMeasured393": {
+        "gridTemplateColumns": "44px 215px 94px",
+        "legacyHeight": 70,
+        "vueHeight": 68,
+        "buttonSize": 44,
+        "buttonCentersX": {
+          "hamburger": 34,
+          "notifications": 309,
+          "profile": 359
+        },
+        "acceptedButtonCenterYRange": [
+          34,
+          36.5
+        ]
+      },
+      "subpageMeasured393": {
+        "gridTemplateColumns": "44px 265px 44px",
+        "legacyHeaderWidth": 369,
+        "vueHeaderWidth": 393,
+        "buttonSize": 44,
+        "buttonCentersX": {
+          "back": 34,
+          "right": 359
+        },
+        "title": "Profilim"
+      },
+      "contract": [
+        "Home header must expose hamburger, notification and profile buttons with 44px touch targets.",
+        "Subpage header must expose back and right action buttons with stable x centers at the mobile contract viewport.",
+        "Header grid columns must remain 44px / content / action width at the contract viewport.",
+        "Vue preview may keep its shell-owned full-width header, but action geometry must match legacy."
+      ]
+    },
+    "bottomBar": {
+      "stableSelectors": [
+        "[data-testid='app-bottom-bar']",
+        "[data-testid='bottom-tab-home']",
+        "[data-testid='bottom-tab-jobs']",
+        "[data-testid='bottom-cta-job']",
+        "[data-testid='bottom-tab-calendar']",
+        "[data-testid='bottom-tab-wallet']",
+        ".bottom-nav",
+        ".bottom-item",
+        ".cta-lightning-wrap",
+        ".bottom-badge"
+      ],
+      "requiredOrder": [
+        "bottom-tab-home",
+        "bottom-tab-jobs",
+        "bottom-cta-job",
+        "bottom-tab-calendar",
+        "bottom-tab-wallet"
+      ],
+      "measured393": {
+        "nav": {
+          "x": 0,
+          "y": 760,
+          "width": 393,
+          "height": 92,
+          "gridTemplateColumns": "72.1875px 72.2031px 72.2031px 72.2031px 72.1875px",
+          "gap": "2px",
+          "padding": "8px 12px 16px"
+        },
+        "items": {
+          "standardHeight": 56,
+          "featuredWidth": 76,
+          "featuredHeight": 76,
+          "centerY": 806,
+          "centersX": [
+            48.09,
+            122.29,
+            196.5,
+            270.7,
+            344.89
+          ],
+          "centerGaps": [
+            74.2,
+            74.21,
+            74.2,
+            74.19
+          ]
+        },
+        "cta": {
+          "homeWidth": 62,
+          "homeHeight": 62,
+          "homeTop": "-24px",
+          "subpageWidth": 58,
+          "subpageHeight": 58,
+          "subpageTop": "-18px",
+          "centerX": 196.5,
+          "borderRadius": "999px"
+        },
+        "backgroundPlate": {
+          "top": "7px",
+          "borderTopWidth": "1px",
+          "borderRadius": "16px 16px 0px 0px",
+          "backgroundColor": "rgba(252, 252, 253, 0.94)",
+          "boxShadow": "rgba(15, 23, 42, 0.06) 0px -6px 24px 0px"
+        }
+      },
+      "contract": [
+        "Bottom bar must remain a five-column centered grid.",
+        "CTA item must stay centered on the viewport center within 1px.",
+        "Left and right item centers must remain symmetric within 1.5px.",
+        "Home CTA uses the 62px visible legacy wrap; subpage CTA uses the 58px visible legacy wrap."
+      ]
+    },
+    "drawer": {
+      "stableSelectors": [
+        "[data-testid='sidebar-overlay']",
+        "[data-testid='sidebar-drawer']",
+        "[data-testid='sidebar-close']",
+        "[data-testid='sidebar-menu-item']",
+        ".partner-menu",
+        ".drawer-profile-card",
+        ".drawer-work-status-card",
+        ".drawer-menu-card",
+        ".drawer-menu-item"
+      ],
+      "forbiddenVueSelectors": [
+        ".v-drawer-menu__item"
+      ],
+      "measured393AfterAnimation": {
+        "drawer": {
+          "x": 0,
+          "y": 0,
+          "width": 361.55,
+          "height": 852,
+          "padding": "10px",
+          "backgroundColor": "rgb(248, 250, 252)",
+          "borderRightWidth": "1px",
+          "display": "flex",
+          "flexDirection": "column",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        "profileCard": {
+          "width": 332.55,
+          "height": 190,
+          "gridTemplateColumns": "82px 207.547px",
+          "padding": "14px 14px 18px",
+          "borderRadius": "18px"
+        },
+        "workStatusHeight": 48,
+        "closeButtonSize": 44,
+        "menuCardCount": 4,
+        "menuItemCount": 11,
+        "firstMenuItem": {
+          "width": 330.55,
+          "height": 51,
+          "gridTemplateColumns": "34px 238.547px 18px",
+          "minHeight": "50px",
+          "padding": "8px 10px"
+        }
+      },
+      "contract": [
+        "Drawer must use the stable .partner-menu shell, not the generic .v-drawer-menu item stack.",
+        "Drawer width is min(92vw, 388px); at 393px viewport this measures 361.55px.",
+        "Drawer profile card, work status card and four menu cards are required.",
+        "Stable menu item count is 11."
+      ]
+    },
+    "profile": {
+      "stableSelectors": [
+        "[data-testid='partner-profile-card']",
+        "[data-testid='profile-menu-section']",
+        "[data-testid='profile-menu-card']",
+        ".partner-profile-card",
+        ".partner-profile-avatar-btn",
+        ".partner-profile-chip",
+        ".profile-strength-card",
+        ".score-ring",
+        ".checklist-item",
+        ".profile-menu-grid",
+        ".profile-menu-card"
+      ],
+      "forbiddenVueSelectors": [
+        ".v-route-hero",
+        ".v-profile-card",
+        ".v-profile-strength-card",
+        ".v-profile-menu"
+      ],
+      "measured393": {
+        "profileCard": {
+          "width": 369,
+          "height": 224.59,
+          "padding": "16px",
+          "borderRadius": "18px",
+          "backgroundColor": "rgb(255, 255, 255)"
+        },
+        "avatar": {
+          "width": 76,
+          "height": 76,
+          "borderRadius": "5px"
+        },
+        "avatarAdd": {
+          "width": 28,
+          "height": 28
+        },
+        "chipCount": 4,
+        "visibleChipHeight": 28,
+        "moreChipTouchHeight": 44,
+        "actionCount": 2,
+        "actionHeight": 40,
+        "strengthCard": {
+          "width": 369,
+          "height": 280,
+          "display": "grid",
+          "gap": "12px",
+          "padding": "14px",
+          "borderRadius": "22px"
+        },
+        "scoreRing": {
+          "width": 98,
+          "height": 98
+        },
+        "checklistCount": 3,
+        "checklistItemHeight": 40,
+        "profileMenu": {
+          "width": 349,
+          "height": 192,
+          "columns": 4,
+          "rows": 2,
+          "cardCount": 8,
+          "cardWidth": 81.25,
+          "cardHeight": 92,
+          "gap": "8px"
+        }
+      },
+      "contract": [
+        "Vue preview profile must use stable legacy profile classes and not generic v-profile cards.",
+        "Profile card order is partner card, strength card, profile menu.",
+        "Profile menu remains a 4x2 grid at 393px viewport.",
+        "Geometry parity is authoritative; current legacy and Vue copy labels may differ on profile shortcuts."
+      ]
+    }
+  },
+  "coverage": {
+    "tests": [
+      "tests/e2e/stable-vue-shell-parity.spec.js",
+      "tests/e2e/stable-design-default.spec.js"
+    ],
+    "strategy": "DOM, computed-style and bounding-box assertions only."
+  }
+}

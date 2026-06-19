@@ -1,5 +1,27 @@
 # Lipyum Partner Quality Gate
 
+## V12-K Current Runtime Gate
+
+Tarih: 19 Haziran 2026
+
+V12-K icin gecerli runtime politikasi:
+
+- Normal URL stable legacy product design acmalidir.
+- `?engine=vue` Vue preview acmalidir.
+- V12-J `default Vue` kabul raporlari `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir.
+
+Gecerli hafif V12-K gate komutlari:
+
+```bash
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
+```
+
+Bu komutlar normal URL'nin `data-runtime="legacy"` marker'i ile stable tasarimi korudugunu ve explicit Vue preview yolunun `data-runtime="vue"` marker'i ile acildigini dogrular.
+
+V12-J `test:quality-gate:v12-j` ve `test:quality-gate:v12-final` sonuclari tarihsel kanittir; V12-K icin final runtime kabul kapisi olarak kullanilmaz.
+
 Bu dosya bundan sonraki tüm Codex geliştirme görevleri için tamamlanma yasasıdır. Bir görev, ilgili kalite kapısı çalışmadan tamamlandı sayılamaz.
 
 ## Zorunlu Komutlar
@@ -264,6 +286,8 @@ V12-I kabul kriteri:
 - Run loglari `artifacts/v12-i/final-gate-run-1.log` ve `artifacts/v12-i/final-gate-run-2.log` altinda saklanmali.
 
 ## V12-J Release Candidate Gate
+
+V12-K notu: Bu bolum `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir ve yalniz tarihsel V12-J kabulunu anlatir. Guncel politika normal URL = stable legacy product design, `?engine=vue` = Vue preview seklindedir.
 
 V12-J itibariyla normal URL default Vue runtime acmalidir. Legacy yalniz `?engine=legacy` rollback parametresiyle calisir.
 

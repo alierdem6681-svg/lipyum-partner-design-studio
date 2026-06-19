@@ -1,5 +1,8 @@
 # V12-J Runtime Cutover Report
 
+> Status: `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE`.
+> This report is historical only. Current V12-K policy is normal URL = stable legacy product design and `?engine=vue` = Vue preview.
+
 Tarih: 19 Haziran 2026
 Branch: `feature/v12-golden-vue-cutover`
 

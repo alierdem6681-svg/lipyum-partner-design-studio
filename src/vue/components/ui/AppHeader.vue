@@ -80,26 +80,29 @@ function statusAriaLabel(status) {
       aria-label="İş alımı durumları"
     >
       <span class="nav-alert-track">
-        <button
+        <div
           v-for="status in homeStatuses"
           :key="status.action"
           class="nav-alert-item"
-          :class="status.cta ? 'has-action' : ''"
-          type="button"
+          :class="[status.cta ? 'has-action' : '', status.eyebrow.includes('Pasif') ? 'is-inactive' : '']"
+          role="button"
+          tabindex="0"
           :data-action="status.action"
           :aria-label="statusAriaLabel(status)"
           :style="{ '--nav-alert-color': status.color, '--nav-alert-bg': status.bg, '--nav-alert-border': status.border }"
           @click="emit('action', status.action)"
+          @keydown.enter.prevent="emit('action', status.action)"
+          @keydown.space.prevent="emit('action', status.action)"
         >
           <span class="nav-alert-mark" aria-hidden="true">
             <AppIcon :name="status.icon" :size="18" class-name="icon" />
           </span>
-          <span class="nav-status-copy">
+          <span class="nav-alert-copy">
             <strong>{{ status.eyebrow }}</strong>
             <small>{{ status.label }}</small>
           </span>
-          <em v-if="status.cta">{{ status.cta }}</em>
-        </button>
+          <span v-if="status.cta" class="nav-alert-action" aria-hidden="true">{{ status.cta }}</span>
+        </div>
       </span>
     </div>
     <div v-else class="v-header__copy">

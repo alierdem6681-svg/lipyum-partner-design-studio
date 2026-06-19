@@ -1,0 +1,91 @@
+{
+  "manifestId": "V12-K-STABLE-DESIGN-GOLDEN-MANIFEST",
+  "createdDate": "2026-06-19",
+  "branch": "feature/v12-golden-vue-cutover",
+  "baselineType": "dom-geometry-and-css-contract",
+  "screenshotBaselinesGenerated": false,
+  "reason": "The V12-K scope prefers deterministic geometry and DOM assertions. New screenshot baselines were intentionally avoided.",
+  "contractFile": "STABLE_DESIGN_CONTRACT.json",
+  "reviewFile": "STABLE_DESIGN_VISUAL_REVIEW.md",
+  "tokenMapFile": "STABLE_TO_VUE_TOKEN_MAP.md",
+  "sourceStableGolden": {
+    "existingManifest": "tests/golden-master/v11-stable/GOLDEN_MASTER_MANIFEST.json",
+    "existingRouteContract": "tests/golden-master/v11-stable/ROUTE_PARITY_CONTRACT.json",
+    "usage": "Reference only; V12-K does not add or regenerate image baselines."
+  },
+  "viewports": [
+    {
+      "name": "mobile-320",
+      "width": 320,
+      "height": 568
+    },
+    {
+      "name": "mobile-360",
+      "width": 360,
+      "height": 780
+    },
+    {
+      "name": "mobile-contract",
+      "width": 393,
+      "height": 852
+    },
+    {
+      "name": "mobile-wide",
+      "width": 430,
+      "height": 932
+    }
+  ],
+  "routes": [
+    {
+      "route": "/home",
+      "legacyUrl": "/#/home",
+      "vuePreviewUrl": "/?engine=vue#/home",
+      "surfaces": [
+        "header",
+        "bottomBar",
+        "drawer"
+      ],
+      "assertions": [
+        "runtime marker",
+        "44px header touch targets",
+        "five-column bottom grid",
+        "centered CTA",
+        "stable drawer shell and counts"
+      ]
+    },
+    {
+      "route": "/profile",
+      "legacyUrl": "/#/profile",
+      "vuePreviewUrl": "/?engine=vue#/profile",
+      "surfaces": [
+        "header",
+        "bottomBar",
+        "profile"
+      ],
+      "assertions": [
+        "subpage header action centers",
+        "subpage CTA size",
+        "legacy profile card classes",
+        "profile card order",
+        "4x2 profile menu geometry"
+      ]
+    }
+  ],
+  "testFiles": [
+    {
+      "path": "tests/e2e/stable-vue-shell-parity.spec.js",
+      "goldenKind": "Vue preview bottom navigation, profile and drawer stable contract"
+    },
+    {
+      "path": "tests/e2e/stable-design-default.spec.js",
+      "goldenKind": "Stable default runtime design guard"
+    }
+  ],
+  "passCriteria": {
+    "runtime": "Legacy URL must report legacy; Vue preview URL must report vue.",
+    "css": "Stable selectors must exist and forbidden generic v-* replacement selectors must not appear on the covered surfaces.",
+    "geometry": "Measured legacy and Vue boxes must match within the tolerances defined in STABLE_DESIGN_CONTRACT.json.",
+    "overflow": "documentElement horizontal overflow must be <= 1px.",
+    "console": "No page console errors or page errors."
+  }
+}

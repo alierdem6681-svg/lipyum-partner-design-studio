@@ -2,9 +2,50 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 12-K - Runtime Truth, Documentation ve Gate Reconciliation
+
+Tarih: 19 Haziran 2026
+
+### 1. Genel durum
+
+V12-K calismasi uygulama implementasyonu degil, runtime gercegi ve dokumantasyon/gate uzlasmasidir. Gecerli kaynak `d91d8f6` sonrasi durumdur: normal URL stable legacy product design acilir, `?engine=vue` Vue preview acilir.
+
+### 2. Runtime karari
+
+- Normal URL: stable legacy product design.
+- Normal marker: `data-runtime="legacy"`.
+- Vue preview URL: `?engine=vue`.
+- Vue preview marker: `data-runtime="vue"`.
+- V12-J default Vue kabul raporlari: `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE`.
+
+### 3. Dokuman ve gate
+
+Eklenen/guncellenen ana kaynaklar:
+
+- `CURRENT_RUNTIME_STATUS.md`
+- `V12_K_RUNTIME_TRUTH_REPORT.md`
+- `V12_K_COMPLETION_REPORT.md`
+- `MIGRATION_STATUS.md`
+- `ARCHITECTURE.md`
+- `QUALITY_GATE.md`
+
+Yeni hafif gate komutlari:
+
+```bash
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
+```
+
+### 4. Sinir
+
+Bu fazda Vue component, style, profile, drawer veya bottom bar implementasyonuna dokunulmadi.
+
 ## Faz 12-J - Controlled Vue Default Cutover ve Release Candidate Gate
 
 Tarih: 19 Haziran 2026
+
+V12-K notu: Bu bolum `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir ve yalniz tarihsel V12-J kabulunu anlatir. Guncel politika normal URL = stable legacy product design, `?engine=vue` = Vue preview seklindedir.
 
 ### 1. Genel durum
 

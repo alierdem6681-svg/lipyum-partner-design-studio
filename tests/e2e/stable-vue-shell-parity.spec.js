@@ -78,6 +78,16 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.locator(".profile-strength-card")).toBeVisible();
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
   await expect(page.locator(".profile-menu-card")).toHaveCount(8);
+  await expect(page.locator(".profile-menu-label")).toHaveText([
+    "Hakkımda",
+    "Fotoğraflarım",
+    "Hizmetlerim",
+    "Bölgelerim",
+    "Saatlerim",
+    "Ekibim",
+    "Kapasitem",
+    "Stratejim",
+  ]);
   const order = await page.evaluate(() => {
     const profile = document.querySelector(".partner-profile-card").getBoundingClientRect();
     const strength = document.querySelector(".profile-strength-card").getBoundingClientRect();

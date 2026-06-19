@@ -1,22 +1,37 @@
 # Lipyum Partner Architecture
 
 Tarih: 19 Haziran 2026
+Branch: `feature/v12-golden-vue-cutover`
 
 ## Current Shell
 
-V12-J ile normal uygulama acilisi Vue runtime'dir. `src/app.js` deep link resolver'i calistirir, runtime marker yazar ve normal durumda `src/vue/main.js` uzerinden `createApp(App)` baslatir.
+V12-K icin gecerli shell politikasi stable design default, Vue preview explicit seklindedir.
 
-Runtime secimi:
+`src/app.js` once deep link resolver'i calistirir, sonra `engine` query parametresini okur:
 
-- normal URL: Vue
-- `?engine=vue`: Vue
-- `?engine=legacy`: legacy rollback
+- `?engine=vue`: Vue preview runtime.
+- Normal URL: stable legacy product design.
+- `?engine=legacy`: stable legacy product design ile ayni legacy yol.
 
-Legacy runtime statik import edilmez ve normal kullanici acilisinda calismaz. Vue boot hatasi sessizce legacy'ye dusmez; gorunur hata paneli ve console error uretir.
+Runtime marker'lari:
 
-## Vue Root
+- Stable/default: `data-runtime="legacy"`.
+- Vue preview: `data-runtime="vue"`.
+- Vue boot hatasi: `data-runtime="vue-error"`.
 
-Vue root:
+## Runtime Source Of Truth
+
+Gecerli secim `src/app.js` icindedir:
+
+```js
+const useVueEngine = requestedEngine === "vue";
+```
+
+Bu nedenle Vue yalniz explicit preview flag ile acilir. Default Vue cutover `d91d8f6` ile geri alinmistir.
+
+## Vue Preview Root
+
+Vue preview root:
 
 - `src/vue/main.js`
 - `createApp(App)`
@@ -26,7 +41,7 @@ Vue root:
 - `src/vue/layouts/AppShell.vue`
 - `RouterView`
 
-Shared shell componentleri:
+Shared Vue shell componentleri:
 
 - `AppHeader`
 - `AppBottomBar`
@@ -36,33 +51,20 @@ Shared shell componentleri:
 - `AppToast`
 - `MobileLayout`
 
-## Route Model
+## Stable Runtime Policy
 
-Aktif route'lar Vue Router tarafindan yonetilir. Route metadata tek kaynak olarak `src/utils/routeMeta.js` ve bottom bar tek kaynak olarak `BOTTOM_TABS` kullanir.
+`src/legacyApp.js` V12-K itibariyla normal URL stable product design yoludur. Bu durum yeni urun gelistirmesinin legacy icine tasinmasi anlamina gelmez; sadece default kullanici deneyiminin gorsel regresyonlara karsi korunmasi icindir.
 
-Route siniflari:
-
-- Dedicated Vue SFC: Home, Profile, Notifications, Support, Reviews, Leaderboard, Subscription, Referral, Job Referral, Partner Card Preview.
-- Data-driven Vue page: basit bilgi, ayar ve finans route'lari.
-- Blank Vue page: `/jobs`, `/my-jobs`, `/calendar`, `/wallet`.
-- Retired redirect: eski package route'lari `/subscription` route'una gider.
-
-## Legacy Policy
-
-`src/legacyApp.js` yalniz rollback icin tutulur. Yeni urun gelistirmesi legacy runtime'a eklenmez. V13 temizliginde rollback ihtiyaci yeniden degerlendirilerek legacy dosyalari kaldirilabilir.
+Vue preview hatti urun onayi ve gorsel gate'ler gecmeden normal/default acilisa alinmaz.
 
 ## Quality Gate
 
-Release-candidate gate:
+V12-K icin gecerli gate komutlari:
 
 ```bash
-npm run test:quality-gate:v12-j
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
 ```
 
-Final alias:
-
-```bash
-npm run test:quality-gate:v12-final
-```
-
-Bu gate normal URL'leri test eder; `?engine=vue` zorunlu degildir ve legacy default boot'u kabul etmez.
+V12-J `default Vue` gate ve raporlari tarihsel kabul edilir; guncel mimari kabul kaynagi degildir.
