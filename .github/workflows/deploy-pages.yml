@@ -38,6 +38,9 @@ jobs:
 
       - name: Design approval gate
         run: npm run test:design-approval
+        env:
+          DESIGN_APPROVAL_BASE: ${{ github.event.before }}
+          DESIGN_APPROVAL_HEAD: ${{ github.sha }}
 
       - name: Static design contract
         run: npm run test:design-contract

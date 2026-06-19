@@ -33,15 +33,45 @@ function normalize(file) {
   return file.replaceAll("\\", "/");
 }
 
+function isZeroSha(value) {
+  return /^0{40}$/.test(value || "");
+}
+
+function splitLines(value) {
+  return value.split(/\r?\n/).filter(Boolean);
+}
+
+function changedFiles(base, head) {
+  if (base && !isZeroSha(base)) {
+    try {
+      return splitLines(git(["diff", "--name-only", `${base}..${head}`])).map(normalize);
+    } catch {
+      // Fall through to single-commit or staged fallback.
+    }
+  }
+
+  try {
+    return splitLines(git(["diff-tree", "--no-commit-id", "--name-only", "-r", head])).map(normalize);
+  } catch {
+    return splitLines(git(["diff", "--name-only", "--cached"])).map(normalize);
+  }
+}
+
+function approvalMessages(base, head) {
+  if (base && !isZeroSha(base)) {
+    try {
+      return git(["log", "--pretty=%B", `${base}..${head}`]);
+    } catch {
+      // Fall through to head message.
+    }
+  }
+
+  return git(["log", "-1", "--pretty=%B", head]);
+}
+
 const base = process.env.DESIGN_APPROVAL_BASE || "HEAD^";
 const head = process.env.DESIGN_APPROVAL_HEAD || "HEAD";
-let changed = [];
-
-try {
-  changed = git(["diff", "--name-only", `${base}..${head}`]).split(/\r?\n/).filter(Boolean).map(normalize);
-} catch {
-  changed = git(["diff", "--name-only", "--cached"]).split(/\r?\n/).filter(Boolean).map(normalize);
-}
+const changed = changedFiles(base, head);
 
 const sensitiveChanged = changed.filter((file) =>
   sensitivePrefixes.some((prefix) => file === prefix || file.startsWith(prefix)),
@@ -52,7 +82,7 @@ if (!sensitiveChanged.length) {
   process.exit(0);
 }
 
-const commitMessage = git(["log", "-1", "--pretty=%B"]);
+const commitMessage = approvalMessages(base, head);
 const approvedByEnv = process.env.DESIGN_APPROVED === "true";
 const approvedByCommit = commitMessage.includes(approvalToken);
 
