@@ -142,12 +142,12 @@ test("V12-G ContentRoutePage is production-clean and debug-free", () => {
   assert.doesNotMatch(contentRouteSource, /compatibility bridge/i, "legacy bridge wording must not be visible");
 });
 
-test("V12-G default runtime is Vue and legacy is explicit rollback only", () => {
+test("V12-H default runtime is stable legacy and Vue remains explicit preview only", () => {
   assert.match(appSource, /import\(["']\.\/vue\/main\.js["']\)/, "Vue root must be bootable from app.js");
-  assert.match(appSource, /import\(["']\.\/legacyApp\.js["']\)/, "legacy rollback can remain temporarily available");
-  assert.match(appSource, /params\.get\(["']engine["']\)\s*===\s*["']legacy["']/, "legacy rollback must require ?engine=legacy");
-  assert.doesNotMatch(appSource, /params\.get\(["']engine["']\)\s*===\s*["']vue["']/, "Vue must not require ?engine=vue after cutover");
-  assert.doesNotMatch(appSource, /else\s*\{\s*import\(["']\.\/legacyApp\.js["']\)/s, "legacy must not be the default boot path");
+  assert.match(appSource, /import\(["']\.\/legacyApp\.js["']\)/, "legacy runtime must remain available");
+  assert.match(appSource, /params\.get\(["']engine["']\)\s*===\s*["']vue["']/, "Vue preview must require ?engine=vue");
+  assert.match(appSource, /else\s*\{\s*import\(["']\.\/legacyApp\.js["']\)/s, "stable legacy runtime must be the default boot path");
+  assert.doesNotMatch(appSource, /params\.get\(["']engine["']\)\s*===\s*["']legacy["']/, "legacy must not require ?engine=legacy while it is the stable default");
 });
 
 test("V12-G removes pilot route aliases from active product routing", () => {
