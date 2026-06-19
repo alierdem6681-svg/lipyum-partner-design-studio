@@ -8,6 +8,7 @@ import AppDrawer from "../components/ui/AppDrawer.vue";
 import AppHeader from "../components/ui/AppHeader.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
+import AppToast from "../components/ui/AppToast.vue";
 import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useNavigationStore } from "../stores/navigationStore.js";
@@ -105,6 +106,8 @@ function onHeaderAction(action) {
       >
         <p class="v-sheet-copy">{{ shell.activeSheet?.body }}</p>
       </AppSheet>
+
+      <AppToast :message="shell.toast" />
     </div>
   </MobileLayout>
 </template>

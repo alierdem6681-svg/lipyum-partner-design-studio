@@ -23,11 +23,12 @@ const activeRoutes = [
 ];
 
 for (const route of activeRoutes) {
-  test(`V12-F active route renders as Vue content route for ${route}`, async ({ page }) => {
+  test(`V12-G active route renders as clean Vue route for ${route}`, async ({ page }) => {
     await page.goto(`/?engine=vue#${route}`);
     await expect(page.locator("[data-testid='app-header']")).toHaveCount(1);
     await expect(page.locator("[data-testid='app-bottom-bar']")).toHaveCount(1);
-    await expect(page.locator("[data-testid='clickable-outcome-summary']")).toBeVisible();
+    await expect(page.locator("[data-testid='clickable-outcome-summary']")).toHaveCount(0);
+    await expect(page.getByText(/Clickable coverage/i)).toHaveCount(0);
     await expect(page.getByText("compatibility bridge")).toHaveCount(0);
   });
 }

@@ -570,7 +570,6 @@ content["/referral/tasks"] = {
 };
 
 content["/referral/partners"] = content["/partners"];
-content["/vue-job-referral"] = content["/job-referral"];
 
 export const activeRoutePaths = Object.keys(content);
 

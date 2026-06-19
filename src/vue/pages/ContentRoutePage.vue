@@ -10,7 +10,6 @@ import AppIcon from "../components/ui/AppIcon.vue";
 import AppModal from "../components/ui/AppModal.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import { getActiveRouteContent } from "../data/activeRouteContent.js";
-import { getClickableOutcomes } from "../data/clickableOutcomes.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useProfileStore } from "../stores/profileStore.js";
 import { useSubscriptionStore } from "../stores/subscriptionStore.js";
@@ -31,11 +30,18 @@ let liveTimer = 0;
 let typingTimer = 0;
 
 const page = computed(() => getActiveRouteContent(route.path));
-const outcomes = computed(() => getClickableOutcomes(route.path));
 const routeTestIds = {
   "/support/customer-service": "customer-service-page",
 };
 const testId = computed(() => routeTestIds[route.path] || `route-${route.path.replace(/\W+/g, "-") || "home"}`);
+const groupLabels = {
+  profile: "Profil",
+  support: "Destek",
+  growth: "Büyüme",
+  referral: "Kazanç ortaklığı",
+  finance: "Finans",
+};
+const groupLabel = computed(() => groupLabels[page.value?.group] || page.value?.title || "");
 const visibleBadges = computed(() => {
   const badges = page.value?.badges || [];
   return profile.expandedBadges ? badges : badges.slice(0, 4);
@@ -92,6 +98,10 @@ function handleAction(action) {
   }
 }
 
+function isInteractive(item) {
+  return Boolean(item?.route || item?.type || item?.action);
+}
+
 function startLiveSupport() {
   clearLiveTimers();
   liveState.value = "waiting";
@@ -134,7 +144,7 @@ function endLiveSupport() {
     <div class="v-stack v-content-route">
       <AppCard padding="lg" variant="hero" class="v-content-hero">
         <div class="v-content-hero__copy">
-          <AppChip tone="success">{{ page.group }}</AppChip>
+          <AppChip tone="success">{{ groupLabel }}</AppChip>
           <h2>{{ page.title }}</h2>
           <p>{{ page.lead }}</p>
         </div>
@@ -188,7 +198,7 @@ function endLiveSupport() {
         v-model="selectedFilter"
         :items="page.filters.map((filter) => ({ label: filter, value: filter }))"
         aria-label="Route filtreleri"
-        data-testid="route-filter-chips"
+        data-testid="content-filter-chips"
       />
 
       <template v-if="page.kind === 'live-support'">
@@ -241,14 +251,16 @@ function endLiveSupport() {
         <div class="v-section-title">
           <h2>{{ section.title }}</h2>
         </div>
-        <div class="v-content-list">
-          <AppCard
+        <div class="v-content-list" role="list">
+          <component
             v-for="item in section.items"
+            :is="isInteractive(item) ? AppCard : 'article'"
             :key="item.title"
             padding="md"
-            as="button"
-            class="v-content-list-item"
+            :as="isInteractive(item) ? 'button' : undefined"
+            :class="['v-content-list-item', !isInteractive(item) ? 'v-content-list-item--static v-card v-card--p-md v-card--default' : '']"
             :data-testid="`item-${item.title.replace(/\W+/g, '-').toLowerCase()}`"
+            role="listitem"
             @click="handleAction(item)"
           >
             <span class="v-content-list-item__icon"><AppIcon :name="item.icon" :size="20" /></span>
@@ -256,15 +268,10 @@ function endLiveSupport() {
               <strong>{{ item.title }}</strong>
               <small>{{ item.body }}</small>
             </span>
-            <AppIcon name="chevron-right" :size="18" />
-          </AppCard>
+            <AppIcon v-if="isInteractive(item)" name="chevron-right" :size="18" />
+          </component>
         </div>
       </section>
-
-      <AppCard padding="sm" class="v-outcome-card" data-testid="clickable-outcome-summary">
-        <strong>Clickable coverage</strong>
-        <span>{{ outcomes.length }} critical outcome kayıtlı</span>
-      </AppCard>
     </div>
 
     <AppModal

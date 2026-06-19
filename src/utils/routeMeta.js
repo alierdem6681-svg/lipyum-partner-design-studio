@@ -21,6 +21,18 @@ const titleOverrides = {
     compactTitle: "Partner Davet",
     subtitle: "Davetlerinden %3 bonus kazan",
   },
+  "/referral/tasks": {
+    title: "Referral Görevleri",
+    compactTitle: "Görevler",
+    subtitle: "Davet görevlerini takip et",
+    parentRoute: "/referral",
+  },
+  "/referral/partners": {
+    title: "Davet Ettiğin Partnerler",
+    compactTitle: "Partnerler",
+    subtitle: "Referral altındaki partner listesi",
+    parentRoute: "/referral",
+  },
   "/notifications": {
     title: "Bildirimler",
     subtitle: "Önemli gelişmeleri takip et",
@@ -57,7 +69,7 @@ export const routeMeta = Object.fromEntries(
         showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
         ctaVariant: isHome ? "home" : "subpage",
-        parentRoute: route === "/home" ? null : "/home",
+        parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,
         showInfo: !(isHome || isBottomRoute),
@@ -67,5 +79,15 @@ export const routeMeta = Object.fromEntries(
 );
 
 export function getRouteMeta(route = "/home") {
+  if (route.startsWith("/referral/partner/")) {
+    return {
+      ...routeMeta["/referral/partners"],
+      route,
+      title: "Partner Detayı",
+      compactTitle: "Partner Detayı",
+      subtitle: "Davet edilen partner özeti",
+      parentRoute: "/referral/partners",
+    };
+  }
   return routeMeta[route] || routeMeta["/home"];
 }

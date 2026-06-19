@@ -85,7 +85,10 @@ function statusAriaLabel(status) {
         @keydown.enter.prevent="emit('action', status.action)"
         @keydown.space.prevent="emit('action', status.action)"
       >
-        <span>{{ status.eyebrow }}</span>
+        <span v-if="status.action === 'status'" class="v-header-status-icon" aria-hidden="true">
+          <AppIcon name="check" :size="22" />
+        </span>
+        <span class="v-header-status-eyebrow">{{ status.eyebrow }}</span>
         <strong>{{ status.label }}</strong>
         <em v-if="status.cta">{{ status.cta }}</em>
       </div>

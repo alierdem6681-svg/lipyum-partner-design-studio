@@ -11,10 +11,10 @@ if (resolvedDeepLinkRoute && !window.location.hash) {
 }
 
 const params = new URLSearchParams(window.location.search);
-const useVueEngine = params.get("engine") === "vue";
+const useLegacyEngine = params.get("engine") === "legacy";
 
-if (useVueEngine) {
-  import("./vue/main.js").then(({ mountVueApp }) => mountVueApp());
-} else {
+if (useLegacyEngine) {
   import("./legacyApp.js");
+} else {
+  import("./vue/main.js").then(({ mountVueApp }) => mountVueApp());
 }

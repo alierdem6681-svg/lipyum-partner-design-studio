@@ -1,12 +1,15 @@
 <script setup>
-import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
-import AppChip from "../components/ui/AppChip.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
+
+const score = 81;
+const targetScore = 85;
+const scoreRingStyle = { "--score-ring": `${score * 3.6}deg` };
+const progressStyle = { "--score-fill": `${score}%`, "--score-target": `${targetScore}%` };
 
 const metrics = [
   { label: "Partnerler", value: "34", icon: "users" },
@@ -33,81 +36,142 @@ function openConvertSheet() {
 
 <template>
   <AppPage title="Ana Sayfa">
-    <div class="v-stack">
-      <AppCard padding="lg" data-testid="home-performance-card" class="v-home-performance-card">
-        <div class="v-home-row">
-          <div>
-            <p class="v-home-title">Performans Skoru</p>
-            <AppButton
-              variant="ghost"
-              size="sm"
-              data-open="performance-info"
-              aria-label="Performans skoru nedir?"
-              @click="openInfoSheet('Performans Skoru', 'Profil kaliten, hızlı dönüşlerin ve iş sonuçların performans skorunu belirler.')"
+    <div class="v-stack v-home-stack">
+      <AppCard
+        padding="none"
+        class="performance-home-card"
+        data-testid="home-performance-card"
+        data-action="performance-detail"
+        aria-label="Performans Skoru"
+        @click="$router.push('/performance-score')"
+      >
+        <div class="performance-card-head">
+          <span class="performance-title">Performans Skoru</span>
+          <button
+            class="performance-info-btn text"
+            type="button"
+            data-open="performance-info"
+            aria-label="Performans skoru nedir?"
+            @click.stop="openInfoSheet('Performans Skoru', 'Profil kaliten, hızlı dönüşlerin ve iş sonuçların performans skorunu belirler.')"
+          >
+            Nedir?
+          </button>
+        </div>
+
+        <div class="performance-home-layout">
+          <span class="performance-score-ring" :style="scoreRingStyle">
+            <span><strong>{{ score }}</strong></span>
+          </span>
+          <span class="performance-home-copy">
+            <span class="score-level">
+              <AppIcon name="star" :size="12" class-name="icon" />
+              İyi
+            </span>
+          </span>
+          <button
+            class="performance-cta"
+            type="button"
+            data-screen="performanceScore"
+            data-action="performanceScore"
+            @click.stop="$router.push('/performance-score')"
+          >
+            <AppIcon name="trend-up" :size="14" class-name="icon" />
+            Skorumu Artır
+          </button>
+        </div>
+
+        <span class="performance-helper">85 puana ulaşmana çok az kaldı.</span>
+        <div class="score-progress-wrap" :style="progressStyle">
+          <div class="score-progress" aria-label="Performans skoru 81, hedef 85">
+            <span></span>
+            <i class="score-marker" aria-hidden="true"></i>
+          </div>
+          <span class="score-marker-label">85</span>
+          <span class="score-end-label">100</span>
+        </div>
+      </AppCard>
+
+      <AppCard padding="none" class="wallet-summary-card" data-testid="home-wallet-card">
+        <div class="wallet-summary">
+          <div class="wallet-tile credit">
+            <div class="wallet-tile-head">
+              <span>Cüzdan</span>
+            </div>
+            <button
+              class="wallet-tile-icon"
+              type="button"
+              data-open="wallet-info"
+              data-action="wallet-info"
+              aria-label="Cüzdan bilgisi"
+              @click="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')"
             >
-              Nedir?
-            </AppButton>
-            <div class="v-score-orbit"><strong>81</strong></div>
+              <AppIcon name="help-circle" :size="17" class-name="icon" />
+            </button>
+            <span class="wallet-amount"><strong>675</strong><small>kredi</small></span>
+            <span class="wallet-subline" style="--wallet-dot:#12b76a">≈ 2-3 iş alabilirsin</span>
+            <div class="wallet-actions">
+              <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="$router.push('/wallet')">
+                <AppIcon name="plus" :size="16" class-name="icon" />
+                Bakiye Yükle
+              </button>
+            </div>
           </div>
-          <div class="v-home-performance-copy">
-            <AppChip tone="success">İyi</AppChip>
-            <AppButton size="sm" data-action="performanceScore" @click="$router.push('/performance-score')">
-              <AppIcon name="trend-up" :size="16" /> Skorumu Artır
-            </AppButton>
-          </div>
-        </div>
-        <p class="v-progress-copy">85 puana ulaşmana çok az kaldı.</p>
-        <div class="v-progress"><span class="v-progress__fill v-progress__fill--81" /></div>
-        <div class="v-progress-scale"><span>85</span><span class="v-contract-space"> </span><span>100</span></div>
-      </AppCard>
 
-      <AppCard padding="lg" data-testid="home-wallet-card" class="v-home-wallet-summary-card">
-        <div class="v-home-wallet-grid">
-          <div>
-            <div class="v-home-kicker-row">
-              <span class="v-card-kicker">Cüzdan</span>
-              <button class="v-home-info-button" type="button" data-action="wallet-info" aria-label="Cüzdan bilgisi" @click="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')">
-                <AppIcon name="help-circle" :size="17" />
+          <div class="wallet-tile bonus" data-testid="home-bonus-card">
+            <div class="wallet-tile-head">
+              <span>Bonus</span>
+            </div>
+            <button
+              class="wallet-tile-icon"
+              type="button"
+              data-open="bonus-info"
+              data-action="bonus-info"
+              aria-label="Bonus bilgisi"
+              @click="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')"
+            >
+              <AppIcon name="help-circle" :size="17" class-name="icon" />
+            </button>
+            <span class="wallet-amount"><strong>240</strong><small>bonus</small></span>
+            <span class="wallet-subline" style="--wallet-dot:#175cd3">Kredi yüklerken kullanılır.</span>
+            <div class="wallet-actions split">
+              <button class="wallet-action-pill convert" type="button" data-open="bonus-convert" @click="openConvertSheet">
+                <AppIcon name="refresh" :size="16" class-name="icon" />
+                Krediye Çevir
               </button>
             </div>
-            <strong class="v-home-metric">675<small>kredi</small></strong>
-            <p>≈ 2-3 iş alabilirsin</p>
-            <AppButton variant="secondary" size="sm" full-width data-action="credit" @click="$router.push('/wallet')">
-              <AppIcon name="plus" :size="16" /> Bakiye Yükle
-            </AppButton>
-          </div>
-          <div data-testid="home-bonus-card">
-            <div class="v-home-kicker-row">
-              <span class="v-card-kicker">Bonus</span>
-              <button class="v-home-info-button" type="button" data-action="bonus-info" aria-label="Bonus bilgisi" @click="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')">
-                <AppIcon name="help-circle" :size="17" />
-              </button>
-            </div>
-            <strong class="v-home-metric">240<small>bonus</small></strong>
-            <p>Kredi yüklerken kullanılır.</p>
-            <AppButton variant="ghost" size="sm" full-width data-open="bonus-convert" @click="openConvertSheet">
-              <AppIcon name="refresh" :size="16" /> Krediye Çevir
-            </AppButton>
           </div>
         </div>
       </AppCard>
 
-      <AppCard padding="lg" data-testid="home-region-card">
-        <div class="v-section-title">
-          <h2>Bölgendeki İşler</h2>
-          <div class="v-region-day-tabs">
-            <button class="tab-pill is-active" type="button">Bugün</button>
-            <button class="tab-pill" type="button">Dün</button>
+      <AppCard padding="none" class="region-home-card" data-testid="home-region-card">
+        <div class="region-card-head">
+          <h3>Bölgendeki İşler</h3>
+          <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
+            <button class="chip-btn active" type="button" data-region-filter="Bugün">Bugün</button>
+            <button class="chip-btn" type="button" data-region-filter="Dün">Dün</button>
           </div>
         </div>
-        <div class="v-stat-grid">
-          <div v-for="item in metrics" :key="item.label">
-            <AppIcon :name="item.icon" :size="18" />
+        <div class="kpi-row">
+          <div v-for="item in metrics" :key="item.label" class="kpi-tile">
             <span>{{ item.label }}</span>
             <strong>{{ item.value }}</strong>
+            <em class="region-kpi-icon">
+              <AppIcon :name="item.icon" :size="13" class-name="icon" />
+            </em>
           </div>
         </div>
-        <p class="v-home-feed">Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.</p>
+        <div
+          class="region-activity-board"
+          data-testid="home-region-activity"
+          role="status"
+          aria-live="polite"
+          aria-label="Bölgedeki iş bildirimi"
+        >
+          <div class="region-activity-message">
+            <span class="region-activity-dot" aria-hidden="true"></span>
+            <span data-region-activity-text>Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.</span>
+          </div>
+        </div>
       </AppCard>
     </div>
   </AppPage>
