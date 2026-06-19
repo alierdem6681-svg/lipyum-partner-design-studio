@@ -84,7 +84,7 @@
     "test:v12-parity": "node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs",
     "test:v12-compatibility": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-compatibility.spec.js",
     "test:quality-gate:v12": "find src tests -name '*.js' -print0 2>/dev/null | xargs -0 -r -n1 node_modules/node/bin/node --check && node_modules/node/bin/node --test tests/architecture/*.test.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-compatibility.spec.js && node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs && node_modules/node/bin/node node_modules/vite/bin/vite.js build && git diff --check",
-    "build": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js build",
+    "build": "node scripts/run-local-node.mjs scripts/write-release-metadata.mjs && node scripts/run-local-node.mjs node_modules/vite/bin/vite.js build",
     "dev": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js --host 0.0.0.0",
     "preview": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js preview --host 0.0.0.0"
   },
