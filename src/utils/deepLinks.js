@@ -28,6 +28,14 @@ const partnerPathRoutes = {
   "/partner/card": "/partner-card-preview",
 };
 
+function normalizeHostedPathname(pathname) {
+  const baseUrl = import.meta.env?.BASE_URL || "/";
+  if (baseUrl === "/" || !pathname.startsWith(baseUrl)) return pathname;
+
+  const normalizedPath = pathname.slice(baseUrl.length - 1);
+  return normalizedPath || "/";
+}
+
 export function resolveDeepLinkRoute(urlLike = window.location.href) {
   const url = new URL(urlLike, window.location.origin);
   const route = url.searchParams.get("route");
@@ -37,8 +45,9 @@ export function resolveDeepLinkRoute(urlLike = window.location.href) {
   if (deepLink && deepLinkAliases[deepLink]) return deepLinkAliases[deepLink];
   if (deepLink === "packages") return "/subscription";
 
-  if (RETIRED_ROUTE_REDIRECTS[url.pathname]) return RETIRED_ROUTE_REDIRECTS[url.pathname];
-  return partnerPathRoutes[url.pathname] || "";
+  const pathname = normalizeHostedPathname(url.pathname);
+  if (RETIRED_ROUTE_REDIRECTS[pathname]) return RETIRED_ROUTE_REDIRECTS[pathname];
+  return partnerPathRoutes[pathname] || "";
 }
 
 export function deepLinkMappings() {
