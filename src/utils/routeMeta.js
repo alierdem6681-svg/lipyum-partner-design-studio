@@ -1,6 +1,42 @@
 ﻿import { BOTTOM_TABS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./constants.js";
 
 const titleOverrides = {
+  "/profile": {
+    title: "Profilim",
+    subtitle: "Profil ve hesap ayarların",
+  },
+  "/about": {
+    title: "Hakkımda",
+    subtitle: "Müşterilere görünen tanıtım bilgilerin",
+  },
+  "/photo-gallery": {
+    title: "Fotoğraflarım",
+    subtitle: "Profil fotoğrafları ve iş galerin",
+  },
+  "/services": {
+    title: "Hizmet Alanları",
+    subtitle: "Hangi hizmette hangi mod açık",
+  },
+  "/regions": {
+    title: "Hizmet Bölgeleri",
+    subtitle: "İlçe bazlı iş alma ayarların",
+  },
+  "/working-hours": {
+    title: "Çalışma Planım",
+    subtitle: "Müsait olduğun gün ve saatleri yönet",
+  },
+  "/team": {
+    title: "Ekibim",
+    subtitle: "Ekip ve çalışan bilgilerin",
+  },
+  "/capacity": {
+    title: "İş Alma Kapasitesi",
+    subtitle: "Bugün kaç iş alabileceğini gir",
+  },
+  "/strategy": {
+    title: "Stratejim",
+    subtitle: "Büyüme ve görünürlük hedeflerin",
+  },
   "/jobs": {
     title: "İş Al",
     compactTitle: "İş Al",
@@ -19,7 +55,7 @@ const titleOverrides = {
   "/referral": {
     title: "Partner Davet Programı",
     compactTitle: "Partner Davet",
-    subtitle: "Davetlerinden %3 bonus kazan",
+    subtitle: "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan",
   },
   "/referral/tasks": {
     title: "Referral Görevleri",
@@ -35,14 +71,58 @@ const titleOverrides = {
   },
   "/notifications": {
     title: "Bildirimler",
-    subtitle: "Önemli gelişmeleri takip et",
+    subtitle: "Önemli gelişmeler için bildirimleri takip et",
     trailingActions: ["notification-settings"],
+  },
+  "/support": {
+    title: "Yardım ve Destek",
+    subtitle: "Sorununu seç, hızlıca çözelim",
+  },
+  "/support/new": {
+    title: "Talep Oluştur",
+    subtitle: "Sorununu seç, hızlıca takip edelim",
+  },
+  "/support/live": {
+    title: "Canlı Destek",
+    subtitle: "Temsilciyle hızlıca görüş",
+  },
+  "/support/customer-service": {
+    title: "Müşteri Hizmetleri",
+    subtitle: "Telefonla öncelikli destek",
+  },
+  "/reviews": {
+    title: "Müşteri Yorumları",
+    subtitle: "Değerlendirme ve geri bildirimler",
+  },
+  "/leaderboard": {
+    title: "Partner Seviyeleri",
+    subtitle: "Seviye ve rozet ilerlemeni gör",
+  },
+  "/subscription": {
+    title: "Aboneliğim",
+    subtitle: "Gold, Pro ve VIP avantajlarını yönet",
   },
   "/wallet": {
     title: "Cüzdan",
     compactTitle: "Cüzdan",
     subtitle: "",
     trailingActions: ["wallet-info"],
+  },
+  "/job-referral": {
+    title: "İş Yönlendirme Programı",
+    subtitle: "Servis talebi gönder, iş gerçekleşirse kazanç elde et",
+  },
+  "/referral-earnings": {
+    title: "Kazançlarım",
+    subtitle: "Bonus kazanç geçmişi ve detayları",
+  },
+  "/performance-score": {
+    title: "Performans Skoru",
+    subtitle: "İş görünürlüğünü etkileyen kalite özeti",
+  },
+  "/partner-card-preview": {
+    title: "Partner Kartı",
+    subtitle: "Public rozet ve paylaşım önizlemesi",
   },
 };
 

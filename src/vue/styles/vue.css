@@ -53,6 +53,7 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
+  --top-safe-space: 12px;
 }
 
 .v-shell__content {
@@ -90,9 +91,8 @@
 
 .v-header__action {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: #fff;
@@ -128,13 +128,15 @@
   text-align: center;
 }
 
-.v-header[data-header-variant="section"] .v-header__copy {
+.v-header[data-header-variant="section"] .v-header__copy,
+.v-header[data-header-variant="subpage"] .v-header__copy {
   text-align: left;
 }
 
 .v-header__copy h1 {
   margin: 0;
   color: var(--text-primary);
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: var(--weight-bold);
   line-height: 1.08;
@@ -145,7 +147,7 @@
 
 .v-header__copy p {
   margin: 4px 0 0;
-  color: var(--text-muted);
+  color: var(--muted);
   font-size: 11.5px;
   font-weight: 550;
   line-height: 1.42;
@@ -678,12 +680,6 @@
   pointer-events: none;
 }
 
-@media (max-width: 520px) and (hover: none) and (pointer: coarse) {
-  .v-shell {
-    --top-safe-space: calc(env(safe-area-inset-top, 0px) + 10px);
-  }
-}
-
 .v-bottom__item {
   position: relative;
   z-index: 1;
@@ -700,7 +696,7 @@
   justify-items: center;
   align-content: center;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 2px;
   font-family: var(--font-family-base);
   font-size: 11.8px;
@@ -710,7 +706,11 @@
 }
 
 .v-bottom__item.is-active {
-  color: var(--color-primary-dark);
+  color: #475569;
+}
+
+.v-bottom__item.is-active:not(.is-featured) {
+  color: #16a34a;
 }
 
 .v-bottom__item.is-featured {
@@ -774,7 +774,7 @@
   z-index: 7;
   right: 0;
   top: -31px;
-  width: 22px;
+  min-width: 22px;
   height: 22px;
   border: 3px solid #fff;
   border-radius: 999px;
@@ -783,7 +783,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  padding: 0 5px;
+  font-size: 12px;
   font-style: normal;
   font-weight: var(--weight-bold);
 }
@@ -3364,24 +3365,35 @@
   align-items: center;
   justify-content: stretch;
   gap: var(--app-header-gap, 8px);
-  min-height: calc(var(--top-safe-space) + var(--app-header-height, 58px));
-  margin: 0 calc(var(--page-x-padding) * -1) 12px;
-  padding: var(--top-safe-space) var(--page-x-padding) 9px;
-  background: #f6f8fa;
-  border-bottom: 1px solid rgba(229, 231, 235, 0.82);
-  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.05);
-  backdrop-filter: blur(14px);
+  width: auto;
+  min-height: var(--app-header-height, 58px);
+  margin: var(--top-safe-space) var(--page-x-padding) 12px;
+  padding: 0;
+  background: var(--soft);
+  border-bottom: 0;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .v-header.app-header.home-header {
   grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
+  width: 100%;
+  min-height: calc(var(--top-safe-space) + var(--app-header-height, 58px));
+  margin: 0 0 12px;
+  padding: var(--top-safe-space) var(--page-x-padding) 9px;
+  background: #f6f8fa;
   border-bottom: 0;
   box-shadow: none;
+  backdrop-filter: blur(14px);
 }
 
 .v-header.app-header.section-header,
 .v-header.app-header.subpage-header {
   grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
+}
+
+.v-header.app-header.subpage-header {
+  grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) var(--app-header-action-size, 44px);
 }
 
 .v-header.app-header.home-header .nav-alert-ticker {
@@ -3395,4 +3407,22 @@
   grid-template-columns: 44px 44px;
   justify-content: end;
   gap: 6px;
+}
+
+.v-header.app-header.subpage-header .v-header__actions.header-actions {
+  width: var(--app-header-action-size, 44px);
+  grid-template-columns: var(--app-header-action-size, 44px);
+}
+
+.v-header.app-header.subpage-header .v-header__copy h1 {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 23px;
+}
+
+.v-header.app-header.subpage-header .v-header__copy p {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 14.95px;
 }
