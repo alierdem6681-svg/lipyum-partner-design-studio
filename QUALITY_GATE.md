@@ -262,3 +262,36 @@ V12-I kabul kriteri:
 - `?engine=vue#/home` uzerinden Vue screenshot alinmis olmali.
 - Final gate iki kez kod degismeden PASS olmali.
 - Run loglari `artifacts/v12-i/final-gate-run-1.log` ve `artifacts/v12-i/final-gate-run-2.log` altinda saklanmali.
+
+## V12-J Release Candidate Gate
+
+V12-J itibariyla normal URL default Vue runtime acmalidir. Legacy yalniz `?engine=legacy` rollback parametresiyle calisir.
+
+Yeni release-candidate komut:
+
+```bash
+npm run test:quality-gate:v12-j
+```
+
+Final alias:
+
+```bash
+npm run test:quality-gate:v12-final
+```
+
+Bu gate sunlari zorunlu kilar:
+
+- normal URL `data-runtime="vue"` marker'i verir.
+- `?engine=vue` Vue acar.
+- `?engine=legacy` `data-runtime="legacy"` marker'i verir.
+- legacy default boot kabul edilmez.
+- Vue Router navigation sahibidir.
+- aktif route'lar default Vue'da acilir.
+- blank bottom route'lar bos kalir.
+- retired package route'lari `/subscription` route'una gider.
+- Home Product Golden parity normal `/#/home` URL ile `<= 0.015` kalir.
+- critical clickable inventory unlabeled `0` kalir.
+- accessibility ve responsive smoke gecmelidir.
+- build ve `git diff --check` gecmelidir.
+
+V12-J final raporda iki ardışık `test:quality-gate:v12-j` kosusunun log hashleri verilmelidir.

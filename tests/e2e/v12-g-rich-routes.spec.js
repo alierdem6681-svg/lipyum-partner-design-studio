@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-const vueRoute = (route) => `/?engine=vue#${route}`;
+const vueRoute = (route) => `/#${route}`;
 
 const richRoutes = [
   { route: "/profile", testId: "profile-page" },
@@ -28,6 +28,7 @@ const richRoutes = [
 
 async function expectCleanVueShell(page) {
   await waitForApp(page);
+  await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.getByTestId("app-header")).toHaveCount(1);
   await expect(page.getByTestId("app-bottom-bar")).toHaveCount(1);
   await expect(page.getByTestId("clickable-outcome-summary")).toHaveCount(0);

@@ -33,7 +33,7 @@ test("performance smoke keeps bundle, DOM and route switch within mobile prototy
   for (const route of measuredRoutes) {
     const duration = await page.evaluate(async (nextRoute) => {
       const start = performance.now();
-      window.navigateToPage(nextRoute);
+      window.location.hash = nextRoute;
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       return performance.now() - start;
     }, route);

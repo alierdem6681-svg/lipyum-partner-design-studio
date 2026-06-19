@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "featureUrl": "http://127.0.0.1:56390/#/home",
+  "state": {
+    "title": "Ana Sayfa · Lipyum Partner",
+    "runtime": "vue",
+    "bodyTextPreview": "Durum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240\nbonus\nKredi yüklerken kullanılır.\nKrediye Çevir\nBölgendeki İşler\nBugün\nDün\nPartnerler\n34\nTamamlanan İş\n18\nTeklifler\n128\nMehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.\nAna Sa",
+    "bottomLabels": [
+      "Ana Sayfa",
+      "İşler",
+      "İş Al",
+      "Randevu",
+      "Cüzdan"
+    ],
+    "horizontalOverflow": false,
+    "requiredText": {
+      "performance": true,
+      "score": true,
+      "scoreCta": true,
+      "wallet": true,
+      "bonus": true,
+      "credit": true,
+      "bonusAmount": true,
+      "region": true,
+      "today": true,
+      "yesterday": true
+    },
+    "requiredElements": {
+      "header": true,
+      "bottomBar": true,
+      "performanceCard": true,
+      "walletCard": true,
+      "regionCard": true,
+      "notificationButton": true,
+      "profileButton": true,
+      "hamburgerButton": true
+    }
+  },
+  "bottomExpected": [
+    "Ana Sayfa",
+    "İşler",
+    "İş Al",
+    "Randevu",
+    "Cüzdan"
+  ],
+  "performanceSheetOpen": true,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failures": []
+}

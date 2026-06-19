@@ -1,101 +1,68 @@
 # Lipyum Partner Architecture
 
+Tarih: 19 Haziran 2026
+
 ## Current Shell
 
-The current production app still boots through `src/app.js`, which imports `src/legacyApp.js`. The legacy shell owns:
+V12-J ile normal uygulama acilisi Vue runtime'dir. `src/app.js` deep link resolver'i calistirir, runtime marker yazar ve normal durumda `src/vue/main.js` uzerinden `createApp(App)` baslatir.
 
-- device simulator markup,
-- SVG sprite definitions,
-- hash navigation controller bootstrap,
-- bottom bar mount point,
-- sheet/toast layer,
-- several high-value legacy render functions.
+Runtime secimi:
 
-This is a known V11 P0 migration debt. It is tracked by `V11_ARCHITECTURE_AUDIT.md` and `MIGRATION_STATUS.md`.
+- normal URL: Vue
+- `?engine=vue`: Vue
+- `?engine=legacy`: legacy rollback
 
-## Modular JS Layer
+Legacy runtime statik import edilmez ve normal kullanici acilisinda calismaz. Vue boot hatasi sessizce legacy'ye dusmez; gorunur hata paneli ve console error uretir.
 
-Many screens are no longer inline in `index.html`; they are modular page/component functions under:
+## Vue Root
 
-- `src/pages/`
-- `src/components/`
-- `src/data/mockData.js`
-- `src/utils/`
+Vue root:
 
-These pages still commonly return HTML strings. They are production-prototype compatible but are not final Vue SFC pages.
+- `src/vue/main.js`
+- `createApp(App)`
+- Pinia
+- Vue Router
+- `createWebHashHistory()`
+- `src/vue/layouts/AppShell.vue`
+- `RouterView`
 
-## Vue Foundation
+Shared shell componentleri:
 
-Vue 3, Vite, Tailwind and the Vue UI Kit foundation exist under:
+- `AppHeader`
+- `AppBottomBar`
+- `AppDrawer`
+- `AppSheet`
+- `AppModal`
+- `AppToast`
+- `MobileLayout`
 
-- `src/vue/`
-- `src/vue/components/ui/`
-- `src/vue/layouts/MobileLayout.vue`
-- `src/vue/pages/`
+## Route Model
 
-At V11 hardening time, Vue remains island/preview/pilot level rather than the sole app runtime.
+Aktif route'lar Vue Router tarafindan yonetilir. Route metadata tek kaynak olarak `src/utils/routeMeta.js` ve bottom bar tek kaynak olarak `BOTTOM_TABS` kullanir.
 
-## V12 Safe Vue Preview
+Route siniflari:
 
-V12 Golden Master introduces a safe parallel Vue root behind an explicit query flag:
+- Dedicated Vue SFC: Home, Profile, Notifications, Support, Reviews, Leaderboard, Subscription, Referral, Job Referral, Partner Card Preview.
+- Data-driven Vue page: basit bilgi, ayar ve finans route'lari.
+- Blank Vue page: `/jobs`, `/my-jobs`, `/calendar`, `/wallet`.
+- Retired redirect: eski package route'lari `/subscription` route'una gider.
 
-```text
-/?engine=vue#/home
-```
+## Legacy Policy
 
-The default URL without `engine=vue` still boots the V11 stable legacy runtime. This is intentional: core route visual/content/interaction parity has not passed yet, so production cutover is blocked.
-
-The V12 preview stack includes:
-
-- `src/vue/main.js` with `createApp(App).use(createPinia()).use(router)`.
-- `src/vue/router/index.js` with `createWebHashHistory()`.
-- `src/vue/layouts/AppShell.vue` as shared shell.
-- `src/vue/layouts/MobileLayout.vue` using the same phone simulator frame classes as the legacy shell.
-- Real Vue SFC core pages for `/home`, `/jobs`, `/my-jobs`, `/calendar`.
-- `LegacyContentBridge.vue` for non-core routes, explicitly marked temporary and not production-cutover ready.
-
-V12 architecture tests are available through:
-
-```bash
-npm run test:v12-architecture
-```
-
-## Route Metadata
-
-`src/utils/routeMeta.js` is the V11 route metadata registry. It centralizes:
-
-- title,
-- compact title,
-- subtitle,
-- header variant,
-- leading/trailing action intent,
-- bottom bar visibility,
-- active bottom tab,
-- CTA variant,
-- parent route.
-
-This registry is a stepping stone for the future single Vue Router app shell.
-
-## Target Architecture
-
-The final architecture should be:
-
-- one Vue root app,
-- Vue Router with `createWebHashHistory()`,
-- Pinia or equivalent minimal UI state store,
-- `App.vue` as app shell,
-- `MobileLayout.vue` for simulator/safe-area/layout,
-- `AppHeader`, `AppBottomBar`, `AppDrawer`, `AppSheet`, `AppModal`, `AppToast` as shared primitives,
-- route pages as Vue SFC files,
-- no active user route rendered by `legacyApp.js`,
-- no active user route relying on large HTML string renderers.
+`src/legacyApp.js` yalniz rollback icin tutulur. Yeni urun gelistirmesi legacy runtime'a eklenmez. V13 temizliginde rollback ihtiyaci yeniden degerlendirilerek legacy dosyalari kaldirilabilir.
 
 ## Quality Gate
 
-V11 adds a hardening layer rather than claiming full migration. Use:
+Release-candidate gate:
 
 ```bash
-npm run test:quality-gate:v11
+npm run test:quality-gate:v12-j
 ```
 
-The audit intentionally passes only when the remaining full Vue migration debt is explicitly documented.
+Final alias:
+
+```bash
+npm run test:quality-gate:v12-final
+```
+
+Bu gate normal URL'leri test eder; `?engine=vue` zorunlu degildir ve legacy default boot'u kabul etmez.

@@ -14,11 +14,16 @@ async function expectSubscriptionHeader(page) {
   ).toBeVisible();
 }
 
-for (const engine of ["legacy", "vue"]) {
-  test(`${engine} subscription route is retained and sidebar has no package item`, async ({ page }) => {
-    const prefix = engine === "vue" ? "/?engine=vue" : "";
-    await page.goto(`${prefix}#/home`);
+const runtimeScenarios = [
+  { name: "default-vue", prefix: "", runtime: "vue" },
+  { name: "legacy-rollback", prefix: "/?engine=legacy", runtime: "legacy" },
+];
+
+for (const engine of runtimeScenarios) {
+  test(`${engine.name} subscription route is retained and sidebar has no package item`, async ({ page }) => {
+    await page.goto(`${engine.prefix}#/home`);
     await waitForApp(page);
+    await expect(page.locator("html")).toHaveAttribute("data-runtime", engine.runtime);
     await openSidebar(page);
 
     await expect(page.getByRole("button", { name: "Aboneliğim" })).toBeVisible();

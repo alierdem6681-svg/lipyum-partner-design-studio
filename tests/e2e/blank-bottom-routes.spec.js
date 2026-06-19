@@ -8,13 +8,18 @@ const blankRoutes = [
   { route: "/wallet", title: "Cüzdan", testId: "wallet-page", active: "bottom-tab-wallet" },
 ];
 
-for (const engine of ["legacy", "vue"]) {
+const runtimeScenarios = [
+  { name: "default-vue", prefix: "", runtime: "vue" },
+  { name: "legacy-rollback", prefix: "/?engine=legacy", runtime: "legacy" },
+];
+
+for (const engine of runtimeScenarios) {
   for (const item of blankRoutes) {
-    test(`${engine} ${item.route} renders only shell and blank main`, async ({ page }) => {
+    test(`${engine.name} ${item.route} renders only shell and blank main`, async ({ page }) => {
       const errors = await collectConsoleErrors(page);
-      const prefix = engine === "vue" ? "/?engine=vue" : "";
-      await page.goto(`${prefix}#${item.route}`);
+      await page.goto(`${engine.prefix}#${item.route}`);
       await waitForApp(page);
+      await expect(page.locator("html")).toHaveAttribute("data-runtime", engine.runtime);
 
       await expect(page.getByTestId("app-header").first()).toBeVisible();
       await expect(page.getByRole("heading", { name: item.title })).toBeVisible();

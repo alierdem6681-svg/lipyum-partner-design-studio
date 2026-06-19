@@ -7,9 +7,8 @@ const reportDir = process.env.V12_PRODUCT_REPORT_DIR || path.join(root, "artifac
 const strict = process.argv.includes("--strict");
 const baseUrl = process.env.V12_FEATURE_URL || "http://127.0.0.1:5173";
 
-function vueHomeUrl(base) {
+function homeUrl(base) {
   const url = new URL(base);
-  url.searchParams.set("engine", "vue");
   url.hash = "/home";
   return url.toString();
 }
@@ -35,7 +34,7 @@ page.on("console", (message) => {
 });
 page.on("pageerror", (error) => pageErrors.push(error.message));
 
-const featureUrl = vueHomeUrl(baseUrl);
+const featureUrl = homeUrl(baseUrl);
 await page.goto(featureUrl, { waitUntil: "networkidle", timeout: 60_000 });
 await page.evaluate(() => document.fonts?.ready || Promise.resolve());
 await page.addStyleTag({
@@ -56,6 +55,7 @@ const state = await page.evaluate(() => {
     .filter(Boolean);
   return {
     title: document.title,
+    runtime: document.documentElement.dataset.runtime || document.body.dataset.runtime || document.getElementById("app")?.dataset.runtime || "",
     bodyTextPreview: text.slice(0, 500),
     bottomLabels,
     horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
@@ -102,6 +102,7 @@ for (const [name, pass] of Object.entries(state.requiredElements)) {
 }
 if (!bottomPass) failures.push(`bottom labels mismatch: ${state.bottomLabels.join(" | ")}`);
 if (state.horizontalOverflow) failures.push("horizontal overflow");
+if (state.runtime !== "vue") failures.push(`runtime marker mismatch: ${state.runtime}`);
 if (consoleErrors.length) failures.push("console errors");
 if (pageErrors.length) failures.push("page errors");
 if (!performanceSheetOpen) failures.push("performance info sheet did not open");

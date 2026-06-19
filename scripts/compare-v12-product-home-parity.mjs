@@ -12,9 +12,8 @@ const maxDiffPixelRatio = Number(process.env.V12_PRODUCT_MAX_DIFF_RATIO || "0.01
 const baseUrl = process.env.V12_FEATURE_URL || "http://127.0.0.1:5173";
 const viewport = { width: 393, height: 852 };
 
-function vueHomeUrl(base) {
+function homeUrl(base) {
   const url = new URL(base);
-  url.searchParams.set("engine", "vue");
   url.hash = "/home";
   return url.toString();
 }
@@ -46,7 +45,7 @@ page.on("console", (message) => {
   if (message.type() === "error") consoleErrors.push(message.text());
 });
 page.on("pageerror", (error) => pageErrors.push(error.message));
-const featureUrl = vueHomeUrl(baseUrl);
+const featureUrl = homeUrl(baseUrl);
 await page.goto(featureUrl, { waitUntil: "networkidle", timeout: 60_000 });
 await page.evaluate(() => document.fonts?.ready || Promise.resolve());
 await page.addStyleTag({

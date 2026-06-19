@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "featureUrl": "http://127.0.0.1:56390/#/home",
+  "baselinePath": "tests\\golden-master\\v12-product-final\\home.png",
+  "featurePath": "artifacts\\v12-j\\product-home-parity\\home-feature.png",
+  "diffPath": "artifacts\\v12-j\\product-home-parity\\home.diff.png",
+  "viewport": "393x852",
+  "diffPixels": 14991,
+  "totalPixels": 1339344,
+  "diffRatio": 0.011193,
+  "maxDiffPixelRatio": 0.015,
+  "consoleErrors": [],
+  "pageErrors": []
+}

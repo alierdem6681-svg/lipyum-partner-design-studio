@@ -2,6 +2,45 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 12-J - Controlled Vue Default Cutover ve Release Candidate Gate
+
+Tarih: 19 Haziran 2026
+
+### 1. Genel durum
+
+V12-J ile normal uygulama acilisi Vue runtime'a alindi. Legacy runtime yalniz `?engine=legacy` rollback yolu olarak korunur. `?engine=vue` geriye donuk uyumluluk icin Vue acmaya devam eder.
+
+### 2. Runtime
+
+- Normal URL: Vue.
+- `?engine=vue`: Vue.
+- `?engine=legacy`: legacy rollback.
+- Vue marker: `data-runtime="vue"`.
+- Legacy marker: `data-runtime="legacy"`.
+- Vue boot hatasi sessizce legacy'ye dusmez.
+
+### 3. Home Product Golden
+
+- Baseline: `tests/golden-master/v12-product-final/home.png`
+- Feature URL: `/#/home`
+- Hedef diff: `<= 0.015`
+- Son diff: `0.011193`
+- Sonuc: PASS
+
+### 4. Release gate
+
+Yeni komut:
+
+```bash
+npm run test:quality-gate:v12-j
+```
+
+Gate kapsami: syntax, architecture, default Vue runtime, explicit legacy rollback, route acceptance, blank route contract, retired redirects, rich route outcomes, Home Product Golden parity, accessibility, clickable inventory, performance smoke, build ve `git diff --check`.
+
+### 5. Not
+
+Main merge ve production Vercel deploy kullanici gorsel onayi olmadan yapilmaz. GitHub Pages feature branch canary dogrulamasi PR #3 uzerinden raporlanir.
+
 ## Faz 8 - Full Vue/Tailwind Migration, Navbar Standardization ve Release Quality Gate
 
 ### 1. Genel durum

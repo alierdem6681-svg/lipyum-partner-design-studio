@@ -2699,7 +2699,11 @@
 }
 
 .v-badge-more {
-  min-height: 28px;
+  display: inline-flex;
+  min-width: 34px;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--color-primary-border);
   border-radius: var(--radius-pill);
   background: var(--color-primary-soft);
@@ -2962,14 +2966,18 @@
 }
 
 .v-badge-more {
-  min-height: 25px;
-  border: 1px solid #bbf7d0;
-  border-radius: 999px;
-  background: #f0fdf4;
-  color: #047857;
+  display: inline-flex;
+  min-width: 34px;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
   font-size: 11px;
   font-weight: 900;
-  padding: 0 9px;
+  padding: 0 10px;
 }
 
 .v-profile-strength-card,
