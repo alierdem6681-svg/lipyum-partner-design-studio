@@ -36,6 +36,7 @@ export const ROUTE_TO_SCREEN = {
   "/capacity": "capacity",
   "/strategy": "strategy",
   "/ui-kit": "uiKit",
+  "/vue-job-referral": "vueJobReferral",
   "/bonus": "bonus",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
