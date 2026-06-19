@@ -1,10 +1,6 @@
 import assert from "node:assert/strict";
-import {
-  getCtaVariant,
-  getScreenForRoute,
-  normalizeRoute,
-  pageRoutes,
-} from "../src/router.js";
+import { BOTTOM_TABS, RETIRED_ROUTE_REDIRECTS, ROUTE_TO_SCREEN } from "../src/utils/constants.js";
+import { getRouteMeta } from "../src/utils/routeMeta.js";
 
 const requiredRoutes = [
   "/home",
@@ -21,6 +17,9 @@ const requiredRoutes = [
   "/satisfaction",
   "/messages",
   "/referral",
+  "/referral/tasks",
+  "/referral/partners",
+  "/referral-earnings",
   "/job-referral",
   "/partners",
   "/customers",
@@ -43,18 +42,25 @@ const requiredRoutes = [
   "/account-settings",
   "/notification-settings",
   "/contact-settings",
-  "/ui-kit",
   "/partner-card-preview",
 ];
 
 for (const route of requiredRoutes) {
-  assert.equal(normalizeRoute(route), route, `${route} normalize edilmeli`);
-  assert.ok(getScreenForRoute(route), `${route} screen'e bağlanmalı`);
-  assert.ok(pageRoutes[route], `${route} pageRoutes içinde olmalı`);
-  assert.ok(["home", "subpage", "disabled", "hidden"].includes(getCtaVariant(route)), `${route} CTA variant üretmeli`);
+  assert.ok(ROUTE_TO_SCREEN[route], `${route} must map to a product screen`);
+  const meta = getRouteMeta(route);
+  assert.equal(meta.route, route, `${route} must produce route metadata`);
+  assert.ok(["home", "section", "subpage"].includes(meta.headerVariant), `${route} must produce a header variant`);
+  assert.ok(["home", "subpage"].includes(meta.ctaVariant), `${route} must produce a CTA variant`);
 }
 
-assert.equal(normalizeRoute("/unknown"), "/home", "Bilinmeyen route /home'a düşmeli");
-assert.equal(normalizeRoute("/vue-job-referral"), "/home", "/vue-job-referral aktif urun rotasi olmamali");
-assert.ok(pageRoutes["/vue-job-referral"], "/vue-job-referral legacy smoke pageRoutes icinde korunmali");
-console.log(`Route smoke passed: ${requiredRoutes.length} route`);
+assert.deepEqual(Object.keys(RETIRED_ROUTE_REDIRECTS), [
+  "/packages",
+  "/package-builder",
+  "/package-checkout",
+  "/partner/packages",
+]);
+assert.deepEqual(BOTTOM_TABS.map((item) => item.label), ["Ana Sayfa", "İşler", "İş Al", "Randevu", "Cüzdan"]);
+assert.equal(getRouteMeta("/unknown").route, "/home", "Unknown routes must fall back to /home metadata");
+assert.equal(ROUTE_TO_SCREEN["/vue-job-referral"], undefined, "/vue-job-referral must not be an active product route");
+
+console.log(`Route smoke passed: ${requiredRoutes.length} routes`);

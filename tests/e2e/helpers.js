@@ -35,8 +35,6 @@ export const routes = [
   "/account-settings",
   "/notification-settings",
   "/contact-settings",
-  "/ui-kit",
-  "/vue-job-referral",
   "/partner-card-preview",
 ];
 

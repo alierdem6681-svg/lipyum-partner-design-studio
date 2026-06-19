@@ -1,0 +1,14 @@
+{
+  "version": "v13-fast-finish",
+  "startSha": "c8aa53e03ad3dcb710af85ee620c6eb46232aa7a",
+  "runtime": "vue",
+  "productionPlatform": "github-pages",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5173/",
+  "designContractVersion": "V13-FINAL-RELEASE-CONTRACT",
+  "productGoldenHomeSha256": "A3D9711AD318C2FB07F52B7830B0B59C04260E95AE3553F177B2196AAF6F7586",
+  "rollback": {
+    "tag": "v12.0.0",
+    "archiveBranch": "archive/v12-final"
+  }
+}

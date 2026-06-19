@@ -1,78 +1,38 @@
 # Lipyum Partner Architecture
 
-Tarih: 19 Haziran 2026
-Branch: `feature/v12-golden-vue-cutover`
+Date: 2026-06-19
 
-## Current Shell
+## Runtime
 
-V12-K icin gecerli shell politikasi stable design default, Vue preview explicit seklindedir.
+The active application is a single Vue runtime:
 
-`src/app.js` once deep link resolver'i calistirir, sonra `engine` query parametresini okur:
+- `index.html` loads `src/app.js`.
+- `src/app.js` resolves deep links, marks `data-runtime="vue"`, and mounts `src/vue/main.js`.
+- `src/vue/main.js` creates `createApp(App)`, installs Pinia, installs Vue Router, and mounts `AppShell`.
+- Rollback is handled with Git tags and archive branches, not with `?engine` query switches.
 
-- `?engine=vue`: Vue preview runtime.
-- Normal URL: stable legacy product design.
-- `?engine=legacy`: stable legacy product design ile ayni legacy yol.
+## Navigation
 
-Runtime marker'lari:
+- Vue Router with `createWebHashHistory()` owns route navigation.
+- `AppShell.vue` is the shared mobile shell and renders `RouterView`.
+- Global navigation compatibility is kept as a thin bridge for existing interactions, but active route ownership remains Vue Router.
 
-- Stable/default: `data-runtime="legacy"`.
-- Vue preview: `data-runtime="vue"`.
-- Vue boot hatasi: `data-runtime="vue-error"`.
+## Product Scope
 
-## Runtime Source Of Truth
+The final product scope is frozen in `FINAL_RELEASE_CONTRACT.md`.
 
-Gecerli secim `src/app.js` icindedir:
+Retired package routes redirect to `/subscription`.
+Blank bottom routes remain empty:
 
-```js
-const useVueEngine = requestedEngine === "vue";
-```
+- `/jobs`
+- `/my-jobs`
+- `/calendar`
+- `/wallet`
 
-Bu nedenle Vue yalniz explicit preview flag ile acilir. Default Vue cutover `d91d8f6` ile geri alinmistir.
+## Production
 
-## Vue Preview Root
+GitHub Pages is the canonical production platform:
 
-Vue preview root:
+https://alierdem6681-svg.github.io/lipyum-partner-design-studio/
 
-- `src/vue/main.js`
-- `createApp(App)`
-- Pinia
-- Vue Router
-- `createWebHashHistory()`
-- `src/vue/layouts/AppShell.vue`
-- `RouterView`
-
-Shared Vue shell componentleri:
-
-- `AppHeader`
-- `AppBottomBar`
-- `AppDrawer`
-- `AppSheet`
-- `AppModal`
-- `AppToast`
-- `MobileLayout`
-
-## Stable Runtime Policy
-
-`src/legacyApp.js` V12-K itibariyla normal URL stable product design yoludur. Bu durum yeni urun gelistirmesinin legacy icine tasinmasi anlamina gelmez; sadece default kullanici deneyiminin gorsel regresyonlara karsi korunmasi icindir.
-
-Vue preview hatti urun onayi ve gorsel gate'ler gecmeden normal/default acilisa alinmaz.
-
-## Quality Gate
-
-V12-K icin gecerli gate komutlari:
-
-```bash
-npm run test:quality-gate:stable-default
-npm run test:quality-gate:vue-preview
-npm run test:quality-gate:v12-k
-```
-
-V12-J `default Vue` gate ve raporlari tarihsel kabul edilir; guncel mimari kabul kaynagi degildir.
-## V12-K Final Governance Update
-
-- Default runtime remains stable legacy.
-- Vue remains preview-only through `?engine=vue`.
-- Design-sensitive changes are governed by GitHub PR review from `alierdem6681-svg`.
-- Commit-message tokens and environment-variable bypasses are not accepted as design approval.
-- GitHub Pages deploy is no longer triggered by feature-branch push.
-- V12-K Final cannot be considered complete until trusted approval and strict visual regression both pass.
+Vercel and Cloudflare are not part of the active release process.

@@ -1,0 +1,18 @@
+{
+  "name": "v13-fast-finish-start",
+  "sha": "c8aa53e03ad3dcb710af85ee620c6eb46232aa7a",
+  "date": "2026-06-19",
+  "runtimePolicy": "v12 default stable legacy, V13 target final Vue",
+  "githubPagesUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5173/",
+  "currentTestStatus": "V12-K PR quality previously passed; V13 release gate not yet run at backup time",
+  "productGoldenHomeSha256": "A3D9711AD318C2FB07F52B7830B0B59C04260E95AE3553F177B2196AAF6F7586",
+  "activeRouteCount": 40,
+  "knownP0": [],
+  "knownP1": [],
+  "knownP2": [
+    "GitHub Pages release.json missing before V13 work",
+    "Historical V12 artifacts remain in repository before V13 slimming"
+  ],
+  "rollbackCommand": "git switch archive/v13-fast-finish-start"
+}

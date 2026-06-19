@@ -21,7 +21,10 @@ export const DESIGN_SENSITIVE_PREFIXES = [
   "scripts/assert-design-lock.mjs",
   "scripts/assert-design-review.mjs",
   "scripts/design-sensitive-paths.mjs",
+  "scripts/detect-test-scope.mjs",
+  "scripts/local-live.mjs",
   "scripts/run-v12k-visual-regression.mjs",
+  "scripts/write-release-metadata.mjs",
   "src/app.js",
   "src/components/",
   "src/pages/",
@@ -32,6 +35,7 @@ export const DESIGN_SENSITIVE_PREFIXES = [
   "tests/e2e/",
   "tests/golden-master/",
   "tests/v12-k-quality-gate.mjs",
+  "tests/v13-release-gate.mjs",
 ];
 
 export function normalizePath(filePath) {

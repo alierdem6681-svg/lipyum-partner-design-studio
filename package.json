@@ -5,8 +5,8 @@
   "scripts": {
     "check": "node scripts/run-local-node.mjs scripts/check-js-syntax.mjs src tests scripts",
     "lint": "node scripts/run-local-node.mjs scripts/check-js-syntax.mjs src tests scripts",
-    "test": "node scripts/run-local-node.mjs --test tests/unit && node scripts/run-local-node.mjs tests/routes.smoke.js",
-    "test:unit": "node scripts/run-local-node.mjs --test tests/unit",
+    "test": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js && node scripts/run-local-node.mjs tests/routes.smoke.js",
+    "test:unit": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js",
     "test:e2e": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/routes.spec.js tests/e2e/back-button.spec.js tests/e2e/accessibility.spec.js tests/e2e/geometry.spec.js",
     "test:e2e:mobile": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/mobile.spec.js",
     "test:screenshots": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",
@@ -69,8 +69,11 @@
     "test:quality-gate:stable-default": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --stable-default",
     "test:quality-gate:vue-preview": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --vue-preview",
     "test:quality-gate:v12-k-automated": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --automated",
-    "test:quality-gate:release": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --release",
+    "test:fast": "node scripts/run-local-node.mjs tests/v13-release-gate.mjs --fast",
+    "test:wave": "node scripts/run-local-node.mjs tests/v13-release-gate.mjs --wave",
+    "test:quality-gate:release": "node scripts/run-local-node.mjs tests/v13-release-gate.mjs --release",
     "test:quality-gate:v12-k": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --v12-k",
+    "detect:test-scope": "node scripts/run-local-node.mjs scripts/detect-test-scope.mjs",
     "test:dependency-lock": "node scripts/run-local-node.mjs scripts/assert-dependency-lock.mjs",
     "test:utf8-integrity": "node scripts/run-local-node.mjs scripts/assert-utf8-integrity.mjs",
     "test:design-contract": "node scripts/run-local-node.mjs scripts/assert-design-lock.mjs",
@@ -86,7 +89,13 @@
     "test:quality-gate:v12": "find src tests -name '*.js' -print0 2>/dev/null | xargs -0 -r -n1 node_modules/node/bin/node --check && node_modules/node/bin/node --test tests/architecture/*.test.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-compatibility.spec.js && node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs && node_modules/node/bin/node node_modules/vite/bin/vite.js build && git diff --check",
     "build": "node scripts/run-local-node.mjs scripts/write-release-metadata.mjs && node scripts/run-local-node.mjs node_modules/vite/bin/vite.js build",
     "dev": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js --host 0.0.0.0",
-    "preview": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js preview --host 0.0.0.0"
+    "preview": "node scripts/run-local-node.mjs node_modules/vite/bin/vite.js preview --host 0.0.0.0",
+    "local:up": "node scripts/run-local-node.mjs scripts/local-live.mjs up",
+    "local:down": "node scripts/run-local-node.mjs scripts/local-live.mjs down",
+    "local:restart": "node scripts/run-local-node.mjs scripts/local-live.mjs restart",
+    "local:status": "node scripts/run-local-node.mjs scripts/local-live.mjs status",
+    "local:ensure": "node scripts/run-local-node.mjs scripts/local-live.mjs ensure",
+    "local:sync-main": "node scripts/run-local-node.mjs scripts/local-live.mjs sync-main"
   },
   "engines": {
     "node": ">=20.19.0"

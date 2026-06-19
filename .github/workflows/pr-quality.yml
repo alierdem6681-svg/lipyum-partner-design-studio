@@ -1,0 +1,44 @@
+name: PR Quality
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  quality:
+    name: V13 Automated Release Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: node_modules/node/bin/node node_modules/@playwright/test/cli.js install chromium
+
+      - name: Release quality gate
+        run: npm run test:quality-gate:release
+        env:
+          LIPYUM_RELEASE_VERSION: "v13-fast-finish"

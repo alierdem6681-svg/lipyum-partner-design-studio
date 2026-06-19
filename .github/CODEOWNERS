@@ -22,6 +22,15 @@
 /STABLE_DESIGN_CONTRACT.json @alierdem6681-svg
 /STABLE_DESIGN_GOLDEN_MANIFEST.json @alierdem6681-svg
 /DESIGN_LOCK.md @alierdem6681-svg
+/FINAL_RELEASE_CONTRACT.md @alierdem6681-svg
+/POST_RELEASE_BACKLOG.md @alierdem6681-svg
+/CURRENT_STATUS.md @alierdem6681-svg
+/FINAL_OPEN_ITEMS.md @alierdem6681-svg
+/RELEASE_MANIFEST.json @alierdem6681-svg
+/scripts/detect-test-scope.mjs @alierdem6681-svg
+/scripts/local-live.mjs @alierdem6681-svg
+/scripts/write-release-metadata.mjs @alierdem6681-svg
+/tests/v13-release-gate.mjs @alierdem6681-svg
 /tests/golden-master/ @alierdem6681-svg
 /tests/e2e/*visual* @alierdem6681-svg
 /tests/e2e/*design* @alierdem6681-svg
