@@ -1,36 +1,47 @@
 import { defineStore } from "pinia";
+import { partnerProfile, profileStrength } from "../../data/mockData.js";
+
+function initialsFromName(name) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
 
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     expandedBadges: false,
+    drawerBadgesExpanded: false,
     partner: {
-      name: "Ahmet Kaya",
-      initials: "AK",
-      title: "Gold Partner",
+      ...partnerProfile,
+      initials: initialsFromName(partnerProfile.name),
+      score: profileStrength.score,
+      title: partnerProfile.tier,
       specialty: "Klima ve beyaz eşya servisi",
-      rating: "4.8",
-      reviewCount: "126",
-      score: 81,
-      badges: [
-        "Gold Partner",
-        "Hızlı Yanıt",
-        "4.8 Puan",
-        "126 Değerlendirme",
-        "Sonuç Bildiren",
-        "Randevu Düzenli",
-      ],
     },
+    strength: profileStrength,
   }),
   getters: {
-    visibleBadges: (state) => state.expandedBadges ? state.partner.badges : state.partner.badges.slice(0, 4),
-    hiddenBadgeCount: (state) => state.expandedBadges ? 0 : Math.max(0, state.partner.badges.length - 4),
+    visibleBadges: (state) => (state.expandedBadges ? state.partner.badges : state.partner.badges.slice(0, 3)),
+    hiddenBadges: (state) => (state.expandedBadges ? state.partner.badges.slice(3) : []),
+    hiddenBadgeCount: (state) => (state.expandedBadges ? 0 : Math.max(0, state.partner.badges.length - 3)),
+    drawerVisibleBadges: (state) =>
+      state.drawerBadgesExpanded ? state.partner.badges : state.partner.badges.slice(0, 3),
+    drawerHiddenBadgeCount: (state) =>
+      state.drawerBadgesExpanded ? 0 : Math.max(0, state.partner.badges.length - 3),
   },
   actions: {
     showAllBadges() {
       this.expandedBadges = true;
     },
+    showAllDrawerBadges() {
+      this.drawerBadgesExpanded = true;
+    },
     resetBadges() {
       this.expandedBadges = false;
+      this.drawerBadgesExpanded = false;
     },
   },
 });

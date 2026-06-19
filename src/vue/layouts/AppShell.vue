@@ -3,20 +3,23 @@ import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { DRAWER_SECTIONS } from "../../utils/constants.js";
 import { getRouteMeta } from "../../utils/routeMeta.js";
+import DrawerMenuCard from "../components/drawer/DrawerMenuCard.vue";
+import DrawerProfileCard from "../components/drawer/DrawerProfileCard.vue";
 import AppBottomBar from "../components/ui/AppBottomBar.vue";
 import AppDrawer from "../components/ui/AppDrawer.vue";
 import AppHeader from "../components/ui/AppHeader.vue";
-import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import AppToast from "../components/ui/AppToast.vue";
 import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useNavigationStore } from "../stores/navigationStore.js";
+import { useProfileStore } from "../stores/profileStore.js";
 
 const route = useRoute();
 const router = useRouter();
 const shell = useAppShellStore();
 const navigation = useNavigationStore();
+const profile = useProfileStore();
 
 const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
@@ -28,6 +31,7 @@ watch(
   (path) => {
     navigation.push(path, "router");
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
+    profile.resetBadges();
   },
   { immediate: true },
 );
@@ -77,24 +81,20 @@ function onHeaderAction(action) {
         @cta="navigateTo"
       />
 
-      <AppDrawer :open="shell.drawerOpen" title="Lipyum Partner" @close="shell.closeDrawer">
-        <div class="v-drawer-menu">
-          <section v-for="section in DRAWER_SECTIONS" :key="section.title" class="v-drawer-menu__section">
-            <h3>{{ section.title }}</h3>
-            <button
-              v-for="item in section.items"
-              :key="item.route"
-              class="v-drawer-menu__item"
-              type="button"
-              :aria-current="route.path === item.route ? 'page' : undefined"
-              @click="navigateTo(item.route)"
-            >
-              <span class="v-drawer-menu__icon"><AppIcon :name="item.icon" :size="20" /></span>
-              <span>{{ item.label }}</span>
-              <AppIcon name="chevron-right" :size="18" />
-            </button>
-          </section>
-        </div>
+      <AppDrawer
+        :open="shell.drawerOpen"
+        title="Partner menüsü"
+        @close="shell.closeDrawer"
+        @upgrade="navigateTo('/subscription')"
+      >
+        <DrawerProfileCard />
+        <DrawerMenuCard
+          v-for="section in DRAWER_SECTIONS"
+          :key="section.title"
+          :section="section"
+          :active-path="route.path"
+          @navigate="navigateTo"
+        />
       </AppDrawer>
 
       <AppSheet

@@ -68,12 +68,16 @@ test("normal URLs use the stable profile, sidebar and bottom bar design", async 
   expect(errors).toEqual([]);
 });
 
-test("Vue migration UI is available only through explicit preview flag", async ({ page }) => {
+test("Vue preview keeps stable profile design through explicit preview flag", async ({ page }) => {
   await page.goto("/?engine=vue#/profile");
   await waitForApp(page);
 
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
-  await expect(page.locator(".v-route-hero")).toBeVisible();
+  await expect(page.locator(".v-route-hero")).toHaveCount(0);
+  await expect(page.locator(".partner-profile-card")).toBeVisible();
+  await expect(page.locator(".profile-strength-card")).toBeVisible();
+  await expect(page.locator(".profile-menu-grid")).toBeVisible();
+  await expect(page.locator(".profile-menu-card")).toHaveCount(8);
 });
 
 for (const viewport of bottomViewports) {

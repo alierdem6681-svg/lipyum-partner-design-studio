@@ -47,6 +47,7 @@
 }
 
 .v-shell {
+  position: relative;
   height: 100%;
   min-height: 0;
   display: grid;
@@ -641,7 +642,10 @@
 }
 
 .v-bottom {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: var(--bottom-safe-height, 92px);
   flex: 0 0 auto;
   border: 0;
@@ -650,7 +654,7 @@
   box-shadow: none;
   backdrop-filter: none;
   display: grid;
-  grid-template-columns: 1fr 1fr 76px 1fr 1fr;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
   gap: 2px;
   padding: 8px var(--page-x-padding, 12px) 16px;
@@ -683,6 +687,7 @@
 .v-bottom__item {
   position: relative;
   z-index: 1;
+  width: 100%;
   min-width: 0;
   min-height: 56px;
   padding: 5px 2px 7px;
