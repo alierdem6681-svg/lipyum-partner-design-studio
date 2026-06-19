@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
@@ -7,13 +7,10 @@ import { useAppShellStore } from "../stores/appShellStore.js";
 const shell = useAppShellStore();
 
 const score = 81;
-const targetScore = 85;
-const scoreRingStyle = { "--score-ring": `${score * 3.6}deg` };
-const progressStyle = { "--score-fill": `${score}%`, "--score-target": `${targetScore}%` };
 
 const metrics = [
   { label: "Partnerler", value: "34", icon: "users" },
-  { label: "Tamamlanan İş", value: "18", icon: "briefcase" },
+  { label: "Tamamlanan Ä°ÅŸ", value: "18", icon: "briefcase" },
   { label: "Teklifler", value: "128", icon: "file-text" },
 ];
 
@@ -27,9 +24,9 @@ function openInfoSheet(title, body) {
 
 function openConvertSheet() {
   shell.openSheet({
-    title: "Krediye Çevir",
-    description: "Bonuslarını krediye dönüştür",
-    body: "240 bonusun hazır. Mock akışta bonuslarını krediye çevirme onayı burada gösterilir.",
+    title: "Krediye Ã‡evir",
+    description: "BonuslarÄ±nÄ± krediye dÃ¶nÃ¼ÅŸtÃ¼r",
+    body: "240 bonusun hazÄ±r. Mock akÄ±ÅŸta bonuslarÄ±nÄ± krediye Ã§evirme onayÄ± burada gÃ¶sterilir.",
   });
 }
 </script>
@@ -52,20 +49,20 @@ function openConvertSheet() {
             type="button"
             data-open="performance-info"
             aria-label="Performans skoru nedir?"
-            @click.stop="openInfoSheet('Performans Skoru', 'Profil kaliten, hızlı dönüşlerin ve iş sonuçların performans skorunu belirler.')"
+            @click.stop="openInfoSheet('Performans Skoru', 'Profil kaliten, hÄ±zlÄ± dÃ¶nÃ¼ÅŸlerin ve iÅŸ sonuÃ§larÄ±n performans skorunu belirler.')"
           >
             Nedir?
           </button>
         </div>
 
         <div class="performance-home-layout">
-          <span class="performance-score-ring" :style="scoreRingStyle">
+          <span class="performance-score-ring">
             <span><strong>{{ score }}</strong></span>
           </span>
           <span class="performance-home-copy">
             <span class="score-level">
               <AppIcon name="star" :size="12" class-name="icon" />
-              İyi
+              Ä°yi
             </span>
           </span>
           <button
@@ -76,12 +73,12 @@ function openConvertSheet() {
             @click.stop="$router.push('/performance-score')"
           >
             <AppIcon name="trend-up" :size="14" class-name="icon" />
-            Skorumu Artır
+            Skorumu ArtÄ±r
           </button>
         </div>
 
-        <span class="performance-helper">85 puana ulaşmana çok az kaldı.</span>
-        <div class="score-progress-wrap" :style="progressStyle">
+        <span class="performance-helper">85 puana ulaÅŸmana Ã§ok az kaldÄ±.</span>
+        <div class="score-progress-wrap">
           <div class="score-progress" aria-label="Performans skoru 81, hedef 85">
             <span></span>
             <i class="score-marker" aria-hidden="true"></i>
@@ -95,24 +92,24 @@ function openConvertSheet() {
         <div class="wallet-summary">
           <div class="wallet-tile credit">
             <div class="wallet-tile-head">
-              <span>Cüzdan</span>
+              <span>CÃ¼zdan</span>
             </div>
             <button
               class="wallet-tile-icon"
               type="button"
               data-open="wallet-info"
               data-action="wallet-info"
-              aria-label="Cüzdan bilgisi"
-              @click="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')"
+              aria-label="CÃ¼zdan bilgisi"
+              @click="openInfoSheet('CÃ¼zdan', 'Kredilerini iÅŸ almak ve teklif vermek iÃ§in kullanÄ±rsÄ±n.')"
             >
               <AppIcon name="help-circle" :size="17" class-name="icon" />
             </button>
             <span class="wallet-amount"><strong>675</strong><small>kredi</small></span>
-            <span class="wallet-subline" style="--wallet-dot:#12b76a">≈ 2-3 iş alabilirsin</span>
+            <span class="wallet-subline">â‰ˆ 2-3 iÅŸ alabilirsin</span>
             <div class="wallet-actions">
               <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="$router.push('/wallet')">
                 <AppIcon name="plus" :size="16" class-name="icon" />
-                Bakiye Yükle
+                Bakiye YÃ¼kle
               </button>
             </div>
           </div>
@@ -127,16 +124,16 @@ function openConvertSheet() {
               data-open="bonus-info"
               data-action="bonus-info"
               aria-label="Bonus bilgisi"
-              @click="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')"
+              @click="openInfoSheet('Bonus', 'BonuslarÄ±nÄ± kredi yÃ¼klerken kullanabilirsin.')"
             >
               <AppIcon name="help-circle" :size="17" class-name="icon" />
             </button>
             <span class="wallet-amount"><strong>240</strong><small>bonus</small></span>
-            <span class="wallet-subline" style="--wallet-dot:#175cd3">Kredi yüklerken kullanılır.</span>
+            <span class="wallet-subline">Kredi yÃ¼klerken kullanÄ±lÄ±r.</span>
             <div class="wallet-actions split">
               <button class="wallet-action-pill convert" type="button" data-open="bonus-convert" @click="openConvertSheet">
                 <AppIcon name="refresh" :size="16" class-name="icon" />
-                Krediye Çevir
+                Krediye Ã‡evir
               </button>
             </div>
           </div>
@@ -145,10 +142,10 @@ function openConvertSheet() {
 
       <AppCard padding="none" class="region-home-card" data-testid="home-region-card">
         <div class="region-card-head">
-          <h3>Bölgendeki İşler</h3>
-          <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
-            <button class="chip-btn active" type="button" data-region-filter="Bugün">Bugün</button>
-            <button class="chip-btn" type="button" data-region-filter="Dün">Dün</button>
+          <h3>BÃ¶lgendeki Ä°ÅŸler</h3>
+          <div class="region-filter-row" aria-label="BÃ¶lge iÅŸ tarihi filtreleri">
+            <button class="chip-btn active" type="button" data-region-filter="BugÃ¼n">BugÃ¼n</button>
+            <button class="chip-btn" type="button" data-region-filter="DÃ¼n">DÃ¼n</button>
           </div>
         </div>
         <div class="kpi-row">
@@ -165,11 +162,11 @@ function openConvertSheet() {
           data-testid="home-region-activity"
           role="status"
           aria-live="polite"
-          aria-label="Bölgedeki iş bildirimi"
+          aria-label="BÃ¶lgedeki iÅŸ bildirimi"
         >
           <div class="region-activity-message">
             <span class="region-activity-dot" aria-hidden="true"></span>
-            <span data-region-activity-text>Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.</span>
+            <span data-region-activity-text>Mehmet Ali A. az Ã¶nce YeniÅŸehir ilÃ§esinde bir buzdolabÄ± tamir iÅŸi aldÄ±.</span>
           </div>
         </div>
       </AppCard>

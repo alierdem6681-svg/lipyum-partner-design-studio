@@ -1,10 +1,12 @@
 <script setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import AppIcon from "../ui/AppIcon.vue";
 import { useAppShellStore } from "../../stores/appShellStore.js";
 import { useProfileStore } from "../../stores/profileStore.js";
 
-defineProps({
+const props = defineProps({
+  variant: { type: String, default: "page" },
   compact: { type: Boolean, default: false },
   showActions: { type: Boolean, default: true },
 });
@@ -13,21 +15,41 @@ const router = useRouter();
 const shell = useAppShellStore();
 const profile = useProfileStore();
 
+const isDrawer = computed(() => props.variant === "drawer");
+const cardClasses = computed(() => [
+  "partner-profile-card",
+  `partner-profile-card--${props.variant}`,
+  props.compact ? "partner-profile-card--compact" : "",
+  isDrawer.value ? "drawer-profile-card" : "",
+]);
+const badgeExpanded = computed(() => (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
+const visibleBadges = computed(() => (isDrawer.value ? profile.drawerVisibleBadges : profile.visibleBadges));
+const hiddenBadgeCount = computed(() => (isDrawer.value ? profile.drawerHiddenBadgeCount : profile.hiddenBadgeCount));
+const moreTestId = computed(() => (isDrawer.value ? "drawer-profile-badge-more" : "profile-badge-more"));
+const moreAction = computed(() => (isDrawer.value ? "toggle-drawer-badges" : "toggle-profile-badges"));
+
+function showAllBadges() {
+  if (isDrawer.value) profile.showAllDrawerBadges();
+  else profile.showAllBadges();
+}
+
 function openShareSheet() {
+  shell.closeDrawer();
   shell.openSheet({
     title: "Profil paylaşımı",
     description: "Partner kartı",
     body: "Sosyal profil, WhatsApp, QR, e-posta ve link kopyalama seçenekleri hazır.",
   });
 }
+
+function openPreview() {
+  shell.closeDrawer();
+  router.push("/partner-card-preview");
+}
 </script>
 
 <template>
-  <section
-    :class="['partner-profile-card', compact ? 'partner-profile-card--compact' : '']"
-    data-testid="partner-profile-card"
-    aria-label="Partner profil kartı"
-  >
+  <section :class="cardClasses" data-testid="partner-profile-card" aria-label="Partner profil kartı">
     <div class="partner-profile-main">
       <button class="partner-profile-avatar-btn" type="button" aria-label="Profil fotoğrafı ekle">
         <img :src="profile.partner.avatar" :alt="`${profile.partner.name} profil fotoğrafı`" />
@@ -49,30 +71,27 @@ function openShareSheet() {
       </div>
     </div>
 
-    <div :class="['partner-profile-chips', profile.expandedBadges ? 'is-expanded' : '']" aria-label="Profil rozetleri">
-      <span v-for="badge in profile.visibleBadges" :key="badge.label" class="partner-profile-chip">
+    <div :class="['partner-profile-chips', badgeExpanded ? 'is-expanded' : '']" aria-label="Profil rozetleri">
+      <span
+        v-for="(badge, index) in visibleBadges"
+        :key="badge.label"
+        :class="['partner-profile-chip', index >= 3 ? 'is-extra' : '']"
+      >
         <AppIcon :name="badge.icon" :size="14" class-name="icon" />
         {{ badge.label }}
       </span>
       <button
-        v-if="profile.hiddenBadgeCount"
+        v-if="hiddenBadgeCount"
         class="partner-profile-chip is-more"
         type="button"
-        data-testid="profile-badge-more"
-        data-action="toggle-profile-badges"
+        :data-testid="moreTestId"
+        :data-action="moreAction"
         aria-label="Ek rozetleri göster"
-        :aria-expanded="profile.expandedBadges ? 'true' : 'false'"
-        @click="profile.showAllBadges"
+        :aria-expanded="badgeExpanded ? 'true' : 'false'"
+        @click="showAllBadges"
       >
-        <span>+{{ profile.hiddenBadgeCount }}</span>
+        <span>+{{ hiddenBadgeCount }}</span>
       </button>
-      <template v-if="profile.expandedBadges">
-        <span class="partner-profile-chip-break" aria-hidden="true"></span>
-        <span v-for="badge in profile.hiddenBadges" :key="badge.label" class="partner-profile-chip is-extra">
-          <AppIcon :name="badge.icon" :size="14" class-name="icon" />
-          {{ badge.label }}
-        </span>
-      </template>
     </div>
 
     <div v-if="showActions" class="partner-profile-actions">
@@ -91,7 +110,7 @@ function openShareSheet() {
         type="button"
         data-testid="partner-preview-button"
         data-action="profile-preview"
-        @click="router.push('/partner-card-preview')"
+        @click="openPreview"
       >
         <AppIcon name="eye" :size="16" class-name="icon" />
         Önizle

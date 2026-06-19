@@ -2180,3 +2180,12 @@ Canli tasarimin tekrar bozulmamasi icin normal acilis stabil urun gorunumunu kor
 ### 5. Kalan risk
 
 PR #3 draft kalir. Main merge ve production deploy kullanici onayi olmadan yapilmaz. Vue production default cutover, canli urun tasarim guvenligi nedeniyle bu fazda zorlanmamistir.
+## V12-K Final Architecture Debt Update
+
+- Profile badge duplicate rendering was fixed.
+- Drawer profile now uses the shared `PartnerProfileCard` base component.
+- Sidebar profile actions now include `Paylaş` and `Önizle`.
+- Drawer item inline style was removed.
+- Vue template hard-coded hex/style debt is guarded by `scripts/assert-no-vue-style-debt.mjs`.
+- Profile strength raw SVG was moved into dedicated illustration/ring components.
+- Remaining architecture debt: strict stable-to-vue visual regression is still failing and requires either additional parity fixes or explicit visual approval.

@@ -47,3 +47,13 @@ npm run test:quality-gate:v12-k
 - Vue preview hatti urun gorsel onayi almadan normal/default kullanici acilisina alinmaz.
 - V12-J raporlarindaki PASS sonuclari tarihsel kanittir; V12-K default runtime kabulunu temsil etmez.
 - Mevcut calisma agacinda V12-K kapsam disi implementasyon degisiklikleri vardir; bu gorevde onlara dokunulmadi.
+## V12-K Final Governance Status
+
+Status: NOT COMPLETED
+
+- Route migration code remains preserved.
+- Default runtime remains stable legacy.
+- Vue preview remains available through `?engine=vue`.
+- Trusted design review and strict visual regression are now required for V12-K Final.
+- Current blocker: PR #3 has no current-head GitHub approval by `alierdem6681-svg`.
+- Current blocker: strict stable-to-vue visual regression has failures above `0.015`.

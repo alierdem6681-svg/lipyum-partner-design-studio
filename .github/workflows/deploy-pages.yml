@@ -1,13 +1,16 @@
 name: Deploy GitHub Pages
 
 on:
-  push:
-    branches:
-      - feature/v12-golden-vue-cutover
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Approved PR number to deploy"
+        required: true
+        default: "3"
 
 permissions:
   contents: read
+  pull-requests: read
   pages: write
   id-token: write
 
@@ -23,6 +26,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -36,11 +41,20 @@ jobs:
       - name: Dependency lock
         run: npm run test:dependency-lock
 
-      - name: Design approval gate
-        run: npm run test:design-approval
+      - name: Resolve PR head
+        id: pr
         env:
-          DESIGN_APPROVAL_BASE: ${{ github.event.before }}
-          DESIGN_APPROVAL_HEAD: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "head_sha=$(gh pr view ${{ inputs.pr_number }} --repo ${{ github.repository }} --json headRefOid --jq .headRefOid)" >> "$GITHUB_OUTPUT"
+
+      - name: Design review gate
+        run: npm run test:design-review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
 
       - name: Static design contract
         run: npm run test:design-contract

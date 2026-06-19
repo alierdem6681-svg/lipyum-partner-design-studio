@@ -20,6 +20,25 @@ npm run test:quality-gate:v12-k
 
 Bu komutlar normal URL'nin `data-runtime="legacy"` marker'i ile stable tasarimi korudugunu ve explicit Vue preview yolunun `data-runtime="vue"` marker'i ile acildigini dogrular.
 
+## V12-K Final Trusted Gate
+
+`npm run test:quality-gate:v12-k` artik hafif gate degildir. Full gate su adimlari kapsar:
+
+- syntax
+- dependency lock
+- real GitHub design review
+- static design contract
+- guard self-protection
+- no Vue inline style / random hex / raw SVG debt
+- stable default runtime
+- explicit Vue preview
+- profile/sidebar/bottom bar parity
+- stable-to-vue visual regression
+- build
+- `git diff --check`
+
+Full gate, PR #3 guncel head'i `alierdem6681-svg` tarafindan approve edilmeden PASS olamaz. Bu beklenen guvenlik davranisidir.
+
 V12-J `test:quality-gate:v12-j` ve `test:quality-gate:v12-final` sonuclari tarihsel kanittir; V12-K icin final runtime kabul kapisi olarak kullanilmaz.
 
 Bu dosya bundan sonraki tüm Codex geliştirme görevleri için tamamlanma yasasıdır. Bir görev, ilgili kalite kapısı çalışmadan tamamlandı sayılamaz.

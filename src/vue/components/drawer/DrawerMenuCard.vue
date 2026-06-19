@@ -1,12 +1,27 @@
 <script setup>
 import AppIcon from "../ui/AppIcon.vue";
 
-defineProps({
+const props = defineProps({
   section: { type: Object, required: true },
   activePath: { type: String, default: "" },
 });
 
 const emit = defineEmits(["navigate"]);
+
+const toneClasses = {
+  green: "drawer-menu-item--green",
+  blue: "drawer-menu-item--blue",
+  gold: "drawer-menu-item--gold",
+  red: "drawer-menu-item--red",
+  gray: "drawer-menu-item--gray",
+};
+
+function itemClass(item) {
+  return [
+    props.activePath === item.route ? "is-active" : "",
+    toneClasses[item.tone] || toneClasses.gray,
+  ];
+}
 </script>
 
 <template>
@@ -17,11 +32,10 @@ const emit = defineEmits(["navigate"]);
         v-for="item in section.items"
         :key="item.route || item.label"
         class="drawer-menu-item"
-        :class="activePath === item.route ? 'is-active' : ''"
+        :class="itemClass(item)"
         type="button"
         data-testid="sidebar-menu-item"
         :data-route="item.route"
-        :style="{ '--drawer-item-color': item.color || '#344054' }"
         :aria-label="item.label"
         :aria-current="activePath === item.route ? 'page' : undefined"
         @click="emit('navigate', item.route)"

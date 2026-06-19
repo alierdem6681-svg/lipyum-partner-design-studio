@@ -33,3 +33,13 @@ npm run test:quality-gate:v12-k
 ```
 
 V12-J gate komutlari tarihsel V12-J kabulunu temsil eder; V12-K icin final kabul kapisi olarak kullanilmaz.
+
+## V12-K Final Governance Notu
+
+V12-K Final calismasinda default runtime degistirilmedi:
+
+- Normal URL halen stable legacy tasarimdir.
+- Vue halen yalniz `?engine=vue` preview yoludur.
+- Trusted design approval artik commit token veya env bypass ile degil, GitHub PR review ile dogrulanir.
+- PR #3 guncel head'i `alierdem6681-svg` tarafindan approve edilmeden V12-K Final tamamlanmis sayilamaz.
+- Full visual regression strict gate su anda FAIL durumundadir; contact sheet kullanici onayi bekler.

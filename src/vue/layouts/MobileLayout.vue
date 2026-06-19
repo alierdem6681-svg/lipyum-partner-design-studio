@@ -13,7 +13,7 @@ import { svgSpriteMarkup } from "../icons/svgSprite.js";
             <span>09:41</span>
             <div class="status-icons">
               <div class="signal"><span></span><span></span><span></span><span></span></div>
-              <span style="font-size: 11px">5G</span>
+              <span class="device-status-network">5G</span>
               <div class="battery"><span></span></div>
             </div>
           </div>

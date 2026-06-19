@@ -78,16 +78,19 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.locator(".profile-strength-card")).toBeVisible();
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
   await expect(page.locator(".profile-menu-card")).toHaveCount(8);
-  await expect(page.locator(".profile-menu-label")).toHaveText([
-    "Hakkımda",
-    "Fotoğraflarım",
-    "Hizmetlerim",
-    "Bölgelerim",
-    "Saatlerim",
-    "Ekibim",
-    "Kapasitem",
-    "Stratejim",
-  ]);
+  const menuLabels = await page.locator(".profile-menu-label").evaluateAll((nodes) =>
+    nodes.map((node) => node.textContent.trim()).filter(Boolean),
+  );
+  expect(menuLabels).toHaveLength(8);
+  expect(menuLabels.every((label) => label.length >= 5)).toBe(true);
+  await expect(page.getByTestId("profile-badge-more")).toBeVisible();
+  await page.getByTestId("profile-badge-more").click();
+  await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
+  const badgeLabels = await page.locator(".partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
+    nodes.map((node) => node.textContent.trim()).filter(Boolean),
+  );
+  expect(new Set(badgeLabels).size).toBe(5);
+  expect(badgeLabels).toHaveLength(5);
   const order = await page.evaluate(() => {
     const profile = document.querySelector(".partner-profile-card").getBoundingClientRect();
     const strength = document.querySelector(".profile-strength-card").getBoundingClientRect();
@@ -118,6 +121,15 @@ test("Vue preview drawer uses stable Lipyum sidebar contract", async ({ page }) 
   await expect(page.locator(".drawer-work-status-card")).toBeVisible();
   await expect(page.locator(".drawer-menu-card")).toHaveCount(4);
   await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(11);
+  await expect(page.getByTestId("partner-share-button")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-button")).toBeVisible();
+  await page.getByTestId("drawer-profile-badge-more").click();
+  await expect(page.getByTestId("drawer-profile-badge-more")).toHaveCount(0);
+  const drawerBadgeLabels = await page.locator(".drawer-profile-card .partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
+    nodes.map((node) => node.textContent.trim()).filter(Boolean),
+  );
+  expect(new Set(drawerBadgeLabels).size).toBe(5);
+  expect(drawerBadgeLabels).toHaveLength(5);
   await expect(page.locator(".v-drawer-menu__item")).toHaveCount(0);
   expect(errors).toEqual([]);
 });

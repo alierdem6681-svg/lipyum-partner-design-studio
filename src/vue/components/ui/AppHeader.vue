@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import AppIcon from "./AppIcon.vue";
 
 const emit = defineEmits(["back", "right", "menu", "action"]);
@@ -35,11 +35,11 @@ const testIdForAction = {
 };
 
 const homeStatuses = [
-  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "675 kredi ≈ 2-3 iş", color: "#067647", bg: "#ecfdf3", border: "#abefc6" },
-  { action: "credit", icon: "wallet", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "Yükle", color: "#92400e", bg: "#fffaeb", border: "#fedf89" },
-  { action: "workPlan", icon: "clock", eyebrow: "Durum: Pasif", label: "Çalışma Saati Dışı", color: "#175cd3", bg: "#eff4ff", border: "#b2ccff" },
-  { action: "support", icon: "shield", eyebrow: "Durum: Pasif", label: "Hesap askıda", cta: "Destek", color: "#b42318", bg: "#fef3f2", border: "#fecdca" },
-  { action: "activate-dispatch", icon: "clock", eyebrow: "Durum: Pasif", label: "Duraklatılmış", cta: "Aç", color: "#475467", bg: "#f2f4f7", border: "#d0d5dd" },
+  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "675 kredi â‰ˆ 2-3 iÅŸ", tone: "success" },
+  { action: "credit", icon: "wallet", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "YÃ¼kle", tone: "warning" },
+  { action: "workPlan", icon: "clock", eyebrow: "Durum: Pasif", label: "Ã‡alÄ±ÅŸma Saati DÄ±ÅŸÄ±", tone: "info" },
+  { action: "support", icon: "shield", eyebrow: "Durum: Pasif", label: "Hesap askÄ±da", cta: "Destek", tone: "danger" },
+  { action: "activate-dispatch", icon: "clock", eyebrow: "Durum: Pasif", label: "DuraklatÄ±lmÄ±ÅŸ", cta: "AÃ§", tone: "neutral" },
 ];
 
 function statusAriaLabel(status) {
@@ -55,7 +55,7 @@ function statusAriaLabel(status) {
       type="button"
       data-testid="back-button"
       data-action="go-back"
-      aria-label="Geri dön"
+      aria-label="Geri dÃ¶n"
       @click="emit('back')"
     >
       <AppIcon name="chevron-left" :size="24" class-name="icon" />
@@ -66,7 +66,7 @@ function statusAriaLabel(status) {
       type="button"
       data-testid="hamburger-button"
       data-action="menu"
-      aria-label="Menü"
+      aria-label="MenÃ¼"
       @click="emit('menu')"
     >
       <AppIcon name="menu" :size="24" class-name="icon" />
@@ -77,19 +77,18 @@ function statusAriaLabel(status) {
       class="v-header-status-viewport nav-alert-ticker nav-status-pill"
       role="status"
       aria-live="polite"
-      aria-label="İş alımı durumları"
+      aria-label="Ä°ÅŸ alÄ±mÄ± durumlarÄ±"
     >
       <span class="nav-alert-track">
         <div
           v-for="status in homeStatuses"
           :key="status.action"
           class="nav-alert-item"
-          :class="[status.cta ? 'has-action' : '', status.eyebrow.includes('Pasif') ? 'is-inactive' : '']"
+          :class="[status.cta ? 'has-action' : '', status.eyebrow.includes('Pasif') ? 'is-inactive' : '', `nav-alert-item--${status.tone}`]"
           role="button"
           tabindex="0"
           :data-action="status.action"
           :aria-label="statusAriaLabel(status)"
-          :style="{ '--nav-alert-color': status.color, '--nav-alert-bg': status.bg, '--nav-alert-border': status.border }"
           @click="emit('action', status.action)"
           @keydown.enter.prevent="emit('action', status.action)"
           @keydown.space.prevent="emit('action', status.action)"

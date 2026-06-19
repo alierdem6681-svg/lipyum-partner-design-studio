@@ -68,3 +68,11 @@ npm run test:quality-gate:v12-k
 ```
 
 V12-J `default Vue` gate ve raporlari tarihsel kabul edilir; guncel mimari kabul kaynagi degildir.
+## V12-K Final Governance Update
+
+- Default runtime remains stable legacy.
+- Vue remains preview-only through `?engine=vue`.
+- Design-sensitive changes are governed by GitHub PR review from `alierdem6681-svg`.
+- Commit-message tokens and environment-variable bypasses are not accepted as design approval.
+- GitHub Pages deploy is no longer triggered by feature-branch push.
+- V12-K Final cannot be considered complete until trusted approval and strict visual regression both pass.
