@@ -1,0 +1,114 @@
+{
+  "phase": "V12-H Home Visual Parity Closure",
+  "status": "BLOCKED",
+  "generatedAt": "2026-06-19T13:32:00+03:00",
+  "branch": "feature/v12-golden-vue-cutover",
+  "checkpointCommit": "db9c978ff746492f066e3baabdc1087d6e692663",
+  "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/home.png",
+  "vueFeatureUrl": "http://127.0.0.1:5173/#/home",
+  "engine": "default-vue",
+  "viewport": "393x852",
+  "targetDiffRatio": 0.015,
+  "currentVueDiffRatio": 0.037619,
+  "currentVercelAgainstStoredBaselineDiffRatio": 0.031855,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "observations": [
+    {
+      "element": "stored-golden-baseline",
+      "goldenBounds": null,
+      "vueBounds": null,
+      "pxDelta": null,
+      "styleDelta": "Stored baseline does not match the current accepted production UI closely enough. Current Vercel measured against the stored baseline is 0.031855, already above the strict 0.015 target.",
+      "severity": "P1",
+      "componentOrToken": "tests/golden-master/v11-stable/vercel/393x852/home.png"
+    },
+    {
+      "element": "bottom-navigation-labels",
+      "goldenBounds": {
+        "labels": ["Ana Sayfa", "Islerim", "Is Al", "Takvim", "Cuzdan"]
+      },
+      "vueBounds": {
+        "labels": ["Ana Sayfa", "Isler", "Is Al", "Randevu", "Cuzdan"]
+      },
+      "pxDelta": null,
+      "styleDelta": "The stored baseline/current live Vercel labels use the old Islerim/Takvim wording, while the V12 product scope requires Isler/Randevu. Changing Vue back to the old labels would violate product-scope tests.",
+      "severity": "P1",
+      "componentOrToken": "src/vue/components/ui/AppBottomBar.vue"
+    },
+    {
+      "element": "header",
+      "goldenBounds": {
+        "source": "liveVercelDOM",
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 70
+      },
+      "vueBounds": {
+        "source": "localVueDOM",
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 68
+      },
+      "pxDelta": {
+        "height": -2
+      },
+      "styleDelta": "Local Vue header padding is 12px 12px 0px; current live Vercel header padding is 12px 12px 9px.",
+      "severity": "P2",
+      "componentOrToken": "src/vue/components/ui/AppHeader.vue"
+    },
+    {
+      "element": "wallet-card",
+      "goldenBounds": {
+        "source": "liveVercelDOM",
+        "x": 12,
+        "y": 306,
+        "width": 369,
+        "height": 155.41
+      },
+      "vueBounds": {
+        "source": "localVueDOM",
+        "x": 12,
+        "y": 304,
+        "width": 369,
+        "height": 155.41
+      },
+      "pxDelta": {
+        "y": -2,
+        "width": 0,
+        "height": 0
+      },
+      "styleDelta": "Geometry is close; residual diff is dominated by baseline drift, text labels, and card/header rendering differences.",
+      "severity": "P2",
+      "componentOrToken": "src/vue/pages/HomePage.vue"
+    },
+    {
+      "element": "region-card",
+      "goldenBounds": {
+        "source": "liveVercelDOM",
+        "x": 12,
+        "y": 471.41,
+        "width": 369,
+        "height": 188.72
+      },
+      "vueBounds": {
+        "source": "localVueDOM",
+        "x": 12,
+        "y": 469.41,
+        "width": 369,
+        "height": 188.72
+      },
+      "pxDelta": {
+        "y": -2,
+        "width": 0,
+        "height": 0
+      },
+      "styleDelta": "Geometry is close after local spacing/shadow adjustment; strict PASS remains blocked by stored baseline drift.",
+      "severity": "P2",
+      "componentOrToken": "src/vue/styles/vue.css"
+    }
+  ],
+  "blockedReason": "Home strict parity cannot be honestly marked PASS while the accepted live production UI itself fails the stored Golden baseline at 0.031855 and the baseline conflicts with V12 bottom navigation product labels."
+}

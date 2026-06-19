@@ -1,0 +1,69 @@
+{
+  "version": "v12-e",
+  "activeBottomNavigation": [
+    { "label": "Ana Sayfa", "route": "/home" },
+    { "label": "İşler", "route": "/my-jobs" },
+    { "label": "İş Al", "route": "/jobs" },
+    { "label": "Randevu", "route": "/calendar" },
+    { "label": "Cüzdan", "route": "/wallet" }
+  ],
+  "activeGrowthSidebar": [
+    "Liderlik Tablosu",
+    "Müşteri Yorumları",
+    "Aboneliğim"
+  ],
+  "removedProducts": [
+    "Paketler",
+    "Paket seçimi",
+    "Paket builder",
+    "Paket checkout",
+    "Paket ödeme akışı"
+  ],
+  "removedRoutes": [
+    "/packages",
+    "/package-builder",
+    "/package-checkout"
+  ],
+  "retiredRouteRedirects": {
+    "/packages": "/subscription",
+    "/package-builder": "/subscription",
+    "/package-checkout": "/subscription",
+    "/partner/packages": "/subscription"
+  },
+  "blankRoutes": [
+    "/jobs",
+    "/my-jobs",
+    "/calendar",
+    "/wallet"
+  ],
+  "retainedRoutes": [
+    "/subscription"
+  ],
+  "routeTitles": {
+    "/jobs": "İş Al",
+    "/my-jobs": "İşler",
+    "/calendar": "Randevu",
+    "/wallet": "Cüzdan"
+  },
+  "blankRouteExpectation": {
+    "appHeaderVisible": true,
+    "appBottomBarVisible": true,
+    "mainVisibleChildCount": 0,
+    "visibleCardCount": 0,
+    "visibleFilterCount": 0,
+    "visiblePageActionCount": 0,
+    "horizontalOverflow": false
+  },
+  "supersededGoldenRoutes": [
+    "/jobs",
+    "/my-jobs",
+    "/calendar",
+    "/wallet",
+    "/packages",
+    "/package-builder",
+    "/package-checkout"
+  ],
+  "activeGoldenParityRoutes": [
+    "/home"
+  ]
+}

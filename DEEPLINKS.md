@@ -14,7 +14,7 @@ Lipyum Partner currently runs as a backend-free clickable mobile UI prototype. N
 | `/partner/support/live` | `#/support/live` |
 | `/partner/referral` | `#/referral` |
 | `/partner/job-referral` | `#/job-referral` |
-| `/partner/packages` | `#/packages` |
+| `/partner/packages` | `#/subscription` |
 | `/partner/satisfaction` | `#/satisfaction` |
 | `/partner/card` | `#/partner-card-preview` |
 | `?route=/wallet` | `#/wallet` |
@@ -38,4 +38,15 @@ Unknown routes fall back to `#/home`.
 
 ## V11 Verification
 
-V11 keeps `test:deeplinks` in the quality gate. `/support/live`, `/partner-card-preview`, `/support/new`, `/wallet`, `/reviews`, `/packages` and unknown fallback behavior must stay green before release-candidate handoff.
+V11 keeps `test:deeplinks` in the quality gate. `/support/live`, `/partner-card-preview`, `/support/new`, `/wallet`, `/reviews` and unknown fallback behavior must stay green before release-candidate handoff.
+
+## V12-E Retired Package Routes
+
+Paketler ürünü aktif kapsamdan kaldırıldı. Eski dış linkler kırılmaması için retired redirect olarak `/subscription` route'una düşer:
+
+- `/packages` -> `/subscription`
+- `/package-builder` -> `/subscription`
+- `/package-checkout` -> `/subscription`
+- `/partner/packages` -> `/subscription`
+
+`packages` artık aktif deep link alias'ı değildir. Abonelik route'u `/subscription` olarak korunur.

@@ -123,11 +123,31 @@ Bu dosya uygulamadaki kritik etkileşimlerin ürün sözleşmesidir. Yeni geliş
 - Profil rozetlerindeki `+N` butonu tek yönlüdür: gizli rozetleri açar, buton kaybolur ve kapatma/collapse davranışı sunmaz.
 - Kullanıcı route değiştirip profile geri döndüğünde rozet state'i başlangıç durumuna döner.
 
-## Packages
+## V12-E Scope Contract
 
-- `package-card` paket seçimi için tıklanabilir karttır.
-- `package-select-button` paketi seçer.
-- `package-checkout-button` ödeme route'una gider.
+Aktif bottom navigation:
+
+- `bottom-tab-home` -> `/home`
+- `bottom-tab-jobs` -> `/my-jobs`, label `İşler`
+- `bottom-cta-job` -> `/jobs`, label `İş Al`
+- `bottom-tab-calendar` -> `/calendar`, label `Randevu`
+- `bottom-tab-wallet` -> `/wallet`, label `Cüzdan`
+
+Blank bottom routes:
+
+- `/jobs`
+- `/my-jobs`
+- `/calendar`
+- `/wallet`
+
+Bu route'larda page content içinde görünür action bulunmamalıdır. Header ve bottom bar interaction'ları global sözleşmeye tabidir.
+
+Retired package routes:
+
+- `/packages` -> `/subscription`
+- `/package-builder` -> `/subscription`
+- `/package-checkout` -> `/subscription`
+- `/partner/packages` -> `/subscription`
 
 ## Test Kuralı
 

@@ -1,0 +1,23 @@
+{
+  "route": "/home",
+  "source": "v12-product-candidate",
+  "requiredLabels": [
+    "Ana Sayfa",
+    "Isler",
+    "Is Al",
+    "Randevu",
+    "Cuzdan"
+  ],
+  "requiredSections": [
+    "Performans Skoru",
+    "Cuzdan",
+    "Bonus",
+    "Bolgendeki Isler"
+  ],
+  "productDecisions": [
+    "Bottom labels are Ana Sayfa, Isler, Is Al, Randevu, Cuzdan.",
+    "Packages routes are retired and redirect to subscription.",
+    "Jobs, my-jobs, calendar and wallet bottom routes stay blank.",
+    "Subscription is retained."
+  ]
+}

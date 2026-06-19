@@ -7,10 +7,10 @@ const supportPhoneLabel = "444 23 68";
 export function CustomerServicePage({
   hasAccess = false,
   callStarted = false,
-  packageLabel = "",
+  subscriptionLabel = "",
   icon = () => "",
 } = {}) {
-  const planLabel = packageLabel || "Pro paket";
+  const planLabel = subscriptionLabel || "Pro abonelik";
 
   return PageContainer({
     className: "customer-service-page",
@@ -93,7 +93,7 @@ export function CustomerServicePage({
           <button class="secondary-btn" type="button" data-route="/subscription">Paketimi görüntüle</button>
         ` : `
           <button class="primary-btn" type="button" data-route="/subscription" data-testid="customer-service-plans">
-            ${icon("sparkles")} Paketleri karşılaştır
+            ${icon("sparkles")} Abonelikleri incele
           </button>
         `}
       </section>

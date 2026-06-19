@@ -1,5 +1,46 @@
 # Lipyum Partner Quality Gate
 
+## V12-K Current Runtime Gate
+
+Tarih: 19 Haziran 2026
+
+V12-K icin gecerli runtime politikasi:
+
+- Normal URL stable legacy product design acmalidir.
+- `?engine=vue` Vue preview acmalidir.
+- V12-J `default Vue` kabul raporlari `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir.
+
+Gecerli hafif V12-K gate komutlari:
+
+```bash
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
+```
+
+Bu komutlar normal URL'nin `data-runtime="legacy"` marker'i ile stable tasarimi korudugunu ve explicit Vue preview yolunun `data-runtime="vue"` marker'i ile acildigini dogrular.
+
+## V12-K Final Trusted Gate
+
+`npm run test:quality-gate:v12-k` artik hafif gate degildir. Full gate su adimlari kapsar:
+
+- syntax
+- dependency lock
+- real GitHub design review
+- static design contract
+- guard self-protection
+- no Vue inline style / random hex / raw SVG debt
+- stable default runtime
+- explicit Vue preview
+- profile/sidebar/bottom bar parity
+- stable-to-vue visual regression
+- build
+- `git diff --check`
+
+Full gate, PR #3 guncel head'i `alierdem6681-svg` tarafindan approve edilmeden PASS olamaz. Bu beklenen guvenlik davranisidir.
+
+V12-J `test:quality-gate:v12-j` ve `test:quality-gate:v12-final` sonuclari tarihsel kanittir; V12-K icin final runtime kabul kapisi olarak kullanilmaz.
+
 Bu dosya bundan sonraki tüm Codex geliştirme görevleri için tamamlanma yasasıdır. Bir görev, ilgili kalite kapısı çalışmadan tamamlandı sayılamaz.
 
 ## Zorunlu Komutlar
@@ -150,3 +191,150 @@ V10 sonrası görsel değişikliklerde `VISUAL_QA_REPORT.md` ve `CLICKABLE_INVEN
 - `test:v11-audit`: route map, route metadata ve page route eşleşmesini denetler; full Vue migration tamamlanmadıysa bunun P0 olarak dokümante edildiğini doğrular.
 
 V11 notu: Tam Vue Router/SFC migration bitene kadar `V11_ARCHITECTURE_AUDIT.md` içinde legacy boot ve aktif legacy render borcu açıkça P0 olarak kalır; bu borç gizlenmemelidir.
+
+## V12 Golden Master Ek Kapıları
+
+V12 Golden Master çalışmasında production cutover’dan önce aşağıdaki komutlar zorunludur:
+
+```bash
+npm run test:v12-architecture
+npm run test:v12-core
+npm run test:v12-compatibility
+npm run test:v12-parity
+npm run test:quality-gate:v12
+```
+
+V12 parity kuralı:
+
+- `test:v12-parity` `V12_VISUAL_PARITY_REPORT.md` ve JSON raporunu üretir.
+- Core route’larda P0/P1 parity farkı varsa default Vue cutover kapalı kalmalıdır.
+- Parity fail varken `src/app.js` default Vue boot’a geçirilirse V12 parity gate fail olmalıdır.
+- Parity fail’in “beklenen” olması, V12’nin tamamlandığı anlamına gelmez; yalnızca güvenli şekilde cutover’ın engellendiğini kanıtlar.
+
+V12 final cutover için ayrıca gerçek Golden Master visual regression, content parity, interaction parity ve full quality gate iki ardışık koşuda geçmelidir.
+
+## V12-C Core Route Gate
+
+Core route çalışmaları için ek komutlar:
+
+```bash
+npm run test:parity:core
+npm run test:parity:core:strict
+npm run test:quality-gate:v12-c
+```
+
+Kurallar:
+
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` için `test:parity:core` content/action contract kapısıdır.
+- `test:parity:core:strict` visual parity dahil strict kapıdır ve P0/P1 görsel fark varken fail vermelidir.
+- `test:quality-gate:v12-c` strict visual parity fail iken tamamlandı sayılmaz.
+- Default Vue boot ve PR ready durumu bu komutlar iki kez kod değişmeden geçmeden açılamaz.
+
+Mevcut V12-C durumu:
+
+- `test:parity:core`: PASS.
+- `test:parity:core:strict`: FAIL, visual parity nedeniyle.
+
+## V12-E Product Scope Gate
+
+V12-E itibarıyla Paketler ürünü aktif kapsamdan çıkarıldı. Quality Gate artık package builder/checkout flow'u beklemez.
+
+Yeni komut:
+
+```bash
+npm run test:quality-gate:v12-e
+```
+
+Kapsam:
+
+- syntax/check
+- architecture
+- package purge
+- route smoke
+- bottom label doğrulaması
+- blank bottom routes
+- retired package redirects
+- subscription retained
+- V12-E product scope
+- build
+- git diff check
+
+Kaldırılan gate adımı:
+
+- `test:packages-flow`
+
+Yeni adımlar:
+
+- `test:package-feature-removed`
+- `test:product-scope:v12-e`
+- `test:blank-bottom-routes`
+- `test:bottom-labels`
+- `test:retired-package-routes`
+- `test:subscription-retained`
+
+Not: `/home` Golden visual parity V12-E scope dışı bırakılmıştır; ayrı P0 olarak devam eder.
+## V12-I Product Golden Final Gate
+
+V12-I itibariyla Home parity icin V11 historical baseline dogrudan final engeli degildir. V11 baseline saklanir; canli urunde kabul edilen stabil Home gorunumu V12 Product Golden olarak ayrica tutulur.
+
+Yeni final komut:
+
+```bash
+npm run test:quality-gate:v12-final
+```
+
+Bu gate su kontrolleri calistirir:
+
+- JS/Vue syntax.
+- V12 mimari kontrolleri.
+- Stabil urun acilisi ve Vue preview ayrimi.
+- Paket ozelliginin aktif urunden kaldirildigi kontrolu.
+- Retired package route redirect kontrolu.
+- Blank bottom route kontrolu.
+- Zengin route outcome testleri.
+- Home V12 Product Golden strict visual parity.
+- Home content ve interaction contract.
+- Build.
+- `git diff --check`.
+
+V12-I kabul kriteri:
+
+- Home diff `<= 0.015`.
+- `?engine=vue#/home` uzerinden Vue screenshot alinmis olmali.
+- Final gate iki kez kod degismeden PASS olmali.
+- Run loglari `artifacts/v12-i/final-gate-run-1.log` ve `artifacts/v12-i/final-gate-run-2.log` altinda saklanmali.
+
+## V12-J Release Candidate Gate
+
+V12-K notu: Bu bolum `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir ve yalniz tarihsel V12-J kabulunu anlatir. Guncel politika normal URL = stable legacy product design, `?engine=vue` = Vue preview seklindedir.
+
+V12-J itibariyla normal URL default Vue runtime acmalidir. Legacy yalniz `?engine=legacy` rollback parametresiyle calisir.
+
+Yeni release-candidate komut:
+
+```bash
+npm run test:quality-gate:v12-j
+```
+
+Final alias:
+
+```bash
+npm run test:quality-gate:v12-final
+```
+
+Bu gate sunlari zorunlu kilar:
+
+- normal URL `data-runtime="vue"` marker'i verir.
+- `?engine=vue` Vue acar.
+- `?engine=legacy` `data-runtime="legacy"` marker'i verir.
+- legacy default boot kabul edilmez.
+- Vue Router navigation sahibidir.
+- aktif route'lar default Vue'da acilir.
+- blank bottom route'lar bos kalir.
+- retired package route'lari `/subscription` route'una gider.
+- Home Product Golden parity normal `/#/home` URL ile `<= 0.015` kalir.
+- critical clickable inventory unlabeled `0` kalir.
+- accessibility ve responsive smoke gecmelidir.
+- build ve `git diff --check` gecmelidir.
+
+V12-J final raporda iki ardışık `test:quality-gate:v12-j` kosusunun log hashleri verilmelidir.

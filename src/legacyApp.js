@@ -37,9 +37,9 @@ mountAppShell();
       const screens = [
         { id: "home", label: "Ana Sayfa", short: "Durum", icon: "home", desc: "Bugünkü iş, hak ve fırsat özeti" },
         { id: "work", label: "İş Al", short: "Fırsat", icon: "briefcase", desc: "Havuz işleri ve teklif kayıtları" },
-        { id: "jobs", label: "İşlerim", short: "Takip", icon: "clipboard", desc: "Gelen, aktif, teklif ve sorunlu işler" },
-        { id: "calendar", label: "Takvim", short: "Randevu", icon: "calendar", desc: "Ücretsiz randevu ve çalışan planı" },
-        { id: "wallet", label: "Cüzdan", short: "Paket", icon: "wallet", desc: "Haklar, kredi ve abonelik paketleri" },
+        { id: "jobs", label: "İşler", short: "İşler", icon: "clipboard", desc: "İşler" },
+        { id: "calendar", label: "Randevu", short: "Randevu", icon: "calendar", desc: "Randevu" },
+        { id: "wallet", label: "Cüzdan", short: "Cüzdan", icon: "wallet", desc: "Cüzdan" },
         { id: "profile", label: "Profilini Güçlendir", short: "4/6", icon: "sparkles", desc: "Daha çok iş için net görevler" },
         { id: "services", label: "Hizmet Alanları", short: "Mod", icon: "list", desc: "Sektöre göre çalışma modeli" },
         { id: "regions", label: "Hizmet Bölgeleri", short: "Bölge", icon: "map-pin", desc: "İlçe bazlı iş alma ayarı" },
@@ -60,10 +60,10 @@ mountAppShell();
 
       const mainTitles = {
         home: ["Ana Sayfa", "Bugünkü iş durumun"],
-        work: ["İş Al", "Havuz ve teklif fırsatları"],
-        jobs: ["İşlerim", "İşlerini takip et"],
-        calendar: ["Takvim", "Randevularını ve çalışan müsaitliğini yönet"],
-        wallet: ["Cüzdan", "Paket hakları ve kredi bakiyen"],
+        work: ["İş Al", ""],
+        jobs: ["İşler", ""],
+        calendar: ["Randevu", ""],
+        wallet: ["Cüzdan", ""],
         profile: ["Profilim", "Profil ve hesap ayarların"],
         about: ["Hakkımda", "Müşterilere görünen tanıtım bilgilerin"],
         photoGallery: ["Fotoğraflarım", "Profil fotoğrafları ve iş galerin"],
@@ -89,9 +89,6 @@ mountAppShell();
         referralList: ["Davet Ettiğin Partnerler", "Partner davetlerini ve bonus aşamalarını takip et"],
         jobReferral: ["İş Yönlendirme Programı", "Servis talebi gönder, iş gerçekleşirse kazanç elde et"],
         referralEarnings: ["Kazançlarım", "Bonus kazanç geçmişi ve detayları"],
-        growthPackages: ["Büyüme Paketleri", "Premium paketlerle daha fazla iş fırsatı"],
-        growthPackageBuilder: ["Paket Seçimi", "Sektör, il ve ilçe seçimi"],
-        growthPackageCheckout: ["Ödeme", "Paket özeti ve ödeme"],
         subscription: ["Aboneliğim", "Gold, Pro ve VIP avantajlarını yönet"],
         levels: ["Partner Seviyeleri", "Seviye ve rozet ilerlemeni gör"],
         reviews: ["Müşteri Yorumları", "Değerlendirme ve geri bildirimler"],
@@ -129,13 +126,13 @@ mountAppShell();
         { title: "Teklif Verme", desc: "Teklif bekleyen kayıtlar", iconName: "edit", color: "#6941c6", bg: "#f4f3ff" },
       ];
 
-      const packageTabs = {
+      const subscriptionTabs = {
         free: {
           label: "Ücretsiz Hesap",
-          iconName: "package",
+          iconName: "crown",
           color: "#067647",
-          title: "Ücretli paketlerle büyü",
-          desc: "Temel haklarla başlayabilir, hakların azaldığında paket veya krediyle devam edebilirsin.",
+          title: "Ücretli aboneliklerle büyü",
+          desc: "Temel haklarla başlayabilir, hakların azaldığında abonelik veya krediyle devam edebilirsin.",
           price: "₺0",
           cycle: "",
           promise: "Başlamak için ideal; büyümek için Plus önerilir.",
@@ -531,15 +528,15 @@ mountAppShell();
         `;
       }
 
-      function compactPackageCard() {
-        const selected = currentPackage();
+      function compactSubscriptionCard() {
+        const selected = currentSubscription();
         return `
-          <button class="compact-package-card section" type="button" data-open="package" aria-label="Paket ve kalan haklar">
-            <span class="compact-package-head">
-              <span class="compact-package-title">${icon(selected.iconName)} ${selected.label}</span>
-              <span class="compact-package-link">Paketleri Gör ${icon("chevron-right")}</span>
+          <button class="compact-subscription-card section" type="button" data-route="/subscription" aria-label="Abonelik ve kalan haklar">
+            <span class="compact-subscription-head">
+              <span class="compact-subscription-title">${icon(selected.iconName)} ${selected.label}</span>
+              <span class="compact-subscription-link">Aboneliğini Gör ${icon("chevron-right")}</span>
             </span>
-            <span class="compact-package-note">
+            <span class="compact-subscription-note">
               <span>${icon("edit")} Her hafta 3 teklif hakkın var.</span>
               <span>${icon("plus")} Krediyle hazır iş satın alabilirsin.</span>
             </span>
@@ -586,25 +583,25 @@ mountAppShell();
         `;
       }
 
-      function currentPackage() {
-        return packageTabs[state.packageTab] || packageTabs.free;
+      function currentSubscription() {
+        return subscriptionTabs[state.subscriptionTab] || subscriptionTabs.free;
       }
 
-      function hasPaidPackage() {
-        return Boolean(state.paidPackage) || state.packageTab !== "free";
+      function hasPaidSubscription() {
+        return Boolean(state.activeSubscriptionPlan) || state.subscriptionTab !== "free";
       }
 
-      function paidPackageLabel() {
-        if (state.paidPackage) return state.paidPackage;
-        return state.packageTab !== "free" ? currentPackage().label : "";
+      function subscriptionPlanLabel() {
+        if (state.activeSubscriptionPlan) return state.activeSubscriptionPlan;
+        return state.subscriptionTab !== "free" ? currentSubscription().label : "";
       }
 
-      function checkoutPackage() {
-        return state.packageTab === "free" ? packageTabs.plus : currentPackage();
+      function checkoutSubscription() {
+        return state.subscriptionTab === "free" ? subscriptionTabs.plus : currentSubscription();
       }
 
       function selectedRights() {
-        const selected = currentPackage();
+        const selected = currentSubscription();
         return weeklyRights.map((right, index) => ({ ...right, ...selected.rights[index] }));
       }
 
@@ -622,23 +619,23 @@ mountAppShell();
         `;
       }
 
-      function packageUpgradePanel() {
-        const selected = currentPackage();
-        const isFree = state.packageTab === "free";
+      function subscriptionUpgradePanel() {
+        const selected = currentSubscription();
+        const isFree = state.subscriptionTab === "free";
         return `
-          <div class="package-tabs" role="tablist" aria-label="Paket seçenekleri">
-            ${Object.entries(packageTabs).map(([id, tab]) => `<button class="${state.packageTab === id ? "active" : ""}" type="button" data-package-tab="${id}" style="--tab-color:${tab.color}">${icon(tab.iconName)} ${tab.label}</button>`).join("")}
+          <div class="subscription-tabs" role="tablist" aria-label="Abonelik seçenekleri">
+            ${Object.entries(subscriptionTabs).map(([id, tab]) => `<button class="${state.subscriptionTab === id ? "active" : ""}" type="button" data-subscription-tab="${id}" style="--tab-color:${tab.color}">${icon(tab.iconName)} ${tab.label}</button>`).join("")}
           </div>
         `;
       }
 
-      function packagePitchPanel() {
-        const selected = currentPackage();
-        const isFree = state.packageTab === "free";
+      function subscriptionPitchPanel() {
+        const selected = currentSubscription();
+        const isFree = state.subscriptionTab === "free";
         if (isFree) return "";
         const checkoutPlan = selected;
         return `
-          <div class="package-panel">
+          <div class="subscription-panel">
             <span class="plan-content">
               <span class="plan-headline">
                 <strong>${selected.title}</strong>
@@ -648,7 +645,7 @@ mountAppShell();
               <small>${selected.desc}</small>
               <span class="feature-chips">${selected.features.map((feature) => `<span>${feature}</span>`).join("")}</span>
             </span>
-            <button class="primary-btn" type="button" data-action="quick-checkout" style="min-height:44px;padding:0 12px">${icon("sparkles")} Pakete Geç</button>
+            <button class="primary-btn" type="button" data-action="quick-checkout" style="min-height:44px;padding:0 12px">${icon("sparkles")} Aboneliğe Geç</button>
           </div>
         `;
       }
@@ -681,163 +678,6 @@ mountAppShell();
               </div>
             </div>
           </section>
-        `;
-      }
-
-      function growthPackageCatalog() {
-        return {
-          demand: {
-            id: "demand",
-            tab: "📦 Toplu Talep",
-            iconName: "package",
-            advantage: "Hacim Avantajı",
-            title: "Toplu Talep Paketi",
-            desc: "Kotanı belirle, düzenli işleri görüntüle.",
-            selectedLabel: "500 İş ⭐",
-            selectedPrice: "₺399.603",
-            options: [
-              { label: "100 İş", price: "1.090", prefix: "İş Başına" },
-              { label: "250 İş", price: "945", prefix: "İş Başına" },
-              { label: "500 İş ⭐", price: "799", prefix: "İş Başına", selected: true },
-              { label: "750 İş", price: "654", prefix: "İş Başına" },
-              { label: "1000 İş", price: "509", prefix: "İş Başına" },
-            ],
-          },
-          fixed: {
-            id: "fixed",
-            tab: "💰 Sabit Fiyat",
-            iconName: "zap",
-            advantage: "Öngörülebilir Gelir",
-            title: "Sabit Fiyat Paketi",
-            desc: "Her iş aynı fiyat. Bütçeni kolayca planlayın.",
-            selectedLabel: "90 Gün Sabit Fiyat ⭐",
-            selectedPrice: "₺5.900",
-            options: [
-              { label: "30 Gün Sabit Fiyat", price: "2.900" },
-              { label: "90 Gün Sabit Fiyat ⭐", price: "5.900", selected: true },
-              { label: "Yıllık Sabit Fiyat", price: "15.900" },
-            ],
-          },
-          region: {
-            id: "region",
-            tab: "🌎 Bölge Lisansı",
-            iconName: "map-pin",
-            advantage: "Bölgenizde Tek Siz Olacaksınız",
-            title: "Bölge Lisansı",
-            desc: "Seçtiğiniz bölgede işler yalnızca size yönlendirilir.",
-            selectedLabel: "3 Aylık Lisans ⭐",
-            selectedPrice: "₺10.200",
-            options: [
-              { label: "Aylık Lisans", note: "Her bir bölge fiyatı", price: "5.100" },
-              { label: "3 Aylık Lisans ⭐", note: "Her bir bölge fiyatı", price: "10.200", selected: true },
-              { label: "Yıllık Lisans", note: "Her bir bölge fiyatı", price: "30.600" },
-            ],
-          },
-          pool: {
-            id: "pool",
-            tab: "☰ Havuz",
-            iconName: "list",
-            advantage: "Toplu İşleri Görüntüle",
-            title: "Havuz Paketi",
-            desc: "Havuzdaki işleri uygun fiyata toplayın.",
-            selectedLabel: "50 İş ⭐",
-            selectedPrice: "₺13.657",
-            options: [
-              { label: "10 İş", note: "Havuzdan ücretsiz görüntüle", price: "2.731" },
-              { label: "25 İş", note: "Havuzdan ücretsiz görüntüle", price: "6.828" },
-              { label: "50 İş ⭐", note: "Havuzdan ücretsiz görüntüle", price: "13.657", selected: true },
-              { label: "100 İş", note: "Havuzdan ücretsiz görüntüle", price: "27.314" },
-            ],
-          },
-          guarantee: {
-            id: "guarantee",
-            tab: "✅ Garanti",
-            iconName: "shield",
-            advantage: "İş Garantisi",
-            title: "Garanti Paketi",
-            desc: "İş sayısı garanti. Tutmazsa paket ücretsiz yenilenir.",
-            selectedLabel: "50 İş Garantisi ⭐",
-            selectedPrice: "₺4.900",
-            options: [
-              { label: "25 İş Garantisi", note: "30 gün içinde 25 iş garantisi", price: "3.900" },
-              { label: "50 İş Garantisi ⭐", note: "60 gün içinde 50 iş garantisi", price: "4.900", selected: true },
-              { label: "75 İş Garantisi", note: "90 gün içinde 75 iş garantisi", price: "8.900" },
-            ],
-          },
-          bonusCredit: {
-            id: "bonusCredit",
-            tab: "🎁 Bonus Kredi",
-            iconName: "gift",
-            advantage: "Her İşte %50 Kredi Bonusu",
-            title: "Bonus Kredi Toplama Paketi",
-            desc: "Her bir iş bedelinin %50'si kadar bonus kredi kazanın.",
-            selectedLabel: "3 Aylık",
-            selectedPrice: "₺5.900",
-            options: [
-              { label: "3 Aylık", note: "En fazla 250.000 Bonus Kredi", price: "5.900", selected: true },
-            ],
-          },
-        };
-      }
-
-      function growthPackageCard(pkg) {
-        return `
-          <section class="growth-package-card">
-            <span class="growth-advantage">${pkg.advantage}</span>
-            <div class="growth-package-top">
-              <span class="growth-package-icon">${icon(pkg.iconName)}</span>
-              <span class="growth-card-copy">
-                <h3>${pkg.title}</h3>
-                <p>${pkg.desc}</p>
-              </span>
-              <span class="growth-check">${icon("check")}</span>
-            </div>
-            <div class="growth-option-list">
-              ${pkg.options.map((option) => `
-                <div class="growth-option ${option.selected ? "is-selected" : ""}">
-                  <span class="growth-radio">${icon("check")}</span>
-                  <span>
-                    <strong>${option.label}</strong>
-                    ${option.note ? `<small>${option.note}</small>` : ""}
-                  </span>
-                  <span class="growth-price">
-                    ${option.prefix ? `<small>${option.prefix}</small>` : ""}
-                    <span>${icon("coin")} ${option.price}</span>
-                  </span>
-                </div>
-              `).join("")}
-            </div>
-          </section>
-        `;
-      }
-
-      function renderGrowthPackages() {
-        const catalog = growthPackageCatalog();
-        const active = catalog[state.growthPackageTab] || catalog.demand;
-        return `
-          ${header("growthPackages", true)}
-          <div class="growth-page">
-            <section class="growth-hero">
-              <span class="growth-premium-pill">${icon("crown")} Premium Paketler</span>
-              <h2>Hemen Kazanmaya Başlayın</h2>
-              <p>🚀 İşlerinizi büyütecek avantajlar</p>
-            </section>
-            <div class="growth-tabs" role="tablist" aria-label="Büyüme paketi kategorileri">
-              ${Object.values(catalog).map((pkg) => `
-                <button class="${active.id === pkg.id ? "active" : ""}" type="button" data-growth-tab="${pkg.id}">${pkg.tab}</button>
-              `).join("")}
-            </div>
-            ${growthPackageCard(active)}
-            <div class="growth-foot-note">
-              <button class="link-btn" type="button" data-action="current-plan">Mevcut Paketlerim</button>
-              <span class="growth-trust-row">
-                <span>✓ Gizli ücret yok</span>
-                <span>✓ Anında aktif</span>
-                <span>✓ Kontrol sende</span>
-              </span>
-              <button class="growth-primary-cta" type="button" data-growth-start="${active.id}">🚀 Hemen Kazanmaya Başla</button>
-            </div>
-          </div>
         `;
       }
 
@@ -929,7 +769,7 @@ mountAppShell();
                 <span class="subscription-status-pill">Ücretsiz hesap</span>
               </div>
               <h2>Bir üst pakete geç, daha fazla iş fırsatı yakala.</h2>
-              <p>Gold, Pro ve VIP paketleri görünürlüğünü, haklarını ve müşteriye güven veren rozetlerini güçlendirir.</p>
+              <p>Gold, Pro ve VIP abonelikleri görünürlüğünü, haklarını ve müşteriye güven veren rozetlerini güçlendirir.</p>
               <div class="subscription-mini-benefits">
                 <span>${icon("eye")} Daha fazla görünürlük</span>
                 <span>${icon("trend-up")} Daha fazla iş şansı</span>
@@ -939,7 +779,7 @@ mountAppShell();
 
             <section class="subscription-rail-wrap" aria-label="Abonelik paketleri">
               <div class="subscription-rail-hint">
-                <strong>Paketini seç</strong>
+                <strong>Aboneliğini seç</strong>
                 <span>Sola kaydır</span>
               </div>
               <div class="subscription-rail">
@@ -961,127 +801,6 @@ mountAppShell();
                 <button class="subscription-cancel-btn" type="button" data-action="cancel-subscription">Ücretli Aboneliği İptal Et</button>
               </div>
             </section>
-          </div>
-        `;
-      }
-
-      function growthBuilderSteps() {
-        return [
-          {
-            title: "1/3 • Sektör seç",
-            items: [
-              "Kombi Tamiri", "Bulaşık Makinesi Tamiri", "Buzdolabı Tamiri", "Çamaşır Makinesi Tamiri", "Fırın Tamiri",
-              "Kurutma Makinesi Tamiri", "Klima Tamiri", "Klima Montajı", "Televizyon Tamiri", "Derin Dondurucu Tamiri",
-              "Klima Bakımı", "Meşrubat Dolabı Tamiri", "Sütlük Dolabı Tamiri", "Kasap Dolabı Tamiri", "Pasta Dolabı Tamiri",
-              "Şarküteri Dolabı Tamiri", "Dondurma Dolabı Tamiri", "Kola Dolabı Tamiri",
-            ],
-            selected: new Set(["Kombi Tamiri", "Bulaşık Makinesi Tamiri", "Buzdolabı Tamiri", "Çamaşır Makinesi Tamiri", "Fırın Tamiri", "Kurutma Makinesi Tamiri", "Klima Tamiri", "Klima Montajı", "Televizyon Tamiri", "Derin Dondurucu Tamiri", "Klima Bakımı"]),
-          },
-          {
-            title: "2/3 • İl seç",
-            items: [
-              "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin",
-              "Aydın", "Balıkesir", "Bartın", "Batman", "Bayburt", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur",
-              "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Düzce", "Edirne", "Elazığ", "Erzincan",
-              "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "İstanbul",
-            ],
-            selected: new Set(["Bitlis", "Çanakkale", "İstanbul"]),
-          },
-          {
-            title: "3/3 • İlçe seç",
-            heading: "İstanbul",
-            items: [
-              "Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir",
-              "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy",
-              "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane",
-              "Kartal", "Küçükçekmece", "Maltepe",
-            ],
-            selected: new Set(["Esenyurt"]),
-          },
-        ];
-      }
-
-      function growthChoiceButton(label, selected) {
-        return `<button class="growth-choice ${selected ? "is-selected" : ""}" type="button">${icon(selected ? "check" : "plus")} ${label}</button>`;
-      }
-
-      function renderGrowthPackageBuilder() {
-        const stepIndex = Math.max(0, Math.min(2, (state.growthPackageStep || 1) - 1));
-        const step = growthBuilderSteps()[stepIndex];
-        const dots = [0, 1, 2].map((dot) => `<span class="${dot === stepIndex ? "active" : ""}"></span>`).join("");
-        return `
-          ${header("growthPackageBuilder", true)}
-          <div class="growth-page">
-            <section class="growth-builder-head">
-              <span class="growth-builder-icon">${icon("package")}</span>
-              <span class="growth-advantage">Hacim Avantajı</span>
-              <h2>Toplu Talep Paketi</h2>
-              <p>Kotanı belirle, düzenli işleri görüntüle.</p>
-            </section>
-            <div class="growth-step-row">
-              <strong>${step.title}</strong>
-              <span class="growth-dots" aria-hidden="true">${dots}</span>
-            </div>
-            <section class="growth-choice-panel">
-              ${step.heading ? `<strong style="display:block;margin-bottom:10px;color:#101828;font-size:13px">${step.heading}</strong>` : ""}
-              <div class="growth-choice-group">
-                ${step.items.map((item) => growthChoiceButton(item, step.selected.has(item))).join("")}
-              </div>
-            </section>
-            <div class="growth-builder-summary">
-              <span>11 sektör → 3 il → 1 ilçe</span>
-              <strong>₺399.603</strong>
-            </div>
-            <button class="growth-primary-cta" type="button" data-growth-next>${stepIndex < 2 ? "Devam Et" : "Ödeme Özetine Geç"}</button>
-          </div>
-        `;
-      }
-
-      function renderGrowthPackageCheckout() {
-        const catalog = growthPackageCatalog();
-        const active = catalog[state.growthPackageTab] || catalog.demand;
-        const isDemand = active.id === "demand";
-        const tags = isDemand
-          ? ["İstanbul Esenyurt Kombi Tamiri", "İstanbul Esenyurt Bulaşık Makinesi Tamiri", "İstanbul Esenyurt Buzdolabı Tamiri", "İstanbul Esenyurt Çamaşır Makinesi Tamiri", "İstanbul Esenyurt Fırın Tamiri"]
-          : [active.selectedLabel, active.title];
-        const total = isDemand ? "₺399.602" : active.selectedPrice;
-        return `
-          ${header("growthPackageCheckout", true)}
-          <div class="growth-page">
-            <section class="growth-builder-head">
-              <span class="growth-builder-icon">${icon(active.iconName)}</span>
-              <span class="growth-advantage">${active.advantage}</span>
-              <h2>${active.title}</h2>
-              <p>${active.desc}</p>
-            </section>
-            <section class="growth-payment-card">
-              <div class="growth-payment-row">
-                <span>${icon("credit-card")} Kredi Kartı<br><small style="color:#98a2b3">Kart seçilmedi</small></span>
-                <button class="secondary-btn" type="button" style="min-height:34px;padding:0 10px">Kart Ekle</button>
-              </div>
-              ${isDemand ? `<div class="growth-payment-row"><span>${icon("plus")} EFT ile ödemek istiyorum</span></div>` : ""}
-              <div class="growth-payment-row">
-                <strong>Seçiminiz</strong>
-                <span style="color:#067647;font-size:11px;font-weight:900;text-transform:uppercase">${active.title}</span>
-              </div>
-              ${isDemand ? `
-                <div class="growth-tag-list">
-                  ${tags.map((tag) => `<span>${tag}</span>`).join("")}
-                </div>
-              ` : `
-                <div class="growth-payment-row">
-                  <span><strong>${active.selectedLabel}</strong><br><small style="color:#98a2b3">${active.options[0].note || "Seçili paket"}</small></span>
-                  <span class="growth-price"><small>Tutar</small>${active.selectedPrice}</span>
-                </div>
-              `}
-              <div style="border-radius:8px;background:#f9fafb;padding:12px;color:#344054;font-size:12px;line-height:1.4">
-                Bu seçimle <strong>${active.title}</strong> paketinin <strong>${active.selectedLabel}</strong> seçeneğini satın alacaksınız.
-              </div>
-            </section>
-            <button class="growth-primary-cta" type="button" data-growth-complete>
-              <span style="float:left">Ödemeyi Tamamla</span>
-              <span style="float:right">${total}</span>
-            </button>
           </div>
         `;
       }
@@ -1169,6 +888,9 @@ mountAppShell();
         const root = document.getElementById("appRoot");
         const previousScrollTop = root.scrollTop;
         const modularScreens = new Set([
+          "work",
+          "jobs",
+          "calendar",
           "wallet",
           "profile",
           "about",
@@ -1194,9 +916,9 @@ mountAppShell();
         ]);
         const screenMap = {
           home: renderHome,
-          work: renderWork,
-          jobs: renderJobs,
-          calendar: renderCalendar,
+          work: () => pageRoutes["/jobs"](),
+          jobs: () => pageRoutes["/my-jobs"](),
+          calendar: () => pageRoutes["/calendar"](),
           wallet: () => pageRoutes["/wallet"]({ state, icon }),
           profile: renderProfile,
           about: () => pageRoutes["/about"](),
@@ -1219,9 +941,9 @@ mountAppShell();
           supportNew: () => pageRoutes["/support/new"]({ created: state.supportTicketCreated, icon }),
           supportLive: () => pageRoutes["/support/live"]({ started: state.liveSupportStarted, icon }),
           supportCustomerService: () => pageRoutes["/support/customer-service"]({
-            hasAccess: hasPaidPackage(),
+            hasAccess: hasPaidSubscription(),
             callStarted: state.customerServiceCallStarted,
-            packageLabel: paidPackageLabel(),
+            subscriptionLabel: subscriptionPlanLabel(),
             icon,
           }),
           satisfaction: () => pageRoutes["/satisfaction"]({
@@ -1235,10 +957,7 @@ mountAppShell();
           jobReferral: () => pageRoutes["/job-referral"]({ state, icon }),
           referralList: renderReferralList,
           referralEarnings: renderReferralEarnings,
-          growthPackages: renderGrowthPackages,
-          growthPackageBuilder: renderGrowthPackageBuilder,
-          growthPackageCheckout: renderGrowthPackageCheckout,
-          subscription: renderSubscription,
+        subscription: renderSubscription,
           levels: () => pageRoutes["/leaderboard"]({ state, icon }),
           reviews: () => pageRoutes["/reviews"]({ state, icon }),
           customers: renderCustomers,
@@ -1789,7 +1508,7 @@ mountAppShell();
             </div>
             <div class="price-box">
               <div class="price-line"><span>Normal</span><strong>${job.normal}</strong></div>
-              <div class="price-line"><span>Paket fiyatın</span><strong>${job.partner}</strong></div>
+              <div class="price-line"><span>İş fiyatın</span><strong>${job.partner}</strong></div>
               <div class="price-line discount"><span>İndirim</span><strong>${job.discount || "%18"}</strong></div>
               <div class="price-line save"><span>Tasarruf</span><strong>${job.saving}</strong></div>
               ${job.used ? `<div class="price-line"><span>Kullanılan</span><strong>${job.used}</strong></div>` : ""}
@@ -1887,7 +1606,7 @@ mountAppShell();
             </div>
             <div class="price-box">
               <div class="price-line"><span>Normal</span><strong>${normal}</strong></div>
-              <div class="price-line"><span>Paket fiyatın</span><strong>${partner}</strong></div>
+              <div class="price-line"><span>İş fiyatın</span><strong>${partner}</strong></div>
               <div class="price-line save"><span>Tasarruf</span><strong>${saving}</strong></div>
               <div class="price-line discount"><span>Kullanım</span><strong>1 teklif hakkı</strong></div>
             </div>
@@ -2022,7 +1741,7 @@ mountAppShell();
             <div class="assurance-line">${icon("check")} Ödeme sonrası uygun işler uygulamada görünür ve sistem hattından aranır</div>
           </section>
 
-          <div class="section-title"><h3>Paket ve Bakiye</h3><span>Ücretsiz</span></div>
+          <div class="section-title"><h3>Cüzdan ve Bakiye</h3><span>Ücretsiz</span></div>
           <section class="card card-pad">
             <div class="kpi-row">
               <div class="kpi-tile"><span>Direkt iş</span><strong>3 hak</strong></div>
@@ -2069,23 +1788,23 @@ mountAppShell();
             </div>
           </section>
 
-          <div class="section-title"><h3>Üyelik Paketleri</h3><span>Haftalık hak</span></div>
-          ${packageCard("Ücretsiz Hesap", ["Temel haftalık haklar", "Kredi yükleyerek devam etme", "Randevu araçlarına erişim"], false)}
-          ${packageCard("Plus", ["Daha fazla haftalık hak", "Havuz ve teklif fırsatlarında daha güçlü kullanım", "Düzenli iş alan ekipler için önerilir"], true)}
-          ${packageCard("Pro / VIP", ["Daha yüksek görünürlük", "Genişletilmiş hak havuzu", "Öncelikli destek ve büyüme odağı"], false)}
+          <div class="section-title"><h3>Abonelikler</h3><span>Haftalık hak</span></div>
+          ${subscriptionOptionCard("Ücretsiz Hesap", ["Temel haftalık haklar", "Kredi yükleyerek devam etme", "Randevu araçlarına erişim"], false)}
+          ${subscriptionOptionCard("Plus", ["Daha fazla haftalık hak", "Havuz ve teklif fırsatlarında daha güçlü kullanım", "Düzenli iş alan ekipler için önerilir"], true)}
+          ${subscriptionOptionCard("Pro / VIP", ["Daha yüksek görünürlük", "Genişletilmiş hak havuzu", "Öncelikli destek ve büyüme odağı"], false)}
         `;
       }
 
-      function packageCard(name, features, featured) {
+      function subscriptionOptionCard(name, features, featured) {
         const isFree = name === "Ücretsiz Hesap";
         return `
-          <article class="card package-card ${featured ? "featured" : ""}">
+          <article class="card subscription-option-card ${featured ? "featured" : ""}">
             <div class="row">
               <h3>${name}</h3>
               ${isFree ? '<span class="tag gray">Mevcut</span>' : featured ? '<span class="tag green">Sana uygun</span>' : '<span class="tag gray">Yükselt</span>'}
             </div>
-            <ul class="package-features">${features.map((f) => `<li>${icon("check")} ${f}</li>`).join("")}</ul>
-            <button class="${featured ? "primary-btn" : "secondary-btn"}" type="button" ${isFree ? 'data-action="current-plan"' : 'data-open="package"'} style="width:100%">${isFree ? icon("check") + " Mevcut Hesap" : (featured ? icon("package") : icon("plus")) + " Paketi Yükselt"}</button>
+            <ul class="subscription-option-features">${features.map((f) => `<li>${icon("check")} ${f}</li>`).join("")}</ul>
+            <button class="${featured ? "primary-btn" : "secondary-btn"}" type="button" ${isFree ? 'data-action="current-plan"' : 'data-open="subscription-upgrade"'} style="width:100%">${isFree ? icon("check") + " Mevcut Hesap" : (featured ? icon("crown") : icon("plus")) + " Aboneliği Yükselt"}</button>
           </article>
         `;
       }
@@ -2521,7 +2240,7 @@ mountAppShell();
           { id: "ayse-demir", name: "Ayşe Demir", initials: "A", city: "İzmir", earnedTotal: "6.950 TL Bonus", phoneFull: "+90 536 902 10 44", stage: "İlk iş bekleniyor", status: "İlk işini almalı", filter: "needJob", bonus: "500 TL", avatarBg: "#f59e0b", active: false, inviteDate: "10 Haz 2026", lastActivity: "Profil tamamlandı", nextStep: "İlk hazır işi veya havuz işini almalı", rewardRule: "İlk işini aldığında 500 TL bonus kazanırsın.", note: "İlk işini alması için bakiye ve bölge ayarlarını kontrol etmesini önerebilirsin." },
           { id: "derya-aksoy", name: "Derya Aksoy", initials: "D", city: "Bursa", earnedTotal: "12.240 TL Bonus", phoneFull: "+90 533 440 72 16", stage: "Bakiye yüklemeli", status: "Tekrar bakiye yüklemeli", filter: "needTopup", bonus: "%3", avatarBg: "#12b76a", active: true, inviteDate: "7 Haz 2026", lastActivity: "İlk iş aşaması tamamlandı", nextStep: "Tekrar bakiye yüklemeli", rewardRule: "Yüklediği tutarın %3'ü kadar bonus kazanırsın.", note: "Bakiye yüklediğinde hem o iş alabilir hem sen bonus kazanırsın." },
           { id: "serkan-ucar", name: "Serkan Uçar", initials: "S", city: "Kocaeli", earnedTotal: "21.300 TL Bonus", phoneFull: "+90 532 612 08 43", stage: "Aktif partner", status: "İş almaya başladı", filter: "active", bonus: "Kazanıldı", avatarBg: "#0ea5e9", active: true, inviteDate: "2 Haz 2026", lastActivity: "Bu hafta 2 iş aldı", nextStep: "Düzenli bakiye yükleyerek büyümeli", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Aktif partnerlerde yükleme takibi bonus fırsatı yaratır." },
-          { id: "elif-arslan", name: "Elif Arslan", initials: "E", city: "Antalya", earnedTotal: "18.740 TL Bonus", phoneFull: "+90 539 719 38 61", stage: "Aktif partner", status: "Düzenli iş alıyor", filter: "active", bonus: "Kazanıldı", avatarBg: "#14b8a6", active: true, inviteDate: "29 May 2026", lastActivity: "Son 7 günde 4 iş aldı", nextStep: "Paket yükseltirse daha fazla iş alabilir", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Başarılı partnerleri paket yükseltmeye yönlendirmek iyi çalışır." },
+          { id: "elif-arslan", name: "Elif Arslan", initials: "E", city: "Antalya", earnedTotal: "18.740 TL Bonus", phoneFull: "+90 539 719 38 61", stage: "Aktif partner", status: "Düzenli iş alıyor", filter: "active", bonus: "Kazanıldı", avatarBg: "#14b8a6", active: true, inviteDate: "29 May 2026", lastActivity: "Son 7 günde 4 iş aldı", nextStep: "Abonelik yükseltirse daha fazla iş alabilir", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Başarılı partnerleri paket yükseltmeye yönlendirmek iyi çalışır." },
           { id: "can-ozdemir", name: "Can Özdemir", initials: "C", city: "Eskişehir", earnedTotal: "5.500 TL Bonus", phoneFull: "+90 537 881 44 22", stage: "İlk iş bekleniyor", status: "İlk işini almalı", filter: "needJob", bonus: "500 TL", avatarBg: "#7c3aed", active: false, inviteDate: "5 Haz 2026", lastActivity: "Bölge ayarları tamamlandı", nextStep: "İlk teklifini veya hazır işini almalı", rewardRule: "İlk işini aldığında 500 TL bonus kazanırsın.", note: "İlk iş için kredi yükleme veya teklif verme adımını hatırlatabilirsin." },
           { id: "nur-aydin", name: "Nur Aydın", initials: "N", city: "Sakarya", earnedTotal: "3.900 TL Bonus", phoneFull: "+90 538 312 84 55", stage: "Profil eksik", status: "Belgelerini tamamlamalı", filter: "needProfile", bonus: "500 TL", avatarBg: "#ec4899", active: false, inviteDate: "4 Haz 2026", lastActivity: "Kimlik bilgisi eklendi", nextStep: "Eksik belge ve hizmet alanlarını tamamlamalı", rewardRule: "Profil tamamlanınca ilk iş aşamasına geçer.", note: "Eksik belgeyi tamamlaması süreci hızlandırır." },
           { id: "mert-yildiz", name: "Mert Yıldız", initials: "M", city: "Konya", earnedTotal: "1.250 TL Bonus", phoneFull: "+90 534 706 44 18", stage: "Davet gönderildi", status: "Kayıt olmalı", filter: "invited", bonus: "100 TL", avatarBg: "#fb923c", active: false, inviteDate: "Bugün 09:12", lastActivity: "WhatsApp daveti gönderildi", nextStep: "Aynı telefon numarasıyla kayıt olmalı", rewardRule: "Kayıt tamamlandığında 100 TL bonus açılır.", note: "Davet mesajını gördüğünü teyit etmek dönüşümü artırır." },
@@ -2529,11 +2248,11 @@ mountAppShell();
           { id: "burak-tas", name: "Burak Taş", initials: "B", city: "Muğla", earnedTotal: "4.850 TL Bonus", phoneFull: "+90 532 804 91 27", stage: "İlk iş bekleniyor", status: "İlk işini almalı", filter: "needJob", bonus: "500 TL", avatarBg: "#f59e0b", active: false, inviteDate: "1 Haz 2026", lastActivity: "Profil onaylandı", nextStep: "İlk hazır işini almalı", rewardRule: "İlk işini aldığında 500 TL bonus kazanırsın.", note: "Bölgesindeki uygun işleri incelemesini önerebilirsin." },
           { id: "zeynep-er", name: "Zeynep Er", initials: "Z", city: "Bursa", earnedTotal: "9.320 TL Bonus", phoneFull: "+90 535 441 27 88", stage: "Bakiye yüklemeli", status: "Tekrar bakiye yüklemeli", filter: "needTopup", bonus: "%3", avatarBg: "#12b76a", active: true, inviteDate: "27 May 2026", lastActivity: "İlk işini tamamladı", nextStep: "Yeni iş alabilmek için bakiye yüklemeli", rewardRule: "Yüklediği tutarın %3'ü kadar bonus kazanırsın.", note: "Bakiye yüklediğinde yeni iş alımı hızlanır." },
           { id: "okan-kara", name: "Okan Kara", initials: "O", city: "Ankara", earnedTotal: "24.100 TL Bonus", phoneFull: "+90 536 510 24 67", stage: "Aktif partner", status: "İş almaya başladı", filter: "active", bonus: "Kazanıldı", avatarBg: "#0ea5e9", active: true, inviteDate: "25 May 2026", lastActivity: "Bu hafta 3 iş aldı", nextStep: "Düzenli bakiye yükleme alışkanlığı kazanmalı", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Aktif partnerleri başarılarını görerek motive edebilirsin." },
-          { id: "deniz-arslan", name: "Deniz Arslan", initials: "D", city: "İstanbul", earnedTotal: "19.480 TL Bonus", phoneFull: "+90 539 118 90 63", stage: "Aktif partner", status: "Düzenli iş alıyor", filter: "active", bonus: "Kazanıldı", avatarBg: "#14b8a6", active: true, inviteDate: "22 May 2026", lastActivity: "Son 7 günde 5 iş aldı", nextStep: "Paket yükseltirse daha çok fırsat görür", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Büyümeye hazır partnerler ek bonus fırsatı yaratır." },
+          { id: "deniz-arslan", name: "Deniz Arslan", initials: "D", city: "İstanbul", earnedTotal: "19.480 TL Bonus", phoneFull: "+90 539 118 90 63", stage: "Aktif partner", status: "Düzenli iş alıyor", filter: "active", bonus: "Kazanıldı", avatarBg: "#14b8a6", active: true, inviteDate: "22 May 2026", lastActivity: "Son 7 günde 5 iş aldı", nextStep: "Abonelik yükseltirse daha çok fırsat görür", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Büyümeye hazır partnerler ek bonus fırsatı yaratır." },
           { id: "leyla-gunes", name: "Leyla Güneş", initials: "L", city: "İzmir", earnedTotal: "7.640 TL Bonus", phoneFull: "+90 538 604 35 12", stage: "İlk iş bekleniyor", status: "İlk işini almalı", filter: "needJob", bonus: "500 TL", avatarBg: "#f97316", active: false, inviteDate: "20 May 2026", lastActivity: "Teklif alanı açıldı", nextStep: "İlk teklifini göndermeli", rewardRule: "İlk işini aldığında 500 TL bonus kazanırsın.", note: "Teklif bekleyen işlerden başlaması daha kolay olabilir." },
           { id: "emre-polat", name: "Emre Polat", initials: "E", city: "Balıkesir", earnedTotal: "11.900 TL Bonus", phoneFull: "+90 537 290 61 04", stage: "Bakiye yüklemeli", status: "Tekrar bakiye yüklemeli", filter: "needTopup", bonus: "%3", avatarBg: "#16a34a", active: true, inviteDate: "18 May 2026", lastActivity: "Bakiyesi azaldı", nextStep: "Hazır iş alabilmek için bakiye yüklemeli", rewardRule: "Yüklediği tutarın %3'ü kadar bonus kazanırsın.", note: "Kredi yüklendiğinde hem iş alır hem bonus kazandırır." },
           { id: "aylin-oz", name: "Aylin Öz", initials: "A", city: "Antalya", earnedTotal: "17.260 TL Bonus", phoneFull: "+90 530 772 14 95", stage: "Aktif partner", status: "Düzenli iş alıyor", filter: "active", bonus: "Kazanıldı", avatarBg: "#06b6d4", active: true, inviteDate: "16 May 2026", lastActivity: "Son 30 günde 11 iş aldı", nextStep: "Referanslarını artırabilir", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Başarılı partnerler diğer partnerler için iyi örnek olur." },
-          { id: "tuna-baris", name: "Tuna Barış", initials: "T", city: "Kocaeli", earnedTotal: "13.450 TL Bonus", phoneFull: "+90 533 692 80 41", stage: "Aktif partner", status: "İş almaya başladı", filter: "active", bonus: "Kazanıldı", avatarBg: "#2563eb", active: true, inviteDate: "12 May 2026", lastActivity: "İlk paketini aldı", nextStep: "İş takibini düzenli yapmalı", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "Paketli partnerlerin iş alma ritmini takip etmek faydalıdır." },
+          { id: "tuna-baris", name: "Tuna Barış", initials: "T", city: "Kocaeli", earnedTotal: "13.450 TL Bonus", phoneFull: "+90 533 692 80 41", stage: "Aktif partner", status: "İş almaya başladı", filter: "active", bonus: "Kazanıldı", avatarBg: "#2563eb", active: true, inviteDate: "12 May 2026", lastActivity: "İlk paketini aldı", nextStep: "İş takibini düzenli yapmalı", rewardRule: "Her bakiye yüklemesinde %3 bonus kazanırsın.", note: "abonelikli partnerlerin iş alma ritmini takip etmek faydalıdır." },
         ];
       }
 
@@ -3390,7 +3109,7 @@ mountAppShell();
           "review-qr": reviewQrSheet,
           "review-reply": reviewReplySheet,
           credit: creditSheet,
-          package: packageSheet,
+          "subscription-upgrade": subscriptionUpgradeSheet,
           checkout: quickCheckoutSheet,
           "wallet-info": walletInfoSheet,
           "bonus-info": bonusInfoSheet,
@@ -3534,37 +3253,6 @@ mountAppShell();
         `;
       }
 
-      function drawerPromoCard() {
-        return `
-          <section class="drawer-promo-card" aria-label="Paket seçenekleri">
-            <span class="drawer-promo-sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-            <strong class="drawer-promo-title">Daha fazla iş fırsatı yakala</strong>
-            <span class="drawer-package-pins">
-              <button class="drawer-package-pin" type="button" data-route="/packages" style="--pin-color:#667085" aria-label="Ücretsiz paket">
-                ${icon("navigation")}
-                <strong>Ücretsiz</strong>
-                <small>Başla</small>
-              </button>
-              <button class="drawer-package-pin is-gold" type="button" data-route="/packages" style="--pin-color:#d99a0b" aria-label="Gold paket">
-                ${icon("star")}
-                <strong>Gold</strong>
-                <small>Popüler</small>
-              </button>
-              <button class="drawer-package-pin is-pro" type="button" data-route="/packages" style="--pin-color:#12b76a" aria-label="Pro paket">
-                ${icon("shield")}
-                <strong>Pro</strong>
-                <small>Profesyonel</small>
-              </button>
-              <button class="drawer-package-pin is-vip" type="button" data-route="/packages" style="--pin-color:#f59e0b" aria-label="VIP paket">
-                ${icon("crown")}
-                <strong>VIP</strong>
-                <small>En iyisi</small>
-              </button>
-            </span>
-          </section>
-        `;
-      }
-
       function drawerUpgradeBanner() {
         return `
           <button class="drawer-upgrade-banner" type="button" data-route="/subscription" aria-label="Plus avantajlarını keşfet">
@@ -3650,7 +3338,7 @@ mountAppShell();
           { id: "n20", title: "Havuz işi kısa sürede alındı", desc: "Bölgedeki hareketlilik artıyor.", time: "3 gün önce", icon: "briefcase", screen: "work", unread: false, actionLabel: "Gör" },
           { id: "n21", title: "Partner daveti kayıt oldu", desc: "Ahmet K. aynı numarayla kayıt oldu.", time: "4 gün önce", icon: "users", screen: "referral", unread: false, actionLabel: "Gör" },
           { id: "n22", title: "Çalışma saati önerisi", desc: "08:00-22:00 planı daha fazla iş getirebilir.", time: "4 gün önce", icon: "clock", screen: "workPlan", unread: false, actionLabel: "Gör" },
-          { id: "n23", title: "Paket avantajı hazır", desc: "Plus ile daha fazla görünürlük alabilirsin.", time: "5 gün önce", icon: "crown", screen: "subscription", unread: false, actionLabel: "Gör" },
+          { id: "n23", title: "Abonelik avantajı hazır", desc: "Plus abonelikle daha fazla görünürlük alabilirsin.", time: "5 gün önce", icon: "crown", screen: "subscription", unread: false, actionLabel: "Gör" },
           { id: "n24", title: "Destek mesajı geldi", desc: "Danışman yanıtını mesaj kutusunda görebilirsin.", time: "5 gün önce", icon: "headphones", screen: "support", unread: false, actionLabel: "İncele" },
           { id: "n25", title: "Randevu linkin görüntülendi", desc: "Bir müşteri QR bağlantını açtı.", time: "6 gün önce", icon: "qr", screen: "appointmentLink", unread: false, actionLabel: "Gör" },
           { id: "n26", title: "Bölge istatistikleri yenilendi", desc: "Bugünkü tamamlanan işler güncellendi.", time: "6 gün önce", icon: "bar-chart", screen: "home", unread: false, actionLabel: "İncele" },
@@ -3791,7 +3479,7 @@ mountAppShell();
               </div>
               <div class="price-box">
                 <div class="price-line"><span>Normal iş bedeli</span><strong>320 kredi</strong></div>
-                <div class="price-line"><span>Paket fiyatın</span><strong>260 kredi</strong></div>
+                <div class="price-line"><span>İş fiyatın</span><strong>260 kredi</strong></div>
                 <div class="price-line save"><span>Tasarruf</span><strong>60 kredi</strong></div>
                 <div class="price-line"><span>Kullanılan</span><strong>260 kredi</strong></div>
                 <div class="price-line discount"><span>İndirim</span><strong>%19</strong></div>
@@ -3949,7 +3637,7 @@ mountAppShell();
           <section class="sheet" role="dialog" aria-label="Bakiye yükle">
             <div class="sheet-handle"></div>
             <div class="sheet-head">
-              <div><h3>Bakiye Yükle</h3><p>Paket hakkın bitse de iş almaya ve teklif vermeye devam et.</p></div>
+              <div><h3>Bakiye Yükle</h3><p>Abonelik hakkın bitse de iş almaya ve teklif vermeye devam et.</p></div>
               <button class="icon-btn" type="button" data-close aria-label="Kapat">${icon("x")}</button>
             </div>
             <div class="stack">
@@ -3963,43 +3651,43 @@ mountAppShell();
         `;
       }
 
-      function packageSheet() {
+      function subscriptionUpgradeSheet() {
         return `
-          <section class="sheet" role="dialog" aria-label="Paket yükselt">
+          <section class="sheet" role="dialog" aria-label="Abonelik yükselt">
             <div class="sheet-handle"></div>
             <div class="sheet-head">
-              <div><h3>Paket Yükselt</h3><p>Haftalık direkt iş, havuz ve teklif haklarını artır.</p></div>
+              <div><h3>Abonelik Yükselt</h3><p>Haftalık direkt iş, havuz ve teklif haklarını artır.</p></div>
               <button class="icon-btn" type="button" data-close aria-label="Kapat">${icon("x")}</button>
             </div>
             <section class="card card-pad">
               <span class="tag green">Önerilen</span>
               <h3 style="margin:8px 0 4px;font-size:17px">Plus Üyelik</h3>
               <p class="tiny muted" style="margin:0 0 10px">Direkt iş, havuz ve teklif haklarını artırarak daha fazla fırsata eriş.</p>
-              <button class="primary-btn" type="button" data-action="upgrade-package" style="width:100%">${icon("package")} Yükseltmeyi Başlat</button>
+              <button class="primary-btn" type="button" data-action="upgrade-subscription" style="width:100%">${icon("crown")} Yükseltmeyi Başlat</button>
             </section>
             <section class="card card-pad section">
               <span class="tag purple">Premium seçenek</span>
               <h3 style="margin:8px 0 4px;font-size:17px">Pro / VIP</h3>
               <p class="tiny muted" style="margin:0 0 10px">Daha yüksek görünürlük, daha geniş hak havuzu ve öncelikli destek sağlar.</p>
-              <button class="secondary-btn" type="button" data-action="upgrade-package" style="width:100%">${icon("sparkles")} Paketleri İncele</button>
+              <button class="secondary-btn" type="button" data-action="upgrade-subscription" style="width:100%">${icon("sparkles")} Abonelikleri İncele</button>
             </section>
           </section>
         `;
       }
 
       function quickCheckoutSheet() {
-        const plan = checkoutPackage();
+        const plan = checkoutSubscription();
         return `
           <section class="sheet" role="dialog" aria-label="Hızlı ödeme">
             <div class="sheet-handle"></div>
             <div class="sheet-head">
-              <div><h3>${plan.label} paketine geç</h3><p>Ödeme adımı kısa tutuldu; paket hemen aktifleşir.</p></div>
+              <div><h3>${plan.label} aboneliğine geç</h3><p>Ödeme adımı kısa tutuldu; abonelik hemen aktifleşir.</p></div>
               <button class="icon-btn" type="button" data-close aria-label="Kapat">${icon("x")}</button>
             </div>
             <section class="card card-pad">
               <div class="row">
                 <div>
-                  <span class="tag green">${icon(plan.iconName)} Seçili paket</span>
+                  <span class="tag green">${icon(plan.iconName)} Seçili abonelik</span>
                   <h3 style="margin:8px 0 2px;font-size:18px">${plan.price}<span style="font-size:11px;color:#667085"> ${plan.cycle}</span></h3>
                   <p class="tiny muted" style="margin:0">${plan.promise}</p>
                 </div>
@@ -4009,7 +3697,7 @@ mountAppShell();
                 <div class="mini-row"><span>Aktivasyon</span><strong>Anında</strong></div>
                 <div class="mini-row"><span>İptal</span><strong>Hesaptan yönetilir</strong></div>
               </div>
-              <button class="primary-btn" type="button" data-action="pay-package" style="width:100%;margin-top:10px">${icon("credit-card")} Hızlı Ödemeye Geç</button>
+              <button class="primary-btn" type="button" data-action="pay-subscription" style="width:100%;margin-top:10px">${icon("credit-card")} Hızlı Ödemeye Geç</button>
             </section>
           </section>
         `;
@@ -4129,7 +3817,7 @@ mountAppShell();
               <button class="icon-btn" type="button" data-close aria-label="Kapat">${icon("x")}</button>
             </div>
             <div class="stack">
-              ${["Müşteriyle görüştüm", "Randevu aldım", "Hizmete gidiyorum", "İş tamamlandı"].map((item) => `<button class="link-card" type="button" data-action="status-update">${icon("check")}<span><strong>${item}</strong><small>İşlerim ekranında takip edilir</small></span>${icon("chevron-right")}</button>`).join("")}
+              ${["Müşteriyle görüştüm", "Randevu aldım", "Hizmete gidiyorum", "İş tamamlandı"].map((item) => `<button class="link-card" type="button" data-action="status-update">${icon("check")}<span><strong>${item}</strong><small>İşler ekranında takip edilir</small></span>${icon("chevron-right")}</button>`).join("")}
               <button class="link-card" type="button" data-action="issue">${icon("alert")}<span><strong>Sorun Bildir</strong><small>Ticket aç ve takip et</small></span>${icon("chevron-right")}</button>
             </div>
           </section>
@@ -4302,7 +3990,7 @@ mountAppShell();
             navigator.vibrate(8);
           }
           const nextScreen = screenButton.dataset.screen;
-          if (screenButton.dataset.packageTab) state.packageTab = screenButton.dataset.packageTab;
+          if (screenButton.dataset.subscriptionTab) state.subscriptionTab = screenButton.dataset.subscriptionTab;
           if (nextScreen === "reviews") {
             state.reviewListMode = false;
             state.reviewVisibleCount = 3;
@@ -4381,45 +4069,10 @@ mountAppShell();
           return;
         }
 
-        const packageTab = event.target.closest("[data-package-tab]");
-        if (packageTab) {
-          state.packageTab = packageTab.dataset.packageTab;
+        const subscriptionTab = event.target.closest("[data-subscription-tab]");
+        if (subscriptionTab) {
+          state.subscriptionTab = subscriptionTab.dataset.subscriptionTab;
           renderScreen();
-          return;
-        }
-
-        const growthTab = event.target.closest("[data-growth-tab]");
-        if (growthTab) {
-          state.growthPackageTab = growthTab.dataset.growthTab || "demand";
-          renderScreen({ preserveScroll: true });
-          return;
-        }
-
-        const growthStart = event.target.closest("[data-growth-start]");
-        if (growthStart) {
-          state.growthPackageTab = growthStart.dataset.growthStart || state.growthPackageTab || "demand";
-          state.growthPackageStep = 1;
-          state.previousScreen = state.screen;
-          state.screen = state.growthPackageTab === "demand" ? "growthPackageBuilder" : "growthPackageCheckout";
-          renderScreen();
-          return;
-        }
-
-        const growthNext = event.target.closest("[data-growth-next]");
-        if (growthNext) {
-          if ((state.growthPackageStep || 1) < 3) {
-            state.growthPackageStep += 1;
-            renderScreen();
-          } else {
-            state.screen = "growthPackageCheckout";
-            renderScreen();
-          }
-          return;
-        }
-
-        const growthComplete = event.target.closest("[data-growth-complete]");
-        if (growthComplete) {
-          showToast("Paket ödeme adımı hazırlandı");
           return;
         }
 
@@ -4594,8 +4247,8 @@ mountAppShell();
           } else if (type === "header-info") {
             showToast("Bu sayfa için hızlı bilgi alanı hazır");
           } else if (type === "subscribe-plan") {
-            const planName = action.dataset.plan || "Seçili paket";
-            state.paidPackage = planName;
+            const planName = action.dataset.plan || "Seçili abonelik";
+            state.activeSubscriptionPlan = planName;
             renderScreen({ preserveScroll: true });
             showToast(`${planName} aboneliğin aktif edildi`);
           } else if (type === "cancel-subscription") {
@@ -4621,10 +4274,10 @@ mountAppShell();
             renderScreen({ preserveScroll: true });
             showToast("Temsilci bağlanıyor");
           } else if (type === "start-customer-service-call") {
-            if (!hasPaidPackage()) {
+            if (!hasPaidSubscription()) {
               event.preventDefault();
               navigateTo("/subscription");
-              showToast("Telefon desteği ücretli paketlere özel.");
+              showToast("Telefon desteği ücretli aboneliğe özel.");
               return;
             }
             state.customerServiceCallStarted = true;
@@ -4727,8 +4380,8 @@ mountAppShell();
           } else if (type === "whatsapp-referral-friend") {
             const partner = selectedReferralPartner();
             showToast(`${partner.name} için WhatsApp mesajı hazırlanıyor`);
-          } else if (type === "package-required") {
-            showSheet("package");
+          } else if (type === "subscription-required") {
+            showSheet("subscription-upgrade");
           } else if (type === "quick-checkout") {
             showSheet("checkout");
           } else if (type === "current-plan") {
@@ -4787,12 +4440,12 @@ mountAppShell();
             showToast("Teklif bekleyen kayıtlar açıldı");
           } else if (type === "close-sheet") {
             closeSheet();
-          } else if (type === "upgrade-package") {
+          } else if (type === "upgrade-subscription") {
             closeSheet();
-            showToast("Paket yükseltme başlatıldı");
-          } else if (type === "pay-package") {
+            showToast("Abonelik yükseltme başlatıldı");
+          } else if (type === "pay-subscription") {
             closeSheet();
-            showToast(`${checkoutPackage().label} ödeme adımına yönlendiriliyorsun`);
+            showToast(`${checkoutSubscription().label} abonelik ödeme adımına yönlendiriliyorsun`);
           } else if (type === "ticket-topic") {
             state.ticketTopic = action.dataset.topic || "Destek";
             showSheet("ticket");

@@ -1,0 +1,23 @@
+{
+  "name": "v12-k-trusted-governance-checkpoint",
+  "commit": "da9f5d8e814660a190ba00fd08a9fbb0fccc4ef5",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pr": 3,
+  "runtimePolicy": {
+    "default": "stable legacy",
+    "vuePreview": "?engine=vue",
+    "defaultVueCutover": false
+  },
+  "knownState": {
+    "dependencyLock": "PASS",
+    "staticDesignContract": "PASS",
+    "stableDefaultGate": "PASS",
+    "vuePreviewGate": "PASS",
+    "designReviewGate": "blocked by single-owner PR approval deadlock",
+    "visualRegression": "FAIL: header, bottom bar, drawer and profile grid above strict threshold"
+  },
+  "rollback": [
+    "git switch feature/v12-golden-vue-cutover",
+    "git reset --hard v12-k-trusted-governance-checkpoint"
+  ]
+}

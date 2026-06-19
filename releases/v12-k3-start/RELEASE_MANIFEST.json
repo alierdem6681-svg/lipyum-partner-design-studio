@@ -1,0 +1,22 @@
+{
+  "name": "v12-k3-start",
+  "createdAt": "2026-06-19",
+  "branch": "feature/v12-golden-vue-cutover",
+  "commit": "38e85c7d6cc3775a3b73b3dc6ed868cbacec3938",
+  "tag": "v12-k3-start",
+  "archiveBranch": "archive/v12-k3-start",
+  "runtimePolicy": {
+    "default": "stable legacy",
+    "vuePreview": "?engine=vue",
+    "mainMerge": false,
+    "productionDeploy": false
+  },
+  "pr": 3,
+  "knownBlockers": [
+    "Profile grid visual diff 0.021783",
+    "Drawer visual diff 0.025661",
+    "Route header pixel tests contain false positives from route-specific text and action differences",
+    "Subscription bottom bar pixel test includes route content behind transparent CTA region"
+  ],
+  "rollback": "git switch feature/v12-golden-vue-cutover && git reset --hard v12-k3-start"
+}

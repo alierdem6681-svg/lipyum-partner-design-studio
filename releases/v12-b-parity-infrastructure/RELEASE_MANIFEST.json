@@ -1,0 +1,71 @@
+{
+  "version": "v12-b-parity-infrastructure",
+  "commitSHA": "0a9087aae2ea6cde7003fd66ea907f3d770ce2b8",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pullRequest": {
+    "number": 3,
+    "url": "https://github.com/alierdem6681-svg/lipyum-partner-design-studio/pull/3",
+    "state": "OPEN",
+    "draft": true,
+    "base": "main"
+  },
+  "backup": {
+    "tag": "v12-b-parity-infrastructure",
+    "archiveBranch": "archive/v12-b-parity-infrastructure"
+  },
+  "goldenMaster": {
+    "manifest": "tests/golden-master/v11-stable/GOLDEN_MASTER_MANIFEST.json",
+    "manifestHash": "500c3fd70a5d085e48ac7fd4fbfceea00b7f4ab026f3bc60aec2cd119054b09b",
+    "routeContract": "tests/golden-master/v11-stable/ROUTE_PARITY_CONTRACT.json"
+  },
+  "parity": {
+    "failingCoreRoutes": [
+      "/home",
+      "/jobs",
+      "/my-jobs",
+      "/calendar"
+    ],
+    "knownBlockingDiffs": [
+      "Core route pixel parity is not passing.",
+      "Core route content/action parity is not passing.",
+      "All-route strict parity remains blocked by non-core LegacyContentBridge routes.",
+      "Default Vue production boot is still disabled."
+    ]
+  },
+  "testResults": [
+    {
+      "command": "npm run test:quality-gate:v12",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:parity:all",
+      "result": "reported"
+    },
+    {
+      "command": "npm run test:parity:strict",
+      "result": "failed-as-expected"
+    },
+    {
+      "command": "npm run build",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "buildAssets": [
+    "dist/index.html",
+    "dist/assets/index-DxZF-RcS.js",
+    "dist/assets/index-t4BF_uWr.css",
+    "dist/assets/main-CNNvyB97.js",
+    "dist/assets/main-wYzRv8r8.css",
+    "dist/assets/legacyApp-Ck2H06iP.js",
+    "dist/health.txt"
+  ],
+  "knownP0P1": [
+    "Home, Jobs, MyJobs and Calendar must reach visual/content/interaction parity before V12-C can be called complete.",
+    "The Golden Master baseline must remain frozen.",
+    "PR #3 must remain draft and main must not be merged during V12-C."
+  ]
+}

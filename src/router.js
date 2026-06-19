@@ -1,4 +1,4 @@
-import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "./utils/constants.js";
+import { RETIRED_ROUTE_REDIRECTS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./utils/constants.js";
 export { pageRoutes } from "./pages/routePages.js";
 export { getRouteMeta, routeMeta } from "./utils/routeMeta.js";
 
@@ -14,6 +14,7 @@ export const routeTitles = ROUTE_TITLES;
 export function normalizeRoute(route) {
   const raw = String(route || "/home").replace(/^#/, "");
   const withSlash = raw.startsWith("/") ? raw : `/${raw}`;
+  if (RETIRED_ROUTE_REDIRECTS[withSlash]) return RETIRED_ROUTE_REDIRECTS[withSlash];
   return routeToScreen[withSlash] ? withSlash : "/home";
 }
 
@@ -32,6 +33,5 @@ export function getTitleForRoute(route) {
 export function getCtaVariant(route) {
   const normalized = normalizeRoute(route);
   if (normalized === "/home") return "home";
-  if (["/package-checkout"].includes(normalized)) return "hidden";
   return "subpage";
 }

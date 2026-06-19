@@ -1,0 +1,39 @@
+{
+  "version": "v12-h-baseline-blocker",
+  "commitSHA": "0552bdb8ede2038757ff31eadcff38aa070c02bb",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pr": 3,
+  "tag": "v12-h-baseline-blocker",
+  "archiveBranch": "archive/v12-h-baseline-blocker",
+  "date": "2026-06-19T14:14:25+03:00",
+  "defaultRuntimeAtCommit": "vue",
+  "currentRuntimeNote": "Current working head later restored stable legacy default; Vue is measured with ?engine=vue.",
+  "homeVueDiffToStoredV11Golden": 0.037619,
+  "currentVercelDiffToStoredV11Golden": 0.031855,
+  "finalGate": {
+    "status": "failed",
+    "blockedStep": "home strict visual parity",
+    "run1Log": "artifacts/v12-h/final-gate-run-1.log",
+    "run1Sha256": "33AE966DE1F39D740452B676BC8E3A1B22E2C4EDCC88B8A422B504B5B2A075C1"
+  },
+  "knownBaselineConflict": [
+    "Stored V11 Golden carries old bottom labels Islerim and Takvim.",
+    "Current product scope requires Isler and Randevu.",
+    "Accepted current Vercel UI cannot satisfy the stored V11 strict threshold either."
+  ],
+  "testResults": [
+    {
+      "command": "node_modules/node/bin/node --test tests/unit/*.test.js && node_modules/node/bin/node tests/routes.smoke.js",
+      "status": "passed after 0552bdb route smoke fix"
+    },
+    {
+      "command": "node_modules/node/bin/node node_modules/vite/bin/vite.js build",
+      "status": "passed"
+    }
+  ],
+  "buildAssets": [
+    "dist/assets/index-BGFrwBp2.js",
+    "dist/assets/legacyApp-Ig-wpC8k.js",
+    "dist/assets/main-BIJ49DD9.js"
+  ]
+}

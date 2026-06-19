@@ -74,8 +74,28 @@ const steps = [
     command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/home-flow.spec.js",
   },
   {
-    name: "test:packages-flow",
-    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/packages-flow.spec.js",
+    name: "test:product-scope:v12-e",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-e-product-scope.spec.js",
+  },
+  {
+    name: "test:blank-bottom-routes",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/blank-bottom-routes.spec.js",
+  },
+  {
+    name: "test:bottom-labels",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/bottom-labels.spec.js",
+  },
+  {
+    name: "test:retired-package-routes",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/retired-package-routes.spec.js",
+  },
+  {
+    name: "test:subscription-retained",
+    command: "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/subscription-retained.spec.js",
+  },
+  {
+    name: "test:package-feature-removed",
+    command: "node_modules/node/bin/node --test tests/architecture/package-feature-removed.test.js",
   },
   {
     name: "test:referral-flow",

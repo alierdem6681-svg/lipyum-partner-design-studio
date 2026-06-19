@@ -74,6 +74,8 @@ Legend:
 | UR-028 | Cüzdan action/card behavior | in-progress | Wallet summary/actions | `tests/e2e/forms-and-filters.spec.js`, route tests | Load-more and route smoke pass; full Vue/UI Kit pending. |
 | UR-029 | Leaderboard encouragement/visual polish | in-progress | Leaderboard components/styles | `tests/e2e/forms-and-filters.spec.js`, screenshots | Recent visual updates are present in dirty worktree; need final screenshot review. |
 | UR-030 | Reviews card layout and report button | in-progress | Reviews page/cards | `tests/e2e/forms-and-filters.spec.js`, screenshots | Filters/reply controls pass; current requested CTA removal was already on origin. |
+| UR-031 | V12-C core Golden parity for Home/Jobs/MyJobs/Calendar | in-progress | Vue preview core route pages and parity scripts | `npm run test:parity:core`, `npm run test:parity:core:strict` | Content/action contract PASS; strict visual parity still FAIL, so V12-C is not complete. |
+| UR-032 | MyJobs filter label must show `Tamamlananlar` fully | verified | `src/vue/pages/MyJobsPage.vue`, `src/vue/styles/vue.css` | `npm run test:parity:core` | Latest user requirement overrides old Golden `Tamamlanan`; chip fits in 393px viewport. |
 
 ## Quality Gate Evidence From Baseline Run
 
@@ -128,6 +130,28 @@ The following groups were observed passing in the `npm run test:quality-gate` ba
 5. Upgrade visual regression from nonblank/framing smoke to baseline screenshot comparison.
 6. Upgrade clickable inventory from count/report to click-and-assert outcome coverage.
 7. Run the final V12 quality gate twice with no code changes between runs.
+
+## V12-C Traceability Note
+
+Core route contract work improved `/home`, `/jobs`, `/my-jobs`, and `/calendar` to content/action PASS in Vue preview. Visual parity remains open and blocks completion.
+
+## V12-E Product Scope Reset
+
+Latest requirement:
+
+- Paketler özelliği aktif üründen kaldırıldı.
+- `/my-jobs` label/title `İşler` oldu.
+- `/calendar` label/title `Randevu` oldu.
+- `/jobs`, `/my-jobs`, `/calendar`, `/wallet` içeriksiz blank shell olmalı.
+- `/subscription` ve Aboneliğim korunmalı.
+- Eski paket URL'leri `/subscription`a redirect olmalı.
+
+Implementation trace:
+
+- `BOTTOM_TABS` tek kaynak olarak güncellendi.
+- Paket route'ları aktif registry'den çıkarıldı.
+- `BlankBottomRoutePage.vue` ve legacy `BlankRoutePage.js` eklendi.
+- V12-E product scope contract ve targeted tests eklendi.
 
 ## Completion Statement
 

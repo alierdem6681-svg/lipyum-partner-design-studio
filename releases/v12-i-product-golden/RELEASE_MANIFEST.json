@@ -1,0 +1,57 @@
+{
+  "version": "v12-i-product-golden",
+  "commitSHA": "399804ac05520241693eaa89506cd3acced6d0b8",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pr": 3,
+  "tag": "v12-i-product-golden",
+  "archiveBranch": "archive/v12-i-product-golden",
+  "date": "2026-06-19T14:45:00+03:00",
+  "productGoldenManifest": {
+    "path": "V12_PRODUCT_GOLDEN_MANIFEST.json",
+    "sha256": "523A4A841FBB19B9C7FEF54F8EAEBE3CAAC5D2435A6A538F4B369BF8C005DCF7"
+  },
+  "homeFinalDiff": 0.011193,
+  "gateRunLogHashes": {
+    "run1": {
+      "path": "artifacts/v12-i/final-gate-run-1.log",
+      "sha256": "2E692EF9115F794AF60694031B78B3D745704189CCC42569ECAB00FEE7989AE6"
+    },
+    "run2": {
+      "path": "artifacts/v12-i/final-gate-run-2.log",
+      "sha256": "4E775C992BB4D4D86013E57CDF1E8FB3BDBB5FC5D3A8CFB1D8FD3D4A7A698401"
+    }
+  },
+  "defaultRuntimeAtCommit": "legacy",
+  "vueRuntimeAtCommit": "?engine=vue",
+  "activeVueRouteCount": 41,
+  "blankRoutes": [
+    "/jobs",
+    "/my-jobs",
+    "/calendar",
+    "/wallet"
+  ],
+  "retiredPackageRoutes": [
+    "/packages",
+    "/package-builder",
+    "/package-checkout",
+    "/partner/packages"
+  ],
+  "buildAssets": [
+    "dist/assets/index-CM3MNtDD.js",
+    "dist/assets/index-DWueZd6s.css",
+    "dist/assets/legacyApp-Dzs8g4H1.js",
+    "dist/assets/main-Co8M9jvW.js",
+    "dist/assets/main-Daqg055Q.css"
+  ],
+  "knownLimitations": [
+    "Default runtime is still legacy at this checkpoint.",
+    "Vue runtime is validated through ?engine=vue before V12-J.",
+    "Production main merge was not performed.",
+    "Production Vercel deploy was not performed."
+  ],
+  "preexistingUncommittedGeneratedOutputs": {
+    "statusBackup": "C:/tmp/lipyum-v12-j-preexisting-status.txt",
+    "diffBackup": "C:/tmp/lipyum-v12-j-preexisting-preview-output.diff",
+    "stashBackup": "C:/tmp/lipyum-v12-j-preexisting-stash.txt"
+  }
+}

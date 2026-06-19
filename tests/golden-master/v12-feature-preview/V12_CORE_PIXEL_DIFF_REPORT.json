@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-06-19T10:01:46.079Z",
+  "featureBaseUrl": "http://127.0.0.1:5173",
+  "viewport": "393x852",
+  "maxDiffPixelRatio": 0.015,
+  "results": [
+    {
+      "route": "/home",
+      "status": "FAIL",
+      "severity": "P1",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/home.png",
+      "featureScreenshot": "tests\\golden-master\\v12-feature-preview\\core-diff\\393x852\\home.png",
+      "diffScreenshot": "tests\\golden-master\\v12-feature-preview\\core-diff\\393x852\\home.diff.png",
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 45490,
+      "totalPixels": 1427376,
+      "diffRatio": 0.03187,
+      "maxDiffPixelRatio": 0.015,
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ]
+}

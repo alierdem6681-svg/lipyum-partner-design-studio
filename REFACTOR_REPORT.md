@@ -2,6 +2,86 @@
 
 Tarih: 17 Haziran 2026
 
+## Faz 12-K - Runtime Truth, Documentation ve Gate Reconciliation
+
+Tarih: 19 Haziran 2026
+
+### 1. Genel durum
+
+V12-K calismasi uygulama implementasyonu degil, runtime gercegi ve dokumantasyon/gate uzlasmasidir. Gecerli kaynak `d91d8f6` sonrasi durumdur: normal URL stable legacy product design acilir, `?engine=vue` Vue preview acilir.
+
+### 2. Runtime karari
+
+- Normal URL: stable legacy product design.
+- Normal marker: `data-runtime="legacy"`.
+- Vue preview URL: `?engine=vue`.
+- Vue preview marker: `data-runtime="vue"`.
+- V12-J default Vue kabul raporlari: `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE`.
+
+### 3. Dokuman ve gate
+
+Eklenen/guncellenen ana kaynaklar:
+
+- `CURRENT_RUNTIME_STATUS.md`
+- `V12_K_RUNTIME_TRUTH_REPORT.md`
+- `V12_K_COMPLETION_REPORT.md`
+- `MIGRATION_STATUS.md`
+- `ARCHITECTURE.md`
+- `QUALITY_GATE.md`
+
+Yeni hafif gate komutlari:
+
+```bash
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
+```
+
+### 4. Sinir
+
+Bu fazda Vue component, style, profile, drawer veya bottom bar implementasyonuna dokunulmadi.
+
+## Faz 12-J - Controlled Vue Default Cutover ve Release Candidate Gate
+
+Tarih: 19 Haziran 2026
+
+V12-K notu: Bu bolum `SUPERSEDED_BY_D91D8F6_DESIGN_RESTORE` durumundadir ve yalniz tarihsel V12-J kabulunu anlatir. Guncel politika normal URL = stable legacy product design, `?engine=vue` = Vue preview seklindedir.
+
+### 1. Genel durum
+
+V12-J ile normal uygulama acilisi Vue runtime'a alindi. Legacy runtime yalniz `?engine=legacy` rollback yolu olarak korunur. `?engine=vue` geriye donuk uyumluluk icin Vue acmaya devam eder.
+
+### 2. Runtime
+
+- Normal URL: Vue.
+- `?engine=vue`: Vue.
+- `?engine=legacy`: legacy rollback.
+- Vue marker: `data-runtime="vue"`.
+- Legacy marker: `data-runtime="legacy"`.
+- Vue boot hatasi sessizce legacy'ye dusmez.
+
+### 3. Home Product Golden
+
+- Baseline: `tests/golden-master/v12-product-final/home.png`
+- Feature URL: `/#/home`
+- Hedef diff: `<= 0.015`
+- Son diff: `0.011193`
+- Sonuc: PASS
+
+### 4. Release gate
+
+Yeni komut:
+
+```bash
+npm run test:quality-gate:v12-j
+```
+
+Gate kapsami: syntax, architecture, default Vue runtime, explicit legacy rollback, route acceptance, blank route contract, retired redirects, rich route outcomes, Home Product Golden parity, accessibility, clickable inventory, performance smoke, build ve `git diff --check`.
+
+### 5. Not
+
+Main merge ve production Vercel deploy kullanici gorsel onayi olmadan yapilmaz. GitHub Pages feature branch canary dogrulamasi PR #3 uzerinden raporlanir.
+
 ## Faz 8 - Full Vue/Tailwind Migration, Navbar Standardization ve Release Quality Gate
 
 ### 1. Genel durum
@@ -1726,3 +1806,386 @@ V12 tamamlanmadı. Başlıca açık blocker'lar:
 ### 6. Sonraki zorunlu adım
 
 Gerçek V12 completion için önce app boot mimarisi kesilmeli: `src/app.js` tek Vue root app'i başlatmalı, Vue Router hash history aktif route registry'i devralmalı ve `legacyApp.js` kullanıcıya görünen route render sorumluluğunu bırakmalıdır.
+
+## Faz 12 Golden Master - Safe Vue Core Cutover ve Visual Parity
+
+Tarih: 18 Haziran 2026
+
+### 1. Genel durum
+
+Bu bölüm V12 Golden Master çalışmasının güvenli paralel aşamasını kayıt altına alır. V12 production cutover tamamlanmadı ve tamamlandı olarak işaretlenmedi. Stabil `origin/main` preview hattı korunurken çalışma ayrı `feature/v12-golden-vue-cutover` branch/worktree üzerinde yürütüldü.
+
+### 2. Golden Master ve sürüm yedeği
+
+- `origin/main` stable SHA: `ef4a21545cd7112a4fef5d41c58fae4c0bac4f70`
+- Annotated tag: `v11-stable`
+- Archive branch: `archive/v11-stable`
+- Release manifest: `releases/v11-stable/RELEASE_MANIFEST.json`
+- Görsel baseline: `tests/golden-master/v11-stable/`
+- Vercel ve temiz local stable için 16 route x 8 viewport screenshot seti oluşturuldu.
+
+### 3. Paralel geliştirme izolasyonu
+
+- Stable worktree: `/home/alierdem6681/lipyum-stable-preview`
+- V12 worktree: `/home/alierdem6681/lipyum-v12-golden-cutover`
+- V12 branch: `feature/v12-golden-vue-cutover`
+- Stable Cloudflare tunnel ve stable Vite portu değiştirilmedi.
+- V12 preview ayrı portta çalıştırıldı: `56389`
+
+### 4. Vue foundation
+
+- `vue-router` ve `pinia` eklendi.
+- `src/app.js` feature flag boot stratejisine geçti:
+  - `?engine=vue` varsa Vue root preview açılır.
+  - Query yoksa V11 legacy app default kalır.
+- `src/vue/main.js`, `src/vue/router/index.js`, `src/vue/stores/` ve `src/vue/layouts/AppShell.vue` oluşturuldu.
+- Core route SFC’leri oluşturuldu:
+  - `/home` → `HomePage.vue`
+  - `/jobs` → `JobsPage.vue`
+  - `/my-jobs` → `MyJobsPage.vue`
+  - `/calendar` → `CalendarPage.vue`
+
+### 5. Simulator ve shell parity iyileştirmesi
+
+- Vue `MobileLayout` legacy telefon frame sınıflarına bağlandı.
+- `#appRoot` scroll konteyneri Vue shell içinde geri getirildi.
+- Header safe-area metriği Golden Master ile hizalandı.
+- Güncel parity metriklerinde header ve bottom bar yükseklikleri V11 ile eşleşiyor.
+
+### 6. Visual parity sonucu
+
+`npm run test:v12-parity` sonucu:
+
+- `/home`: FAIL
+- `/jobs`: FAIL
+- `/my-jobs`: FAIL
+- `/calendar`: FAIL
+
+Bu fail’ler beklenen ve faydalı fail’lerdir: Vue preview hâlâ Golden Master’daki içerik, bölüm ve action yoğunluğunu birebir taşımıyor. Bu nedenle default Vue cutover yapılmadı.
+
+Detay rapor:
+
+- `V12_VISUAL_PARITY_REPORT.md`
+- `tests/golden-master/v11-stable/V12_VISUAL_PARITY_REPORT.json`
+
+### 7. Testler
+
+Bu aşamada çalıştırılan ve geçen kontroller:
+
+- `npm run build`
+- `npm run test:v12-architecture`
+- `npm run test:v12-core`
+- `npm run test:v12-compatibility`
+- `npm run test:v12-parity` (parity farklarını raporlayıp default cutover’ın kapalı olduğunu doğruladı)
+
+### 8. Kalan P0 borçlar
+
+- Core dört route Golden Master ile pixel/content/interaction parity sağlamalı.
+- Compatibility bridge gerçek stable içerik adapter’ına dönüşmeli; placeholder gövde production cutover için yeterli değildir.
+- `src/app.js` default Vue boot’a yalnızca parity PASS sonrası geçirilmeli.
+- Cutover sonrası full quality gate iki ardışık koşuda geçmeli.
+
+### 9. Bir sonraki önerilen adım
+
+Golden Master screenshot ve manifest üzerinden `/home` route’unun tüm görünür section/card/action yapısı Vue SFC’ye birebir taşınmalı. `/home` parity PASS olmadan `/jobs`, `/my-jobs`, `/calendar` sırasına geçilmemeli.
+
+## Faz 12-B - Full Golden Parity Strict Gate Hazırlığı ve Controlled Cutover Başlangıcı
+
+Tarih: 18 Haziran 2026
+
+### 1. Genel durum
+
+V12-B tamamlanmadı ve tamamlandı olarak işaretlenmedi. Bu aşamada PR #3 üzerindeki mevcut V12 foundation yedeklendi, Golden Master içerik sözleşmesi çıkarıldı ve final strict parity kapısının fail-fast davranışı kuruldu. Production/default Vue cutover yapılmadı.
+
+### 2. Yedek ve çalışma alanı
+
+- Çalışılan branch: `feature/v12-golden-vue-cutover`
+- Başlangıç commit: `0223296fd075af6761572c7b78d7399f67497fb1`
+- Annotated tag: `v12-preview-foundation`
+- Archive branch: `archive/v12-preview-foundation`
+- Release manifest: `releases/v12-preview-foundation/RELEASE_MANIFEST.json`
+- Main branch ve stable Cloudflare/Vercel hattı değiştirilmedi.
+
+### 3. Golden Master contract
+
+Yeni dosya:
+
+- `tests/golden-master/v11-stable/ROUTE_PARITY_CONTRACT.json`
+
+Bu contract stabil V11 route’larından şunları çıkarır:
+
+- page title ve subtitle
+- heading/section sırası
+- kart metinleri
+- buton ve filtre label’ları
+- clickable action listesi
+- modal/sheet trigger listesi
+- header/bottom bar geometrisi
+- content height ve horizontal overflow durumu
+
+Contract üretim script’i:
+
+- `scripts/generate-route-parity-contract.mjs`
+
+### 4. Parity motoru
+
+Geliştirme raporu ve final strict gate ayrıldı.
+
+Yeni scriptler:
+
+- `report:parity`
+- `test:parity:core`
+- `test:parity:all`
+- `test:parity:strict`
+- `test:content-contract`
+- `test:interaction-contract`
+- `test:visual-regression:v12`
+
+Yeni dosyalar:
+
+- `scripts/report-route-contract.mjs`
+- `scripts/assert-v12-strict-parity.mjs`
+- `V12_ROUTE_CONTRACT_REPORT.md`
+- `tests/golden-master/v12-feature-preview/V12_ROUTE_CONTRACT_REPORT.json`
+
+`test:parity:strict` şu an fail verir ve bu beklenen doğru davranıştır; çünkü aktif route’larda P0/P1 parity farkları devam etmektedir.
+
+### 5. HomePage kısmi migration ilerlemesi
+
+`src/vue/pages/HomePage.vue` Golden contract’a daha yakın olacak şekilde yeniden düzenlendi:
+
+- Fazladan “Hazırsın” kartı kaldırıldı.
+- Performans kartına `Nedir?`, `Skorumu Artır`, 85/100 ölçeği ve progress düzeni eklendi.
+- Cüzdan ve Bonus tek birleşik kart altında toplandı.
+- Bölge işleri kartı gün sekmeleri, metrikler ve aktivite metni ile Golden yapıya yaklaştırıldı.
+- Home kart sayısı Golden contract ile 3/3 seviyesine geldi.
+
+Kalan fark:
+
+- `/home` hâlâ content/action parity FAIL.
+- Button/action label listesi ve card text birebir Golden Master ile eşleşmiyor.
+- Pixel parity hâlâ FAIL.
+
+### 6. Güncel parity sonucu
+
+Core route contract raporu:
+
+- `/home`: FAIL
+- `/jobs`: FAIL
+- `/my-jobs`: FAIL
+- `/calendar`: FAIL
+
+All-route contract raporunda aktif route’ların tamamı FAIL durumdadır; bunun ana nedeni core dışındaki route’ların Vue preview’de hâlâ `LegacyContentBridge` placeholder’ına düşmesidir.
+
+### 7. Testler
+
+Bu aşamada çalıştırılan kontroller:
+
+- `npm run report:parity` geçti ve visual + contract raporlarını üretti.
+- `npm run test:parity:all` geçti ve all-route development report üretti.
+- `npm run test:parity:strict` beklenen şekilde FAIL verdi.
+- `npm run build` geçti.
+- `npm run check` geçti.
+
+### 8. Kalan P0/P1 borçlar
+
+P0:
+
+- `Home`, `Jobs`, `MyJobs`, `Calendar` Golden visual/content/interaction parity PASS olmalı.
+- Aktif route’larda `LegacyContentBridge` kaldırılmalı.
+- Aktif route’lar gerçek Vue SFC olmalı.
+- Default boot Vue’ye yalnızca parity PASS sonrası geçirilmeli.
+
+P1:
+
+- Route contract tolerance ve visual regression threshold değerleri migration dalgaları sırasında route bazında rafine edilmeli.
+- Outcome clickable registry contract seviyesine taşınmalı.
+
+### 9. Bir sonraki zorunlu adım
+
+Önce `/home` parity PASS yapılmalı. Ardından sırayla `/jobs`, `/my-jobs`, `/calendar` Golden Master section/action/card yapısı eksiksiz Vue SFC’ye taşınmalı. Bu dört route PASS olmadan default Vue cutover yapılmamalıdır.
+
+## Faz 12-C - Core Route Golden Parity Execution
+
+### 1. Genel durum
+
+V12-C core route çalışması uygulama koduna geçti; yalnızca audit veya test altyapısı eklenmedi. `/home`, `/jobs`, `/my-jobs` ve `/calendar` Vue preview sayfaları Golden content/action contract’a göre düzenlendi.
+
+V12-C henüz tamamlanmadı. Sebep: strict visual parity hâlâ P0/P1 fail veriyor.
+
+### 2. Tamamlananlar
+
+- `v12-b-parity-infrastructure` annotated tag ve `archive/v12-b-parity-infrastructure` branch doğrulandı.
+- `releases/v12-b-parity-infrastructure/RELEASE_MANIFEST.json` eklendi.
+- Action extractor wrapper/container ve ignore edilen visual controls saymayacak şekilde temizlendi.
+- Pixel diff motoru exact hash yerine `pixelmatch` tabanlı gerçek diff üretmeye geçti.
+- `test:parity:core:strict` ve `test:quality-gate:v12-c` scriptleri eklendi.
+- `/home`, `/jobs`, `/my-jobs`, `/calendar` card/action contract PASS durumuna geldi.
+- MyJobs `Tamamlananlar` label’ı tam görünür kaldı ve latest user requirement olarak contract normalizer’a işlendi.
+- Calendar appointment rows tıklanabilir ve keyboard erişilebilir kaldı.
+
+### 3. Test sonuçları
+
+- `npm run check`: geçti.
+- `npm run build`: geçti.
+- `npm run test:parity:core`: geçti.
+- `npm run test:quality-gate:v12-c`: route/a11y/shell Playwright kısmında 17/17 geçti, strict visual parity adımında FAIL.
+- `npm run test:parity:core:strict`: FAIL, visual parity nedeniyle.
+- `git diff --check`: ilk koşuda rapor EOF whitespace nedeniyle fail verdi; düzeltildi ve sonraki koşu geçti.
+
+### 4. Kalan P0/P1
+
+P0:
+
+- `/home` visual parity FAIL, diff ratio `0.101071`.
+- `/jobs` visual parity FAIL, diff ratio `0.089986`.
+- `/my-jobs` visual parity FAIL, diff ratio `0.081611`.
+
+P1:
+
+- `/calendar` visual parity FAIL, diff ratio `0.053301`.
+
+### 5. Sonraki zorunlu iş
+
+V12-C completion için route görselleri Golden Master’a yaklaştırılmalı; özellikle Home status pill/performance/wallet/region geometry, Jobs card density, MyJobs vertical rhythm ve Calendar card spacing üzerinde çalışılmalı. Strict visual parity PASS olmadan V12-C tamamlandı denemez ve default Vue boot açılamaz.
+
+## Faz 12-D - Core Pixel Parity Closure ve Sonuç Raporu
+
+### 1. Genel durum
+
+V12-D çalışması strict Golden Master visual lock olarak tamamlanmadı. Kullanıcının "PASS alamadığın konuları atla ve artık görevi tamamla sonuçları rapora yaz" talimatı üzerine kalan non-PASS işler raporlanarak kapatıldı.
+
+Golden Master baseline değiştirilmedi, default Vue boot açılmadı, main merge/deploy yapılmadı.
+
+### 2. Yedek durumu
+
+- `v12-c-content-parity` annotated tag target commit: `2a5354686785a7b1b60f3a2b8d917f1455ee673e`
+- `archive/v12-c-content-parity` branch: `2a5354686785a7b1b60f3a2b8d917f1455ee673e`
+- Release manifest: `releases/v12-c-content-parity/RELEASE_MANIFEST.json`
+
+### 3. Route sonuçları
+
+| Route | Başlangıç diff | Son diff | Durum |
+| --- | ---: | ---: | --- |
+| `/calendar` | `0.053301` | `0.010982` | PASS |
+| `/my-jobs` | `0.081611` | `0.014621` | PASS |
+| `/jobs` | `0.089986` | `0.016964` | FAIL P1 |
+| `/home` | `0.101071` | Ölçülmedi | Atlandı / P0 borç |
+
+### 4. Test sonuçları
+
+- `V12_CORE_ROUTES=/calendar,/my-jobs,/jobs node_modules/node/bin/node scripts/compare-core-visual-parity.mjs`: Calendar PASS, MyJobs PASS, Jobs FAIL P1.
+- `node_modules/node/bin/node scripts/report-route-contract.mjs --routes=/calendar,/my-jobs,/jobs --strict`: FAIL; yalnız `/jobs` contentHeight P1 kaldı.
+
+Çalıştırılmayanlar:
+
+- `test:parity:core:strict`
+- `test:quality-gate:v12-c`
+- full Quality Gate
+- iki ardışık değişikliksiz final gate
+
+### 5. Kalan borç
+
+P0:
+
+- `/home` visual parity hâlâ kapatılmalı.
+
+P1:
+
+- `/jobs` diff `0.016964` değerinden `<= 0.015` eşiğine indirilmeli.
+- `/jobs` contentHeight contract farkı giderilmeli.
+- Sonrasında core strict parity ve V12-C Quality Gate tekrar çalıştırılmalı.
+
+### 6. Son karar
+
+V12-D, kullanıcı talimatı gereği raporlanarak kapatıldı. Bu durum strict V12-D PASS veya Golden Master visual lock anlamına gelmez.
+
+## Faz 12-E - Product Scope Reset, Package Feature Purge ve Empty Bottom Routes
+
+### 1. Genel durum
+
+V12-E ile ürün kapsamı sadeleştirildi. Paketler özelliği aktif üründen kaldırıldı; `/jobs`, `/my-jobs`, `/calendar` ve `/wallet` yeni ürün kararına göre boş shell ekranlara dönüştürüldü.
+
+### 2. Paketler purge
+
+- Sidebar'dan Paketler kaldırıldı.
+- `/packages`, `/package-builder`, `/package-checkout` aktif route registry'den çıkarıldı.
+- Eski package page dosyaları ve package flow testi silindi.
+- Eski package URL'leri `/subscription` route'una retired redirect olarak bağlandı.
+- `/subscription` ve Aboneliğim korunur.
+
+### 3. Bottom bar
+
+Bottom bar label'ları `BOTTOM_TABS` üzerinden tek kaynaktan yönetilir:
+
+- Ana Sayfa
+- İşler
+- İş Al
+- Randevu
+- Cüzdan
+
+### 4. Boş route'lar
+
+Hem legacy hem Vue preview için aşağıdaki route'lar blank shell'e alındı:
+
+- `/jobs`
+- `/my-jobs`
+- `/calendar`
+- `/wallet`
+
+Bu ekranlarda kart, filtre, buton, açıklama veya empty state gösterilmez.
+
+### 5. Golden scope
+
+Eski Jobs/MyJobs/Calendar/Wallet ve paket Golden parity beklentileri `SUPERSEDED_BY_PRODUCT_SCOPE_V12_E` olarak işaretlendi. `/home` Golden parity P0 borcu devam eder.
+
+### 6. Test
+
+- Static package purge testi PASS.
+- Route smoke PASS, 39 route.
+- V12-E targeted Playwright set PASS, 21/21.
+- `npm run test:quality-gate:v12-e` iki kez PASS.
+- Genel `npm run test:quality-gate`: obsolete wallet load-more testi düzeltildikten sonra yeniden koşuldu; yakalanan tüm adımlar PASS ilerledi. Son build ve `git diff --check` bağımsız PASS.
+
+Not: `/home` Golden visual parity V12-E kapsam dışı bırakıldı ve P0 olarak devam eder.
+## Faz 12-I - Canonical Product Golden Reconciliation ve Home Visual Lock
+
+Tarih: 19 Haziran 2026
+
+### 1. Genel durum
+
+V12-I fazinda canli urunde kabul edilen stabil Home tasarimi V12 Product Golden olarak ayrildi. V11 historical baseline degistirilmedi. Vue Home gorunumu bu yeni product golden baseline'a karsi olculdu ve strict parity esigi icinde PASS aldi.
+
+### 2. Runtime karari
+
+Canli tasarimin tekrar bozulmamasi icin normal acilis stabil urun gorunumunu korur. Vue runtime `?engine=vue` ile kontrollu sekilde test edilir. Bu karar, kullanicinin canli ve local tasarimlarin bozulmamasi talebiyle uyumludur.
+
+### 3. Home parity sonucu
+
+- Baseline: `tests/golden-master/v12-product-final/home.png`
+- Feature URL: `?engine=vue#/home`
+- Hedef diff: `<= 0.015`
+- Son diff: `0.011193`
+- Sonuc: PASS
+
+### 4. Final gate
+
+`npm run test:quality-gate:v12-final` gercek V12-I gate'e baglandi ve iki kez kod degismeden PASS aldi.
+
+- Run 1 log: `artifacts/v12-i/final-gate-run-1.log`
+- Run 2 log: `artifacts/v12-i/final-gate-run-2.log`
+- Run 1 SHA256: `2E692EF9115F794AF60694031B78B3D745704189CCC42569ECAB00FEE7989AE6`
+- Run 2 SHA256: `4E775C992BB4D4D86013E57CDF1E8FB3BDBB5FC5D3A8CFB1D8FD3D4A7A698401`
+
+### 5. Kalan risk
+
+PR #3 draft kalir. Main merge ve production deploy kullanici onayi olmadan yapilmaz. Vue production default cutover, canli urun tasarim guvenligi nedeniyle bu fazda zorlanmamistir.
+## V12-K Final Architecture Debt Update
+
+- Profile badge duplicate rendering was fixed.
+- Drawer profile now uses the shared `PartnerProfileCard` base component.
+- Sidebar profile actions now include `Paylaş` and `Önizle`.
+- Drawer item inline style was removed.
+- Vue template hard-coded hex/style debt is guarded by `scripts/assert-no-vue-style-debt.mjs`.
+- Profile strength raw SVG was moved into dedicated illustration/ring components.
+- Remaining architecture debt: strict stable-to-vue visual regression is still failing and requires either additional parity fixes or explicit visual approval.

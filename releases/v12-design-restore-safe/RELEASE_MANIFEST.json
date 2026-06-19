@@ -1,0 +1,19 @@
+﻿{
+    "version":  "v12-design-restore-safe",
+    "commit":  "835cade8d5465ac904c2d008abf6c6e99cab40ae",
+    "requested_commit":  "d91d8f63dd6c773e9697c7b5b7d3084dc3cebcc9",
+    "requested_commit_note":  "User request referenced d91d8f6, but current branch head is 835cade and includes the bottom bar alignment fix.",
+    "branch":  "feature/v12-golden-vue-cutover",
+    "pr":  3,
+    "default_runtime":  "stable legacy",
+    "vue_preview_url":  "?engine=vue#/route",
+    "stable_design_guard":  "PASS at 320/360/393/430 after commit 835cade",
+    "known_vue_visual_gaps":  [
+                                  "Vue preview Profile still uses new route hero and differs from stable design",
+                                  "Vue preview drawer/sidebar still uses generic Vue drawer and differs from stable design",
+                                  "Vue preview shell parity requires V12-K work"
+                              ],
+    "product_golden":  "tests/golden-master/v12-product-final/home.png; Home diff previously 0.011193",
+    "build":  "last verified PASS before backup",
+    "rollback_command":  "git reset --hard v12-design-restore-safe"
+}

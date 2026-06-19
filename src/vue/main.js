@@ -1,5 +1,8 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import { resolveVuePage } from "./router/routes.js";
+import router from "./router/index.js";
+import App from "./App.vue";
 import "./styles/vue.css";
 
 const mountedIslands = new WeakMap();
@@ -20,6 +23,15 @@ export function mountVueIslands(root = document, context = {}) {
     app.mount(node);
     mountedIslands.set(node, app);
   });
+}
+
+export function mountVueApp(root = document.getElementById("app")) {
+  if (!root) return null;
+  const app = createApp(App);
+  app.use(createPinia());
+  app.use(router);
+  app.mount(root);
+  return app;
 }
 
 export default mountVueIslands;

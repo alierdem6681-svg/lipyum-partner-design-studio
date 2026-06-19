@@ -1,10 +1,7 @@
 <script setup>
-import MobileLayout from "./layouts/MobileLayout.vue";
-import UiKitPreviewPage from "./pages/UiKitPreviewPage.vue";
+import AppShell from "./layouts/AppShell.vue";
 </script>
 
 <template>
-  <MobileLayout>
-    <UiKitPreviewPage />
-  </MobileLayout>
+  <AppShell />
 </template>

@@ -1,0 +1,68 @@
+{
+  "version": "v12-d-partial-parity",
+  "commitSHA": "9f6d5c9038e40c4b107fc5860895a7a026a5c2d7",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pullRequest": {
+    "number": 3,
+    "state": "OPEN",
+    "draft": true,
+    "base": "main"
+  },
+  "backup": {
+    "tag": "v12-d-partial-parity",
+    "archiveBranch": "archive/v12-d-partial-parity"
+  },
+  "goldenMaster": {
+    "manifest": "tests/golden-master/v11-stable/GOLDEN_MASTER_MANIFEST.json",
+    "manifestHash": "500c3fd70a5d085e48ac7fd4fbfceea00b7f4ab026f3bc60aec2cd119054b09b"
+  },
+  "v12DParityResults": {
+    "/calendar": {
+      "previousDiffRatio": 0.053301,
+      "finalDiffRatio": 0.010982,
+      "status": "PASS"
+    },
+    "/my-jobs": {
+      "previousDiffRatio": 0.081611,
+      "finalDiffRatio": 0.014621,
+      "status": "PASS"
+    },
+    "/jobs": {
+      "previousDiffRatio": 0.089986,
+      "finalDiffRatio": 0.016964,
+      "status": "FAIL_P1"
+    },
+    "/home": {
+      "previousDiffRatio": 0.101071,
+      "finalDiffRatio": null,
+      "status": "SKIPPED_P0"
+    }
+  },
+  "testResults": [
+    {
+      "command": "V12_CORE_ROUTES=/calendar,/my-jobs,/jobs node_modules/node/bin/node scripts/compare-core-visual-parity.mjs",
+      "result": "partial",
+      "notes": "Calendar PASS, MyJobs PASS, Jobs FAIL P1"
+    },
+    {
+      "command": "node_modules/node/bin/node scripts/report-route-contract.mjs --routes=/calendar,/my-jobs,/jobs --strict",
+      "result": "failed",
+      "notes": "Jobs contentHeight P1 remained"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "knownP0P1Items": [
+    "/home visual parity skipped, previous known P0 diff 0.101071",
+    "/jobs visual parity P1 diff 0.016964, threshold 0.015",
+    "/jobs route contract contentHeight P1"
+  ],
+  "cutover": {
+    "defaultVueBoot": false,
+    "mainMerged": false,
+    "productionDeployed": false,
+    "goldenMasterBaselineChanged": false
+  }
+}

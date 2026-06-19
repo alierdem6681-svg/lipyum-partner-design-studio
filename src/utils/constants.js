@@ -1,4 +1,4 @@
-export const ROUTE_TO_SCREEN = {
+﻿export const ROUTE_TO_SCREEN = {
   "/home": "home",
   "/jobs": "work",
   "/my-jobs": "jobs",
@@ -17,11 +17,10 @@ export const ROUTE_TO_SCREEN = {
   "/partners": "referralList",
   "/customers": "customers",
   "/referral": "referral",
+  "/referral/tasks": "referralTasks",
+  "/referral/partners": "referralPartners",
   "/job-referral": "jobReferral",
   "/referral-earnings": "referralEarnings",
-  "/packages": "growthPackages",
-  "/package-builder": "growthPackageBuilder",
-  "/package-checkout": "growthPackageCheckout",
   "/subscription": "subscription",
   "/account-settings": "accountSettings",
   "/notification-settings": "notificationSettings",
@@ -37,7 +36,6 @@ export const ROUTE_TO_SCREEN = {
   "/capacity": "capacity",
   "/strategy": "strategy",
   "/ui-kit": "uiKit",
-  "/vue-job-referral": "vueJobReferral",
   "/bonus": "bonus",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
@@ -47,8 +45,8 @@ export const ROUTE_TO_SCREEN = {
 export const ROUTE_TITLES = {
   "/home": "Ana Sayfa",
   "/jobs": "İş Al",
-  "/my-jobs": "İşlerim",
-  "/calendar": "Takvim",
+  "/my-jobs": "İşler",
+  "/calendar": "Randevu",
   "/wallet": "Cüzdan",
   "/profile": "Profilim",
   "/notifications": "Bildirimler",
@@ -63,11 +61,10 @@ export const ROUTE_TITLES = {
   "/partners": "Davet Ettiğin Partnerler",
   "/customers": "Müşteri Defteri",
   "/referral": "Partner Davet Programı",
+  "/referral/tasks": "Referral Görevleri",
+  "/referral/partners": "Davet Ettiğin Partnerler",
   "/job-referral": "İş Yönlendirme Programı",
   "/referral-earnings": "Kazançlarım",
-  "/packages": "Büyüme Paketleri",
-  "/package-builder": "Paket Seçimi",
-  "/package-checkout": "Ödeme",
   "/subscription": "Aboneliğim",
   "/account-settings": "Hesap Ayarları",
   "/notification-settings": "Bildirim Ayarları",
@@ -83,7 +80,6 @@ export const ROUTE_TITLES = {
   "/capacity": "Kapasitem",
   "/strategy": "Stratejim",
   "/ui-kit": "Vue UI Kit",
-  "/vue-job-referral": "İş Yönlendirme Vue Pilot",
   "/bonus": "Bonus Cüzdanı",
   "/appointment-link": "Randevu Linki",
   "/performance-score": "Performans Skoru",
@@ -92,20 +88,26 @@ export const ROUTE_TITLES = {
 
 export const BOTTOM_TABS = [
   { id: "home", route: "/home", label: "Ana Sayfa", icon: "home" },
-  { id: "jobs", route: "/my-jobs", label: "İşlerim", icon: "clipboard" },
+  { id: "jobs", route: "/my-jobs", label: "İşler", icon: "clipboard" },
   { id: "work", route: "/jobs", label: "İş Al", icon: "plus", featured: true, badge: 3 },
-  { id: "calendar", route: "/calendar", label: "Takvim", icon: "calendar" },
+  { id: "calendar", route: "/calendar", label: "Randevu", icon: "calendar" },
   { id: "wallet", route: "/wallet", label: "Cüzdan", icon: "wallet" },
 ];
+
+export const RETIRED_ROUTE_REDIRECTS = {
+  "/packages": "/subscription",
+  "/package-builder": "/subscription",
+  "/package-checkout": "/subscription",
+  "/partner/packages": "/subscription",
+};
 
 export const DRAWER_SECTIONS = [
   {
     title: "Büyüme",
     items: [
-      { label: "Liderlik Tablosu", icon: "trophy", route: "/leaderboard", screen: "levels", color: "#b54708" },
-      { label: "Müşteri Yorumları", icon: "message", route: "/reviews", screen: "reviews", color: "#175cd3" },
-      { label: "Paketler", icon: "package", route: "/packages", screen: "growthPackages", color: "#16a34a" },
-      { label: "Aboneliğim", icon: "crown", route: "/subscription", screen: "subscription", color: "#d99a0b" },
+      { label: "Liderlik Tablosu", icon: "trophy", route: "/leaderboard", screen: "levels", tone: "gold" },
+      { label: "Müşteri Yorumları", icon: "message", route: "/reviews", screen: "reviews", tone: "blue" },
+      { label: "Aboneliğim", icon: "crown", route: "/subscription", screen: "subscription", tone: "gold" },
     ],
   },
   {
@@ -116,33 +118,31 @@ export const DRAWER_SECTIONS = [
         icon: "users",
         route: "/referral",
         screen: "referral",
-        color: "#067647",
+        tone: "green",
       },
       {
         label: "İş Yönlendirme Programı",
         icon: "briefcase",
         route: "/job-referral",
         screen: "jobReferral",
-        color: "#175cd3",
+        tone: "blue",
       },
     ],
   },
   {
     title: "Finans",
     items: [
-      { label: "Hesap Hareketleri", icon: "credit-card", route: "/wallet", screen: "wallet", color: "#344054" },
-      { label: "Kredi Geçmişi", icon: "credit-card", route: "/wallet", screen: "wallet", color: "#475467" },
-      { label: "Bonus Geçmişi", icon: "gift", route: "/bonus", screen: "bonus", color: "#175cd3" },
-      { label: "Gelir / Gider", icon: "bar-chart", route: "/income-expense", screen: "incomeExpense", color: "#067647" },
-      { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", color: "#b54708" },
+      { label: "Bonus Geçmişi", icon: "gift", route: "/bonus", screen: "bonus", tone: "blue" },
+      { label: "Gelir / Gider", icon: "bar-chart", route: "/income-expense", screen: "incomeExpense", tone: "green" },
+      { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", tone: "gold" },
     ],
   },
   {
     title: "Destek",
     items: [
-      { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", color: "#067647" },
-      { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", color: "#067647" },
-      { label: "Müşteri Hizmetleri", icon: "phone", route: "/support/customer-service", screen: "supportCustomerService", color: "#175cd3" },
+      { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", tone: "green" },
+      { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", tone: "green" },
+      { label: "Müşteri Hizmetleri", icon: "phone", route: "/support/customer-service", screen: "supportCustomerService", tone: "blue" },
     ],
   },
 ];

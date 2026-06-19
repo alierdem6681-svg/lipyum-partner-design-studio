@@ -1,76 +1,78 @@
 # Lipyum Partner Architecture
 
+Tarih: 19 Haziran 2026
+Branch: `feature/v12-golden-vue-cutover`
+
 ## Current Shell
 
-The current production app still boots through `src/app.js`, which imports `src/legacyApp.js`. The legacy shell owns:
+V12-K icin gecerli shell politikasi stable design default, Vue preview explicit seklindedir.
 
-- device simulator markup,
-- SVG sprite definitions,
-- hash navigation controller bootstrap,
-- bottom bar mount point,
-- sheet/toast layer,
-- several high-value legacy render functions.
+`src/app.js` once deep link resolver'i calistirir, sonra `engine` query parametresini okur:
 
-This is a known V11 P0 migration debt. It is tracked by `V11_ARCHITECTURE_AUDIT.md` and `MIGRATION_STATUS.md`.
+- `?engine=vue`: Vue preview runtime.
+- Normal URL: stable legacy product design.
+- `?engine=legacy`: stable legacy product design ile ayni legacy yol.
 
-## Modular JS Layer
+Runtime marker'lari:
 
-Many screens are no longer inline in `index.html`; they are modular page/component functions under:
+- Stable/default: `data-runtime="legacy"`.
+- Vue preview: `data-runtime="vue"`.
+- Vue boot hatasi: `data-runtime="vue-error"`.
 
-- `src/pages/`
-- `src/components/`
-- `src/data/mockData.js`
-- `src/utils/`
+## Runtime Source Of Truth
 
-These pages still commonly return HTML strings. They are production-prototype compatible but are not final Vue SFC pages.
+Gecerli secim `src/app.js` icindedir:
 
-## Vue Foundation
+```js
+const useVueEngine = requestedEngine === "vue";
+```
 
-Vue 3, Vite, Tailwind and the Vue UI Kit foundation exist under:
+Bu nedenle Vue yalniz explicit preview flag ile acilir. Default Vue cutover `d91d8f6` ile geri alinmistir.
 
-- `src/vue/`
-- `src/vue/components/ui/`
-- `src/vue/layouts/MobileLayout.vue`
-- `src/vue/pages/`
+## Vue Preview Root
 
-At V11 hardening time, Vue remains island/preview/pilot level rather than the sole app runtime.
+Vue preview root:
 
-## Route Metadata
+- `src/vue/main.js`
+- `createApp(App)`
+- Pinia
+- Vue Router
+- `createWebHashHistory()`
+- `src/vue/layouts/AppShell.vue`
+- `RouterView`
 
-`src/utils/routeMeta.js` is the V11 route metadata registry. It centralizes:
+Shared Vue shell componentleri:
 
-- title,
-- compact title,
-- subtitle,
-- header variant,
-- leading/trailing action intent,
-- bottom bar visibility,
-- active bottom tab,
-- CTA variant,
-- parent route.
+- `AppHeader`
+- `AppBottomBar`
+- `AppDrawer`
+- `AppSheet`
+- `AppModal`
+- `AppToast`
+- `MobileLayout`
 
-This registry is a stepping stone for the future single Vue Router app shell.
+## Stable Runtime Policy
 
-## Target Architecture
+`src/legacyApp.js` V12-K itibariyla normal URL stable product design yoludur. Bu durum yeni urun gelistirmesinin legacy icine tasinmasi anlamina gelmez; sadece default kullanici deneyiminin gorsel regresyonlara karsi korunmasi icindir.
 
-The final architecture should be:
-
-- one Vue root app,
-- Vue Router with `createWebHashHistory()`,
-- Pinia or equivalent minimal UI state store,
-- `App.vue` as app shell,
-- `MobileLayout.vue` for simulator/safe-area/layout,
-- `AppHeader`, `AppBottomBar`, `AppDrawer`, `AppSheet`, `AppModal`, `AppToast` as shared primitives,
-- route pages as Vue SFC files,
-- no active user route rendered by `legacyApp.js`,
-- no active user route relying on large HTML string renderers.
+Vue preview hatti urun onayi ve gorsel gate'ler gecmeden normal/default acilisa alinmaz.
 
 ## Quality Gate
 
-V11 adds a hardening layer rather than claiming full migration. Use:
+V12-K icin gecerli gate komutlari:
 
 ```bash
-npm run test:quality-gate:v11
+npm run test:quality-gate:stable-default
+npm run test:quality-gate:vue-preview
+npm run test:quality-gate:v12-k
 ```
 
-The audit intentionally passes only when the remaining full Vue migration debt is explicitly documented.
+V12-J `default Vue` gate ve raporlari tarihsel kabul edilir; guncel mimari kabul kaynagi degildir.
+## V12-K Final Governance Update
+
+- Default runtime remains stable legacy.
+- Vue remains preview-only through `?engine=vue`.
+- Design-sensitive changes are governed by GitHub PR review from `alierdem6681-svg`.
+- Commit-message tokens and environment-variable bypasses are not accepted as design approval.
+- GitHub Pages deploy is no longer triggered by feature-branch push.
+- V12-K Final cannot be considered complete until trusted approval and strict visual regression both pass.

@@ -1,0 +1,7 @@
+<script setup>
+import BlankBottomRoutePage from "./BlankBottomRoutePage.vue";
+</script>
+
+<template>
+  <BlankBottomRoutePage title="İş Al" test-id="jobs-page" />
+</template>

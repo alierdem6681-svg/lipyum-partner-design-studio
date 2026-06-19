@@ -1,20 +1,128 @@
-import { BOTTOM_TABS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./constants.js";
+﻿import { BOTTOM_TABS, ROUTE_TITLES, ROUTE_TO_SCREEN } from "./constants.js";
 
 const titleOverrides = {
+  "/profile": {
+    title: "Profilim",
+    subtitle: "Profil ve hesap ayarların",
+  },
+  "/about": {
+    title: "Hakkımda",
+    subtitle: "Müşterilere görünen tanıtım bilgilerin",
+  },
+  "/photo-gallery": {
+    title: "Fotoğraflarım",
+    subtitle: "Profil fotoğrafları ve iş galerin",
+  },
+  "/services": {
+    title: "Hizmet Alanları",
+    subtitle: "Hangi hizmette hangi mod açık",
+  },
+  "/regions": {
+    title: "Hizmet Bölgeleri",
+    subtitle: "İlçe bazlı iş alma ayarların",
+  },
+  "/working-hours": {
+    title: "Çalışma Planım",
+    subtitle: "Müsait olduğun gün ve saatleri yönet",
+  },
+  "/team": {
+    title: "Ekibim",
+    subtitle: "Ekip ve çalışan bilgilerin",
+  },
+  "/capacity": {
+    title: "İş Alma Kapasitesi",
+    subtitle: "Bugün kaç iş alabileceğini gir",
+  },
+  "/strategy": {
+    title: "Stratejim",
+    subtitle: "Büyüme ve görünürlük hedeflerin",
+  },
+  "/jobs": {
+    title: "İş Al",
+    compactTitle: "İş Al",
+    subtitle: "",
+  },
+  "/my-jobs": {
+    title: "İşler",
+    compactTitle: "İşler",
+    subtitle: "",
+  },
+  "/calendar": {
+    title: "Randevu",
+    compactTitle: "Randevu",
+    subtitle: "",
+  },
   "/referral": {
     title: "Partner Davet Programı",
     compactTitle: "Partner Davet",
-    subtitle: "Davetlerinden %3 bonus kazan",
+    subtitle: "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan",
+  },
+  "/referral/tasks": {
+    title: "Referral Görevleri",
+    compactTitle: "Görevler",
+    subtitle: "Davet görevlerini takip et",
+    parentRoute: "/referral",
+  },
+  "/referral/partners": {
+    title: "Davet Ettiğin Partnerler",
+    compactTitle: "Partnerler",
+    subtitle: "Referral altındaki partner listesi",
+    parentRoute: "/referral",
   },
   "/notifications": {
     title: "Bildirimler",
-    subtitle: "Önemli gelişmeleri takip et",
+    subtitle: "Önemli gelişmeler için bildirimleri takip et",
     trailingActions: ["notification-settings"],
+  },
+  "/support": {
+    title: "Yardım ve Destek",
+    subtitle: "Sorununu seç, hızlıca çözelim",
+  },
+  "/support/new": {
+    title: "Talep Oluştur",
+    subtitle: "Sorununu seç, hızlıca takip edelim",
+  },
+  "/support/live": {
+    title: "Canlı Destek",
+    subtitle: "Temsilciyle hızlıca görüş",
+  },
+  "/support/customer-service": {
+    title: "Müşteri Hizmetleri",
+    subtitle: "Telefonla öncelikli destek",
+  },
+  "/reviews": {
+    title: "Müşteri Yorumları",
+    subtitle: "Değerlendirme ve geri bildirimler",
+  },
+  "/leaderboard": {
+    title: "Partner Seviyeleri",
+    subtitle: "Seviye ve rozet ilerlemeni gör",
+  },
+  "/subscription": {
+    title: "Aboneliğim",
+    subtitle: "Gold, Pro ve VIP avantajlarını yönet",
   },
   "/wallet": {
     title: "Cüzdan",
-    subtitle: "Kredi, bonus ve hareketlerin",
+    compactTitle: "Cüzdan",
+    subtitle: "",
     trailingActions: ["wallet-info"],
+  },
+  "/job-referral": {
+    title: "İş Yönlendirme Programı",
+    subtitle: "Servis talebi gönder, iş gerçekleşirse kazanç elde et",
+  },
+  "/referral-earnings": {
+    title: "Kazançlarım",
+    subtitle: "Bonus kazanç geçmişi ve detayları",
+  },
+  "/performance-score": {
+    title: "Performans Skoru",
+    subtitle: "İş görünürlüğünü etkileyen kalite özeti",
+  },
+  "/partner-card-preview": {
+    title: "Partner Kartı",
+    subtitle: "Public rozet ve paylaşım önizlemesi",
   },
 };
 
@@ -38,10 +146,10 @@ export const routeMeta = Object.fromEntries(
         headerVariant: isHome ? "home" : isBottomRoute ? "section" : "subpage",
         leadingAction: isHome || isBottomRoute ? "hamburger" : "back",
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
-        showBottomBar: route !== "/package-checkout",
+        showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
-        ctaVariant: isHome ? "home" : route === "/package-checkout" ? "hidden" : "subpage",
-        parentRoute: route === "/home" ? null : "/home",
+        ctaVariant: isHome ? "home" : "subpage",
+        parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,
         showInfo: !(isHome || isBottomRoute),
@@ -51,5 +159,15 @@ export const routeMeta = Object.fromEntries(
 );
 
 export function getRouteMeta(route = "/home") {
+  if (route.startsWith("/referral/partner/")) {
+    return {
+      ...routeMeta["/referral/partners"],
+      route,
+      title: "Partner Detayı",
+      compactTitle: "Partner Detayı",
+      subtitle: "Davet edilen partner özeti",
+      parentRoute: "/referral/partners",
+    };
+  }
   return routeMeta[route] || routeMeta["/home"];
 }

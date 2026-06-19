@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-06-18T19:56:26.702Z",
+  "mode": "strict",
+  "featureBaseUrl": "http://127.0.0.1:56389/?engine=vue",
+  "routeCount": 3,
+  "results": [
+    {
+      "route": "/calendar",
+      "status": "PASS",
+      "goldenContentHash": "f76f84c7f312d3ee37e9067b19c438dc8cfc5664a081e012b513451a58ba4b4a",
+      "featureContentHash": "f884558ececc2405503b9ccfb4a91727d2bb8c9fcd185512d0141a9ce778e52d",
+      "diffs": [],
+      "goldenSummary": {
+        "headingCount": 5,
+        "cardCount": 4,
+        "buttonCount": 7,
+        "actionCount": 8,
+        "contentHeight": 1067
+      },
+      "featureSummary": {
+        "headingCount": 5,
+        "cardCount": 4,
+        "buttonCount": 7,
+        "actionCount": 8,
+        "contentHeight": 993
+      }
+    },
+    {
+      "route": "/my-jobs",
+      "status": "PASS",
+      "goldenContentHash": "8e7acecee2b14b2154f467f60634244a030b3e5ab67dd6503c65d058b7ca808e",
+      "featureContentHash": "40ff1281fa36a2692bdd0434e35225e48d996bb51c744b8fde16e28d3cc2d450",
+      "diffs": [],
+      "goldenSummary": {
+        "headingCount": 2,
+        "cardCount": 1,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 852
+      },
+      "featureSummary": {
+        "headingCount": 2,
+        "cardCount": 1,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 852
+      }
+    },
+    {
+      "route": "/jobs",
+      "status": "FAIL",
+      "goldenContentHash": "0793123a226859832243258ff61b06a75369237e1d5dd6e586d0ce6fba17c70d",
+      "featureContentHash": "b3f1b4a5eaa58793f1765c00b6579e74fddb26474abd950c38427e0410614504",
+      "diffs": [
+        {
+          "name": "contentHeight",
+          "severity": "P1",
+          "golden": 987,
+          "feature": 906,
+          "tolerance": 79
+        }
+      ],
+      "goldenSummary": {
+        "headingCount": 4,
+        "cardCount": 2,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 987
+      },
+      "featureSummary": {
+        "headingCount": 4,
+        "cardCount": 2,
+        "buttonCount": 12,
+        "actionCount": 15,
+        "contentHeight": 906
+      }
+    }
+  ]
+}

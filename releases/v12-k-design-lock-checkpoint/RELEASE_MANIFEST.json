@@ -1,0 +1,41 @@
+{
+  "name": "v12-k-design-lock-checkpoint",
+  "commitSha": "e7f91f3555cf0a7a27b6b65b3d838f99cd1e6368",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pullRequest": 3,
+  "runtimePolicy": {
+    "default": "stable legacy",
+    "vuePreview": "?engine=vue",
+    "defaultVueCutover": false
+  },
+  "dependencyLock": {
+    "packageJsonExactVersions": true,
+    "packageLockRootExactVersions": true,
+    "npmrcSaveExact": true,
+    "npmrcPackageLock": true
+  },
+  "designLock": {
+    "staticDesignContract": true,
+    "commitTokenApproval": true,
+    "environmentBypass": true,
+    "githubReviewApproval": false
+  },
+  "ciWorkflowRun": {
+    "id": "27833648848",
+    "status": "success",
+    "workflow": "Deploy GitHub Pages"
+  },
+  "knownGuardGaps": [
+    "Commit message token is not real user identity verification.",
+    "DESIGN_APPROVED=true environment bypass exists.",
+    "Design approval is not yet tied to a current GitHub PR approval by alierdem6681-svg.",
+    "Design-sensitive list does not yet cover every guard/config/design surface.",
+    "Static guard is mostly string/class based."
+  ],
+  "knownVisualParityGaps": [
+    "Full critical route contact sheet is not yet generated.",
+    "Full stable-to-vue visual regression matrix is not yet enforced.",
+    "Profile badge duplicate and shared profile component architecture still need final verification."
+  ],
+  "rollback": "git reset --hard v12-k-design-lock-checkpoint"
+}

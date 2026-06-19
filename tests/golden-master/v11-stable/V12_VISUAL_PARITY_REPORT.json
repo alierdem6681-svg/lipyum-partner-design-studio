@@ -1,0 +1,577 @@
+{
+  "generatedAt": "2026-06-18T17:27:21.417Z",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "name": "393x852"
+  },
+  "results": [
+    {
+      "route": "/home",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/home.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/home.png",
+      "goldenHash": "266aec9f502471db6d5abbfd99f5be98c9130dc99078a57978f4855aef9329dc",
+      "featureHash": "29de7abb2508d15052b9d7bef7d4a6f9bb8ef275233c136860a7e83d62f44fe8",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "metrics": {
+        "title": "Ana Sayfa · Lipyum Partner",
+        "bodyTextLength": 401,
+        "visibleSections": [
+          "Ana Sayfa",
+          "Performans Skoru",
+          "Bölgendeki İşler"
+        ],
+        "buttonLabels": [
+          "Nedir?",
+          "Skorumu Artır",
+          "Bakiye Yükle",
+          "Krediye Çevir",
+          "Bugün",
+          "Dün",
+          "Ana Sayfa",
+          "İşlerim",
+          "3İş Al",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 4,
+        "iconCount": 14,
+        "headerHeight": 116,
+        "bottomBarHeight": 92,
+        "horizontalOverflow": false
+      },
+      "goldenMetrics": {
+        "target": "vercel",
+        "route": "/home",
+        "viewport": "393x852",
+        "width": 393,
+        "height": 852,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/home",
+        "status": 200,
+        "screenshotPath": "tests/golden-master/v11-stable/vercel/393x852/home.png",
+        "screenshotHash": "266aec9f502471db6d5abbfd99f5be98c9130dc99078a57978f4855aef9329dc",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "title": "Ana Sayfa · Lipyum Partner",
+        "hash": "#/home",
+        "bodyTextLength": 561,
+        "contentHeight": 908,
+        "scrollWidth": 393,
+        "innerWidth": 393,
+        "horizontalOverflow": false,
+        "headerHeight": 116,
+        "headerBounds": {
+          "x": 28,
+          "y": 28,
+          "width": 393,
+          "height": 116,
+          "top": 28,
+          "left": 28,
+          "right": 421,
+          "bottom": 144
+        },
+        "bottomBarHeight": 92,
+        "bottomBarBounds": {
+          "x": 28,
+          "y": 788,
+          "width": 393,
+          "height": 92,
+          "top": 788,
+          "left": 28,
+          "right": 421,
+          "bottom": 880
+        },
+        "firstCardBounds": {
+          "x": 40,
+          "y": 156,
+          "width": 369,
+          "height": 214,
+          "top": 156,
+          "left": 40,
+          "right": 409,
+          "bottom": 370
+        },
+        "pageHorizontalPadding": {
+          "left": "0px",
+          "right": "0px"
+        },
+        "dominantColors": {
+          "bodyBackground": "rgb(255, 255, 255)",
+          "appBackground": "rgba(0, 0, 0, 0)",
+          "text": "rgb(16, 24, 40)",
+          "primaryButton": "rgb(255, 255, 255)"
+        },
+        "visibleSections": [
+          "Bölgendeki İşler"
+        ],
+        "clickableControls": [
+          "Durum: Aktif675 kredi ≈ 2-3 iş Durum: PasifBakiye yok Yükle Durum: PasifÇalışma Saati Dışı Durum: PasifHesap askıda Destek Durum: PasifDuraklatılmış Aç",
+          "Nedir?",
+          "Skorumu Artır",
+          "Bakiye Yükle",
+          "Krediye Çevir",
+          "Bugün",
+          "Dün",
+          "Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.",
+          "Ana Sayfa İşlerim İş Al 3 Takvim Cüzdan",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "buttonLabels": [
+          "Nedir?",
+          "Skorumu Artır",
+          "Bakiye Yükle",
+          "Krediye Çevir",
+          "Bugün",
+          "Dün",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 3,
+        "iconCount": 25
+      },
+      "diff": {
+        "pixelMatch": false,
+        "contentMatch": false,
+        "interactionMatch": false,
+        "headerMatch": true,
+        "bottomMatch": true
+      },
+      "status": "FAIL"
+    },
+    {
+      "route": "/jobs",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/jobs.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/jobs.png",
+      "goldenHash": "b63250a49606bceccf5e474875c468c30a15053f52ad1f827e18a4078683a5b6",
+      "featureHash": "84560681010799b72fcfb5777bc8d599f1152cf4d1d19a1156b6eb0b38ce9e7d",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "metrics": {
+        "title": "İş Al · Lipyum Partner",
+        "bodyTextLength": 356,
+        "visibleSections": [
+          "İş Al",
+          "Yeni iş fırsatlarını yakala",
+          "Klima arızası",
+          "Bulaşık makinesi",
+          "Buzdolabı tamiri"
+        ],
+        "buttonLabels": [
+          "Detay",
+          "Detay",
+          "Detay",
+          "Ana Sayfa",
+          "İşlerim",
+          "3İş Al",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 4,
+        "iconCount": 8,
+        "headerHeight": 116,
+        "bottomBarHeight": 92,
+        "horizontalOverflow": false
+      },
+      "goldenMetrics": {
+        "target": "vercel",
+        "route": "/jobs",
+        "viewport": "393x852",
+        "width": 393,
+        "height": 852,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/jobs",
+        "status": 200,
+        "screenshotPath": "tests/golden-master/v11-stable/vercel/393x852/jobs.png",
+        "screenshotHash": "b63250a49606bceccf5e474875c468c30a15053f52ad1f827e18a4078683a5b6",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "title": "İş Al · Lipyum Partner",
+        "hash": "#/jobs",
+        "bodyTextLength": 727,
+        "contentHeight": 908,
+        "scrollWidth": 393,
+        "innerWidth": 393,
+        "horizontalOverflow": false,
+        "headerHeight": 116,
+        "headerBounds": {
+          "x": 28,
+          "y": 28,
+          "width": 393,
+          "height": 116,
+          "top": 28,
+          "left": 28,
+          "right": 421,
+          "bottom": 144
+        },
+        "bottomBarHeight": 92,
+        "bottomBarBounds": {
+          "x": 28,
+          "y": 788,
+          "width": 393,
+          "height": 92,
+          "top": 788,
+          "left": 28,
+          "right": 421,
+          "bottom": 880
+        },
+        "firstCardBounds": {
+          "x": 40,
+          "y": 216,
+          "width": 369,
+          "height": 90,
+          "top": 216,
+          "left": 40,
+          "right": 409,
+          "bottom": 306
+        },
+        "pageHorizontalPadding": {
+          "left": "0px",
+          "right": "0px"
+        },
+        "dominantColors": {
+          "bodyBackground": "rgb(255, 255, 255)",
+          "appBackground": "rgba(0, 0, 0, 0)",
+          "text": "rgb(16, 24, 40)",
+          "primaryButton": "rgb(255, 255, 255)"
+        },
+        "visibleSections": [
+          "İş Al",
+          "Havuzdaki İşler",
+          "Buzdolabı Tamiri",
+          "Koltuk Yıkama"
+        ],
+        "clickableControls": [
+          "İş Al Havuz ve teklif fırsatları",
+          "Havuzdaki İşler",
+          "Teklif Verilecekler",
+          "Havuz nedir?",
+          "Havuzdan Al",
+          "Detay",
+          "Havuzdan Al",
+          "Detay",
+          "Ana Sayfa İşlerim İş Al 3 Takvim Cüzdan",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "buttonLabels": [
+          "Havuzdaki İşler",
+          "Teklif Verilecekler",
+          "Havuz nedir?",
+          "Havuzdan Al",
+          "Detay",
+          "Havuzdan Al",
+          "Detay",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 2,
+        "iconCount": 27
+      },
+      "diff": {
+        "pixelMatch": false,
+        "contentMatch": false,
+        "interactionMatch": false,
+        "headerMatch": true,
+        "bottomMatch": true
+      },
+      "status": "FAIL"
+    },
+    {
+      "route": "/my-jobs",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/my-jobs.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/my-jobs.png",
+      "goldenHash": "7f719563eeff803bfdad9fd744b045efbced8a8713f7ac452ae531ee1dc5ee83",
+      "featureHash": "5adadedbe499496476c9db6cae4f8d8c5ddb6f4a66b79ac834478387c4d9236b",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "metrics": {
+        "title": "İşlerim · Lipyum Partner",
+        "bodyTextLength": 244,
+        "visibleSections": [
+          "İşlerim",
+          "Kombi bakımı",
+          "Çamaşır makinesi",
+          "Klima montajı"
+        ],
+        "buttonLabels": [
+          "Yeni İşler",
+          "Aktif",
+          "Tekliflerim",
+          "Tamamlananlar",
+          "Sorunlu",
+          "Aç",
+          "Aç",
+          "Aç",
+          "Ana Sayfa",
+          "İşlerim",
+          "3İş Al",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 3,
+        "iconCount": 8,
+        "headerHeight": 116,
+        "bottomBarHeight": 92,
+        "horizontalOverflow": false
+      },
+      "goldenMetrics": {
+        "target": "vercel",
+        "route": "/my-jobs",
+        "viewport": "393x852",
+        "width": 393,
+        "height": 852,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/my-jobs",
+        "status": 200,
+        "screenshotPath": "tests/golden-master/v11-stable/vercel/393x852/my-jobs.png",
+        "screenshotHash": "7f719563eeff803bfdad9fd744b045efbced8a8713f7ac452ae531ee1dc5ee83",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "title": "İşlerim · Lipyum Partner",
+        "hash": "#/my-jobs",
+        "bodyTextLength": 380,
+        "contentHeight": 908,
+        "scrollWidth": 393,
+        "innerWidth": 393,
+        "horizontalOverflow": false,
+        "headerHeight": 116,
+        "headerBounds": {
+          "x": 28,
+          "y": 28,
+          "width": 393,
+          "height": 116,
+          "top": 28,
+          "left": 28,
+          "right": 421,
+          "bottom": 144
+        },
+        "bottomBarHeight": 92,
+        "bottomBarBounds": {
+          "x": 28,
+          "y": 788,
+          "width": 393,
+          "height": 92,
+          "top": 788,
+          "left": 28,
+          "right": 421,
+          "bottom": 880
+        },
+        "firstCardBounds": {
+          "x": 40,
+          "y": 208,
+          "width": 369,
+          "height": 347,
+          "top": 208,
+          "left": 40,
+          "right": 409,
+          "bottom": 555
+        },
+        "pageHorizontalPadding": {
+          "left": "0px",
+          "right": "0px"
+        },
+        "dominantColors": {
+          "bodyBackground": "rgb(255, 255, 255)",
+          "appBackground": "rgba(0, 0, 0, 0)",
+          "text": "rgb(16, 24, 40)",
+          "primaryButton": "rgb(255, 255, 255)"
+        },
+        "visibleSections": [
+          "İşlerim",
+          "Klima Montajı"
+        ],
+        "clickableControls": [
+          "İşlerim İşlerini takip et",
+          "Yeni İşler",
+          "Aktif",
+          "Tekliflerim",
+          "Tamamlanan",
+          "Sorunlu",
+          "Müşteriyi Ara",
+          "Sorun Bildir",
+          "Ana Sayfa İşlerim İş Al 3 Takvim Cüzdan",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "buttonLabels": [
+          "Yeni İşler",
+          "Aktif",
+          "Tekliflerim",
+          "Tamamlanan",
+          "Sorunlu",
+          "Müşteriyi Ara",
+          "Sorun Bildir",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 1,
+        "iconCount": 17
+      },
+      "diff": {
+        "pixelMatch": false,
+        "contentMatch": false,
+        "interactionMatch": false,
+        "headerMatch": true,
+        "bottomMatch": true
+      },
+      "status": "FAIL"
+    },
+    {
+      "route": "/calendar",
+      "goldenScreenshot": "tests/golden-master/v11-stable/vercel/393x852/calendar.png",
+      "featureScreenshot": "tests/golden-master/v12-feature-preview/393x852/calendar.png",
+      "goldenHash": "48af08368b742a1732801d8e4ecfe89dda84a626a138e9390c9e8d15c651afe9",
+      "featureHash": "bee287bf0328506ddf8770d9988e50128ed3dddcf66b1192c4d4327352c4f092",
+      "consoleErrors": [],
+      "pageErrors": [],
+      "metrics": {
+        "title": "Takvim · Lipyum Partner",
+        "bodyTextLength": 176,
+        "visibleSections": [
+          "Takvim",
+          "Bugünkü Randevular",
+          "Klima arızası",
+          "Kombi bakımı"
+        ],
+        "buttonLabels": [
+          "Bugün",
+          "Yarın",
+          "Cmt",
+          "Paz",
+          "Pzt",
+          "Detay",
+          "Detay",
+          "Ana Sayfa",
+          "İşlerim",
+          "3İş Al",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 3,
+        "iconCount": 8,
+        "headerHeight": 116,
+        "bottomBarHeight": 92,
+        "horizontalOverflow": false
+      },
+      "goldenMetrics": {
+        "target": "vercel",
+        "route": "/calendar",
+        "viewport": "393x852",
+        "width": 393,
+        "height": 852,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/calendar",
+        "status": 200,
+        "screenshotPath": "tests/golden-master/v11-stable/vercel/393x852/calendar.png",
+        "screenshotHash": "48af08368b742a1732801d8e4ecfe89dda84a626a138e9390c9e8d15c651afe9",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "title": "Takvim · Lipyum Partner",
+        "hash": "#/calendar",
+        "bodyTextLength": 628,
+        "contentHeight": 908,
+        "scrollWidth": 393,
+        "innerWidth": 393,
+        "horizontalOverflow": false,
+        "headerHeight": 116,
+        "headerBounds": {
+          "x": 28,
+          "y": 28,
+          "width": 393,
+          "height": 116,
+          "top": 28,
+          "left": 28,
+          "right": 421,
+          "bottom": 144
+        },
+        "bottomBarHeight": 92,
+        "bottomBarBounds": {
+          "x": 28,
+          "y": 788,
+          "width": 393,
+          "height": 92,
+          "top": 788,
+          "left": 28,
+          "right": 421,
+          "bottom": 880
+        },
+        "firstCardBounds": {
+          "x": 40,
+          "y": 187,
+          "width": 369,
+          "height": 200,
+          "top": 187,
+          "left": 40,
+          "right": 409,
+          "bottom": 386
+        },
+        "pageHorizontalPadding": {
+          "left": "0px",
+          "right": "0px"
+        },
+        "dominantColors": {
+          "bodyBackground": "rgb(255, 255, 255)",
+          "appBackground": "rgba(0, 0, 0, 0)",
+          "text": "rgb(16, 24, 40)",
+          "primaryButton": "rgb(255, 255, 255)"
+        },
+        "visibleSections": [
+          "Takvim",
+          "Bugünkü Randevular3 kayıt",
+          "Bugünkü Randevular",
+          "ÇalışanlarMüsaitlik",
+          "Çalışanlar",
+          "Hizmet Süreleri",
+          "Müşterilerin senden ücretsiz randevu alsın"
+        ],
+        "clickableControls": [
+          "Takvim Randevularını ve çalışan müsaitliğini yönet",
+          "Linki Paylaş",
+          "QR Göster",
+          "Ana Sayfa İşlerim İş Al 3 Takvim Cüzdan",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "buttonLabels": [
+          "Linki Paylaş",
+          "QR Göster",
+          "Ana Sayfa",
+          "İşlerim",
+          "İş Al 3",
+          "Takvim",
+          "Cüzdan"
+        ],
+        "cardCount": 4,
+        "iconCount": 14
+      },
+      "diff": {
+        "pixelMatch": false,
+        "contentMatch": false,
+        "interactionMatch": false,
+        "headerMatch": true,
+        "bottomMatch": true
+      },
+      "status": "FAIL"
+    }
+  ]
+}
