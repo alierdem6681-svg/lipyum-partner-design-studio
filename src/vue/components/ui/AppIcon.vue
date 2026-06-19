@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { resolveIcon } from "../../icons/iconMap.js";
+import { legacySpriteNames } from "../../icons/svgSprite.js";
 
 const props = defineProps({
   name: { type: String, default: "settings" },
@@ -12,11 +13,24 @@ const props = defineProps({
 });
 
 const IconComponent = computed(() => resolveIcon(props.name));
+const useSprite = computed(() => legacySpriteNames.has(props.name));
 const pixelSize = computed(() => Number(props.size) || 20);
+const spriteHref = computed(() => `#i-${props.name}`);
 </script>
 
 <template>
+  <svg
+    v-if="useSprite"
+    :class="['v-icon', className]"
+    :width="pixelSize"
+    :height="pixelSize"
+    :aria-hidden="ariaLabel ? undefined : 'true'"
+    :aria-label="ariaLabel || undefined"
+  >
+    <use :href="spriteHref"></use>
+  </svg>
   <component
+    v-else
     :is="IconComponent"
     :class="['v-icon', className]"
     :size="pixelSize"

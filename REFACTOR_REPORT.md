@@ -2068,3 +2068,35 @@ Eski Jobs/MyJobs/Calendar/Wallet ve paket Golden parity beklentileri `SUPERSEDED
 - Genel `npm run test:quality-gate`: obsolete wallet load-more testi düzeltildikten sonra yeniden koşuldu; yakalanan tüm adımlar PASS ilerledi. Son build ve `git diff --check` bağımsız PASS.
 
 Not: `/home` Golden visual parity V12-E kapsam dışı bırakıldı ve P0 olarak devam eder.
+## Faz 12-I - Canonical Product Golden Reconciliation ve Home Visual Lock
+
+Tarih: 19 Haziran 2026
+
+### 1. Genel durum
+
+V12-I fazinda canli urunde kabul edilen stabil Home tasarimi V12 Product Golden olarak ayrildi. V11 historical baseline degistirilmedi. Vue Home gorunumu bu yeni product golden baseline'a karsi olculdu ve strict parity esigi icinde PASS aldi.
+
+### 2. Runtime karari
+
+Canli tasarimin tekrar bozulmamasi icin normal acilis stabil urun gorunumunu korur. Vue runtime `?engine=vue` ile kontrollu sekilde test edilir. Bu karar, kullanicinin canli ve local tasarimlarin bozulmamasi talebiyle uyumludur.
+
+### 3. Home parity sonucu
+
+- Baseline: `tests/golden-master/v12-product-final/home.png`
+- Feature URL: `?engine=vue#/home`
+- Hedef diff: `<= 0.015`
+- Son diff: `0.011193`
+- Sonuc: PASS
+
+### 4. Final gate
+
+`npm run test:quality-gate:v12-final` gercek V12-I gate'e baglandi ve iki kez kod degismeden PASS aldi.
+
+- Run 1 log: `artifacts/v12-i/final-gate-run-1.log`
+- Run 2 log: `artifacts/v12-i/final-gate-run-2.log`
+- Run 1 SHA256: `2E692EF9115F794AF60694031B78B3D745704189CCC42569ECAB00FEE7989AE6`
+- Run 2 SHA256: `4E775C992BB4D4D86013E57CDF1E8FB3BDBB5FC5D3A8CFB1D8FD3D4A7A698401`
+
+### 5. Kalan risk
+
+PR #3 draft kalir. Main merge ve production deploy kullanici onayi olmadan yapilmaz. Vue production default cutover, canli urun tasarim guvenligi nedeniyle bu fazda zorlanmamistir.

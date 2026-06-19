@@ -2,6 +2,22 @@
   width: 100%;
 }
 
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.v-icon {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex: 0 0 auto;
+}
+
 .v-mobile-app {
   --top-safe-space: var(--simulator-status-height, 58px);
   --bottom-nav-space: var(--bottom-safe-height, 92px);
@@ -80,7 +96,7 @@
   border-radius: 12px;
   background: #fff;
   color: #344054;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 2px 5px rgba(16, 24, 40, 0.03);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -1075,7 +1091,8 @@
 }
 
 .v-home-stack {
-  gap: 12px;
+  gap: 10px;
+  padding-top: 2px;
 }
 
 .performance-home-card {
@@ -1311,6 +1328,7 @@
 
 .wallet-summary-card {
   padding: 6px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.035);
 }
 
 .wallet-summary {
@@ -1530,6 +1548,7 @@
 .region-home-card {
   padding: 10px 12px 10px;
   margin-bottom: 4px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.035);
 }
 
 .region-home-card .region-card-head {

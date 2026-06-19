@@ -232,3 +232,33 @@ Yeni adımlar:
 - `test:subscription-retained`
 
 Not: `/home` Golden visual parity V12-E scope dışı bırakılmıştır; ayrı P0 olarak devam eder.
+## V12-I Product Golden Final Gate
+
+V12-I itibariyla Home parity icin V11 historical baseline dogrudan final engeli degildir. V11 baseline saklanir; canli urunde kabul edilen stabil Home gorunumu V12 Product Golden olarak ayrica tutulur.
+
+Yeni final komut:
+
+```bash
+npm run test:quality-gate:v12-final
+```
+
+Bu gate su kontrolleri calistirir:
+
+- JS/Vue syntax.
+- V12 mimari kontrolleri.
+- Stabil urun acilisi ve Vue preview ayrimi.
+- Paket ozelliginin aktif urunden kaldirildigi kontrolu.
+- Retired package route redirect kontrolu.
+- Blank bottom route kontrolu.
+- Zengin route outcome testleri.
+- Home V12 Product Golden strict visual parity.
+- Home content ve interaction contract.
+- Build.
+- `git diff --check`.
+
+V12-I kabul kriteri:
+
+- Home diff `<= 0.015`.
+- `?engine=vue#/home` uzerinden Vue screenshot alinmis olmali.
+- Final gate iki kez kod degismeden PASS olmali.
+- Run loglari `artifacts/v12-i/final-gate-run-1.log` ve `artifacts/v12-i/final-gate-run-2.log` altinda saklanmali.

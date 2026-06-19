@@ -63,7 +63,7 @@
     "test:visual-regression:v12": "node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-strict-parity.mjs --visual-only",
     "test:quality-gate:v12-c": "find src tests scripts -name '*.js' -print0 2>/dev/null | xargs -0 -r -n1 node_modules/node/bin/node --check && node_modules/node/bin/node --test tests/architecture/*.test.js && node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js tests/e2e/accessibility.spec.js && node_modules/node/bin/node scripts/compare-core-visual-parity.mjs --strict && node_modules/node/bin/node scripts/report-route-contract.mjs --routes=/home --strict && node_modules/node/bin/node node_modules/vite/bin/vite.js build && git diff --check",
     "test:quality-gate:v12-e": "node_modules/node/bin/node tests/v12-e-quality-gate.mjs",
-    "test:quality-gate:v12-final": "node_modules/node/bin/node tests/v12-g-quality-gate.mjs",
+    "test:quality-gate:v12-final": "node_modules/node/bin/node tests/v12-i-quality-gate.mjs",
     "test:v12-architecture": "node_modules/node/bin/node --test tests/architecture/*.test.js",
     "test:v12-core": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/v12-shell.spec.js tests/e2e/v12-home.spec.js tests/e2e/v12-jobs.spec.js tests/e2e/v12-my-jobs.spec.js tests/e2e/v12-calendar.spec.js",
     "test:v12-parity": "node_modules/node/bin/node scripts/generate-parity-report.mjs && node_modules/node/bin/node scripts/assert-v12-parity-gate.mjs",

@@ -1,5 +1,10 @@
+<script setup>
+import { svgSpriteMarkup } from "../icons/svgSprite.js";
+</script>
+
 <template>
   <div class="v-app studio">
+    <div v-html="svgSpriteMarkup"></div>
     <main class="phone-stage" aria-label="Mobil uygulama prototipi">
       <div class="phone">
         <div class="phone-screen">

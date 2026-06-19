@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
+const vueRoute = (route) => `/?engine=vue#${route}`;
+
 const richRoutes = [
   { route: "/profile", testId: "profile-page" },
   { route: "/partner-card-preview", testId: "partner-card-preview-page" },
@@ -37,7 +39,7 @@ async function expectCleanVueShell(page) {
 for (const item of richRoutes) {
   test(`V12-G rich route renders dedicated page for ${item.route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
-    await page.goto(`/#${item.route}`);
+    await page.goto(vueRoute(item.route));
     await expectCleanVueShell(page);
     await expect(page.getByTestId(item.testId)).toBeVisible();
     expect(errors).toEqual([]);
@@ -46,7 +48,7 @@ for (const item of richRoutes) {
 
 test("V12-G profile badges expand once and reset after route leave", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/profile");
+  await page.goto(vueRoute("/profile"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("partner-profile-card")).toBeVisible();
@@ -54,9 +56,9 @@ test("V12-G profile badges expand once and reset after route leave", async ({ pa
   await page.getByTestId("profile-badge-more").click();
   await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
 
-  await page.goto("/#/support");
+  await page.goto(vueRoute("/support"));
   await expectCleanVueShell(page);
-  await page.goto("/#/profile");
+  await page.goto(vueRoute("/profile"));
   await expectCleanVueShell(page);
   await expect(page.getByTestId("profile-badge-more")).toBeVisible();
   expect(errors).toEqual([]);
@@ -64,7 +66,7 @@ test("V12-G profile badges expand once and reset after route leave", async ({ pa
 
 test("V12-G create ticket flow submits and resets", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/support/new");
+  await page.goto(vueRoute("/support/new"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("support-ticket-form")).toBeVisible();
@@ -82,7 +84,7 @@ test("V12-G create ticket flow submits and resets", async ({ page }) => {
 test("V12-G live support waits then opens branded chat", async ({ page }) => {
   test.setTimeout(20_000);
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/support/live");
+  await page.goto(vueRoute("/support/live"));
   await expectCleanVueShell(page);
 
   await page.getByTestId("live-support-title").fill("V12-G canli destek");
@@ -104,7 +106,7 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
 
 test("V12-G customer service access is subscription-plan based", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/support/customer-service");
+  await page.goto(vueRoute("/support/customer-service"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
@@ -117,7 +119,7 @@ test("V12-G customer service access is subscription-plan based", async ({ page }
 
 test("V12-G subscription plan selection updates active plan", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/subscription");
+  await page.goto(vueRoute("/subscription"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("subscription-page")).toBeVisible();
@@ -130,7 +132,7 @@ test("V12-G subscription plan selection updates active plan", async ({ page }) =
 
 test("V12-G referral list, detail and back stack work", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/referral");
+  await page.goto(vueRoute("/referral"));
   await expectCleanVueShell(page);
 
   await page.getByTestId("referral-invite-button").click();

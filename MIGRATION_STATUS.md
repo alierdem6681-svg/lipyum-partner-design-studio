@@ -1,86 +1,93 @@
-# Lipyum Partner V12-G Migration Status
+# Lipyum Partner Migration Status
 
 Tarih: 19 Haziran 2026
 Branch: `feature/v12-golden-vue-cutover`
 PR: `#3` draft
 
-## Özet
+## V12-I Durumu
 
-- Default runtime artık Vue: `src/app.js` normal açılışta `src/vue/main.js` başlatır.
-- Legacy runtime yalnız kontrollü rollback için tutuldu: `?engine=legacy`.
-- Aktif route'larda `LegacyContentBridge` yok.
-- Debug `Clickable coverage` kartı kullanıcı arayüzünden kaldırıldı.
-- Paketler üründen kaldırılmış durumda; eski paket URL'leri `/subscription` route'una yönlenir.
+- Canli kullanici acilisi stabil urun tasarimini korur.
+- Vue runtime kontrollu olarak `?engine=vue` ile dogrulanir.
+- Legacy fallback yalniz stabil urun gorunumunu ve rollback ihtiyacini korumak icindir.
+- V11 historical Golden baseline degistirilmedi.
+- V12 Product Golden baseline olusturuldu:
+  - `tests/golden-master/v12-product-final/home.png`
+  - `tests/golden-master/v12-product-final/GOLDEN_MANIFEST.json`
+- Home Vue strict product parity: PASS.
+  - hedef: `<= 0.015`
+  - sonuc: `0.011193`
+- Final gate iki kez kod degismeden PASS.
+- Paketler aktif urunde yok.
 - `/jobs`, `/my-jobs`, `/calendar`, `/wallet` blank bottom route olarak korunur.
-- V12-G tamamlandı değildir: Home strict visual parity `FAIL`, diff `0.053682`, hedef `<= 0.015`.
+- `TAMAMLANMAMIS_ARAYUZ_GOREVLERI.md` dosyasina dokunulmadi.
 
 ## Route Durumu
 
-| Route | Durum | Final page/component | Tailwind/UI Kit | Legacy dependency | Test coverage | Risk |
-| --- | --- | --- | --- | --- | --- | --- |
-| `/home` | Dedicated Vue SFC | `HomePage.vue` | Kısmi UI Kit + Golden class parity | Yok | `v12-home`, V12-G gate Home visual | P1: visual diff `0.053682` |
-| `/jobs` | Blank Vue page | `JobsPage.vue` | UI Kit | Yok | blank bottom route | Yok |
-| `/my-jobs` | Blank Vue page | `MyJobsPage.vue` | UI Kit | Yok | blank bottom route | Yok |
-| `/calendar` | Blank Vue page | `CalendarPage.vue` | UI Kit | Yok | blank bottom route | Yok |
-| `/wallet` | Blank Vue page | `WalletPage.vue` | UI Kit | Yok | blank bottom route | Yok |
-| `/profile` | Dedicated Vue SFC | `ProfilePage.vue` | UI Kit | Yok | V12-G rich routes, profile badges | Düşük |
-| `/partner-card-preview` | Dedicated Vue SFC | `PartnerCardPreviewPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/photo-gallery` | Dedicated Vue SFC wrapper | `PhotoGalleryPage.vue` | UI Kit | Yok | V12-G rich routes | Orta: gallery mock |
-| `/about` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/services` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/regions` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/working-hours` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/team` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/capacity` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/strategy` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/account-settings` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/notification-settings` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/contact-settings` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/notifications` | Dedicated Vue SFC | `NotificationsPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/support` | Dedicated Vue SFC | `SupportPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/support/new` | Dedicated Vue SFC | `CreateTicketPage.vue` | UI Kit | Yok | V12-G rich routes, support ticket | Düşük |
-| `/support/live` | Dedicated Vue SFC | `LiveSupportPage.vue` | UI Kit | Yok | V12-G rich routes, 5 sn chat flow | Düşük |
-| `/support/customer-service` | Dedicated Vue SFC | `CustomerServicePage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/messages` | Dedicated Vue SFC wrapper | `MessagesPage.vue` | UI Kit | Yok | V12-G rich routes | Orta: mock content |
-| `/satisfaction` | Dedicated Vue SFC wrapper | `SatisfactionPage.vue` | UI Kit | Yok | V12-G rich routes | Orta: mock content |
-| `/reviews` | Dedicated Vue SFC | `ReviewsPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/leaderboard` | Dedicated Vue SFC | `LeaderboardPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/subscription` | Dedicated Vue SFC | `SubscriptionPage.vue` | UI Kit | Yok | V12-G rich routes, subscription retained | Düşük |
-| `/referral` | Dedicated Vue SFC | `ReferralPage.vue` | UI Kit | Yok | V12-G rich routes, referral flow | Düşük |
-| `/partners` | Dedicated Vue SFC | `ReferralPartnersPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/referral/tasks` | Dedicated Vue SFC wrapper | `ReferralTasksPage.vue` | UI Kit | Yok | V12-G rich routes | Orta |
-| `/referral/partners` | Dedicated Vue SFC | `ReferralPartnersPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/referral/partner/:id` | Dedicated Vue SFC | `ReferralPartnerDetailPage.vue` | UI Kit | Yok | V12-G rich routes | Düşük |
-| `/referral-earnings` | Dedicated Vue SFC wrapper | `ReferralEarningsPage.vue` | UI Kit | Yok | V12-G rich routes | Orta |
-| `/job-referral` | Dedicated Vue SFC wrapper | `JobReferralPage.vue` | UI Kit | Yok | V12-G rich routes | Orta |
-| `/bonus` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/performance-score` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/customers` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/invoices` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/income-expense` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/appointment-link` | Data-driven Vue page | `ContentRoutePage.vue` | UI Kit | Yok | V12-G simple routes | Düşük |
-| `/packages` | Retired redirect | `/subscription` | Yok | Yok | retired package routes | Yok |
-| `/package-builder` | Retired redirect | `/subscription` | Yok | Yok | retired package routes | Yok |
-| `/package-checkout` | Retired redirect | `/subscription` | Yok | Yok | retired package routes | Yok |
-| `/partner/packages` | Retired redirect | `/subscription` | Yok | Yok | retired package routes | Yok |
-| `/ui-kit` | Internal preview route | `UiKitPreviewPage.vue` | UI Kit | Yok | architecture | Kullanıcı nav'ında yok |
+| Route | Sinif | Final page/component | Legacy dependency | Test coverage | Durum |
+| --- | --- | --- | --- | --- | --- |
+| `/home` | Dedicated Vue SFC | `HomePage.vue` | Stabil fallback var | V12-I product visual, content, interaction | PASS |
+| `/jobs` | Blank Vue page | `JobsPage.vue` | Yok | blank bottom route | PASS |
+| `/my-jobs` | Blank Vue page | `MyJobsPage.vue` | Yok | blank bottom route | PASS |
+| `/calendar` | Blank Vue page | `CalendarPage.vue` | Yok | blank bottom route | PASS |
+| `/wallet` | Blank Vue page | `WalletPage.vue` | Yok | blank bottom route | PASS |
+| `/profile` | Dedicated Vue SFC | `ProfilePage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/partner-card-preview` | Dedicated Vue SFC | `PartnerCardPreviewPage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/photo-gallery` | Dedicated Vue wrapper | `PhotoGalleryPage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/notifications` | Dedicated Vue SFC | `NotificationsPage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/support` | Dedicated Vue SFC | `SupportPage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/support/new` | Dedicated Vue SFC | `CreateTicketPage.vue` | Yok | ticket flow | PASS |
+| `/support/live` | Dedicated Vue SFC | `LiveSupportPage.vue` | Yok | 5 sn chat flow | PASS |
+| `/support/customer-service` | Dedicated Vue SFC | `CustomerServicePage.vue` | Yok | subscription access | PASS |
+| `/messages` | Dedicated Vue wrapper | `MessagesPage.vue` | Yok | V12-G/V12-I rich routes | PASS |
+| `/satisfaction` | Dedicated Vue wrapper | `SatisfactionPage.vue` | Yok | satisfaction flow | PASS |
+| `/reviews` | Dedicated Vue SFC | `ReviewsPage.vue` | Yok | reviews flow | PASS |
+| `/leaderboard` | Dedicated Vue SFC | `LeaderboardPage.vue` | Yok | leaderboard flow | PASS |
+| `/subscription` | Dedicated Vue SFC | `SubscriptionPage.vue` | Yok | subscription retained | PASS |
+| `/referral` | Dedicated Vue SFC | `ReferralPage.vue` | Yok | referral flow | PASS |
+| `/partners` | Dedicated Vue SFC | `ReferralPartnersPage.vue` | Yok | referral partners | PASS |
+| `/referral/tasks` | Dedicated Vue wrapper | `ReferralTasksPage.vue` | Yok | referral flow | PASS |
+| `/referral/partners` | Dedicated Vue SFC | `ReferralPartnersPage.vue` | Yok | referral flow | PASS |
+| `/referral/partner/:id` | Dedicated Vue SFC | `ReferralPartnerDetailPage.vue` | Yok | detail/back flow | PASS |
+| `/referral-earnings` | Dedicated Vue wrapper | `ReferralEarningsPage.vue` | Yok | earnings flow | PASS |
+| `/job-referral` | Dedicated Vue wrapper | `JobReferralPage.vue` | Yok | job referral flow | PASS |
+| `/about` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/services` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/regions` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/working-hours` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/team` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/capacity` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/strategy` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/account-settings` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/notification-settings` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/contact-settings` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/bonus` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/performance-score` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/customers` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/invoices` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/income-expense` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/appointment-link` | Data-driven Vue page | `ContentRoutePage.vue` | Yok | simple content route | PASS |
+| `/packages` | Retired redirect | `/subscription` | Yok | retired package route | PASS |
+| `/package-builder` | Retired redirect | `/subscription` | Yok | retired package route | PASS |
+| `/package-checkout` | Retired redirect | `/subscription` | Yok | retired package route | PASS |
+| `/partner/packages` | Retired redirect | `/subscription` | Yok | retired package route | PASS |
+| `/ui-kit` | Internal route | `UiKitPreviewPage.vue` | Yok | architecture smoke | PASS |
 
-## Gate Durumu
+## V12-I Final Gate
 
-Geçen kontroller:
+Komut:
 
-- Syntax: PASS
-- V12-G architecture: PASS
-- Product scope blank/retired routes: PASS
-- Simple content routes: PASS
-- Rich route outcomes: PASS
-- Build smoke: PASS
+```bash
+npm run test:quality-gate:v12-final
+```
 
-Kalan blocker:
+Sonuc:
 
-- Home strict visual parity: FAIL
-  - diff: `0.053682`
-  - hedef: `<= 0.015`
-  - rapor: `tests/golden-master/v12-feature-preview/V12_CORE_PIXEL_DIFF_REPORT.json`
+- Run 1: PASS
+- Run 2: PASS
+- Run 1 SHA256: `2E692EF9115F794AF60694031B78B3D745704189CCC42569ECAB00FEE7989AE6`
+- Run 2 SHA256: `4E775C992BB4D4D86013E57CDF1E8FB3BDBB5FC5D3A8CFB1D8FD3D4A7A698401`
 
-Bu blocker kapanmadan V12-G tamamlandı sayılmaz.
+## Kalan Risk
+
+- Default acilista stabil urun gorunumu korunur; Vue dogrulamasi `?engine=vue` ile yapilir. Bu karar, canli tasarimin tekrar bozulmamasi icin bilerek korunmustur.
+- PR #3 draft kalir; main merge ve production deploy kullanici onayi olmadan yapilmaz.
