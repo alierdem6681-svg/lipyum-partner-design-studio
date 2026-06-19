@@ -1,0 +1,27 @@
+{
+  "name": "v12-k2-start",
+  "commit": "da9f5d8e814660a190ba00fd08a9fbb0fccc4ef5",
+  "branch": "feature/v12-golden-vue-cutover",
+  "pr": 3,
+  "runtimePolicy": {
+    "default": "stable legacy",
+    "vuePreview": "?engine=vue",
+    "defaultVueCutover": false
+  },
+  "scope": [
+    "Automated visual parity closure",
+    "Shell interaction repair",
+    "Human approval workflow correction"
+  ],
+  "knownBlockers": [
+    "Single-owner GitHub PR approval deadlock",
+    "Shared header visual diff above 0.015",
+    "Shared bottom bar visual diff above 0.015",
+    "Drawer visual diff above 0.015",
+    "Profile grid visual diff above 0.015"
+  ],
+  "rollback": [
+    "git switch feature/v12-golden-vue-cutover",
+    "git reset --hard v12-k2-start"
+  ]
+}

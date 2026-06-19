@@ -3354,3 +3354,45 @@
 .wallet-tile.bonus .wallet-subline {
   --wallet-dot: var(--color-info);
 }
+
+.v-header.app-header {
+  position: sticky;
+  top: var(--sticky-header-top);
+  z-index: 18;
+  display: grid;
+  grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
+  align-items: center;
+  justify-content: stretch;
+  gap: var(--app-header-gap, 8px);
+  min-height: calc(var(--top-safe-space) + var(--app-header-height, 58px));
+  margin: 0 calc(var(--page-x-padding) * -1) 12px;
+  padding: var(--top-safe-space) var(--page-x-padding) 9px;
+  background: #f6f8fa;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.82);
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.05);
+  backdrop-filter: blur(14px);
+}
+
+.v-header.app-header.home-header {
+  grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.v-header.app-header.section-header,
+.v-header.app-header.subpage-header {
+  grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
+}
+
+.v-header.app-header.home-header .nav-alert-ticker {
+  width: 100%;
+  min-width: 0;
+}
+
+.v-header__actions.header-actions {
+  width: 94px;
+  display: grid;
+  grid-template-columns: 44px 44px;
+  justify-content: end;
+  gap: 6px;
+}

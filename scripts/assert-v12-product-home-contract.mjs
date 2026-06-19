@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+﻿import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -63,13 +63,13 @@ const state = await page.evaluate(() => {
       performance: text.includes("Performans Skoru"),
       score: text.includes("81"),
       scoreCta: text.includes("Skorumu Art"),
-      wallet: text.includes("Cüzdan") || text.includes("CÃ¼zdan"),
+      wallet: text.includes("Cüzdan") || text.includes("Cüzdan"),
       bonus: text.includes("Bonus"),
       credit: text.includes("675"),
       bonusAmount: text.includes("240"),
-      region: text.includes("Bölgendeki") || text.includes("BÃ¶lgendeki"),
-      today: text.includes("Bugün") || text.includes("BugÃ¼n"),
-      yesterday: text.includes("Dün") || text.includes("DÃ¼n"),
+      region: text.includes("Bölgendeki") || text.includes("Bölgendeki"),
+      today: text.includes("Bugün") || text.includes("Bugün"),
+      yesterday: text.includes("Dün") || text.includes("Dün"),
     },
     requiredElements: {
       header: visible('[data-testid="app-header"]'),
@@ -85,7 +85,7 @@ const state = await page.evaluate(() => {
 });
 
 const bottomExpected = ["Ana Sayfa", "İşler", "İş Al", "Randevu", "Cüzdan"];
-const bottomAsciiExpected = ["Ana Sayfa", "Ä°ÅŸler", "Ä°ÅŸ Al", "Randevu", "CÃ¼zdan"];
+const bottomAsciiExpected = ["Ana Sayfa", "İşler", "İş Al", "Randevu", "Cüzdan"];
 const bottomPass = JSON.stringify(state.bottomLabels) === JSON.stringify(bottomExpected)
   || JSON.stringify(state.bottomLabels) === JSON.stringify(bottomAsciiExpected);
 

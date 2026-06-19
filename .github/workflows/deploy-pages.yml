@@ -7,6 +7,9 @@ on:
         description: "Approved PR number to deploy"
         required: true
         default: "3"
+      head_sha:
+        description: "Exact approved PR head SHA to deploy"
+        required: true
 
 permissions:
   contents: read
@@ -24,9 +27,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Resolve PR head
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          HEAD_SHA="$(gh pr view ${{ inputs.pr_number }} --repo ${{ github.repository }} --json headRefOid --jq .headRefOid)"
+          if [ "$HEAD_SHA" != "${{ inputs.head_sha }}" ]; then
+            echo "Input head SHA does not match current PR head."
+            echo "PR head: $HEAD_SHA"
+            echo "Input: ${{ inputs.head_sha }}"
+            exit 1
+          fi
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout approved PR head
         uses: actions/checkout@v7
         with:
+          ref: ${{ steps.pr.outputs.head_sha }}
           fetch-depth: 0
 
       - name: Setup Node
@@ -41,21 +59,6 @@ jobs:
       - name: Dependency lock
         run: npm run test:dependency-lock
 
-      - name: Resolve PR head
-        id: pr
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo "head_sha=$(gh pr view ${{ inputs.pr_number }} --repo ${{ github.repository }} --json headRefOid --jq .headRefOid)" >> "$GITHUB_OUTPUT"
-
-      - name: Design review gate
-        run: npm run test:design-review
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ inputs.pr_number }}
-          PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
-
       - name: Static design contract
         run: npm run test:design-contract
 
@@ -68,8 +71,8 @@ jobs:
       - name: Install Playwright Chromium
         run: node_modules/node/bin/node node_modules/@playwright/test/cli.js install chromium
 
-      - name: V12-K design gate
-        run: npm run test:quality-gate:v12-k
+      - name: V12-K automated gate
+        run: npm run test:quality-gate:v12-k-automated
 
       - name: Build
         run: npm run build

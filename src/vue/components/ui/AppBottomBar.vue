@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { BOTTOM_TABS } from "../../../utils/constants.js";
 import AppIcon from "./AppIcon.vue";
 
@@ -35,8 +35,8 @@ const tabs = BOTTOM_TABS;
         <AppIcon :name="tab.icon" :size="ctaVariant === 'home' ? 30 : 23" class-name="icon" />
       </span>
       <AppIcon v-else-if="!tab.featured" :name="tab.icon" :size="24" class-name="icon" />
-      <span class="v-bottom__label">{{ tab.label }}</span>
-      <em v-if="tab.featured && notificationCount" class="v-bottom__badge bottom-badge">{{ ` ${notificationCount}` }}</em>
+      <span class="v-bottom__label" data-fit-text>{{ tab.label }}</span>
+      <em v-if="tab.featured && notificationCount" class="v-bottom__badge bottom-badge">{{ notificationCount }}</em>
     </button>
   </nav>
 </template>

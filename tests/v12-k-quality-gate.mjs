@@ -12,11 +12,11 @@ const playwrightCli = path.join(root, "node_modules", "@playwright", "test", "cl
 const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
 
 const mode = process.argv[2] || "--v12-k";
-const allowedModes = new Set(["--stable-default", "--vue-preview", "--v12-k"]);
+const allowedModes = new Set(["--stable-default", "--vue-preview", "--automated", "--v12-k"]);
 
 if (!allowedModes.has(mode)) {
   console.error(`[v12-k-quality-gate] Unknown mode: ${mode}`);
-  console.error("[v12-k-quality-gate] Use --stable-default, --vue-preview or --v12-k.");
+  console.error("[v12-k-quality-gate] Use --stable-default, --vue-preview, --automated or --v12-k.");
   process.exit(1);
 }
 
@@ -52,6 +52,12 @@ const dependencyLockStep = {
   args: ["run", "test:dependency-lock"],
 };
 
+const utf8IntegrityStep = {
+  name: "UTF-8 integrity",
+  command: npmBin,
+  args: ["run", "test:utf8-integrity"],
+};
+
 const designReviewStep = {
   name: "trusted GitHub design review",
   command: npmBin,
@@ -74,6 +80,12 @@ const visualRegressionStep = {
   name: "stable-to-vue visual regression",
   command: npmBin,
   args: ["run", "test:visual-regression:v12-k"],
+};
+
+const shellActionsStep = {
+  name: "header actions and navigation back stack",
+  command: nodeBin,
+  args: [playwrightCli, "test", e2e("v12-k2-shell-actions.spec.js"), "--trace=off", "--workers=1"],
 };
 
 const buildStep = {
@@ -135,17 +147,32 @@ const steps = mode === "--stable-default"
   ? stableDefaultSteps
   : mode === "--vue-preview"
     ? vuePreviewSteps
-    : [
+    : mode === "--automated"
+      ? [
         dependencyLockStep,
-        designReviewStep,
+        utf8IntegrityStep,
         staticDesignContractStep,
         vueStyleDebtStep,
         ...stableDefaultSteps,
         ...vuePreviewSteps.slice(1),
+        shellActionsStep,
         visualRegressionStep,
         buildStep,
         gitDiffCheckStep,
-      ];
+      ]
+      : [
+          dependencyLockStep,
+          utf8IntegrityStep,
+          designReviewStep,
+          staticDesignContractStep,
+          vueStyleDebtStep,
+          ...stableDefaultSteps,
+          ...vuePreviewSteps.slice(1),
+          shellActionsStep,
+          visualRegressionStep,
+          buildStep,
+          gitDiffCheckStep,
+        ];
 
 try {
   for (const step of steps) await runStep(step);

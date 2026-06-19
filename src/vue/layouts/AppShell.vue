@@ -1,5 +1,5 @@
-<script setup>
-import { computed, watch } from "vue";
+﻿<script setup>
+import { computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { DRAWER_SECTIONS } from "../../utils/constants.js";
 import { getRouteMeta } from "../../utils/routeMeta.js";
@@ -25,11 +25,18 @@ const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
 const showBack = computed(() => meta.value.leadingAction === "back");
 const rightActions = computed(() => meta.value.trailingActions || []);
+let navigationSource = "init";
 
 watch(
   () => route.path,
   (path) => {
-    navigation.push(path, "router");
+    if (navigationSource === "init") navigation.replace(path, "init");
+    else if (navigationSource === "app") navigation.push(path, "app");
+    else if (navigationSource === "ui-back") navigation.replace(path, "ui-back");
+    else if (navigation.stack.includes(path)) navigation.syncFromHistory(path, "history");
+    else navigation.push(path, navigationSource);
+    navigationSource = "router";
+    shell.closeSheet();
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
   },
@@ -38,11 +45,15 @@ watch(
 
 function navigateTo(target) {
   shell.closeDrawer();
+  navigationSource = "app";
   router.push(target);
 }
 
 function goBack() {
-  const previous = navigation.pop(meta.value.parentRoute || "/home");
+  const fallback = meta.value.parentRoute || "/home";
+  let previous = navigation.pop(fallback);
+  if (fallback !== "/home" && previous === "/home") previous = fallback;
+  navigationSource = "ui-back";
   router.push(previous);
 }
 
@@ -50,7 +61,51 @@ function onHeaderAction(action) {
   if (action === "hamburger") shell.openDrawer();
   if (action === "notifications") navigateTo("/notifications");
   if (action === "profile") navigateTo("/profile");
+  if (action === "notification-settings") navigateTo("/notification-settings");
+  if (action === "wallet-info") {
+    shell.openSheet({
+      title: "Cüzdan",
+      description: "Kredi ve bakiye bilgisi",
+      body: "Kredilerini iş almak, teklif vermek ve öne çıkmak için kullanırsın.",
+    });
+  }
+  if (action === "info") {
+    shell.openSheet({
+      title: meta.value.title || "Bilgi",
+      description: meta.value.subtitle || "Sayfa bilgisi",
+      body: "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+    });
+  }
+  if (action === "status") {
+    shell.openSheet({
+      title: "Çalışma durumu",
+      description: "Aktif iş alımı",
+      body: "Hesabın aktif. Uygun bölgelerde iş almaya devam edebilirsin.",
+    });
+  }
+  if (action === "credit") navigateTo("/wallet");
+  if (action === "workPlan") navigateTo("/working-hours");
+  if (action === "support") navigateTo("/support");
+  if (action === "activate-dispatch") shell.showToast("İş alımı tekrar aktif hale getirildi.");
 }
+
+function handlePopState() {
+  navigationSource = "history";
+}
+
+onMounted(() => {
+  window.addEventListener("popstate", handlePopState);
+  window.navigateToPage = navigateTo;
+  window.goBack = goBack;
+  window.lipyumRouter = { navigateTo, goBack };
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", handlePopState);
+  if (window.navigateToPage === navigateTo) delete window.navigateToPage;
+  if (window.goBack === goBack) delete window.goBack;
+  if (window.lipyumRouter?.navigateTo === navigateTo) delete window.lipyumRouter;
+});
 </script>
 
 <template>

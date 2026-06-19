@@ -57,7 +57,18 @@ forbidIncludes("scripts/assert-design-review.mjs", reviewGuard, "DESIGN-APPROVED
 const workflow = read(".github/workflows/deploy-pages.yml");
 forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "branches:\n      - feature/v12-golden-vue-cutover");
 requireIncludes(".github/workflows/deploy-pages.yml", workflow, "workflow_dispatch:");
-requireIncludes(".github/workflows/deploy-pages.yml", workflow, "Design review gate");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "head_sha:");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "V12-K automated gate");
+forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "Design review gate");
+
+const humanApprovalWorkflow = read(".github/workflows/v12-k-human-design-approval.yml");
+requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "environment:");
+requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "design-approval");
+requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "head_sha");
+requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "V12-K Human Design Approval");
+requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "statuses");
+forbidIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "DESIGN_APPROVED");
+forbidIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "DESIGN-APPROVED");
 
 const codeowners = read(".github/CODEOWNERS");
 for (const requiredPath of ["/src/vue/", "/src/styles/", "/.github/workflows/", "/scripts/assert-design-*", "/package.json"]) {

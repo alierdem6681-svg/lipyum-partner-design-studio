@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+﻿import { createRouter, createWebHashHistory } from "vue-router";
 import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "../../utils/constants.js";
 import { activeRoutePaths } from "../data/activeRouteContent.js";
 import CalendarPage from "../pages/CalendarPage.vue";

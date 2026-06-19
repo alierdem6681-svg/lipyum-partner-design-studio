@@ -25,8 +25,7 @@ permissions:
 
 jobs:
   quality:
-    name: Quality
-    if: github.event_name != 'pull_request_review' || github.event.review.state == 'approved'
+    name: V12-K Automated Quality
     runs-on: ubuntu-latest
 
     steps:
@@ -69,14 +68,6 @@ jobs:
       - name: Static design contract
         run: npm run test:design-contract
 
-      - name: Design review gate
-        run: npm run test:design-review
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ steps.pr.outputs.number }}
-          PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
-
       - name: Check
         run: npm run check
 
@@ -86,13 +77,8 @@ jobs:
       - name: Install Playwright Chromium
         run: node_modules/node/bin/node node_modules/@playwright/test/cli.js install chromium
 
-      - name: V12-K full gate
-        run: npm run test:quality-gate:v12-k
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ steps.pr.outputs.number }}
-          PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+      - name: V12-K automated gate
+        run: npm run test:quality-gate:v12-k-automated
 
       - name: Build
         run: npm run build

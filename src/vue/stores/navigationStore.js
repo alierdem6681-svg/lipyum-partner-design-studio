@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useNavigationStore = defineStore("navigation", {
   state: () => ({
-    stack: ["/home"],
+    stack: [],
     previousRoute: null,
     source: "direct",
   }),
@@ -16,7 +16,17 @@ export const useNavigationStore = defineStore("navigation", {
       this.source = source;
     },
     replace(route, source = "replace") {
-      this.stack[this.stack.length - 1] = route;
+      if (this.stack.length) this.stack[this.stack.length - 1] = route;
+      else this.stack = [route];
+      this.source = source;
+    },
+    syncFromHistory(route, source = "history") {
+      const existingIndex = this.stack.lastIndexOf(route);
+      if (existingIndex >= 0) {
+        this.stack = this.stack.slice(0, existingIndex + 1);
+      } else {
+        this.replace(route, source);
+      }
       this.source = source;
     },
     pop(fallback = "/home") {

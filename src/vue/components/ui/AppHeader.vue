@@ -23,7 +23,9 @@ const iconForAction = {
 const labelForAction = {
   notifications: "Bildirimler",
   profile: "Profil",
-  info: "Bilgi",
+  info: "Sayfa bilgisi",
+  "wallet-info": "Cüzdan bilgisi",
+  "notification-settings": "Bildirim ayarları",
 };
 
 const testIdForAction = {
@@ -35,11 +37,11 @@ const testIdForAction = {
 };
 
 const homeStatuses = [
-  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "675 kredi â‰ˆ 2-3 iÅŸ", tone: "success" },
-  { action: "credit", icon: "wallet", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "YÃ¼kle", tone: "warning" },
-  { action: "workPlan", icon: "clock", eyebrow: "Durum: Pasif", label: "Ã‡alÄ±ÅŸma Saati DÄ±ÅŸÄ±", tone: "info" },
-  { action: "support", icon: "shield", eyebrow: "Durum: Pasif", label: "Hesap askÄ±da", cta: "Destek", tone: "danger" },
-  { action: "activate-dispatch", icon: "clock", eyebrow: "Durum: Pasif", label: "DuraklatÄ±lmÄ±ÅŸ", cta: "AÃ§", tone: "neutral" },
+  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "675 kredi ≈ 2-3 iş", tone: "success" },
+  { action: "credit", icon: "wallet", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "Yükle", tone: "warning" },
+  { action: "workPlan", icon: "clock", eyebrow: "Durum: Pasif", label: "Çalışma Saati Dışı", tone: "info" },
+  { action: "support", icon: "shield", eyebrow: "Durum: Pasif", label: "Hesap askıda", cta: "Destek", tone: "danger" },
+  { action: "activate-dispatch", icon: "pause", eyebrow: "Durum: Pasif", label: "Duraklatılmış", cta: "Aç", tone: "neutral" },
 ];
 
 function statusAriaLabel(status) {
@@ -48,25 +50,30 @@ function statusAriaLabel(status) {
 </script>
 
 <template>
-  <header class="v-header v-app-header top-nav" :data-header-variant="variant" data-testid="app-header">
+  <header
+    class="v-header v-app-header top-nav app-header"
+    :class="`${variant || 'subpage'}-header`"
+    :data-header-variant="variant"
+    data-testid="app-header"
+  >
     <button
       v-if="showBack"
-      class="v-header__action icon-btn"
+      class="v-header__action icon-btn page-header-action"
       type="button"
       data-testid="back-button"
       data-action="go-back"
-      aria-label="Geri dÃ¶n"
+      aria-label="Geri dön"
       @click="emit('back')"
     >
       <AppIcon name="chevron-left" :size="24" class-name="icon" />
     </button>
     <button
       v-else
-      class="v-header__action icon-btn"
+      class="v-header__action icon-btn page-header-action"
       type="button"
       data-testid="hamburger-button"
       data-action="menu"
-      aria-label="MenÃ¼"
+      aria-label="Menü"
       @click="emit('menu')"
     >
       <AppIcon name="menu" :size="24" class-name="icon" />
@@ -77,7 +84,7 @@ function statusAriaLabel(status) {
       class="v-header-status-viewport nav-alert-ticker nav-status-pill"
       role="status"
       aria-live="polite"
-      aria-label="Ä°ÅŸ alÄ±mÄ± durumlarÄ±"
+      aria-label="İş alımı durumları"
     >
       <span class="nav-alert-track">
         <div
@@ -104,16 +111,16 @@ function statusAriaLabel(status) {
         </div>
       </span>
     </div>
-    <div v-else class="v-header__copy">
+    <div v-else class="v-header__copy page-header-copy">
       <h1>{{ title }}</h1>
       <p v-if="subtitle">{{ subtitle }}</p>
     </div>
 
-    <div class="v-header__actions">
+    <div class="v-header__actions header-actions">
       <button
         v-for="action in (rightIcon ? [rightIcon] : rightActions.length ? rightActions : ['info'])"
         :key="action"
-        class="v-header__action icon-btn"
+        class="v-header__action icon-btn page-header-action"
         type="button"
         :data-testid="testIdForAction[action] || 'header-right-action'"
         :data-action="action"

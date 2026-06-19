@@ -10,7 +10,7 @@ const profile = useProfileStore();
 </script>
 
 <template>
-  <section class="profile-strength-card" aria-label="Profilini gÃ¼Ã§lendir">
+  <section class="profile-strength-card" aria-label="Profilini güçlendir">
     <div class="card-header">
       <h2 class="card-title">{{ profile.strength.title }}</h2>
       <p class="card-subtitle">{{ profile.strength.subtitle }}</p>
@@ -34,7 +34,7 @@ const profile = useProfileStore();
 
     <button class="preview-button" type="button" data-action="profile-preview" @click="router.push('/partner-card-preview')">
       <AppIcon name="eye" :size="16" class-name="icon" />
-      MÃ¼ÅŸteri Profilimi Ã–nizle
+      Müşteri Profilimi Önizle
     </button>
   </section>
 </template>
