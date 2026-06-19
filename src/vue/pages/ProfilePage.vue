@@ -14,7 +14,7 @@ onBeforeUnmount(() => profile.resetBadges());
 <template>
   <AppPage title="Profilim" data-testid="profile-page">
     <div class="v-stack v-profile-page">
-      <PartnerProfileCard />
+      <PartnerProfileCard :show-actions="false" />
       <ProfileStrengthCard />
       <ProfileMenuGrid />
     </div>

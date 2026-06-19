@@ -16,6 +16,7 @@ const iconForAction = {
   notifications: "bell",
   profile: "user",
   info: "help-circle",
+  "profile-preview": "eye",
   "wallet-info": "help-circle",
   "notification-settings": "settings",
 };
@@ -24,6 +25,7 @@ const labelForAction = {
   notifications: "Bildirimler",
   profile: "Profil",
   info: "Sayfa bilgisi",
+  "profile-preview": "Önizle",
   "wallet-info": "Cüzdan bilgisi",
   "notification-settings": "Bildirim ayarları",
 };
@@ -32,6 +34,7 @@ const testIdForAction = {
   notifications: "notification-button",
   profile: "profile-button",
   info: "header-info-button",
+  "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
   "notification-settings": "notification-settings-button",
 };
@@ -52,7 +55,10 @@ function statusAriaLabel(status) {
 <template>
   <header
     class="v-header v-app-header top-nav app-header"
-    :class="`${variant || 'subpage'}-header`"
+    :class="[
+      `${variant || 'subpage'}-header`,
+      rightActions.includes('profile-preview') ? 'has-text-action' : '',
+    ]"
     :data-header-variant="variant"
     data-testid="app-header"
   >
@@ -121,6 +127,7 @@ function statusAriaLabel(status) {
         v-for="action in (rightIcon ? [rightIcon] : rightActions.length ? rightActions : ['info'])"
         :key="action"
         class="v-header__action icon-btn page-header-action"
+        :class="action === 'profile-preview' ? 'is-text-action' : ''"
         type="button"
         :data-testid="testIdForAction[action] || 'header-right-action'"
         :data-action="action"
@@ -128,6 +135,7 @@ function statusAriaLabel(status) {
         @click="rightIcon ? emit('right') : emit('action', action)"
       >
         <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
+        <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
         <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
       </button>
     </div>

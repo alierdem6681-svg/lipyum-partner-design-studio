@@ -83,6 +83,12 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expectVueShell(page);
   await expect(page.getByTestId("partner-profile-card")).toBeVisible();
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
+  await expect(page.getByTestId("header-info-button")).toHaveCount(0);
+  await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
+  await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
+  await expect(page.getByTestId("profile-preview-header-button")).toBeVisible();
+  await page.getByTestId("profile-preview-header-button").click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/partner-card-preview");
 
   await page.goto("/#/home");
   await expectVueShell(page);
