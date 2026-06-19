@@ -1,0 +1,17 @@
+{
+  "name": "pre-v13-production-main",
+  "sha": "c8aa53e03ad3dcb710af85ee620c6eb46232aa7a",
+  "date": "2026-06-19",
+  "runtimePolicy": "v12 production main backup before V13",
+  "githubPagesUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5173/",
+  "currentTestStatus": "V12.0.0 release tag exists; V13 release gate not yet run at backup time",
+  "productGoldenHomeSha256": "A3D9711AD318C2FB07F52B7830B0B59C04260E95AE3553F177B2196AAF6F7586",
+  "activeRouteCount": 40,
+  "knownP0": [],
+  "knownP1": [],
+  "knownP2": [
+    "GitHub Pages release metadata not present before V13"
+  ],
+  "rollbackCommand": "git switch archive/pre-v13-production-main"
+}

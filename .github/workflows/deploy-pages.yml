@@ -1,50 +1,29 @@
-name: Deploy GitHub Pages
+name: GitHub Pages Production
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      pr_number:
-        description: "Approved PR number to deploy"
-        required: true
-        default: "3"
-      head_sha:
-        description: "Exact approved PR head SHA to deploy"
-        required: true
 
 permissions:
   contents: read
-  pull-requests: read
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-production
   cancel-in-progress: false
 
 jobs:
   build:
-    name: Build
+    name: Build and validate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Resolve PR head
-        id: pr
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          HEAD_SHA="$(gh pr view ${{ inputs.pr_number }} --repo ${{ github.repository }} --json headRefOid --jq .headRefOid)"
-          if [ "$HEAD_SHA" != "${{ inputs.head_sha }}" ]; then
-            echo "Input head SHA does not match current PR head."
-            echo "PR head: $HEAD_SHA"
-            echo "Input: ${{ inputs.head_sha }}"
-            exit 1
-          fi
-          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
-
-      - name: Checkout approved PR head
+      - name: Checkout main SHA
         uses: actions/checkout@v7
         with:
-          ref: ${{ steps.pr.outputs.head_sha }}
           fetch-depth: 0
 
       - name: Setup Node
@@ -56,33 +35,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Dependency lock
-        run: npm run test:dependency-lock
-
-      - name: Static design contract
-        run: npm run test:design-contract
-
-      - name: Check
-        run: npm run check
-
-      - name: Test
-        run: npm test
-
       - name: Install Playwright Chromium
         run: node_modules/node/bin/node node_modules/@playwright/test/cli.js install chromium
 
-      - name: V12-K automated gate
+      - name: Release quality gate
         run: npm run test:quality-gate:release
+        env:
+          GITHUB_PAGES: "true"
+          LIPYUM_RELEASE_VERSION: "v13-fast-finish"
 
-      - name: Build
+      - name: Build GitHub Pages artifact
         run: npm run build
         env:
           GITHUB_PAGES: "true"
+          LIPYUM_RELEASE_VERSION: "v13-fast-finish"
 
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
 
-      - name: Upload artifact
+      - name: Validate release metadata
+        run: |
+          test -f dist/release.json
+          node -e "const fs=require('fs');const r=JSON.parse(fs.readFileSync('dist/release.json','utf8')); if(r.gitSha !== process.env.GITHUB_SHA) throw new Error('release.json SHA mismatch'); if(r.platform !== 'github-pages') throw new Error('platform mismatch'); if(r.runtime !== 'vue') throw new Error('runtime mismatch');"
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist

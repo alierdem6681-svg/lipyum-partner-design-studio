@@ -1,4 +1,5 @@
 import { resolveDeepLinkRoute } from "./utils/deepLinks.js";
+import { mountVueApp } from "./vue/main.js";
 
 const resolvedDeepLinkRoute = resolveDeepLinkRoute();
 
@@ -9,10 +10,6 @@ if (resolvedDeepLinkRoute && !window.location.hash) {
     `${window.location.pathname}${window.location.search}#${resolvedDeepLinkRoute}`,
   );
 }
-
-const params = new URLSearchParams(window.location.search);
-const requestedEngine = params.get("engine");
-const useVueEngine = requestedEngine === "vue";
 
 function markRuntime(runtime) {
   const root = document.getElementById("app");
@@ -45,12 +42,10 @@ function renderVueBootError(error) {
   }
 }
 
-if (useVueEngine) {
-  markRuntime("vue");
-  import("./vue/main.js")
-    .then(({ mountVueApp }) => mountVueApp())
-    .catch(renderVueBootError);
-} else {
-  markRuntime("legacy");
-  import("./legacyApp.js");
+markRuntime("vue");
+
+try {
+  mountVueApp();
+} catch (error) {
+  renderVueBootError(error);
 }

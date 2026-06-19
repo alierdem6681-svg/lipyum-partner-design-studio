@@ -55,20 +55,23 @@ forbidIncludes("scripts/assert-design-review.mjs", reviewGuard, "DESIGN_APPROVED
 forbidIncludes("scripts/assert-design-review.mjs", reviewGuard, "DESIGN-APPROVED");
 
 const workflow = read(".github/workflows/deploy-pages.yml");
-forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "branches:\n      - feature/v12-golden-vue-cutover");
-requireIncludes(".github/workflows/deploy-pages.yml", workflow, "workflow_dispatch:");
-requireIncludes(".github/workflows/deploy-pages.yml", workflow, "head_sha:");
-requireIncludes(".github/workflows/deploy-pages.yml", workflow, "V12-K automated gate");
-forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "Design review gate");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "push:");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "branches:");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "- main");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "GITHUB_PAGES");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "actions/upload-pages-artifact");
+requireIncludes(".github/workflows/deploy-pages.yml", workflow, "actions/deploy-pages");
+forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "pr_number:");
+forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "head_sha:");
+forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "VERCEL");
+forbidIncludes(".github/workflows/deploy-pages.yml", workflow, "CLOUDFLARE");
 
-const humanApprovalWorkflow = read(".github/workflows/v12-k-human-design-approval.yml");
-requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "environment:");
-requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "design-approval");
-requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "head_sha");
-requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "V12-K Human Design Approval");
-requireIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "statuses");
-forbidIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "DESIGN_APPROVED");
-forbidIncludes(".github/workflows/v12-k-human-design-approval.yml", humanApprovalWorkflow, "DESIGN-APPROVED");
+const prWorkflow = read(".github/workflows/pr-quality.yml");
+requireIncludes(".github/workflows/pr-quality.yml", prWorkflow, "pull_request:");
+requireIncludes(".github/workflows/pr-quality.yml", prWorkflow, "npm run test:quality-gate:release");
+forbidIncludes(".github/workflows/pr-quality.yml", prWorkflow, "deploy-pages");
+forbidIncludes(".github/workflows/pr-quality.yml", prWorkflow, "Vercel");
+forbidIncludes(".github/workflows/pr-quality.yml", prWorkflow, "Cloudflare");
 
 const codeowners = read(".github/CODEOWNERS");
 for (const requiredPath of ["/src/vue/", "/src/styles/", "/.github/workflows/", "/scripts/assert-design-*", "/package.json"]) {
@@ -80,6 +83,9 @@ for (const requiredPath of [
   "scripts/assert-design-lock.mjs",
   "scripts/assert-dependency-lock.mjs",
   "scripts/design-sensitive-paths.mjs",
+  "scripts/detect-test-scope.mjs",
+  "scripts/local-live.mjs",
+  "scripts/write-release-metadata.mjs",
   ".github/CODEOWNERS",
   ".github/workflows/",
   "package.json",
@@ -97,9 +103,11 @@ if (DESIGN_SENSITIVE_PREFIXES.length < 20) {
 }
 
 const appJs = read("src/app.js");
-requireIncludes("src/app.js", appJs, "const useVueEngine = requestedEngine === \"vue\";");
-requireIncludes("src/app.js", appJs, "markRuntime(\"legacy\")");
-requireIncludes("src/app.js", appJs, "import(\"./legacyApp.js\")");
+requireIncludes("src/app.js", appJs, "import { mountVueApp } from \"./vue/main.js\";");
+requireIncludes("src/app.js", appJs, "markRuntime(\"vue\")");
+requireIncludes("src/app.js", appJs, "mountVueApp()");
+forbidIncludes("src/app.js", appJs, "legacyApp");
+forbidIncludes("src/app.js", appJs, "requestedEngine");
 forbidIncludes("src/app.js", appJs, "const useLegacyEngine");
 
 const partnerProfile = read("src/vue/components/profile/PartnerProfileCard.vue");

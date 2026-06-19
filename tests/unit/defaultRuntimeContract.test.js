@@ -5,18 +5,10 @@ import path from "node:path";
 
 const appSource = fs.readFileSync(path.join(process.cwd(), "src/app.js"), "utf8");
 
-test("stable product design remains the default runtime", () => {
-  assert.match(appSource, /const useVueEngine\s*=\s*requestedEngine\s*===\s*["']vue["']/, "Vue must require ?engine=vue");
-  assert.match(
-    appSource,
-    /if\s*\(\s*useVueEngine\s*\)\s*\{[\s\S]*markRuntime\(["']vue["']\)[\s\S]*import\(["']\.\/vue\/main\.js["']\)/,
-    "?engine=vue must be the only Vue boot path",
-  );
-  assert.match(
-    appSource,
-    /else\s*\{[\s\S]*markRuntime\(["']legacy["']\)[\s\S]*import\(["']\.\/legacyApp\.js["']\)/,
-    "normal URLs must boot the stable legacy design",
-  );
-  assert.doesNotMatch(appSource, /requestedEngine\s*===\s*["']legacy["']/, "?engine=legacy must not be the runtime switch");
-  assert.doesNotMatch(appSource, /const useLegacyEngine/, "legacy must not be behind a rollback-only flag");
+test("final Vue runtime is the only active boot path", () => {
+  assert.match(appSource, /import\s+\{\s*mountVueApp\s*\}\s+from\s+["']\.\/vue\/main\.js["']/, "app.js must statically import Vue root");
+  assert.match(appSource, /markRuntime\(["']vue["']\)/, "normal URLs must mark the Vue runtime");
+  assert.match(appSource, /mountVueApp\(\)/, "normal URLs must mount Vue");
+  assert.doesNotMatch(appSource, /legacyApp/, "legacy runtime must not be imported");
+  assert.doesNotMatch(appSource, /requestedEngine|useVueEngine|useLegacyEngine/, "runtime query switches must not remain active");
 });

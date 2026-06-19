@@ -3,6 +3,8 @@ import { defineConfig } from "@playwright/test";
 const nodeBin = process.platform === "win32"
   ? "node_modules\\node\\bin\\node.exe"
   : "node_modules/node/bin/node";
+const port = process.env.PLAYWRIGHT_PORT || "5174";
+const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -10,13 +12,13 @@ export default defineConfig({
   fullyParallel: false,
   reporter: [["list"]],
   use: {
-    baseURL: "http://127.0.0.1:4175",
+    baseURL,
     trace: "retain-on-failure",
   },
   webServer: {
-    command: `${nodeBin} node_modules/vite/bin/vite.js --host 0.0.0.0 --port 4175`,
-    url: "http://127.0.0.1:4175",
-    reuseExistingServer: true,
+    command: `${nodeBin} node_modules/vite/bin/vite.js --host 0.0.0.0 --port ${port} --strictPort`,
+    url: baseURL,
+    reuseExistingServer: false,
     timeout: 60_000,
   },
   projects: [

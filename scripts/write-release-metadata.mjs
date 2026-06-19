@@ -17,20 +17,22 @@ function git(args, fallback = "") {
   }
 }
 
-const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || git(["rev-parse", "HEAD"], "unknown");
-const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || git(["rev-parse", "--abbrev-ref", "HEAD"], "unknown");
-const buildDate = process.env.VERCEL_ENV ? new Date().toISOString() : "local-build";
+const gitSha = process.env.GITHUB_SHA || process.env.LIPYUM_GIT_SHA || git(["rev-parse", "HEAD"], "unknown");
+const branch = process.env.GITHUB_REF_NAME || process.env.LIPYUM_GIT_BRANCH || git(["rev-parse", "--abbrev-ref", "HEAD"], "unknown");
+const platform = process.env.GITHUB_PAGES === "true" ? "github-pages" : "local";
+const buildDate = new Date().toISOString();
+const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] || "lipyum-partner-design-studio";
+const basePath = platform === "github-pages" ? `/${repositoryName}/` : "/";
 
 const release = {
   gitSha,
-  version: process.env.LIPYUM_RELEASE_VERSION || "v12-k3",
+  version: process.env.LIPYUM_RELEASE_VERSION || "v13-fast-finish",
   buildDate,
   branch,
-  runtimePolicy: {
-    default: "stable-legacy",
-    vuePreview: "?engine=vue",
-  },
-  designContractVersion: "V12-K-STABLE-DESIGN-CONTRACT",
+  platform,
+  runtime: "vue",
+  designContractVersion: "V13-FINAL-RELEASE-CONTRACT",
+  basePath,
 };
 
 const publicDir = path.join(root, "public");

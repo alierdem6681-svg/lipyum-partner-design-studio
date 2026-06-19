@@ -5,8 +5,9 @@ import path from "node:path";
 
 const appSource = fs.readFileSync(path.join(process.cwd(), "src/app.js"), "utf8");
 
-test("legacy stable design is the default and Vue preview is explicit", () => {
-  assert.match(appSource, /const useVueEngine\s*=\s*requestedEngine\s*===\s*["']vue["']/, "Vue preview must be selected only with ?engine=vue");
-  assert.match(appSource, /if\s*\(\s*useVueEngine\s*\)\s*\{[\s\S]*markRuntime\(["']vue["']\)[\s\S]*import\(["']\.\/vue\/main\.js["']\)/, "Vue import must be guarded and marked");
-  assert.match(appSource, /else\s*\{[\s\S]*markRuntime\(["']legacy["']\)[\s\S]*import\(["']\.\/legacyApp\.js["']\)/, "legacy stable design must be the default marked runtime");
+test("runtime rollback is provided by git refs, not query switches", () => {
+  assert.match(appSource, /mountVueApp\(\)/, "Vue runtime must be active");
+  assert.doesNotMatch(appSource, /requestedEngine\s*===\s*["']legacy["']/, "?engine=legacy must not exist");
+  assert.doesNotMatch(appSource, /requestedEngine\s*===\s*["']vue["']/, "?engine=vue must not be required");
+  assert.doesNotMatch(appSource, /legacyApp/, "legacy runtime must be absent from active boot");
 });

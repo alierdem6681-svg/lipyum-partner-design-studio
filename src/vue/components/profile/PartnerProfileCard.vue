@@ -98,6 +98,28 @@ function openPreview() {
         +{{ hiddenBadgeCount }}
       </button>
     </span>
+    <div v-if="showActions" class="partner-profile-actions">
+      <button
+        class="ghost-action"
+        type="button"
+        data-testid="partner-share-button"
+        data-action="open-partner-share"
+        @click="openShareSheet"
+      >
+        <AppIcon name="share" :size="16" class-name="icon" />
+        Paylaş
+      </button>
+      <button
+        class="ghost-action"
+        type="button"
+        data-testid="partner-preview-button"
+        data-action="profile-preview"
+        @click="openPreview"
+      >
+        <AppIcon name="eye" :size="16" class-name="icon" />
+        Önizle
+      </button>
+    </div>
   </section>
 
   <section v-else :class="cardClasses" data-testid="partner-profile-card" aria-label="Partner profil kartı">
