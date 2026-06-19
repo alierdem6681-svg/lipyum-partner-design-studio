@@ -5,7 +5,8 @@ import path from "node:path";
 
 const appSource = fs.readFileSync(path.join(process.cwd(), "src/app.js"), "utf8");
 
-test("legacy rollback is explicit and marked", () => {
-  assert.match(appSource, /const useLegacyEngine\s*=\s*requestedEngine\s*===\s*["']legacy["']/, "legacy rollback must be selected only with ?engine=legacy");
-  assert.match(appSource, /if\s*\(\s*useLegacyEngine\s*\)\s*\{[\s\S]*markRuntime\(["']legacy["']\)[\s\S]*import\(["']\.\/legacyApp\.js["']\)/, "legacy import must be guarded and marked");
+test("legacy stable design is the default and Vue preview is explicit", () => {
+  assert.match(appSource, /const useVueEngine\s*=\s*requestedEngine\s*===\s*["']vue["']/, "Vue preview must be selected only with ?engine=vue");
+  assert.match(appSource, /if\s*\(\s*useVueEngine\s*\)\s*\{[\s\S]*markRuntime\(["']vue["']\)[\s\S]*import\(["']\.\/vue\/main\.js["']\)/, "Vue import must be guarded and marked");
+  assert.match(appSource, /else\s*\{[\s\S]*markRuntime\(["']legacy["']\)[\s\S]*import\(["']\.\/legacyApp\.js["']\)/, "legacy stable design must be the default marked runtime");
 });

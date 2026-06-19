@@ -7,7 +7,7 @@ const root = process.cwd();
 const routerSource = fs.readFileSync(path.join(root, "src/vue/router/index.js"), "utf8");
 const shellSource = fs.readFileSync(path.join(root, "src/vue/layouts/AppShell.vue"), "utf8");
 
-test("Vue Router owns default runtime navigation", () => {
+test("Vue Router owns explicit preview runtime navigation", () => {
   assert.match(routerSource, /createRouter\(/, "Vue Router must be created");
   assert.match(routerSource, /createWebHashHistory\(\)/, "hash history must own routing");
   assert.match(shellSource, /useRouter\(\)/, "AppShell must use Vue Router");

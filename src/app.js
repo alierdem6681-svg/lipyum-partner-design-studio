@@ -12,7 +12,7 @@ if (resolvedDeepLinkRoute && !window.location.hash) {
 
 const params = new URLSearchParams(window.location.search);
 const requestedEngine = params.get("engine");
-const useLegacyEngine = requestedEngine === "legacy";
+const useVueEngine = requestedEngine === "vue";
 
 function markRuntime(runtime) {
   const root = document.getElementById("app");
@@ -30,7 +30,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function renderBootError(error) {
+function renderVueBootError(error) {
   const root = document.getElementById("app");
   const message = error instanceof Error ? error.message : "Vue runtime boot failed";
   console.error("[lipyum] Vue runtime boot failed", error);
@@ -45,12 +45,12 @@ function renderBootError(error) {
   }
 }
 
-if (useLegacyEngine) {
-  markRuntime("legacy");
-  import("./legacyApp.js");
-} else {
+if (useVueEngine) {
   markRuntime("vue");
   import("./vue/main.js")
     .then(({ mountVueApp }) => mountVueApp())
-    .catch(renderBootError);
+    .catch(renderVueBootError);
+} else {
+  markRuntime("legacy");
+  import("./legacyApp.js");
 }

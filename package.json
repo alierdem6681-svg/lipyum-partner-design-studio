@@ -14,6 +14,7 @@
     "test:accessibility": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/accessibility.spec.js",
     "test:sidebar": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/sidebar.spec.js",
     "test:bottom-bar": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/bottom-bar.spec.js",
+    "test:stable-design-default": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/stable-design-default.spec.js",
     "test:navigation-contract": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/navigation-contract.spec.js",
     "test:forms": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/forms-and-filters.spec.js",
     "test:device-matrix": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/device-matrix.spec.js",
