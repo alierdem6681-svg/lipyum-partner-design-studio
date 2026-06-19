@@ -6,28 +6,27 @@ import path from "node:path";
 const root = process.cwd();
 const routerSource = fs.readFileSync(path.join(root, "src/vue/router/index.js"), "utf8");
 
-const coreRoutes = [
-  { route: "/home", component: "HomePage" },
+const blankRoutes = [
   { route: "/jobs", component: "JobsPage" },
   { route: "/my-jobs", component: "MyJobsPage" },
   { route: "/calendar", component: "CalendarPage" },
   { route: "/wallet", component: "WalletPage" },
 ];
 
-test("V12 router uses hash history and real Vue SFCs for core routes", () => {
+test("V12-F router uses hash history and no active LegacyContentBridge", () => {
   assert.match(routerSource, /createWebHashHistory\(\)/, "Vue Router must preserve hash-route URLs");
-  assert.match(routerSource, /LegacyContentBridge/, "compatibility bridge should be explicit for non-core routes");
+  assert.doesNotMatch(routerSource, /LegacyContentBridge/, "active routes must not use the compatibility bridge");
 
-  for (const item of coreRoutes) {
+  assert.match(routerSource, /ContentRoutePage/, "migrated active routes must use ContentRoutePage");
+  assert.match(routerSource, /activeRoutePaths/, "router must derive migrated routes from active route registry");
+
+  for (const item of blankRoutes) {
     assert.match(routerSource, new RegExp(`path:\\s*["']${item.route}["']`), `${item.route} must be registered`);
     assert.match(routerSource, new RegExp(`component:\\s*${item.component}`), `${item.route} must use ${item.component}`);
     const componentPath = path.join(root, `src/vue/pages/${item.component}.vue`);
     assert.ok(fs.existsSync(componentPath), `${item.component}.vue must exist`);
   }
 
-  const coreRoutesBlock = routerSource.slice(
-    routerSource.indexOf("const coreRoutes"),
-    routerSource.indexOf("const compatibilityRoutes"),
-  );
-  assert.doesNotMatch(coreRoutesBlock, /LegacyContentBridge/, "core routes must not use the compatibility bridge");
+  assert.ok(fs.existsSync(path.join(root, "src/vue/pages/ContentRoutePage.vue")), "ContentRoutePage.vue must exist");
+  assert.ok(!fs.existsSync(path.join(root, "src/vue/pages/LegacyContentBridge.vue")), "LegacyContentBridge.vue must be removed");
 });

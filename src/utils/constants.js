@@ -130,8 +130,6 @@ export const DRAWER_SECTIONS = [
   {
     title: "Finans",
     items: [
-      { label: "Hesap Hareketleri", icon: "credit-card", route: "/wallet", screen: "wallet", color: "#344054" },
-      { label: "Kredi Geçmişi", icon: "credit-card", route: "/wallet", screen: "wallet", color: "#475467" },
       { label: "Bonus Geçmişi", icon: "gift", route: "/bonus", screen: "bonus", color: "#175cd3" },
       { label: "Gelir / Gider", icon: "bar-chart", route: "/income-expense", screen: "incomeExpense", color: "#067647" },
       { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", color: "#b54708" },

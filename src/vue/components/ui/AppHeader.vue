@@ -26,6 +26,14 @@ const labelForAction = {
   info: "Bilgi",
 };
 
+const testIdForAction = {
+  notifications: "notification-button",
+  profile: "profile-button",
+  info: "header-info-button",
+  "wallet-info": "wallet-info-button",
+  "notification-settings": "notification-settings-button",
+};
+
 const homeStatuses = [
   { action: "status", eyebrow: "Durum: Aktif", label: "675 kredi ≈ 2-3 iş" },
   { action: "credit", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "Yükle" },
@@ -93,7 +101,7 @@ function statusAriaLabel(status) {
         :key="action"
         class="v-header__action"
         type="button"
-        :data-testid="action === 'notifications' ? 'notification-button' : action === 'profile' ? 'profile-button' : 'header-right-action'"
+        :data-testid="testIdForAction[action] || 'header-right-action'"
         :data-action="action"
         :aria-label="rightLabel || labelForAction[action] || action"
         @click="rightIcon ? emit('right') : emit('action', action)"

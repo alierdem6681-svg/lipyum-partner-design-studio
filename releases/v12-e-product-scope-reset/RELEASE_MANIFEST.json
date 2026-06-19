@@ -1,0 +1,25 @@
+﻿{
+    "release":  "v12-e-product-scope-reset",
+    "createdAt":  "2026-06-19T08:22:17.9017552Z",
+    "commit":  "15f35723ca999f4f52896bd335fa54f5ffe6e31b",
+    "branch":  "feature/v12-golden-vue-cutover",
+    "draftPr":  "PR #3",
+    "tag":  "v12-e-product-scope-reset",
+    "archiveBranch":  "archive/v12-e-product-scope-reset",
+    "productScope":  {
+                         "packagesFeatureRemoved":  true,
+                         "packageRoutesRedirectToSubscription":  true,
+                         "subscriptionRetained":  true,
+                         "blankBottomRoutes":  [
+                                                   "/jobs",
+                                                   "/my-jobs",
+                                                   "/calendar",
+                                                   "/wallet"
+                                               ],
+                         "note":  "Backup point before V12-F Full Active Route Migration."
+                     },
+    "deploy":  {
+                   "method":  "GitHub Pages via GitHub Actions",
+                   "url":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/"
+               }
+}

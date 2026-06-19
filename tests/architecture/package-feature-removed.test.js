@@ -55,7 +55,7 @@ test("package product is removed from active source except retired redirects", (
   const offenders = [];
 
   for (const file of files) {
-    const relative = path.relative(root, file);
+    const relative = path.relative(root, file).replaceAll(path.sep, "/");
     if (allowedFiles.has(relative)) continue;
     const source = fs.readFileSync(file, "utf8");
     for (const pattern of blockedPatterns) {
