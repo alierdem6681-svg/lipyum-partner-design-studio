@@ -44,7 +44,6 @@ const requiredRoutes = [
   "/notification-settings",
   "/contact-settings",
   "/ui-kit",
-  "/vue-job-referral",
   "/partner-card-preview",
 ];
 
@@ -56,4 +55,6 @@ for (const route of requiredRoutes) {
 }
 
 assert.equal(normalizeRoute("/unknown"), "/home", "Bilinmeyen route /home'a düşmeli");
+assert.equal(normalizeRoute("/vue-job-referral"), "/home", "/vue-job-referral aktif urun rotasi olmamali");
+assert.ok(pageRoutes["/vue-job-referral"], "/vue-job-referral legacy smoke pageRoutes icinde korunmali");
 console.log(`Route smoke passed: ${requiredRoutes.length} route`);
