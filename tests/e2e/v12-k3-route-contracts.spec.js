@@ -34,6 +34,7 @@ const rightActionTestIds = {
   notifications: "notification-button",
   profile: "profile-button",
   info: "header-info-button",
+  "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
   "notification-settings": "notification-settings-button",
 };
@@ -162,8 +163,9 @@ for (const route of routes) {
     }
 
     for (const button of metrics.buttons) {
-      expect(button.width).toBeGreaterThanOrEqual(43);
-      expect(button.width).toBeLessThanOrEqual(45);
+      const expectedTextAction = button.action === "profile-preview";
+      expect(button.width).toBeGreaterThanOrEqual(expectedTextAction ? 70 : 43);
+      expect(button.width).toBeLessThanOrEqual(expectedTextAction ? 96 : 45);
       expect(button.height).toBeGreaterThanOrEqual(43);
       expect(button.height).toBeLessThanOrEqual(45);
     }

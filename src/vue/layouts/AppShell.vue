@@ -61,6 +61,7 @@ function onHeaderAction(action) {
   if (action === "hamburger") shell.openDrawer();
   if (action === "notifications") navigateTo("/notifications");
   if (action === "profile") navigateTo("/profile");
+  if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "wallet-info") {
     shell.openSheet({
