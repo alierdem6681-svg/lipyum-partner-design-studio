@@ -1,0 +1,233 @@
+{
+  "baselineVersion": "v12-product-final",
+  "generatedAt": "2026-06-19T11:23:34.575Z",
+  "sourceCommit": "local-working-tree",
+  "sourceEngine": "legacy",
+  "sourceUrl": "http://127.0.0.1:5173?engine=legacy#/home",
+  "captureConfig": {
+    "browser": "chromium",
+    "browserVersion": "128.0.6613.18",
+    "os": "Windows_NT 10.0.26200",
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "viewportName": "393x852",
+    "deviceScaleFactor": 2,
+    "isMobile": true,
+    "hasTouch": true,
+    "locale": "tr-TR",
+    "timezoneId": "Europe/Istanbul",
+    "colorScheme": "light",
+    "reducedMotion": "reduce",
+    "deterministicStyle": true
+  },
+  "productScope": "V12-E product decisions plus current stable premium Home",
+  "historicalV11": {
+    "screenshotPath": "tests\\golden-master\\v11-stable\\vercel\\393x852\\home.png",
+    "screenshotHash": "266aec9f502471db6d5abbfd99f5be98c9130dc99078a57978f4855aef9329dc",
+    "manifestPath": "tests\\golden-master\\v11-stable\\GOLDEN_MASTER_MANIFEST.json",
+    "manifestGeneratedAt": "2026-06-18T15:38:36.034Z"
+  },
+  "productDecisions": [
+    "Bottom labels are Ana Sayfa, Isler, Is Al, Randevu, Cuzdan.",
+    "Packages routes are retired and redirect to subscription.",
+    "Jobs, my-jobs, calendar and wallet bottom routes stay blank.",
+    "Subscription is retained."
+  ],
+  "intentionalDifferencesFromV11": [
+    "Islerim label superseded by Isler.",
+    "Takvim label superseded by Randevu.",
+    "V11 is kept historical and does not block V12 final gate."
+  ],
+  "reproducibility": {
+    "maxAllowedRunDiff": 0.003,
+    "runDiffs": {
+      "legacy": {
+        "width": 786,
+        "height": 1704,
+        "diffPixels": 0,
+        "totalPixels": 1339344,
+        "diffRatio": 0,
+        "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\legacy-run.diff.png"
+      },
+      "vue": {
+        "width": 786,
+        "height": 1704,
+        "diffPixels": 0,
+        "totalPixels": 1339344,
+        "diffRatio": 0,
+        "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\vue-run.diff.png"
+      },
+      "vercel": {
+        "width": 786,
+        "height": 1704,
+        "diffPixels": 0,
+        "totalPixels": 1339344,
+        "diffRatio": 0,
+        "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\vercel-run.diff.png"
+      }
+    },
+    "pass": true
+  },
+  "vueParity": {
+    "maxAllowedDiff": 0.015,
+    "diff": {
+      "width": 786,
+      "height": 1704,
+      "diffPixels": 14991,
+      "totalPixels": 1339344,
+      "diffRatio": 0.011193,
+      "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\legacy-vs-vue.diff.png"
+    },
+    "pass": true
+  },
+  "crossDiffs": {
+    "v11VsLegacy": {
+      "width": 786,
+      "height": 1816,
+      "diffPixels": 277072,
+      "totalPixels": 1427376,
+      "diffRatio": 0.194113,
+      "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\v11-vs-legacy.diff.png"
+    },
+    "legacyVsVue": {
+      "width": 786,
+      "height": 1704,
+      "diffPixels": 14991,
+      "totalPixels": 1339344,
+      "diffRatio": 0.011193,
+      "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\legacy-vs-vue.diff.png"
+    },
+    "legacyVsVercel": {
+      "width": 786,
+      "height": 1704,
+      "diffPixels": 914,
+      "totalPixels": 1339344,
+      "diffRatio": 0.000682,
+      "diffPath": "artifacts\\v12-i\\reproducibility\\diff\\legacy-vs-vercel.diff.png"
+    }
+  },
+  "screenshots": {
+    "legacy": [
+      {
+        "run": 1,
+        "url": "http://127.0.0.1:5173?engine=legacy#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\legacy-run-1.png",
+        "screenshotHash": "a3d9711ad318c2fb07f52b7830b0b59c04260e95ae3553f177b2196aaf6f7586",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "?engine=legacy",
+          "bodyTextPreview": "Yenilemek için çek\nDurum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240",
+          "horizontalOverflow": false,
+          "appTextLength": 551,
+          "fontFamilies": []
+        }
+      },
+      {
+        "run": 2,
+        "url": "http://127.0.0.1:5173?engine=legacy#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\legacy-run-2.png",
+        "screenshotHash": "a3d9711ad318c2fb07f52b7830b0b59c04260e95ae3553f177b2196aaf6f7586",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "?engine=legacy",
+          "bodyTextPreview": "Yenilemek için çek\nDurum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240",
+          "horizontalOverflow": false,
+          "appTextLength": 551,
+          "fontFamilies": []
+        }
+      }
+    ],
+    "vue": [
+      {
+        "run": 1,
+        "url": "http://127.0.0.1:5173?engine=vue#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\vue-run-1.png",
+        "screenshotHash": "10b90d61dfb4da7d3e25a81976ad4a3146c34ce860655adc41090eb82954f91b",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "?engine=vue",
+          "bodyTextPreview": "Durum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240\nbonus\nKredi yükler",
+          "horizontalOverflow": false,
+          "appTextLength": 532,
+          "fontFamilies": []
+        }
+      },
+      {
+        "run": 2,
+        "url": "http://127.0.0.1:5173?engine=vue#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\vue-run-2.png",
+        "screenshotHash": "10b90d61dfb4da7d3e25a81976ad4a3146c34ce860655adc41090eb82954f91b",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "?engine=vue",
+          "bodyTextPreview": "Durum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240\nbonus\nKredi yükler",
+          "horizontalOverflow": false,
+          "appTextLength": 532,
+          "fontFamilies": []
+        }
+      }
+    ],
+    "vercel": [
+      {
+        "run": 1,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\vercel-run-1.png",
+        "screenshotHash": "e385f1c2026b0670e7de3cac906fdb00f4a4937094e2eb2a17babe8788e737d7",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "",
+          "bodyTextPreview": "Yenilemek için çek\nDurum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240",
+          "horizontalOverflow": false,
+          "appTextLength": 552,
+          "fontFamilies": []
+        }
+      },
+      {
+        "run": 2,
+        "url": "https://lipyum-partner-design-studio.vercel.app/#/home",
+        "status": 200,
+        "screenshotPath": "artifacts\\v12-i\\reproducibility\\vercel-run-2.png",
+        "screenshotHash": "e385f1c2026b0670e7de3cac906fdb00f4a4937094e2eb2a17babe8788e737d7",
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "meta": {
+          "title": "Ana Sayfa · Lipyum Partner",
+          "hash": "#/home",
+          "search": "",
+          "bodyTextPreview": "Yenilemek için çek\nDurum: Aktif\n675 kredi ≈ 2-3 iş\nDurum: Pasif\nBakiye yok\nYükle\nDurum: Pasif\nÇalışma Saati Dışı\nDurum: Pasif\nHesap askıda\nDestek\nDurum: Pasif\nDuraklatılmış\nAç\nPerformans Skoru\nNedir?\n81\nİyi\nSkorumu Artır\n85 puana ulaşmana çok az kaldı.\n85\n100\nCüzdan\n675\nkredi\n≈ 2-3 iş alabilirsin\nBakiye Yükle\nBonus\n240",
+          "horizontalOverflow": false,
+          "appTextLength": 552,
+          "fontFamilies": []
+        }
+      }
+    ]
+  }
+}
