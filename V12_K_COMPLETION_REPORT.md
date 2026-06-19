@@ -19,6 +19,9 @@ Status: NOT COMPLETED
 13. Moved profile strength SVG markup into dedicated components.
 14. Added stable-to-vue visual regression and contact sheet generation.
 15. Added V12-K design parity report and contact sheet.
+16. Applied GitHub Pages protected environment reviewer requirement.
+17. Applied `main` branch protection for PR, code owner review, stale approval dismissal and required `Quality` check.
+18. Disabled force push and deletion on `feature/v12-golden-vue-cutover`.
 
 ## Not Completed
 

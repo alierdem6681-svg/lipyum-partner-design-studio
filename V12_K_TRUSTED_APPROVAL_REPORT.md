@@ -21,4 +21,23 @@ This is intentional. V12-K Final cannot be marked complete until the user visual
 
 ## Branch Protection
 
-Programmatic branch/environment protection will be attempted after this branch is pushed. If GitHub rejects any setting, the missing setting must be completed in repository Settings before merge.
+Programmatic protection was applied after the branch was pushed.
+
+- `main` now requires pull requests.
+- `main` requires at least one approving review.
+- `main` requires code owner review.
+- `main` dismisses stale approvals.
+- `main` requires last-push approval.
+- `main` requires the `Quality` status check.
+- `main` has force push and deletion disabled.
+- `feature/v12-golden-vue-cutover` has force push and deletion disabled.
+
+## Protected Deployment
+
+The `github-pages` environment now has:
+
+- admin bypass disabled
+- required reviewer: `alierdem6681-svg`
+- prevent self review enabled
+
+GitHub Pages deployment is also `workflow_dispatch` only. Feature branch push no longer deploys automatically.
