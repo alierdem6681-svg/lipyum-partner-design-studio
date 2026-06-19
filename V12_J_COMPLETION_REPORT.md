@@ -23,12 +23,14 @@ PR: `#3`
 - Accessibility: 8/8 PASS.
 - Home Product Golden parity: PASS, diff `0.011193`.
 - Debug V12-J gate: PASS.
-- Final gate run 1/2: PENDING.
+- Final gate run 1: PASS, SHA256 `20BA450834198AC90A3F6B0E5F50B4D65F0269CC35A691F282C0BF6D44166D6C`.
+- Final gate run 2: PASS, SHA256 `73BE838DAE567DEE0C1560453B393C13EAAA508CDE139B36C614ACB89F33A47F`.
 
 ## Commitler
 
 - `7141b16` - `Switch default runtime to Vue release candidate`
-- Acceptance/final gate commit: PENDING
+- `f8fecb3` - `Complete V12-J acceptance and release gate`
+- Final evidence commit: PENDING
 
 ## Deploy
 

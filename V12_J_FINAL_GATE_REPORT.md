@@ -19,8 +19,8 @@ npm run test:quality-gate:v12-j
 
 | Run | Durum | Log | SHA256 |
 | --- | --- | --- | --- |
-| 1 | PENDING | `artifacts/v12-j/final-gate-run-1.log` | PENDING |
-| 2 | PENDING | `artifacts/v12-j/final-gate-run-2.log` | PENDING |
+| 1 | PASS | `artifacts/v12-j/final-gate-run-1.log` | `20BA450834198AC90A3F6B0E5F50B4D65F0269CC35A691F282C0BF6D44166D6C` |
+| 2 | PASS | `artifacts/v12-j/final-gate-run-2.log` | `73BE838DAE567DEE0C1560453B393C13EAAA508CDE139B36C614ACB89F33A47F` |
 
 ## Home Product Golden
 
