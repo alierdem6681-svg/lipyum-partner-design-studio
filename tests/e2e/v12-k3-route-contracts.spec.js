@@ -215,3 +215,18 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toBeVisible();
 });
+
+test("Vue customer service exposes call action after paid subscription", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+
+  await page.goto(expectedUrl("/subscription"));
+  await waitForApp(page);
+  await page.getByTestId("subscription-plan-plus").click();
+  await expect(page.getByTestId("subscription-active-plan")).toContainText("Plus");
+
+  await page.goto(expectedUrl("/support/customer-service"));
+  await waitForApp(page);
+  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
+  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+});
