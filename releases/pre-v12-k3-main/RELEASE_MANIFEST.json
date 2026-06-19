@@ -1,0 +1,11 @@
+{
+  "name": "pre-v12-k3-main",
+  "createdAt": "2026-06-19",
+  "branch": "main",
+  "commit": "ef4a21545cd7112a4fef5d41c58fae4c0bac4f70",
+  "tag": "pre-v12-k3-main",
+  "archiveBranch": "archive/pre-v12-k3-main",
+  "purpose": "Main branch backup before V12-K3 autonomous release attempt",
+  "productionUrl": "https://lipyum-partner-design-studio.vercel.app/",
+  "rollback": "git switch archive/pre-v12-k3-main"
+}

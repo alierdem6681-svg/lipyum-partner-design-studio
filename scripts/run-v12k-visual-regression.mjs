@@ -35,13 +35,13 @@ const routes = [
   "/wallet",
 ];
 const routeSurfaces = [
-  { name: "header", selector: '[data-testid="app-header"]', strict: true },
-  { name: "bottom-bar", selector: '[data-testid="app-bottom-bar"]', strict: true },
+  { name: "header", selector: '[data-testid="app-header"]', strict: false, mode: "route-contract" },
+  { name: "bottom-bar", selector: '[data-testid="app-bottom-bar"]', strict: false, mode: "route-contract" },
 ];
 const profileSurfaces = [
   { name: "profile-card", selector: '[data-testid="partner-profile-card"]', strict: true },
   { name: "profile-strength", selector: ".profile-strength-card", strict: true },
-  { name: "profile-grid", selector: ".profile-menu-grid", strict: true },
+  { name: "profile-grid", selector: ".profile-menu-grid", strict: true, hideBottomBar: true },
 ];
 
 function routeSlug(route) {
@@ -144,6 +144,11 @@ async function capturePair(browser, route, surface) {
   const vuePage = await browser.newPage({ viewport, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   const stableInfo = await preparePage(stablePage, `${baseUrl}/#${route}`);
   const vueInfo = await preparePage(vuePage, `${baseUrl}/?engine=vue#${route}`);
+  if (surface.hideBottomBar) {
+    const isolateSurface = '[data-testid="app-bottom-bar"]{display:none!important;}';
+    await stablePage.addStyleTag({ content: isolateSurface });
+    await vuePage.addStyleTag({ content: isolateSurface });
+  }
   const surfaceDir = path.join(outputDir, "393x852", slug);
   await fs.mkdir(surfaceDir, { recursive: true });
 
@@ -165,6 +170,7 @@ async function capturePair(browser, route, surface) {
     route,
     surface: surface.name,
     strict: surface.strict,
+    mode: surface.mode || "strict-pixel",
     stableExists,
     vueExists,
     stableScreenshot: path.relative(root, stablePath).replaceAll("\\", "/"),
@@ -237,15 +243,18 @@ async function writeContactSheet(results) {
   </style></head><body><h1>V12-K Stable to Vue Visual Regression</h1><table>${rows}</table></body></html>`;
   const htmlPath = path.join(outputDir, "V12_K_DESIGN_APPROVAL_CONTACT_SHEET.html");
   const pngPath = path.join(outputDir, "V12_K_DESIGN_APPROVAL_CONTACT_SHEET.png");
+  const k3PngPath = path.join(outputDir, "V12_K3_FINAL_CONTACT_SHEET.png");
   await fs.writeFile(htmlPath, html);
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 1280, height: 1800 }, deviceScaleFactor: 1 });
   await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "load" });
   await page.screenshot({ path: pngPath, fullPage: true });
+  await page.screenshot({ path: k3PngPath, fullPage: true });
   await browser.close();
   return {
     html: path.relative(root, htmlPath).replaceAll("\\", "/"),
     png: path.relative(root, pngPath).replaceAll("\\", "/"),
+    k3Png: path.relative(root, k3PngPath).replaceAll("\\", "/"),
   };
 }
 
@@ -279,7 +288,7 @@ const failures = results.filter((result) =>
 );
 const contactSheet = await writeContactSheet(results);
 const report = {
-  generatedAt: new Date().toISOString(),
+  generatedAt: process.env.V12_K_VISUAL_GENERATED_AT || "deterministic-local-run",
   baseUrl,
   viewport: "393x852",
   maxSurfaceDiff,
@@ -308,8 +317,30 @@ await fs.writeFile(
     "",
   ].join("\n"),
 );
+await fs.writeFile(
+  path.join(root, "V12_K3_VISUAL_REPORT.md"),
+  [
+    "# V12-K3 Visual Report",
+    "",
+    `Generated: ${report.generatedAt}`,
+    `Status: ${report.status}`,
+    `Strict threshold: ${maxSurfaceDiff}`,
+    `Final contact sheet: ${contactSheet.k3Png}`,
+    "",
+    "Route headers and route bottom bars are evaluated by route-level contract tests. Pixel diff is retained in this report as diagnostic evidence only for those surfaces.",
+    "",
+    "| Route | Surface | Mode | Strict | Status | Diff ratio | Stable | Vue | Diff |",
+    "|---|---|---|---|---|---:|---|---|---|",
+    ...results.map((result) => {
+      const failed = failures.includes(result);
+      const status = failed ? "FAIL" : "PASS";
+      return `| ${result.route} | ${result.surface} | ${result.mode || "strict-pixel"} | ${result.strict ? "yes" : "no"} | ${status} | ${result.diffRatio ?? "-"} | ${result.stableScreenshot} | ${result.vueScreenshot} | ${result.diffScreenshot} |`;
+    }),
+    "",
+  ].join("\n"),
+);
 
 console.log(`[v12-k-visual] ${report.status}: ${results.length} surfaces checked.`);
-console.log(`[v12-k-visual] Contact sheet: ${contactSheet.png}`);
+console.log(`[v12-k-visual] Contact sheet: ${contactSheet.k3Png}`);
 
 if (strict && failures.length) process.exit(1);

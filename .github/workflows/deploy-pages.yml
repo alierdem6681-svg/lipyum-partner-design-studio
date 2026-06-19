@@ -72,7 +72,7 @@ jobs:
         run: node_modules/node/bin/node node_modules/@playwright/test/cli.js install chromium
 
       - name: V12-K automated gate
-        run: npm run test:quality-gate:v12-k-automated
+        run: npm run test:quality-gate:release
 
       - name: Build
         run: npm run build

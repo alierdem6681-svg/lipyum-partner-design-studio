@@ -69,6 +69,7 @@
     "test:quality-gate:stable-default": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --stable-default",
     "test:quality-gate:vue-preview": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --vue-preview",
     "test:quality-gate:v12-k-automated": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --automated",
+    "test:quality-gate:release": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --release",
     "test:quality-gate:v12-k": "node scripts/run-local-node.mjs tests/v12-k-quality-gate.mjs --v12-k",
     "test:dependency-lock": "node scripts/run-local-node.mjs scripts/assert-dependency-lock.mjs",
     "test:utf8-integrity": "node scripts/run-local-node.mjs scripts/assert-utf8-integrity.mjs",

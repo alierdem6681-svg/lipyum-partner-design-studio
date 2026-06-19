@@ -12,11 +12,11 @@ const playwrightCli = path.join(root, "node_modules", "@playwright", "test", "cl
 const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
 
 const mode = process.argv[2] || "--v12-k";
-const allowedModes = new Set(["--stable-default", "--vue-preview", "--automated", "--v12-k"]);
+const allowedModes = new Set(["--stable-default", "--vue-preview", "--automated", "--release", "--v12-k"]);
 
 if (!allowedModes.has(mode)) {
   console.error(`[v12-k-quality-gate] Unknown mode: ${mode}`);
-  console.error("[v12-k-quality-gate] Use --stable-default, --vue-preview, --automated or --v12-k.");
+  console.error("[v12-k-quality-gate] Use --stable-default, --vue-preview, --automated, --release or --v12-k.");
   process.exit(1);
 }
 
@@ -50,6 +50,18 @@ const dependencyLockStep = {
   name: "dependency lock",
   command: npmBin,
   args: ["run", "test:dependency-lock"],
+};
+
+const syntaxStep = {
+  name: "syntax check",
+  command: npmBin,
+  args: ["run", "check"],
+};
+
+const smokeTestStep = {
+  name: "unit and route smoke",
+  command: npmBin,
+  args: ["test"],
 };
 
 const utf8IntegrityStep = {
@@ -86,6 +98,12 @@ const shellActionsStep = {
   name: "header actions and navigation back stack",
   command: nodeBin,
   args: [playwrightCli, "test", e2e("v12-k2-shell-actions.spec.js"), "--trace=off", "--workers=1"],
+};
+
+const routeContractsStep = {
+  name: "route header and bottom-bar contracts",
+  command: nodeBin,
+  args: [playwrightCli, "test", e2e("v12-k3-route-contracts.spec.js"), "--trace=off", "--workers=1"],
 };
 
 const buildStep = {
@@ -147,15 +165,18 @@ const steps = mode === "--stable-default"
   ? stableDefaultSteps
   : mode === "--vue-preview"
     ? vuePreviewSteps
-    : mode === "--automated"
+    : mode === "--automated" || mode === "--release"
       ? [
         dependencyLockStep,
+        syntaxStep,
+        smokeTestStep,
         utf8IntegrityStep,
         staticDesignContractStep,
         vueStyleDebtStep,
         ...stableDefaultSteps,
         ...vuePreviewSteps.slice(1),
         shellActionsStep,
+        routeContractsStep,
         visualRegressionStep,
         buildStep,
         gitDiffCheckStep,

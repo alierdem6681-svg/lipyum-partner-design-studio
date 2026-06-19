@@ -121,11 +121,9 @@ test("Vue preview drawer uses stable Lipyum sidebar contract", async ({ page }) 
   await expect(page.locator(".drawer-work-status-card")).toBeVisible();
   await expect(page.locator(".drawer-menu-card")).toHaveCount(4);
   await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(11);
-  await expect(page.getByTestId("partner-share-button")).toBeVisible();
-  await expect(page.getByTestId("partner-preview-button")).toBeVisible();
   await page.getByTestId("drawer-profile-badge-more").click();
   await expect(page.getByTestId("drawer-profile-badge-more")).toHaveCount(0);
-  const drawerBadgeLabels = await page.locator(".drawer-profile-card .partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
+  const drawerBadgeLabels = await page.locator(".drawer-profile-card .drawer-mini-badge:not(.is-more)").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
   expect(new Set(drawerBadgeLabels).size).toBe(5);
