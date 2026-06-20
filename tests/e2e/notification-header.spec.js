@@ -128,28 +128,32 @@ test("notification settings expose switchers and locked notification types", asy
   await expect(page.getByTestId("notification-setting-row")).toHaveCount(17);
   await expect(page.getByTestId("notification-setting-switch")).toHaveCount(17);
 
-  await expect(page.locator('[data-setting-id="new-job"]')).toContainText("Yeni iş bildirimi");
-  await expect(page.locator('[data-setting-id="new-job"]')).toContainText("(kapatılamaz)");
+  await expect(page.locator('[data-setting-id="new-job"]')).toContainText("Yeni iş fırsatlarını kaçırmaman");
+  await expect(page.locator('[data-setting-id="new-job"]')).not.toContainText("(kapatılamaz)");
   await expect(page.locator('[data-setting-id="new-job"] [data-testid="notification-setting-switch"]')).toBeDisabled();
-  await expect(page.locator('[data-setting-id="balance-end"]')).toContainText("Bakiye bitişi");
-  await expect(page.locator('[data-setting-id="balance-end"]')).toContainText("(kapatılamaz)");
+  await expect(page.locator('[data-setting-id="balance-end"]')).toContainText("Bakiyen kritik seviyeye");
+  await expect(page.locator('[data-setting-id="balance-end"]')).not.toContainText("(kapatılamaz)");
   await expect(page.locator('[data-setting-id="balance-end"] [data-testid="notification-setting-switch"]')).toBeDisabled();
-  await expect(page.locator('[data-setting-id="security"]')).toContainText("Güvenlik ve hesap uyarıları");
+  await expect(page.locator('[data-setting-id="security"]')).toContainText("Hesap güvenliği ve kritik oturumlar");
   await expect(page.locator('[data-setting-id="security"] [data-testid="notification-setting-switch"]')).toBeDisabled();
-  await expect(page.locator('[data-setting-id="marketing"]')).toContainText("Pazarlama bildirimleri");
-  await expect(page.locator('[data-setting-id="profile-visibility"]')).toContainText("Profil görünürlük önerileri");
-  await expect(page.locator('[data-setting-id="payment-reminders"]')).toContainText("Ödeme ve fatura hatırlatmaları");
+  await expect(page.locator('[data-setting-id="marketing"]')).toContainText("Kampanya, vitrin ve öne çıkarma");
+  await expect(page.locator('[data-setting-id="profile-visibility"]')).toContainText("Daha fazla müşteri çekmek");
+  await expect(page.locator('[data-setting-id="payment-reminders"]')).toContainText("Fatura, ödeme ve tahsilat");
+  await expect(page.locator(".notification-setting-copy strong")).toHaveCount(0);
 
   const leaderboardSwitch = page.locator('[data-setting-id="leaderboard"] [data-testid="notification-setting-switch"]');
   await expect(leaderboardSwitch).toHaveAttribute("aria-checked", "false");
   await leaderboardSwitch.click();
   await expect(leaderboardSwitch).toHaveAttribute("aria-checked", "true");
 
-  const labelsOverflow = await page.evaluate(() =>
-    Array.from(document.querySelectorAll(".notification-setting-copy strong")).some(
-      (node) => node.scrollWidth > node.clientWidth + 1,
-    ),
+  const textLayoutIssues = await page.evaluate(() =>
+    Array.from(document.querySelectorAll(".notification-setting-copy p")).some((node) => {
+      const styles = getComputedStyle(node);
+      const lineHeight = Number.parseFloat(styles.lineHeight);
+      const lines = Math.ceil(node.getBoundingClientRect().height / lineHeight);
+      return node.scrollWidth > node.clientWidth + 1 || lines > 2;
+    }),
   );
-  expect(labelsOverflow).toBeFalsy();
+  expect(textLayoutIssues).toBeFalsy();
   expect(errors).toEqual([]);
 });

@@ -1503,12 +1503,12 @@
 
 .notification-setting-row {
   width: 100%;
-  min-height: 74px;
+  min-height: 66px;
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr) 54px;
   align-items: center;
   gap: 10px;
-  padding: 11px 12px;
+  padding: 10px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 15px;
   background: #ffffff;
@@ -1532,30 +1532,20 @@
 
 .notification-setting-copy {
   min-width: 0;
-  display: grid;
-  gap: 4px;
+  display: block;
 }
 
-.notification-setting-copy strong {
+.notification-setting-copy p {
   min-width: 0;
-  color: #111827;
-  font-size: 13.2px;
-  font-weight: 880;
-  line-height: 1.16;
-}
-
-.notification-setting-copy strong em {
-  color: #64748b;
-  font-style: normal;
-  font-weight: 760;
-}
-
-.notification-setting-copy small {
-  min-width: 0;
-  color: #64748b;
-  font-size: 11.8px;
-  font-weight: 650;
-  line-height: 1.22;
+  margin: 0;
+  color: #475569;
+  display: -webkit-box;
+  font-size: 12.6px;
+  font-weight: 680;
+  line-height: 1.28;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .notification-switch {
@@ -1594,7 +1584,8 @@
 
 .notification-switch.is-locked {
   cursor: not-allowed;
-  opacity: 0.86;
+  filter: saturate(0.25);
+  opacity: 0.58;
 }
 
 .support-page {
