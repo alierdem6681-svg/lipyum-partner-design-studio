@@ -55,7 +55,7 @@ function cancelDrag() {
       data-testid="app-sheet-overlay"
     >
       <section
-        class="v-app-sheet border border-slate-200 bg-white p-4 pb-6 shadow-elevated"
+        class="v-app-sheet"
         role="dialog"
         aria-modal="true"
         :aria-label="title || 'Alt panel'"
@@ -74,16 +74,16 @@ function cancelDrag() {
         >
           <span class="v-app-sheet__handle-bar" aria-hidden="true"></span>
         </button>
-        <div class="flex items-start justify-between gap-3">
-          <span class="min-w-0">
-            <h2 class="truncate text-card-title font-bold text-slate-950">{{ title }}</h2>
-            <p v-if="description" class="mt-1 truncate text-caption font-semibold text-slate-500">{{ description }}</p>
+        <div class="v-app-sheet__header">
+          <span class="v-app-sheet__heading">
+            <h2 class="v-app-sheet__title">{{ title }}</h2>
+            <p v-if="description" class="v-app-sheet__description">{{ description }}</p>
           </span>
-          <button class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200" type="button" aria-label="Kapat" data-testid="sheet-close-button" @click="emit('close')">
+          <button class="v-app-sheet__close" type="button" aria-label="Kapat" data-testid="sheet-close-button" @click="emit('close')">
             <AppIcon name="x" :size="20" />
           </button>
         </div>
-        <div class="v-app-sheet__body mt-4">
+        <div class="v-app-sheet__body">
           <slot />
         </div>
       </section>
