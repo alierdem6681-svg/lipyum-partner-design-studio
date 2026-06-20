@@ -894,6 +894,46 @@
   justify-content: center;
 }
 
+.v-app-sheet-overlay {
+  justify-content: center;
+  padding-inline: 12px;
+}
+
+.v-app-sheet {
+  width: min(430px, 100%);
+  max-height: min(78vh, 640px);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  overflow: hidden;
+}
+
+.v-app-sheet__handle {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0 0 12px;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+  cursor: grab;
+}
+
+.v-app-sheet__handle:active {
+  cursor: grabbing;
+}
+
+.v-app-sheet__handle-bar {
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-300);
+}
+
+.v-app-sheet__body {
+  max-height: calc(min(78vh, 640px) - 92px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .v-home-row,
 .v-job-card {
   display: grid;
