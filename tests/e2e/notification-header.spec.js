@@ -23,6 +23,8 @@ test("notifications use wide filter pills and header settings navigation", async
   await expect(pills.nth(1)).toHaveText("Okunanlar");
   await expect(pills.nth(2)).toHaveText("Okunmayanlar");
   await expect(actions.getByTestId("notification-settings-button")).toHaveCount(0);
+  await expect(page.getByTestId("notifications-mark-all-read")).toBeVisible();
+  await expect(page.getByTestId("notifications-delete-all")).toBeVisible();
   await expect(headerSettingsButton).toBeVisible();
 
   const geometry = await page.evaluate(() => {
@@ -34,15 +36,23 @@ test("notifications use wide filter pills and header settings navigation", async
       scrollWidth: button.scrollWidth,
       clientWidth: button.clientWidth,
     }));
+    const actionButtons = Array.from(document.querySelectorAll('[data-testid="notifications-mark-all-read"], [data-testid="notifications-delete-all"]')).map((button) => ({
+      text: button.textContent.trim(),
+      width: button.getBoundingClientRect().width,
+      scrollWidth: button.scrollWidth,
+      clientWidth: button.clientWidth,
+    }));
     return {
       gap: actionsRect && headerRect ? actionsRect.top - headerRect.bottom : 999,
       pills,
+      actionButtons,
       overflow: document.querySelector("#appRoot").scrollWidth - document.querySelector("#appRoot").clientWidth,
     };
   });
   expect(geometry.gap).toBeLessThanOrEqual(14);
   expect(geometry.overflow).toBeLessThanOrEqual(1);
   expect(geometry.pills.every((pill) => pill.scrollWidth <= pill.clientWidth + 1)).toBeTruthy();
+  expect(geometry.actionButtons.every((button) => button.scrollWidth <= button.clientWidth + 1)).toBeTruthy();
 
   await headerSettingsButton.click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/notification-settings");
@@ -72,6 +82,34 @@ test("notifications filter all read and unread items with lazy loading", async (
   await page.getByTestId("notifications-filter-pill").nth(1).click();
   await expect.poll(() => page.getByTestId("notification-card").count()).toBeGreaterThanOrEqual(7);
   await expect.poll(() => page.getByTestId("notification-card").count()).toBeLessThanOrEqual(10);
+
+  expect(errors).toEqual([]);
+});
+
+test("notification bulk actions use OnayModal confirmations", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/notifications");
+  await waitForApp(page);
+
+  await page.getByTestId("notifications-filter-pill").nth(2).click();
+  await expect(page.getByTestId("notification-card")).toHaveCount(5);
+
+  await page.getByTestId("notifications-mark-all-read").click();
+  await expect(page.getByTestId("onay-modal")).toBeVisible();
+  await expect(page.getByTestId("onay-modal")).toContainText("Tüm bildirimler okundu yapılsın mı?");
+  await page.getByTestId("onay-modal-confirm").click();
+  await expect(page.getByTestId("onay-modal")).toHaveCount(0);
+  await expect(page.getByTestId("notification-card")).toHaveCount(0);
+
+  await page.getByTestId("notifications-filter-pill").nth(0).click();
+  await expect.poll(() => page.getByTestId("notification-card").count()).toBeGreaterThan(0);
+  await page.getByTestId("notifications-delete-all").click();
+  await expect(page.getByTestId("onay-modal")).toBeVisible();
+  await expect(page.getByTestId("onay-modal")).toContainText("Tüm bildirimler silinsin mi?");
+  await page.getByTestId("onay-modal-confirm").click();
+  await expect(page.getByTestId("onay-modal")).toHaveCount(0);
+  await expect(page.getByTestId("notification-card")).toHaveCount(0);
+  await expect(page.locator(".notification-empty")).toBeVisible();
 
   expect(errors).toEqual([]);
 });

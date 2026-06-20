@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { useRouter } from "vue-router";
 import { notifications as sourceNotifications } from "../../data/mockData.js";
 import AppPage from "../components/ui/AppPage.vue";
+import OnayModal from "../components/ui/OnayModal.vue";
 
 const DEFAULT_NOTIFICATION_LIMIT = 15;
 const INITIAL_VISIBLE_COUNT = 7;
@@ -19,14 +20,18 @@ const router = useRouter();
 const activeFilter = ref("all");
 const visibleCount = ref(INITIAL_VISIBLE_COUNT);
 const readIds = ref(new Set());
+const deletedIds = ref(new Set());
+const pendingAction = ref(null);
 const listSentinel = ref(null);
 let listObserver;
 
 const allItems = computed(() =>
-  defaultNotifications.map((item) => ({
-    ...item,
-    isRead: !item.unread || readIds.value.has(item.id),
-  })),
+  defaultNotifications
+    .filter((item) => !deletedIds.value.has(item.id))
+    .map((item) => ({
+      ...item,
+      isRead: !item.unread || readIds.value.has(item.id),
+    })),
 );
 const displayedItems = computed(() => {
   if (activeFilter.value === "read") return allItems.value.filter((item) => item.isRead);
@@ -48,6 +53,24 @@ function loadMoreNotifications() {
 function openNotification(item) {
   if (item?.id) readIds.value = new Set([...readIds.value, item.id]);
   if (item?.route) router.push(item.route);
+}
+
+function openConfirm(action) {
+  pendingAction.value = action;
+}
+
+function closeConfirm() {
+  pendingAction.value = null;
+}
+
+function confirmPendingAction() {
+  if (pendingAction.value === "mark-all-read") {
+    readIds.value = new Set(defaultNotifications.map((item) => item.id));
+  }
+  if (pendingAction.value === "delete-all") {
+    deletedIds.value = new Set(defaultNotifications.map((item) => item.id));
+  }
+  pendingAction.value = null;
 }
 
 function resetVisibleCount() {
@@ -129,6 +152,22 @@ onBeforeUnmount(() => {
       >
         {{ filter.label }}
       </button>
+      <button
+        class="notification-filter-pill is-action"
+        type="button"
+        data-testid="notifications-mark-all-read"
+        @click="openConfirm('mark-all-read')"
+      >
+        Tümü okundu
+      </button>
+      <button
+        class="notification-filter-pill is-action is-danger"
+        type="button"
+        data-testid="notifications-delete-all"
+        @click="openConfirm('delete-all')"
+      >
+        Tümünü sil
+      </button>
     </section>
 
     <section v-if="!visibleItems.length" class="notification-empty" aria-label="Boş bildirim kutusu">
@@ -166,5 +205,15 @@ onBeforeUnmount(() => {
       ></div>
       <div v-if="showMoreIndicator" class="notification-more-indicator" aria-hidden="true"><span></span></div>
     </section>
+
+    <OnayModal
+      :open="!!pendingAction"
+      :title="pendingAction === 'delete-all' ? 'Tüm bildirimler silinsin mi?' : 'Tüm bildirimler okundu yapılsın mı?'"
+      :message="pendingAction === 'delete-all' ? 'Bu işlem bildirim listesini temizler. Onaylıyor musun?' : 'Listedeki tüm bildirimler okundu olarak işaretlenecek. Onaylıyor musun?'"
+      :confirm-label="pendingAction === 'delete-all' ? 'Sil' : 'Okundu yap'"
+      :danger="pendingAction === 'delete-all'"
+      @cancel="closeConfirm"
+      @confirm="confirmPendingAction"
+    />
   </AppPage>
 </template>
