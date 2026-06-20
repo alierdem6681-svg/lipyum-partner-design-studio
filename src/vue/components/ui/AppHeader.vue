@@ -19,6 +19,7 @@ const iconForAction = {
   "profile-preview": "eye",
   "wallet-info": "help-circle",
   "notification-settings": "settings",
+  "partner-share": "share",
 };
 
 const labelForAction = {
@@ -28,6 +29,7 @@ const labelForAction = {
   "profile-preview": "Önizle",
   "wallet-info": "Cüzdan bilgisi",
   "notification-settings": "Bildirim ayarları",
+  "partner-share": "Partner kartını paylaş",
 };
 
 const testIdForAction = {
@@ -37,6 +39,7 @@ const testIdForAction = {
   "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
   "notification-settings": "notification-settings-button",
+  "partner-share": "partner-preview-header-share",
 };
 
 const homeStatuses = [
@@ -57,7 +60,7 @@ function statusAriaLabel(status) {
     class="v-header v-app-header top-nav app-header"
     :class="[
       `${variant || 'subpage'}-header`,
-      rightActions.includes('profile-preview') ? 'has-text-action' : '',
+      rightActions.includes('profile-preview') || rightActions.includes('partner-share') ? 'has-text-action' : '',
     ]"
     :data-header-variant="variant"
     data-testid="app-header"
@@ -127,7 +130,10 @@ function statusAriaLabel(status) {
         v-for="action in (rightIcon ? [rightIcon] : rightActions.length ? rightActions : ['info'])"
         :key="action"
         class="v-header__action icon-btn page-header-action"
-        :class="action === 'profile-preview' ? 'is-text-action' : ''"
+        :class="[
+          action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
+          action === 'partner-share' ? 'is-partner-share-action' : '',
+        ]"
         type="button"
         :data-testid="testIdForAction[action] || 'header-right-action'"
         :data-action="action"
@@ -136,6 +142,7 @@ function statusAriaLabel(status) {
       >
         <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
         <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
+        <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
         <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
       </button>
     </div>

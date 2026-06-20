@@ -11,6 +11,7 @@ const props = defineProps({
   variant: { type: String, default: "page" },
   compact: { type: Boolean, default: false },
   showActions: { type: Boolean, default: true },
+  expandBadges: { type: Boolean, default: false },
 });
 
 const router = useRouter();
@@ -24,9 +25,15 @@ const xLevel = ref(2);
 const yLevel = ref(2);
 
 const isDrawer = computed(() => props.variant === "drawer");
-const badgeExpanded = computed(() => (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
-const visibleBadges = computed(() => (isDrawer.value ? profile.drawerVisibleBadges : profile.visibleBadges));
-const hiddenBadgeCount = computed(() => (isDrawer.value ? profile.drawerHiddenBadgeCount : profile.hiddenBadgeCount));
+const badgeExpanded = computed(() => props.expandBadges || (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
+const visibleBadges = computed(() => {
+  if (props.expandBadges) return profile.partner.badges;
+  return isDrawer.value ? profile.drawerVisibleBadges : profile.visibleBadges;
+});
+const hiddenBadgeCount = computed(() => {
+  if (props.expandBadges) return 0;
+  return isDrawer.value ? profile.drawerHiddenBadgeCount : profile.hiddenBadgeCount;
+});
 const moreTestId = computed(() => (isDrawer.value ? "drawer-profile-badge-more" : "profile-badge-more"));
 const moreAction = computed(() => (isDrawer.value ? "toggle-drawer-badges" : "toggle-profile-badges"));
 

@@ -37,6 +37,7 @@ const rightActionTestIds = {
   "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
   "notification-settings": "notification-settings-button",
+  "partner-share": "partner-preview-header-share",
 };
 
 const activeBottomByRoute = {
@@ -163,9 +164,9 @@ for (const route of routes) {
     }
 
     for (const button of metrics.buttons) {
-      const expectedTextAction = button.action === "profile-preview";
+      const expectedTextAction = button.action === "profile-preview" || button.action === "partner-share";
       expect(button.width).toBeGreaterThanOrEqual(expectedTextAction ? 70 : 43);
-      expect(button.width).toBeLessThanOrEqual(expectedTextAction ? 96 : 45);
+      expect(button.width).toBeLessThanOrEqual(button.action === "partner-share" ? 112 : expectedTextAction ? 96 : 45);
       expect(button.height).toBeGreaterThanOrEqual(43);
       expect(button.height).toBeLessThanOrEqual(45);
     }

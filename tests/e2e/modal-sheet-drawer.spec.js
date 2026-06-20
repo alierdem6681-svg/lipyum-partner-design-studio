@@ -28,9 +28,10 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
 
   await page.goto("/#/partner-card-preview");
   await waitForApp(page);
-  await page.getByTestId("partner-preview-share-button").click();
+  await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
   await expect(page.getByTestId("partner-share-option-whatsapp")).toBeVisible();
+  await expect(page.getByTestId("partner-share-suboptions-whatsapp")).toBeVisible();
   await page.getByTestId("sheet-close-button").click();
   await expect(page.getByTestId("partner-share-options")).toHaveCount(0);
 

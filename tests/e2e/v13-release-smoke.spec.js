@@ -136,17 +136,26 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-card-preview-page")).toBeVisible();
   await expect(page.getByTestId("partner-embed-panel")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-options")).toHaveCount(0);
-  await expect(page.getByTestId("partner-preview-share-button")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-share-button")).toHaveCount(0);
+  await expect(page.getByTestId("partner-preview-header-share")).toBeVisible();
+  await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
+  await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
+  await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
 
-  await page.getByTestId("partner-preview-share-button").click();
+  await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
-  await expect(page.getByTestId("partner-share-option-social")).toContainText("Sosyal medyada paylaş");
-  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web sitemde paylaş");
-  await expect(page.getByTestId("partner-share-option-story")).toContainText("Instagram hikayesi");
-  await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("WhatsApp'tan paylaş");
+  await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("Whatsapp");
+  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web Sitesi");
+  await expect(page.getByTestId("partner-share-option-instagram")).toContainText("Instagram");
+  await expect(page.getByTestId("partner-share-option-facebook")).toContainText("Facebook");
+  await expect(page.getByTestId("partner-share-option-tiktok")).toContainText("Tik Tok");
+  await expect(page.getByTestId("partner-share-option-x")).toContainText("X");
+  await expect(page.getByTestId("partner-share-option-thread")).toContainText("Thread");
+  await expect(page.getByTestId("partner-share-short-link")).toContainText("lipyum.com/f54s3f2");
+  await expect(page.getByTestId("partner-share-qr")).toBeVisible();
 
-  await page.getByTestId("partner-share-option-whatsapp").click();
-  await expect(page.locator("#toast")).toContainText("WhatsApp'tan paylaş hazırlandı.");
+  await page.getByTestId("partner-share-suboption-whatsapp-birine-gonder").click();
+  await expect(page.locator("#toast")).toContainText("Whatsapp - Birine gönder hazırlandı.");
   expect(errors).toEqual([]);
 });
 
