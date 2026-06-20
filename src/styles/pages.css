@@ -2622,7 +2622,7 @@
         height: 62px;
         display: grid;
         place-items: center;
-        border-radius: 999px;
+        border-radius: 22px;
         background:
           radial-gradient(circle at 31% 16%, rgba(255, 255, 255, 0.45) 0 12%, transparent 36%),
           radial-gradient(circle at 74% 86%, rgba(0, 87, 43, 0.38) 0 20%, transparent 56%),
@@ -2826,6 +2826,7 @@
         top: -18px;
         width: 58px;
         height: 58px;
+        border-radius: 18px;
         box-shadow:
           0 8px 18px rgba(0, 122, 61, 0.18),
           0 3px 8px rgba(0, 88, 43, 0.12),
