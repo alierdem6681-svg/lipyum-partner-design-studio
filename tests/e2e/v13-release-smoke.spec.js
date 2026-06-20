@@ -142,6 +142,12 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
+  await expect(profileCard.getByTestId("partner-profile-score-button")).toBeVisible();
+  await profileCard.getByTestId("partner-profile-score-button").click();
+  await expect(page.getByRole("dialog", { name: /Profilini/ })).toBeVisible();
+  await expect(page.getByRole("dialog")).toContainText("Profil skoru: 82");
+  await expect(page.getByRole("dialog")).toContainText("Eksik:");
+  await page.getByRole("button", { name: "Kapat" }).click();
   await expect(page.getByTestId("profile-preview-header-button")).toBeVisible();
   await page.getByTestId("profile-preview-header-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/partner-card-preview");
@@ -157,6 +163,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(drawerCard.locator("h3")).toHaveText(profileName.trim());
   await expect(drawerCard.locator(".partner-profile-tier")).toContainText(profileTier.trim());
   await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toBeVisible();
+  await expect(drawerCard.getByTestId("partner-profile-score-button")).toBeVisible();
   await expect(drawerCard.locator(".drawer-avatar, .drawer-badge, .drawer-rating, .drawer-mini-badge")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-preview-button")).toHaveCount(0);

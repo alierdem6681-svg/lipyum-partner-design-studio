@@ -881,6 +881,7 @@
   font-size: var(--font-size-small);
   font-weight: var(--weight-semibold);
   line-height: var(--line-normal);
+  white-space: pre-line;
 }
 
 .v-home-status-card__icon {
@@ -3313,6 +3314,69 @@
   border-color: var(--color-neutral-200);
   background: var(--color-surface);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.partner-profile-card {
+  position: relative;
+}
+
+.partner-profile-card .partner-profile-main {
+  padding-right: 86px;
+}
+
+.partner-profile-score-button {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 72px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  padding: 0 0 0 12px;
+  border: 0;
+  border-left: 1px solid var(--color-neutral-200);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.partner-profile-score-button .score-ring {
+  width: 62px;
+  height: 62px;
+}
+
+.partner-profile-score-button .score-ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(-118deg);
+}
+
+.partner-profile-score-button .score-track,
+.partner-profile-score-button .score-progress {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.partner-profile-score-button .score-track {
+  stroke: var(--color-primary-soft);
+}
+
+.partner-profile-score-button .score-progress {
+  stroke: var(--color-primary);
+  stroke-dasharray: 247 302;
+}
+
+.partner-profile-score-button .score-center {
+  inset: 10px;
+}
+
+.partner-profile-score-button .score-value {
+  font-size: 24px;
+  font-weight: var(--weight-extra-bold);
+  letter-spacing: 0;
 }
 
 .partner-profile-name-row {
