@@ -1104,8 +1104,38 @@
 .notification-settings-page {
   display: grid;
   align-content: start;
-  gap: 10px;
+  gap: 14px;
   padding: 0;
+}
+
+.notification-settings-group {
+  display: grid;
+  gap: 9px;
+}
+
+.notification-settings-group__header {
+  display: grid;
+  gap: 4px;
+  padding: 0 2px;
+}
+
+.notification-settings-group__header h2,
+.notification-settings-group__header p {
+  margin: 0;
+}
+
+.notification-settings-group__header h2 {
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.notification-settings-group__header p {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 680;
+  line-height: 1.3;
 }
 
 .notification-settings-list {
