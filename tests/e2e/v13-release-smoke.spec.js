@@ -139,6 +139,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   const profileName = await profileCard.locator("h3").textContent();
   const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
+  await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
