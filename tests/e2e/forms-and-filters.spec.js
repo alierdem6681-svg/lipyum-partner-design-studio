@@ -64,8 +64,12 @@ test("leaderboard selects and nearby rank window work", async ({ page }) => {
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");
   await expect(page.locator('[role="dialog"]')).toContainText("Haftanın Liderleri Nasıl Belirlenir?");
-  await expect(page.locator('[role="dialog"]')).toContainText("her tamamlanan iş 10 puan");
-  await expect(page.locator('[role="dialog"]')).toContainText("her müşteri şikayeti -5 puan");
+  await expect(page.getByTestId("info-score-list")).toBeVisible();
+  await expect(page.getByTestId("info-score-item")).toHaveCount(5);
+  await expect(page.locator('[role="dialog"]')).toContainText("Tamamlanan iş");
+  await expect(page.locator('[role="dialog"]')).toContainText("+10 puan");
+  await expect(page.locator('[role="dialog"]')).toContainText("Müşteri şikayeti");
+  await expect(page.locator('[role="dialog"]')).toContainText("-5 puan");
 
   expect(errors).toEqual([]);
 });

@@ -77,6 +77,8 @@ function onHeaderAction(action) {
       title: infoSheet.title || meta.value.title || "Bilgi",
       description: infoSheet.description || meta.value.subtitle || "Sayfa bilgisi",
       body: infoSheet.body || "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      scoreItems: infoSheet.scoreItems || [],
+      note: infoSheet.note || "",
     });
   }
   if (action === "status") {
@@ -162,7 +164,24 @@ onUnmounted(() => {
         :description="shell.activeSheet?.description"
         @close="shell.closeSheet"
       >
-        <p class="v-sheet-copy">{{ shell.activeSheet?.body }}</p>
+        <div class="v-sheet-content">
+          <p v-if="shell.activeSheet?.body" class="v-sheet-copy">{{ shell.activeSheet?.body }}</p>
+          <div v-if="shell.activeSheet?.scoreItems?.length" class="v-info-score-list" data-testid="info-score-list">
+            <article
+              v-for="item in shell.activeSheet.scoreItems"
+              :key="item.label"
+              :class="['v-info-score-item', `is-${item.tone || 'neutral'}`]"
+              data-testid="info-score-item"
+            >
+              <span class="v-info-score-item__copy">
+                <strong>{{ item.label }}</strong>
+                <small>{{ item.description }}</small>
+              </span>
+              <span class="v-info-score-item__value">{{ item.value }}</span>
+            </article>
+          </div>
+          <p v-if="shell.activeSheet?.note" class="v-info-sheet-note">{{ shell.activeSheet.note }}</p>
+        </div>
       </AppSheet>
 
       <AppToast :message="shell.toast" />
