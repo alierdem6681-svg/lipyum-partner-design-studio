@@ -15,6 +15,7 @@ import MyJobsPage from "../pages/MyJobsPage.vue";
 import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
+import PerformanceImprovePage from "../pages/PerformanceImprovePage.vue";
 import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
@@ -57,6 +58,7 @@ const simpleContentRoutes = new Set([
 const dedicatedRouteComponents = {
   "/profile": ProfilePage,
   "/partner-card-preview": PartnerCardPreviewPage,
+  "/performance-improve": PerformanceImprovePage,
   "/photo-gallery": PhotoGalleryPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,

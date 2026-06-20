@@ -1261,7 +1261,7 @@
 
 .performance-home-layout {
   display: grid;
-  grid-template-columns: 67px minmax(0, 1fr) 124px;
+  grid-template-columns: 67px minmax(0, 1fr) minmax(148px, auto);
   align-items: center;
   column-gap: 8px;
   min-height: 67px;
@@ -1339,8 +1339,8 @@
 }
 
 .performance-cta {
-  width: 124px;
-  min-width: 124px;
+  width: 152px;
+  min-width: 148px;
   min-height: 40px;
   display: inline-flex;
   align-items: center;
@@ -1350,9 +1350,9 @@
   border-radius: 8px;
   background: linear-gradient(180deg, #0ea75a, #047a3b);
   color: #fff;
-  padding: 0 12px;
+  padding: 0 10px;
   font-family: var(--font-family-base);
-  font-size: 13px;
+  font-size: clamp(11.5px, 3vw, 12.5px);
   font-weight: 900;
   white-space: nowrap;
   box-shadow:

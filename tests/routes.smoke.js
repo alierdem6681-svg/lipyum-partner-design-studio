@@ -28,6 +28,7 @@ const requiredRoutes = [
   "/subscription",
   "/bonus",
   "/performance-score",
+  "/performance-improve",
   "/invoices",
   "/income-expense",
   "/appointment-link",

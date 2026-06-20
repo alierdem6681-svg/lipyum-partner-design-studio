@@ -21,6 +21,7 @@ export const routes = [
   "/subscription",
   "/bonus",
   "/performance-score",
+  "/performance-improve",
   "/invoices",
   "/income-expense",
   "/appointment-link",
@@ -55,6 +56,7 @@ export const criticalRoutes = [
   "/reviews",
   "/leaderboard",
   "/subscription",
+  "/performance-improve",
   "/partner-card-preview",
 ];
 

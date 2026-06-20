@@ -66,19 +66,10 @@ function openConvertSheet() {
         data-testid="home-performance-card"
         data-action="performance-detail"
         aria-label="Performans Skoru"
-        @click="$router.push('/performance-score')"
+        @click="$router.push('/performance-improve')"
       >
         <div class="performance-card-head">
           <span class="performance-title">Performans Skoru</span>
-          <button
-            class="performance-info-btn text"
-            type="button"
-            data-open="performance-info"
-            aria-label="Performans skoru nedir?"
-            @click.stop="openInfoSheet('Performans Skoru', 'Profil kaliten, hızlı dönüşlerin ve iş sonuçların performans skorunu belirler.')"
-          >
-            Nedir?
-          </button>
         </div>
 
         <div class="performance-home-layout">
@@ -94,12 +85,13 @@ function openConvertSheet() {
           <button
             class="performance-cta"
             type="button"
-            data-screen="performanceScore"
-            data-action="performanceScore"
-            @click.stop="$router.push('/performance-score')"
+            data-screen="performanceImprove"
+            data-action="performanceImprove"
+            data-testid="home-performance-improve-button"
+            @click.stop="$router.push('/performance-improve')"
           >
             <AppIcon name="trend-up" :size="14" class-name="icon" />
-            Skorumu Artır
+            Performansımı Artır
           </button>
         </div>
 

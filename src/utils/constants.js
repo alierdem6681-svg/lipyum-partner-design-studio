@@ -39,6 +39,7 @@
   "/bonus": "bonus",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
+  "/performance-improve": "performanceImprove",
   "/partner-card-preview": "partnerCardPreview",
 };
 
@@ -83,6 +84,7 @@ export const ROUTE_TITLES = {
   "/bonus": "Bonus Cüzdanı",
   "/appointment-link": "Randevu Linki",
   "/performance-score": "Performans Skoru",
+  "/performance-improve": "Performansımı Artır",
   "/partner-card-preview": "Partner Kartı Önizleme",
 };
 
