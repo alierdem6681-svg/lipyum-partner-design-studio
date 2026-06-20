@@ -3321,6 +3321,152 @@
   gap: 8px;
 }
 
+.profile-photo-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-photo-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-photo-upload-zone {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 18px;
+  border: 1px dashed var(--color-primary-border);
+  border-radius: var(--radius-card);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  text-align: center;
+}
+
+.profile-photo-upload-zone strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--weight-extra-bold);
+}
+
+.profile-photo-upload-zone span {
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.profile-photo-editor-preview {
+  width: 184px;
+  height: 184px;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  overflow: hidden;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 28px;
+  background: var(--color-neutral-100);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-photo-editor-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition:
+    transform 180ms ease,
+    object-position 180ms ease;
+}
+
+.profile-photo-editor-image.is-zoom-0 {
+  transform: scale(1);
+}
+
+.profile-photo-editor-image.is-zoom-1 {
+  transform: scale(1.08);
+}
+
+.profile-photo-editor-image.is-zoom-2 {
+  transform: scale(1.16);
+}
+
+.profile-photo-editor-image.is-zoom-3 {
+  transform: scale(1.26);
+}
+
+.profile-photo-editor-image.is-zoom-4 {
+  transform: scale(1.36);
+}
+
+.profile-photo-editor-image.is-x-0 {
+  object-position-x: 0%;
+}
+
+.profile-photo-editor-image.is-x-1 {
+  object-position-x: 25%;
+}
+
+.profile-photo-editor-image.is-x-2 {
+  object-position-x: 50%;
+}
+
+.profile-photo-editor-image.is-x-3 {
+  object-position-x: 75%;
+}
+
+.profile-photo-editor-image.is-x-4 {
+  object-position-x: 100%;
+}
+
+.profile-photo-editor-image.is-y-0 {
+  object-position-y: 0%;
+}
+
+.profile-photo-editor-image.is-y-1 {
+  object-position-y: 25%;
+}
+
+.profile-photo-editor-image.is-y-2 {
+  object-position-y: 50%;
+}
+
+.profile-photo-editor-image.is-y-3 {
+  object-position-y: 75%;
+}
+
+.profile-photo-editor-image.is-y-4 {
+  object-position-y: 100%;
+}
+
+.profile-photo-controls {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-photo-controls label {
+  display: grid;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-bold);
+}
+
+.profile-photo-controls input {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+
+.profile-photo-editor-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .strength-illustration-soft,
 .strength-illustration-bar {
   fill: var(--color-primary-soft);
