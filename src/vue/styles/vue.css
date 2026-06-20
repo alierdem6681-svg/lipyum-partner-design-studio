@@ -3328,6 +3328,16 @@
   margin-top: 12px;
 }
 
+.drawer-profile-main {
+  display: contents;
+}
+
+.partner-profile-name-row {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
 .strength-illustration-soft,
 .strength-illustration-bar {
   fill: var(--color-primary-soft);

@@ -16,28 +16,47 @@ const shell = useAppShellStore();
 const profile = useProfileStore();
 
 const isDrawer = computed(() => props.variant === "drawer");
-const cardClasses = computed(() => [
-  "partner-profile-card",
-  `partner-profile-card--${props.variant}`,
-  props.compact ? "partner-profile-card--compact" : "",
-]);
 const badgeExpanded = computed(() => (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
 const visibleBadges = computed(() => (isDrawer.value ? profile.drawerVisibleBadges : profile.visibleBadges));
 const hiddenBadgeCount = computed(() => (isDrawer.value ? profile.drawerHiddenBadgeCount : profile.hiddenBadgeCount));
 const moreTestId = computed(() => (isDrawer.value ? "drawer-profile-badge-more" : "profile-badge-more"));
 const moreAction = computed(() => (isDrawer.value ? "toggle-drawer-badges" : "toggle-profile-badges"));
 
+const cardClasses = computed(() =>
+  isDrawer.value
+    ? ["drawer-profile-card", "partner-profile-card--drawer"]
+    : [
+        "partner-profile-card",
+        `partner-profile-card--${props.variant}`,
+        props.compact ? "partner-profile-card--compact" : "",
+      ],
+);
+const mainClasses = computed(() => (isDrawer.value ? ["drawer-profile-main"] : ["partner-profile-main"]));
+const avatarClasses = computed(() => (isDrawer.value ? ["drawer-avatar"] : ["partner-profile-avatar-btn"]));
+const copyClasses = computed(() => (isDrawer.value ? ["drawer-profile-copy"] : ["partner-profile-copy"]));
+const nameRowClasses = computed(() => (isDrawer.value ? ["drawer-name-row"] : ["partner-profile-name-row"]));
+const nameClasses = computed(() => (isDrawer.value ? [] : ["partner-profile-name"]));
+const tierClasses = computed(() => (isDrawer.value ? ["drawer-badge"] : ["partner-profile-tier"]));
+const ratingClasses = computed(() => (isDrawer.value ? ["drawer-rating"] : ["partner-profile-rating"]));
+const badgesClasses = computed(() =>
+  isDrawer.value
+    ? ["drawer-badges"]
+    : ["partner-profile-chips", badgeExpanded.value ? "is-expanded" : ""],
+);
+
+function badgeClass(index) {
+  return isDrawer.value
+    ? ["drawer-mini-badge", "badge-span-2", index >= 3 ? "is-extra" : ""]
+    : ["partner-profile-chip", index >= 3 ? "is-extra" : ""];
+}
+
+const moreBadgeClasses = computed(() =>
+  isDrawer.value ? ["drawer-mini-badge", "is-more"] : ["partner-profile-chip", "is-more"],
+);
+
 function showAllBadges() {
   if (isDrawer.value) profile.showAllDrawerBadges();
   else profile.showAllBadges();
-}
-
-function drawerBadgeClass(index) {
-  return [
-    "drawer-mini-badge",
-    "badge-span-2",
-    index >= 3 ? "is-extra" : "",
-  ];
 }
 
 function openShareSheet() {
@@ -57,105 +76,48 @@ function openPreview() {
 
 <template>
   <section
-    v-if="isDrawer"
-    class="drawer-profile-card"
+    :class="cardClasses"
     data-testid="partner-profile-card"
-    aria-label="Partner profili"
+    data-component="PartnerProfileCard"
+    :data-profile-card-variant="variant"
+    :aria-label="isDrawer ? 'Partner profili' : 'Partner profil kartı'"
   >
-    <div class="drawer-avatar" aria-hidden="true">{{ profile.partner.initials }}</div>
-    <div class="drawer-profile-copy">
-      <div class="drawer-name-row">
-        <h3>{{ profile.partner.name }}</h3>
-        <span class="drawer-badge">
-          <AppIcon name="crown" :size="12" class-name="icon" />
-          {{ profile.partner.tier }}
-        </span>
-      </div>
-      <span class="drawer-rating">
-        <AppIcon name="star" :size="12" class-name="icon" />
-        {{ profile.partner.rating }} Puan <span aria-hidden="true">·</span> {{ profile.partner.reviewCount }} Değerlendirme
-      </span>
-    </div>
-    <span class="drawer-badges">
-      <span
-        v-for="(badge, index) in visibleBadges"
-        :key="badge.label"
-        :class="drawerBadgeClass(index)"
-      >
-        <AppIcon :name="badge.icon" :size="11" class-name="icon" />
-        {{ badge.label }}
-      </span>
+    <div :class="mainClasses">
       <button
-        v-if="hiddenBadgeCount"
-        class="drawer-mini-badge is-more"
+        :class="avatarClasses"
         type="button"
-        :data-testid="moreTestId"
-        :data-action="moreAction"
-        aria-label="Ek rozetleri göster"
-        :aria-expanded="badgeExpanded ? 'true' : 'false'"
-        @click="showAllBadges"
+        :aria-label="isDrawer ? 'Partner profil kartı' : 'Profil fotoğrafı ekle'"
       >
-        +{{ hiddenBadgeCount }}
-      </button>
-    </span>
-    <div v-if="showActions" class="partner-profile-actions">
-      <button
-        class="ghost-action"
-        type="button"
-        data-testid="partner-share-button"
-        data-action="open-partner-share"
-        @click="openShareSheet"
-      >
-        <AppIcon name="share" :size="16" class-name="icon" />
-        Paylaş
-      </button>
-      <button
-        class="ghost-action"
-        type="button"
-        data-testid="partner-preview-button"
-        data-action="profile-preview"
-        @click="openPreview"
-      >
-        <AppIcon name="eye" :size="16" class-name="icon" />
-        Önizle
-      </button>
-    </div>
-  </section>
-
-  <section v-else :class="cardClasses" data-testid="partner-profile-card" aria-label="Partner profil kartı">
-    <div class="partner-profile-main">
-      <button class="partner-profile-avatar-btn" type="button" aria-label="Profil fotoğrafı ekle">
-        <img :src="profile.partner.avatar" :alt="`${profile.partner.name} profil fotoğrafı`" />
-        <span class="partner-profile-add" aria-hidden="true">
+        <span v-if="isDrawer" aria-hidden="true">{{ profile.partner.initials }}</span>
+        <img v-else :src="profile.partner.avatar" :alt="`${profile.partner.name} profil fotoğrafı`" />
+        <span v-if="!isDrawer" class="partner-profile-add" aria-hidden="true">
           <AppIcon name="plus" :size="16" class-name="icon" />
         </span>
       </button>
 
-      <div class="partner-profile-copy">
-        <h3 class="partner-profile-name">{{ profile.partner.name }}</h3>
-        <span class="partner-profile-tier">
-          <AppIcon name="crown" :size="14" class-name="icon" />
-          {{ profile.partner.tier }}
-        </span>
-        <span class="partner-profile-rating">
-          <AppIcon name="star" :size="15" class-name="icon" />
+      <div :class="copyClasses">
+        <div :class="nameRowClasses">
+          <h3 :class="nameClasses">{{ profile.partner.name }}</h3>
+          <span :class="tierClasses">
+            <AppIcon name="crown" :size="isDrawer ? 12 : 14" class-name="icon" />
+            {{ profile.partner.tier }}
+          </span>
+        </div>
+        <span :class="ratingClasses">
+          <AppIcon name="star" :size="isDrawer ? 12 : 15" class-name="icon" />
           {{ profile.partner.rating }} Puan <span aria-hidden="true">·</span> {{ profile.partner.reviewCount }} Değerlendirme
         </span>
       </div>
     </div>
 
-    <div :class="['partner-profile-chips', badgeExpanded ? 'is-expanded' : '']" aria-label="Profil rozetleri">
-      <span
-        v-for="(badge, index) in visibleBadges"
-        :key="badge.label"
-        :class="['partner-profile-chip', index >= 3 ? 'is-extra' : '']"
-      >
-        <AppIcon :name="badge.icon" :size="14" class-name="icon" />
+    <div :class="badgesClasses" aria-label="Profil rozetleri">
+      <span v-for="(badge, index) in visibleBadges" :key="badge.label" :class="badgeClass(index)">
+        <AppIcon :name="badge.icon" :size="isDrawer ? 11 : 14" class-name="icon" />
         {{ badge.label }}
       </span>
       <button
         v-if="hiddenBadgeCount"
-        class="partner-profile-chip is-more"
+        :class="moreBadgeClasses"
         type="button"
         :data-testid="moreTestId"
         :data-action="moreAction"
@@ -163,7 +125,8 @@ function openPreview() {
         :aria-expanded="badgeExpanded ? 'true' : 'false'"
         @click="showAllBadges"
       >
-        <span>+{{ hiddenBadgeCount }}</span>
+        <span v-if="!isDrawer">+{{ hiddenBadgeCount }}</span>
+        <template v-else>+{{ hiddenBadgeCount }}</template>
       </button>
     </div>
 

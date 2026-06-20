@@ -132,7 +132,12 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/profile");
   await expectVueShell(page);
-  await expect(page.getByTestId("partner-profile-card")).toBeVisible();
+  const profileCard = page
+    .getByTestId("partner-profile-card")
+    .and(page.locator('[data-component="PartnerProfileCard"][data-profile-card-variant="page"]'));
+  await expect(profileCard).toBeVisible();
+  const profileName = await profileCard.locator("h3").textContent();
+  const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
@@ -145,6 +150,12 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expectVueShell(page);
   await page.getByTestId("hamburger-button").click();
   await expect(page.getByTestId("sidebar-drawer")).toBeVisible();
+  const drawerCard = page
+    .getByTestId("partner-profile-card")
+    .and(page.locator('[data-component="PartnerProfileCard"][data-profile-card-variant="drawer"]'));
+  await expect(drawerCard).toBeVisible();
+  await expect(drawerCard.locator("h3")).toHaveText(profileName.trim());
+  await expect(drawerCard.locator(".drawer-badge")).toContainText(profileTier.trim());
   await expect(page.getByTestId("partner-share-button").first()).toBeVisible();
   await expect(page.getByTestId("partner-preview-button").first()).toBeVisible();
   expect(errors).toEqual([]);
