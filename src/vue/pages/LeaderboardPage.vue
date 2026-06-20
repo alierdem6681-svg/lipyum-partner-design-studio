@@ -6,20 +6,21 @@ import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
 const sector = ref(sourceLeaderboard.sector);
-const city = ref(sourceLeaderboard.city || "");
+const city = ref("");
 const sectorOptions = ["Beyaz Eşya Tamiri", "Klima Tamiri", "Kombi Servisi", "Ev Temizliği"];
 const cityOptions = ["İstanbul", "Ankara", "İzmir", "Kayseri", "Antalya"];
+const rankerPhotos = [
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=180&q=80",
+  "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=180&q=80",
+  "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=180&q=80",
+];
 
 const activeLeaderboard = computed(() => ({
   ...sourceLeaderboard,
-  sector: sector.value,
-  city: city.value,
+  sector: sector.value || "Sektör Ligi",
+  city: city.value || "Şehirler",
 }));
-const leagueLabel = computed(() =>
-  activeLeaderboard.value.city && activeLeaderboard.value.city !== "Şehirler"
-    ? `${activeLeaderboard.value.city} Ligi`
-    : "Sektör Ligi",
-);
+const leagueLabel = computed(() => (city.value ? `${city.value} Ligi` : "Sektör Ligi"));
 const progress = computed(() => Math.max(0, Math.min(100, Number(activeLeaderboard.value.targetProgress) || 0)));
 const windowItems = computed(() => {
   const items = activeLeaderboard.value.nearby || [];
@@ -27,9 +28,31 @@ const windowItems = computed(() => {
   const windowStart = selfIndex >= 0 ? Math.max(0, selfIndex - 2) : 0;
   return items.slice(windowStart, windowStart + 5);
 });
+const topRankers = computed(() =>
+  (activeLeaderboard.value.topRankers || []).map((ranker, index) => ({
+    ...ranker,
+    photo: rankerPhotos[index],
+  })),
+);
+const rewardTotal = computed(() =>
+  (activeLeaderboard.value.rewards || []).reduce((total, reward) => {
+    const value = Number(String(reward.value).replace(/\D/g, ""));
+    return total + (Number.isFinite(value) ? value : 0);
+  }, 0),
+);
 
 function formatCredit(value) {
   return new Intl.NumberFormat("tr-TR").format(Number(value) || 0);
+}
+
+function selectSector(event) {
+  sector.value = event.target.value;
+  if (sector.value) city.value = "";
+}
+
+function selectCity(event) {
+  city.value = event.target.value;
+  if (city.value) sector.value = "";
 }
 </script>
 
@@ -38,14 +61,27 @@ function formatCredit(value) {
     <section class="league-select-grid" aria-label="Lig filtreleri">
       <label>
         <span>Sektör Ligi</span>
-        <select v-model="sector" data-leaderboard-sector data-testid="leaderboard-sector-select" aria-label="Sektör Ligi">
+        <select
+          :value="sector"
+          data-leaderboard-sector
+          data-testid="leaderboard-sector-select"
+          aria-label="Sektör Ligi"
+          @change="selectSector"
+        >
+          <option value="">Sektör Ligi</option>
           <option v-for="option in sectorOptions" :key="option" :value="option">{{ option }}</option>
         </select>
       </label>
       <label>
         <span>Şehir Ligi</span>
-        <select v-model="city" data-leaderboard-region data-testid="leaderboard-city-select" aria-label="Şehir Ligi">
-          <option value="">Şehirler</option>
+        <select
+          :value="city"
+          data-leaderboard-region
+          data-testid="leaderboard-city-select"
+          aria-label="Şehir Ligi"
+          @change="selectCity"
+        >
+          <option value="">Şehir Ligi</option>
           <option v-for="option in cityOptions" :key="option" :value="option">{{ option }}</option>
         </select>
       </label>
@@ -59,9 +95,8 @@ function formatCredit(value) {
       <div class="leaderboard-hero-copy">
         <span class="leaderboard-hero-eyebrow">Bu haftaki sıralaman</span>
         <div class="leaderboard-rank-line"><strong>#{{ activeLeaderboard.myRank }}</strong></div>
-        <p><b>İlk 20’ye çok yakınsın.</b> 2 güçlü iş daha seni vitrine taşır.</p>
+        <p><b>İlk 20’ye çok yakınsın.</b> Düzenli iş takibi ve güçlü puan seni öne çıkarır.</p>
         <div class="leaderboard-hero-chips" aria-label="Lig motivasyonu">
-          <span><AppIcon name="zap" :size="14" /> +{{ Math.max(1, activeLeaderboard.myRank - 20) }} sıra hedef</span>
           <span><AppIcon name="trophy" :size="14" /> {{ formatCredit(activeLeaderboard.myScore) }} puan</span>
         </div>
       </div>
@@ -127,19 +162,19 @@ function formatCredit(value) {
       <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
       <div class="top-rankers-head">
         <div class="top-rankers-title">
-          <span><AppIcon name="sparkles" :size="14" /> Haftanın vitrini</span>
           <h2>Haftanın En İyileri</h2>
         </div>
         <span class="top-rankers-score-label">Lig puanı</span>
       </div>
       <div class="top-rankers-stage">
         <div class="top-rankers-grid">
-          <article v-for="ranker in activeLeaderboard.topRankers" :key="ranker.rank" :class="`top-ranker is-rank-${ranker.rank}`">
+          <article v-for="ranker in topRankers" :key="ranker.rank" :class="`top-ranker is-rank-${ranker.rank}`">
             <span class="top-ranker-medal">{{ ranker.rank }}</span>
-            <span class="top-ranker-avatar"><span>{{ ranker.initials }}</span></span>
+            <span class="top-ranker-avatar">
+              <img :src="ranker.photo" :alt="`${ranker.name} profil fotoğrafı`" loading="lazy" />
+            </span>
             <strong>{{ ranker.name }}</strong>
             <small>{{ formatCredit(ranker.score) }} Puan</small>
-            <em>{{ ranker.rank === 1 ? "Haftanın lideri" : ranker.rank === 2 ? "Gümüş seri" : "Bronz seri" }}</em>
           </article>
         </div>
       </div>
@@ -151,21 +186,29 @@ function formatCredit(value) {
       <span class="reward-tiers-spark spark-three" aria-hidden="true"></span>
       <div class="reward-tiers-head">
         <span><AppIcon name="sparkles" :size="14" /> Kazanılacak ödüller</span>
-        <h2>Ödüller</h2>
-        <p>Sıralamada yüksel, bonusu ve özel rozeti kap.</p>
+        <h2>Haftalık ödül havuzu</h2>
+        <p>Lig başarına göre bonus, rozet ve görünürlük avantajları kazan.</p>
       </div>
-      <div class="reward-tier-grid">
+      <div class="reward-program">
+        <div class="reward-program-hero">
+          <span>Toplam havuz</span>
+          <strong>{{ formatCredit(rewardTotal) }} Bonus</strong>
+          <small>En iyi sıralamalar haftalık vitrinde daha görünür olur.</small>
+        </div>
+        <div class="reward-path-list">
         <article
           v-for="(reward, index) in activeLeaderboard.rewards"
           :key="reward.title"
-          :class="index === 0 ? 'is-gold' : index === 1 ? 'is-emerald' : 'is-amber'"
+          :class="index === 0 ? 'is-prime' : index === 1 ? 'is-podium' : 'is-goal'"
         >
-          <span class="reward-tier-ribbon">{{ index === 0 ? "Zirve" : index === 1 ? "Podyum" : "Hedef" }}</span>
-          <span class="reward-tier-icon"><AppIcon :name="index === 0 ? 'crown' : index === 1 ? 'trophy' : 'gift'" :size="20" /></span>
-          <strong>{{ reward.title }}</strong>
-          <small>{{ reward.value }}</small>
-          <em>{{ reward.note.replace(/^\+\s*/, "") }}</em>
+          <span class="reward-path-rank">{{ index === 0 ? "01" : index === 1 ? "02" : "03" }}</span>
+          <span class="reward-path-icon"><AppIcon :name="index === 0 ? 'crown' : index === 1 ? 'trophy' : 'gift'" :size="19" /></span>
+          <span class="reward-path-copy">
+            <strong>{{ reward.title }}</strong>
+            <small>{{ reward.value }} · {{ reward.note.replace(/^\+\s*/, "") }}</small>
+          </span>
         </article>
+        </div>
       </div>
     </AppCard>
   </AppPage>

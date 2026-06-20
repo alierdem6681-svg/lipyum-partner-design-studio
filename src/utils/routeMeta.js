@@ -98,6 +98,11 @@ const titleOverrides = {
   "/leaderboard": {
     title: "Partner Seviyeleri",
     subtitle: "Seviye ve rozet ilerlemeni gör",
+    infoSheet: {
+      title: "Liderlik tablosu",
+      description: "Haftanın Liderleri Nasıl Belirlenir?",
+      body: "Puanlama sistemi haftalık performansına göre hesaplanır: her tamamlanan iş 10 puan, her teklif verme 10 puan, havuzdan iş alma 10 puan, her iptal iş -3 puan, her müşteri şikayeti -5 puan etkiler.",
+    },
   },
   "/subscription": {
     title: "Aboneliğim",
@@ -152,6 +157,7 @@ export const routeMeta = Object.fromEntries(
         headerVariant: isHome ? "home" : isBottomRoute ? "section" : "subpage",
         leadingAction: isHome || isBottomRoute ? "hamburger" : "back",
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
+        infoSheet: override.infoSheet || null,
         showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
         ctaVariant: "subpage",
