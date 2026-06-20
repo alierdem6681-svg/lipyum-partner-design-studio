@@ -896,13 +896,18 @@
 
 .v-app-sheet-overlay {
   justify-content: center;
-  padding-inline: 12px;
+  padding-inline: 8px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
 .v-app-sheet {
-  width: min(430px, 100%);
+  width: min(430px, calc(100vw - 16px));
   max-height: min(78vh, 640px);
-  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  padding: 8px 14px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 18px 18px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-elevated);
   overflow: hidden;
 }
 
@@ -910,7 +915,8 @@
   width: 100%;
   display: grid;
   place-items: center;
-  padding: 0 0 12px;
+  min-height: 28px;
+  padding: 0;
   border: 0;
   background: transparent;
   touch-action: none;
@@ -928,10 +934,66 @@
   background: var(--color-neutral-300);
 }
 
+.v-app-sheet__header {
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent);
+}
+
+.v-app-sheet__heading {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.v-app-sheet__title,
+.v-app-sheet__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v-app-sheet__title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--weight-bold);
+  line-height: var(--line-tight);
+}
+
+.v-app-sheet__description {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+}
+
+.v-app-sheet__close {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  box-shadow: var(--shadow-soft);
+}
+
+.v-app-sheet__close:active {
+  transform: translateY(1px);
+}
+
 .v-app-sheet__body {
-  max-height: calc(min(78vh, 640px) - 92px);
+  max-height: calc(min(78vh, 640px) - 112px);
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding-top: 16px;
 }
 
 .v-home-row,

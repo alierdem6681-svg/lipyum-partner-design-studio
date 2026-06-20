@@ -55,9 +55,9 @@ test("shared app sheet keeps side margins and closes by dragging the handle down
     };
   });
 
-  expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 20));
-  expect(metrics.left).toBeGreaterThanOrEqual(10);
-  expect(metrics.right).toBeGreaterThanOrEqual(10);
+  expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 12));
+  expect(metrics.left).toBeGreaterThanOrEqual(6);
+  expect(metrics.right).toBeGreaterThanOrEqual(6);
 
   await dragHandleDown(page);
   await expect(page.getByTestId("app-sheet")).toHaveCount(0);
