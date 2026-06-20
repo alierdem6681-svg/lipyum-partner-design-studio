@@ -847,7 +847,9 @@
 }
 
 .notifications-page {
+  display: grid;
   gap: 10px;
+  align-content: start;
   min-height: 100%;
   padding: 0;
 }
@@ -875,17 +877,35 @@
 
 .notification-actions-bar {
   position: sticky;
-  top: calc(var(--top-safe-space, 0px) + var(--lp-header-height));
+  top: 0;
   z-index: calc(var(--lp-z-header) - 1);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto 44px;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 6px;
   margin: 0;
-  padding: 8px 0 9px;
+  padding: 7px 0 9px;
   background: rgba(248, 250, 252, 0.96);
   border-bottom: 1px solid rgba(229, 231, 235, 0.7);
   backdrop-filter: blur(10px);
+}
+
+.notification-actions-bar .v-btn {
+  min-width: 0;
+  min-height: 38px;
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+
+.notification-actions-bar .v-btn__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notification-actions-bar .page-header-action {
+  width: 44px;
+  height: 44px;
 }
 
 .notification-card-row {
