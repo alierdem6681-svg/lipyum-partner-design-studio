@@ -170,39 +170,50 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(profileCard).toBeVisible();
   const profileName = await profileCard.locator("h3").textContent();
   const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
-  await expect(page.locator(".profile-menu-grid")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-list")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
   const profileGridGeometry = await page.evaluate(() => {
     const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
-    const grid = document.querySelector('[data-testid="profile-menu-grid"]')?.getBoundingClientRect();
+    const list = document.querySelector('[data-testid="profile-menu-list"]')?.getBoundingClientRect();
     const cards = Array.from(document.querySelectorAll('[data-testid="profile-menu-card"]')).map((item) =>
       item.getBoundingClientRect(),
     );
-    const maxLabelLines = Math.max(...Array.from(document.querySelectorAll(".profile-menu-label")).map((label) => {
+    const maxTitleLines = Math.max(...Array.from(document.querySelectorAll(".profile-menu-row__title")).map((label) => {
       const style = window.getComputedStyle(label);
       const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
       return label.getBoundingClientRect().height / lineHeight;
     }));
-    const rows = new Set(cards.map((card) => Math.round(card.top)));
+    const statuses = Array.from(document.querySelectorAll(".profile-menu-row__status")).map((item) =>
+      item.textContent.trim(),
+    );
+    const summary = document.querySelector('[data-testid="profile-menu-strength-summary"]')?.getBoundingClientRect();
     return {
       cardCount: cards.length,
-      rowCount: rows.size,
-      gridLeftDelta: profile && grid ? Math.abs(profile.left - grid.left) : 999,
-      gridRightDelta: profile && grid ? Math.abs(profile.right - grid.right) : 999,
+      statusCount: statuses.length,
+      statuses,
+      listLeftDelta: profile && list ? Math.abs(profile.left - list.left) : 999,
+      listRightDelta: profile && list ? Math.abs(profile.right - list.right) : 999,
       firstCardLeftDelta: profile && cards[0] ? Math.abs(profile.left - cards[0].left) : 999,
-      lastCardRightDelta: profile && cards[3] ? Math.abs(profile.right - cards[3].right) : 999,
+      firstCardRightDelta: profile && cards[0] ? Math.abs(profile.right - cards[0].right) : 999,
       cardSpread: cards.length ? Math.max(...cards.map((card) => card.width)) - Math.min(...cards.map((card) => card.width)) : 999,
-      maxLabelLines,
+      maxTitleLines,
+      summaryWidthDelta: profile && summary ? Math.abs(profile.width - summary.width) : 999,
+      summaryText: document.querySelector('[data-testid="profile-menu-strength-summary"]')?.textContent ?? "",
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
   expect(profileGridGeometry.cardCount).toBe(8);
-  expect(profileGridGeometry.rowCount).toBe(2);
-  expect(profileGridGeometry.gridLeftDelta).toBeLessThanOrEqual(2);
-  expect(profileGridGeometry.gridRightDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.statusCount).toBe(8);
+  expect(profileGridGeometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
+  expect(profileGridGeometry.listLeftDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.listRightDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.firstCardLeftDelta).toBeLessThanOrEqual(2);
-  expect(profileGridGeometry.lastCardRightDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.firstCardRightDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.cardSpread).toBeLessThanOrEqual(1);
-  expect(profileGridGeometry.maxLabelLines).toBeLessThanOrEqual(2.15);
+  expect(profileGridGeometry.maxTitleLines).toBeLessThanOrEqual(1.15);
+  expect(profileGridGeometry.summaryWidthDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.summaryText).toContain("Profil Gücünüz");
+  expect(profileGridGeometry.summaryText).toContain("+28");
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
