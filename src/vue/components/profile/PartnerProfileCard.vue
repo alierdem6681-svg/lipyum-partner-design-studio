@@ -2,7 +2,6 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import AppIcon from "../ui/AppIcon.vue";
-import ProfileScoreRing from "./ProfileScoreRing.vue";
 import { useAppShellStore } from "../../stores/appShellStore.js";
 import { useProfileStore } from "../../stores/profileStore.js";
 
@@ -50,17 +49,6 @@ function openShareSheet() {
   });
 }
 
-function openStrengthSheet() {
-  shell.closeDrawer();
-  shell.openSheet({
-    title: profile.strength.title,
-    description: `Profil skoru: ${profile.strength.score}`,
-    body: profile.strength.tasks
-      .map((task) => `${task.done ? "Tamamlandı" : "Eksik"}: ${task.label}`)
-      .join("\n"),
-  });
-}
-
 function openPreview() {
   shell.closeDrawer();
   router.push("/partner-card-preview");
@@ -97,17 +85,6 @@ function openPreview() {
         </span>
       </div>
     </div>
-
-    <button
-      class="partner-profile-score-button"
-      type="button"
-      data-testid="partner-profile-score-button"
-      data-action="open-profile-strength-sheet"
-      :aria-label="`Profil skoru ${profile.strength.score}; yapılacakları göster`"
-      @click="openStrengthSheet"
-    >
-      <ProfileScoreRing :score="profile.strength.score" />
-    </button>
 
     <div :class="badgesClasses" aria-label="Profil rozetleri">
       <span v-for="(badge, index) in visibleBadges" :key="badge.label" :class="badgeClass(index)">
