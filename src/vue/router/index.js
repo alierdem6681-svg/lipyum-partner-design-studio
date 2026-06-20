@@ -12,6 +12,7 @@ import LiveSupportPage from "../pages/LiveSupportPage.vue";
 import MessagesPage from "../pages/MessagesPage.vue";
 import JobsPage from "../pages/JobsPage.vue";
 import MyJobsPage from "../pages/MyJobsPage.vue";
+import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
 import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
@@ -44,7 +45,6 @@ const simpleContentRoutes = new Set([
   "/capacity",
   "/strategy",
   "/account-settings",
-  "/notification-settings",
   "/contact-settings",
   "/bonus",
   "/performance-score",
@@ -59,6 +59,7 @@ const dedicatedRouteComponents = {
   "/partner-card-preview": PartnerCardPreviewPage,
   "/photo-gallery": PhotoGalleryPage,
   "/notifications": NotificationsPage,
+  "/notification-settings": NotificationSettingsPage,
   "/support": SupportPage,
   "/support/new": CreateTicketPage,
   "/support/live": LiveSupportPage,
