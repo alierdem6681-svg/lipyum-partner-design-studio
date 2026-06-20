@@ -879,19 +879,26 @@
   position: sticky;
   top: 0;
   z-index: calc(var(--lp-z-header) - 1);
-  display: grid;
-  grid-template-columns: 0.78fr 1fr 1.24fr;
+  display: flex;
   align-items: center;
   gap: 8px;
   margin: 0;
   padding: 7px 0 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
   background: rgba(248, 250, 252, 0.96);
   border-bottom: 1px solid rgba(229, 231, 235, 0.7);
   backdrop-filter: blur(10px);
 }
 
+.notification-actions-bar::-webkit-scrollbar {
+  display: none;
+}
+
 .notification-filter-pill {
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: 92px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -923,6 +930,28 @@
 
 .notification-filter-pill:active {
   transform: scale(0.98);
+}
+
+.notification-filter-pill[data-filter="read"] {
+  min-width: 116px;
+}
+
+.notification-filter-pill[data-filter="unread"] {
+  min-width: 144px;
+}
+
+.notification-filter-pill.is-action {
+  min-width: 118px;
+  background: #f8fafc;
+  color: #21364d;
+  border: 1px solid #d8e1ec;
+}
+
+.notification-filter-pill.is-action.is-danger {
+  min-width: 104px;
+  color: #9f1239;
+  border-color: #fecdd3;
+  background: #fff1f2;
 }
 
 .notification-card-row {
@@ -2308,6 +2337,80 @@
   100% {
     background-position: 70% 20%, 22% 72%, 100% 50%;
   }
+}
+
+.onay-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.34);
+  backdrop-filter: blur(2px);
+}
+
+.onay-modal {
+  width: min(350px, calc(100vw - 36px));
+  display: grid;
+  gap: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #ffffff;
+  padding: 18px;
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.2);
+}
+
+.onay-modal__header {
+  display: grid;
+  gap: 7px;
+  text-align: left;
+}
+
+.onay-modal__header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.18;
+}
+
+.onay-modal__header p {
+  margin: 0;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.42;
+}
+
+.onay-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.onay-modal__button {
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid #d8e1ec;
+  background: #f8fafc;
+  color: #21364d;
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.onay-modal__button.is-confirm {
+  border-color: #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(22, 163, 74, 0.18);
+}
+
+.onay-modal__button.is-confirm.is-danger {
+  border-color: #e11d48;
+  background: #e11d48;
+  box-shadow: 0 10px 20px rgba(225, 29, 72, 0.18);
 }
 
 @keyframes leaderboardHeroShine {
