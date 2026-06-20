@@ -155,9 +155,11 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
     .and(page.locator('[data-component="PartnerProfileCard"][data-profile-card-variant="drawer"]'));
   await expect(drawerCard).toBeVisible();
   await expect(drawerCard.locator("h3")).toHaveText(profileName.trim());
-  await expect(drawerCard.locator(".drawer-badge")).toContainText(profileTier.trim());
-  await expect(page.getByTestId("partner-share-button").first()).toBeVisible();
-  await expect(page.getByTestId("partner-preview-button").first()).toBeVisible();
+  await expect(drawerCard.locator(".partner-profile-tier")).toContainText(profileTier.trim());
+  await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toBeVisible();
+  await expect(drawerCard.locator(".drawer-avatar, .drawer-badge, .drawer-rating, .drawer-mini-badge")).toHaveCount(0);
+  await expect(drawerCard.getByTestId("partner-share-button")).toHaveCount(0);
+  await expect(drawerCard.getByTestId("partner-preview-button")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

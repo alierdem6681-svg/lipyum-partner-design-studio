@@ -3,7 +3,7 @@ import PartnerProfileCard from "../profile/PartnerProfileCard.vue";
 </script>
 
 <template>
-  <PartnerProfileCard variant="drawer" />
+  <PartnerProfileCard variant="drawer" :show-actions="false" />
 
   <section class="drawer-work-status-card is-working" aria-label="Çalışma durumu">
     <div class="row">
