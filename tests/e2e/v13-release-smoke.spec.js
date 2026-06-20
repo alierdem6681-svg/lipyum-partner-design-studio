@@ -66,6 +66,57 @@ for (const [route, testId, activeTab] of blankRoutes) {
   });
 }
 
+test("home and bottom routes share the same shell geometry", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+
+  async function readShell(route) {
+    await page.goto(`/#${route}`);
+    await expectVueShell(page);
+    return page.evaluate(() => {
+      const box = (selector) => {
+        const node = document.querySelector(selector);
+        const rect = node?.getBoundingClientRect();
+        return rect
+          ? {
+              x: Math.round(rect.x),
+              y: Math.round(rect.y),
+              width: Math.round(rect.width),
+              height: Math.round(rect.height),
+            }
+          : null;
+      };
+      const ctaStyle = getComputedStyle(document.querySelector('[data-testid="bottom-cta-job"] .cta-lightning-wrap'));
+      const ctaButton = document.querySelector('[data-testid="bottom-cta-job"]')?.getBoundingClientRect();
+      const bottom = document.querySelector('[data-testid="app-bottom-bar"]')?.getBoundingClientRect();
+      return {
+        header: box('[data-testid="app-header"]'),
+        hamburger: box('[data-testid="hamburger-button"]'),
+        notification: box('[data-testid="app-header"] [data-testid="notification-button"], [data-testid="app-header"] [data-testid="wallet-info-button"]'),
+        profile: box('[data-testid="profile-button"]'),
+        cta: box('[data-testid="bottom-cta-job"] .cta-lightning-wrap'),
+        ctaRadius: ctaStyle.borderRadius,
+        ctaCenterDelta: Math.abs((ctaButton.left + ctaButton.width / 2) - (bottom.left + bottom.width / 2)),
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+  }
+
+  const home = await readShell("/home");
+  const routes = ["/my-jobs", "/calendar", "/wallet"];
+
+  for (const route of routes) {
+    const current = await readShell(route);
+    expect(current.header, `${route} header`).toEqual(home.header);
+    expect(current.hamburger, `${route} hamburger`).toEqual(home.hamburger);
+    expect(current.cta, `${route} CTA`).toEqual(home.cta);
+    expect(current.ctaRadius, `${route} CTA radius`).toBe(home.ctaRadius);
+    expect(current.ctaCenterDelta, `${route} CTA center`).toBeLessThanOrEqual(1);
+    expect(current.overflow, `${route} overflow`).toBeLessThanOrEqual(1);
+  }
+
+  expect(errors).toEqual([]);
+});
+
 for (const route of retiredRoutes) {
   test(`retired package route redirects to subscription: ${route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);

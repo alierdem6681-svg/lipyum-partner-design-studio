@@ -149,7 +149,7 @@ export const routeMeta = Object.fromEntries(
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
         showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
-        ctaVariant: isHome ? "home" : "subpage",
+        ctaVariant: "subpage",
         parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,
