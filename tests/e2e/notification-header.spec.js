@@ -120,8 +120,13 @@ test("notification settings expose switchers and locked notification types", asy
   await waitForApp(page);
 
   await expect(page.getByTestId("notification-settings-page")).toBeVisible();
-  await expect(page.getByTestId("notification-setting-row")).toHaveCount(10);
-  await expect(page.getByTestId("notification-setting-switch")).toHaveCount(10);
+  await expect(page.getByTestId("notification-settings-group")).toHaveCount(4);
+  await expect(page.locator('[data-group-id="jobs"]')).toContainText("İş alımları");
+  await expect(page.locator('[data-group-id="finance"]')).toContainText("Fiyat indirimleri ve finans");
+  await expect(page.locator('[data-group-id="competition"]')).toContainText("Rekabet ve performans");
+  await expect(page.locator('[data-group-id="marketing"]')).toContainText("Pazarlama ve müşteri ilişkileri");
+  await expect(page.getByTestId("notification-setting-row")).toHaveCount(17);
+  await expect(page.getByTestId("notification-setting-switch")).toHaveCount(17);
 
   await expect(page.locator('[data-setting-id="new-job"]')).toContainText("Yeni iş bildirimi");
   await expect(page.locator('[data-setting-id="new-job"]')).toContainText("(kapatılamaz)");
@@ -129,6 +134,11 @@ test("notification settings expose switchers and locked notification types", asy
   await expect(page.locator('[data-setting-id="balance-end"]')).toContainText("Bakiye bitişi");
   await expect(page.locator('[data-setting-id="balance-end"]')).toContainText("(kapatılamaz)");
   await expect(page.locator('[data-setting-id="balance-end"] [data-testid="notification-setting-switch"]')).toBeDisabled();
+  await expect(page.locator('[data-setting-id="security"]')).toContainText("Güvenlik ve hesap uyarıları");
+  await expect(page.locator('[data-setting-id="security"] [data-testid="notification-setting-switch"]')).toBeDisabled();
+  await expect(page.locator('[data-setting-id="marketing"]')).toContainText("Pazarlama bildirimleri");
+  await expect(page.locator('[data-setting-id="profile-visibility"]')).toContainText("Profil görünürlük önerileri");
+  await expect(page.locator('[data-setting-id="payment-reminders"]')).toContainText("Ödeme ve fatura hatırlatmaları");
 
   const leaderboardSwitch = page.locator('[data-setting-id="leaderboard"] [data-testid="notification-setting-switch"]');
   await expect(leaderboardSwitch).toHaveAttribute("aria-checked", "false");
