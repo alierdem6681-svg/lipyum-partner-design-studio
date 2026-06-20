@@ -2,8 +2,6 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notifications as sourceNotifications } from "../../data/mockData.js";
-import AppButton from "../components/ui/AppButton.vue";
-import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
 const DEFAULT_NOTIFICATION_LIMIT = 15;
@@ -11,39 +9,35 @@ const INITIAL_VISIBLE_COUNT = 7;
 const LOAD_INCREMENT = 4;
 const defaultNotifications = sourceNotifications.slice(0, DEFAULT_NOTIFICATION_LIMIT);
 
+const FILTERS = [
+  { id: "all", label: "Tümü" },
+  { id: "read", label: "Okunanlar" },
+  { id: "unread", label: "Okunmayanlar" },
+];
+
 const router = useRouter();
-const showReadNotifications = ref(false);
+const activeFilter = ref("all");
 const visibleCount = ref(INITIAL_VISIBLE_COUNT);
 const readIds = ref(new Set());
-const cleared = ref(false);
 const listSentinel = ref(null);
 let listObserver;
 
 const allItems = computed(() =>
-  cleared.value
-    ? []
-    : defaultNotifications.map((item) => ({
-        ...item,
-        isRead: !item.unread || readIds.value.has(item.id),
-      })),
+  defaultNotifications.map((item) => ({
+    ...item,
+    isRead: !item.unread || readIds.value.has(item.id),
+  })),
 );
-const displayedItems = computed(() =>
-  showReadNotifications.value ? allItems.value : allItems.value.filter((item) => !item.isRead),
-);
+const displayedItems = computed(() => {
+  if (activeFilter.value === "read") return allItems.value.filter((item) => item.isRead);
+  if (activeFilter.value === "unread") return allItems.value.filter((item) => !item.isRead);
+  return allItems.value;
+});
 const visibleItems = computed(() => displayedItems.value.slice(0, Math.min(visibleCount.value, displayedItems.value.length)));
 const showMoreIndicator = computed(() => displayedItems.value.length > visibleCount.value);
 
-function markAllRead() {
-  readIds.value = new Set(defaultNotifications.map((item) => item.id));
-}
-
-function toggleReadItems() {
-  showReadNotifications.value = !showReadNotifications.value;
-}
-
-function clearAll() {
-  cleared.value = true;
-  showReadNotifications.value = false;
+function setFilter(filterId) {
+  activeFilter.value = filterId;
 }
 
 function loadMoreNotifications() {
@@ -52,6 +46,7 @@ function loadMoreNotifications() {
 }
 
 function openNotification(item) {
+  if (item?.id) readIds.value = new Set([...readIds.value, item.id]);
   if (item?.route) router.push(item.route);
 }
 
@@ -120,57 +115,26 @@ onBeforeUnmount(() => {
 
 <template>
   <AppPage title="Bildirimler" class="notifications-page" data-testid="notifications-page">
-    <section class="notification-actions-bar" aria-label="Bildirim liste işlemleri">
-      <AppButton
-        class="notification-action-btn is-muted"
-        type="button"
-        variant="ghost"
-        size="sm"
-        data-testid="notifications-filter-all"
-        :disabled="!allItems.length"
-        @click="toggleReadItems"
-      >
-        {{ showReadNotifications ? "Okunanları Gizle" : "Okunanları Göster" }}
-      </AppButton>
-      <AppButton
-        class="notification-action-btn"
-        type="button"
-        variant="secondary"
-        size="sm"
-        icon="check"
-        data-testid="notifications-mark-read"
-        :disabled="!allItems.length"
-        @click="markAllRead"
-      >
-        Okundu Yap
-      </AppButton>
-      <AppButton
-        class="notification-action-btn is-danger"
-        type="button"
-        variant="ghost"
-        size="sm"
-        icon="x"
-        data-testid="notifications-clear-all"
-        :disabled="!allItems.length"
-        @click="clearAll"
-      >
-        Tümünü Sil
-      </AppButton>
+    <section class="notification-actions-bar" aria-label="Bildirim filtreleri">
       <button
-        class="icon-btn icon-only-btn page-header-action"
+        v-for="filter in FILTERS"
+        :key="filter.id"
+        class="notification-filter-pill"
+        :class="{ 'is-active': activeFilter === filter.id }"
         type="button"
-        data-testid="notification-settings-button"
-        aria-label="Bildirim ayarları"
-        @click="router.push('/notification-settings')"
+        data-testid="notifications-filter-pill"
+        :data-filter="filter.id"
+        :aria-pressed="activeFilter === filter.id ? 'true' : 'false'"
+        @click="setFilter(filter.id)"
       >
-        <AppIcon name="settings" :size="20" class-name="icon" />
+        {{ filter.label }}
       </button>
     </section>
 
     <section v-if="!visibleItems.length" class="notification-empty" aria-label="Boş bildirim kutusu">
       <span>
-        <strong>Bildirim kutun temiz</strong>
-        <small>Yeni iş, cüzdan ve destek bildirimleri burada görünür.</small>
+        <strong>Bildirim bulunamadı</strong>
+        <small>Seçtiğin filtreye uygun bildirim yok.</small>
       </span>
     </section>
 
