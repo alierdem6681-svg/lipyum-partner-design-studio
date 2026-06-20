@@ -1,67 +1,115 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { notifications as sourceNotifications } from "../../data/mockData.js";
 import AppButton from "../components/ui/AppButton.vue";
-import AppCard from "../components/ui/AppCard.vue";
-import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
 const router = useRouter();
-const activeFilter = ref("all");
-const visibleCount = ref(3);
-const notifications = ref([
-  { id: 1, type: "job", title: "Yeni teklif geldi", body: "Ümraniye klima bakım işi için teklif isteği.", unread: true },
-  { id: 2, type: "support", title: "Destek yanıtladı", body: "Açık talebine yeni mesaj geldi.", unread: true },
-  { id: 3, type: "job", title: "Randevu hatırlatması", body: "Bugünkü iş için müşteri teyidi bekliyor.", unread: false },
-  { id: 4, type: "support", title: "Profil skoru arttı", body: "Yeni yorum skorunu yükseltti.", unread: false },
-  { id: 5, type: "job", title: "Teklif sonucu", body: "Bir teklifin müşteri tarafından incelendi.", unread: false },
-]);
+const showReadNotifications = ref(false);
+const visibleCount = ref(7);
+const readIds = ref(new Set());
+const cleared = ref(false);
 
-const filters = [
-  { label: "Tümü", value: "all" },
-  { label: "Okunmamış", value: "unread" },
-  { label: "İş", value: "job" },
-  { label: "Destek", value: "support" },
-];
-
-const visibleNotifications = computed(() => notifications.value
-  .filter((item) => activeFilter.value === "all" || (activeFilter.value === "unread" ? item.unread : item.type === activeFilter.value))
-  .slice(0, visibleCount.value));
+const allItems = computed(() =>
+  cleared.value
+    ? []
+    : sourceNotifications.map((item) => ({
+        ...item,
+        isRead: !item.unread || readIds.value.has(item.id),
+      })),
+);
+const displayedItems = computed(() =>
+  showReadNotifications.value ? allItems.value : allItems.value.filter((item) => !item.isRead),
+);
+const visibleItems = computed(() => displayedItems.value.slice(0, Math.min(visibleCount.value, displayedItems.value.length)));
+const hasHiddenReadItems = computed(() => allItems.value.some((item) => item.isRead));
+const showMoreIndicator = computed(
+  () => displayedItems.value.length > visibleCount.value || (!showReadNotifications.value && hasHiddenReadItems.value),
+);
 
 function markAllRead() {
-  notifications.value = notifications.value.map((item) => ({ ...item, unread: false }));
+  readIds.value = new Set(sourceNotifications.map((item) => item.id));
+}
+
+function toggleReadItems() {
+  showReadNotifications.value = !showReadNotifications.value;
+}
+
+function openNotification(item) {
+  if (item?.route) router.push(item.route);
 }
 </script>
 
 <template>
-  <AppPage title="Bildirimler" data-testid="notifications-page">
-    <div class="v-stack">
-      <div class="v-notification-toolbar">
-        <AppFilterChips v-model="activeFilter" :items="filters" aria-label="Bildirim filtreleri" />
-        <button type="button" aria-label="Bildirim Ayarları" data-testid="notification-settings-button" @click="router.push('/notification-settings')">
-          <AppIcon name="settings" :size="20" />
-        </button>
-      </div>
-
-      <AppButton size="sm" variant="secondary" icon="check" data-testid="notifications-mark-read" @click="markAllRead">
-        Tümünü okundu yap
+  <AppPage title="Bildirimler" class="notifications-page" data-testid="notifications-page">
+    <section class="notification-actions-bar" aria-label="Bildirim liste işlemleri">
+      <AppButton
+        class="notification-action-btn is-muted"
+        type="button"
+        variant="ghost"
+        size="sm"
+        data-testid="notifications-filter-all"
+        @click="toggleReadItems"
+      >
+        {{ showReadNotifications ? "Okunanları Gizle" : "Okunanları Göster" }}
       </AppButton>
-
-      <div class="v-content-list" role="list">
-        <AppCard v-for="item in visibleNotifications" :key="item.id" padding="md" as="article" class="v-content-list-item" role="listitem">
-          <span class="v-content-list-item__icon"><AppIcon name="bell" :size="20" /></span>
-          <span class="v-content-list-item__copy">
-            <strong>{{ item.title }}</strong>
-            <small>{{ item.body }}</small>
-          </span>
-          <span v-if="item.unread" class="v-notification-dot" aria-label="Okunmamış"></span>
-        </AppCard>
-      </div>
-
-      <AppButton v-if="visibleCount < notifications.length" variant="ghost" data-testid="notifications-load-more" @click="visibleCount += 2">
-        Daha fazla yükle
+      <AppButton
+        class="notification-action-btn"
+        type="button"
+        variant="secondary"
+        size="sm"
+        icon="check"
+        data-testid="notifications-mark-read"
+        @click="markAllRead"
+      >
+        Okundu Yap
       </AppButton>
-    </div>
+      <button
+        class="icon-btn icon-only-btn page-header-action"
+        type="button"
+        data-testid="notification-settings-button"
+        aria-label="Bildirim ayarları"
+        @click="router.push('/notification-settings')"
+      >
+        <AppIcon name="settings" :size="20" class-name="icon" />
+      </button>
+    </section>
+
+    <section v-if="!visibleItems.length" class="notification-empty" aria-label="Boş bildirim kutusu">
+      <span>
+        <strong>Bildirim kutun temiz</strong>
+        <small>Yeni iş, cüzdan ve destek bildirimleri burada görünür.</small>
+      </span>
+    </section>
+
+    <section v-else class="notification-list" aria-label="Bildirim listesi">
+      <button
+        v-for="item in visibleItems"
+        :key="item.id"
+        :class="['notification-card-row', item.isRead ? 'is-read' : 'is-unread', `is-${item.tone || 'neutral'}`]"
+        type="button"
+        data-action="open-notification"
+        data-testid="notification-card"
+        :data-notification-id="item.id"
+        :data-notification-screen="item.screen || 'home'"
+        :aria-label="item.title"
+        @click="openNotification(item)"
+      >
+        <span class="notification-card-copy">
+          <strong>{{ item.title }}</strong>
+          <small>{{ item.description }}</small>
+        </span>
+        <span v-if="item.tone === 'warning'" class="notification-card-cta">{{ item.actionLabel || "Gör" }}</span>
+      </button>
+      <div
+        class="notification-load-note"
+        data-notification-load-note
+        :data-complete="visibleItems.length < displayedItems.length ? 'false' : 'true'"
+        aria-hidden="true"
+      ></div>
+      <div v-if="showMoreIndicator" class="notification-more-indicator" aria-hidden="true"><span></span></div>
+    </section>
   </AppPage>
 </template>

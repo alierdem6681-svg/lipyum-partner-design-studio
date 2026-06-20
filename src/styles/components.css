@@ -2146,6 +2146,10 @@
   animation: leaderboardProgressGlow 2.8s ease-in-out infinite;
 }
 
+.leaderboard-hero-card-v4.is-progress-72 .leaderboard-progress i {
+  width: 72%;
+}
+
 .leaderboard-progress strong {
   font-size: var(--font-size-card-title);
   font-weight: var(--weight-extra-bold);

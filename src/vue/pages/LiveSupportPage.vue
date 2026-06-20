@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppChip from "../components/ui/AppChip.vue";
+import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
 const router = useRouter();
@@ -55,56 +56,65 @@ function endChat() {
 </script>
 
 <template>
-  <AppPage title="Canlı Destek" data-testid="live-support-page">
-    <AppCard padding="lg">
-      <div class="v-stack v-live-support">
-        <template v-if="state === 'idle'">
-          <h3>Canlı destek talebi</h3>
-          <label>
-            <span>Talep başlığı</span>
-            <input v-model="title" data-testid="live-support-title" type="text" />
-          </label>
-          <label>
-            <span>Kısa açıklama</span>
-            <textarea v-model="description" data-testid="live-support-description" rows="3" />
-          </label>
-          <AppButton icon="message" data-testid="live-support-start" @click="startChat">Canlı sohbete başla</AppButton>
-        </template>
+  <AppPage title="Canlı Destek" class="support-live-page" data-testid="live-support-page">
+    <AppCard class="live-support-card">
+      <span class="live-support-icon" aria-hidden="true">
+        <AppIcon :name="state === 'idle' ? 'message' : 'headphones'" :size="24" />
+      </span>
 
-        <template v-else>
-          <div class="v-live-waiting" :data-testid="state === 'waiting' ? 'live-support-waiting' : state === 'ended' ? 'live-support-ended' : undefined">
-            <h3>{{ state === "waiting" ? "Temsilci bağlanıyor" : state === "connected" ? "Lipyum canlı destek" : "Konuşma tamamlandı" }}</h3>
-            <AppChip tone="warning">Tahmini süre 2 dakika</AppChip>
-            <AppButton
-              v-if="state === 'waiting'"
-              variant="secondary"
-              icon="file-text"
-              data-testid="live-support-create-ticket"
-              @click="router.push('/support/new')"
-            >
-              Beklerken Talep Oluştur
-            </AppButton>
-          </div>
+      <template v-if="state === 'idle'">
+        <h2>Canlı sohbeti başlat</h2>
+        <p>Kısa bir başlık ve not bırak, doğru temsilciye hızlıca yönlendirelim.</p>
+        <label>
+          <span>Konu başlığı</span>
+          <input v-model="title" data-testid="live-support-title" type="text" />
+        </label>
+        <label>
+          <span>Kısa açıklama</span>
+          <textarea v-model="description" data-testid="live-support-description" rows="3" />
+        </label>
+        <AppButton class="primary-btn" icon="message" data-testid="live-support-start" @click="startChat">
+          Canlı sohbete başla
+        </AppButton>
+      </template>
 
-          <div class="v-chat-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
-            <span v-if="state === 'connected'" class="v-agent-chip" data-testid="live-support-agent">Elif · Lipyum Destek</span>
-            <div
-              v-for="(message, index) in messages"
-              :key="`${message.from}-${index}`"
-              :class="['v-chat-bubble', `is-${message.from}`]"
-            >
-              {{ message.text }}
-            </div>
-            <div v-if="typing" class="v-chat-bubble is-agent" data-testid="live-support-typing">Yazıyor...</div>
+      <template v-else>
+        <div
+          class="v-live-waiting"
+          :data-testid="state === 'waiting' ? 'live-support-waiting' : state === 'ended' ? 'live-support-ended' : undefined"
+        >
+          <h2>{{ state === "waiting" ? "Temsilci bağlanıyor" : state === "connected" ? "Lipyum canlı destek" : "Konuşma tamamlandı" }}</h2>
+          <p>{{ state === "waiting" ? "Talebin canlı destek kuyruğuna alındı." : "Temsilci konuşma akışı hazır." }}</p>
+          <AppChip tone="warning">Tahmini süre 2 dakika</AppChip>
+          <div v-if="state === 'waiting'" class="live-support-queue" role="status" aria-live="polite">
+            <span></span><span></span><span></span>
           </div>
+          <AppButton
+            v-if="state === 'waiting'"
+            class="secondary-btn"
+            variant="secondary"
+            icon="file-text"
+            data-testid="live-support-create-ticket"
+            @click="router.push('/support/new')"
+          >
+            Beklerken Talep Oluştur
+          </AppButton>
+        </div>
 
-          <div v-if="state === 'connected'" class="v-chat-input">
-            <input v-model="draft" data-testid="live-support-input" type="text" placeholder="Mesaj yaz" @keyup.enter="sendMessage" />
-            <AppButton size="sm" icon="send" data-testid="live-support-send" @click="sendMessage">Gönder</AppButton>
-            <AppButton size="sm" variant="ghost" data-testid="live-support-end" @click="endChat">Konuşmayı bitir</AppButton>
+        <div class="v-chat-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
+          <span v-if="state === 'connected'" class="v-agent-chip" data-testid="live-support-agent">Elif · Lipyum Destek</span>
+          <div v-for="(message, index) in messages" :key="`${message.from}-${index}`" :class="['v-chat-bubble', `is-${message.from}`]">
+            {{ message.text }}
           </div>
-        </template>
-      </div>
+          <div v-if="typing" class="v-chat-bubble is-agent" data-testid="live-support-typing">Yazıyor...</div>
+        </div>
+
+        <div v-if="state === 'connected'" class="v-chat-input">
+          <input v-model="draft" data-testid="live-support-input" type="text" placeholder="Mesaj yaz" @keyup.enter="sendMessage" />
+          <AppButton size="sm" icon="send" data-testid="live-support-send" @click="sendMessage">Gönder</AppButton>
+          <AppButton size="sm" variant="ghost" data-testid="live-support-end" @click="endChat">Konuşmayı bitir</AppButton>
+        </div>
+      </template>
     </AppCard>
   </AppPage>
 </template>
