@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { partnerProfile, profileStrength } from "../../data/mockData.js";
 
+const PROFILE_AVATAR_STORAGE_KEY = "lipyum.partner.avatar";
+
 function initialsFromName(name) {
   return name
     .split(" ")
@@ -10,12 +12,22 @@ function initialsFromName(name) {
     .toUpperCase();
 }
 
+function readSavedAvatar() {
+  if (typeof window === "undefined") return "";
+  try {
+    return window.localStorage.getItem(PROFILE_AVATAR_STORAGE_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     expandedBadges: false,
     drawerBadgesExpanded: false,
     partner: {
       ...partnerProfile,
+      avatar: readSavedAvatar() || partnerProfile.avatar,
       initials: initialsFromName(partnerProfile.name),
       score: profileStrength.score,
       title: partnerProfile.tier,
@@ -42,6 +54,15 @@ export const useProfileStore = defineStore("profile", {
     resetBadges() {
       this.expandedBadges = false;
       this.drawerBadgesExpanded = false;
+    },
+    updatePartnerAvatar(avatar) {
+      this.partner.avatar = avatar;
+      if (typeof window === "undefined") return;
+      try {
+        window.localStorage.setItem(PROFILE_AVATAR_STORAGE_KEY, avatar);
+      } catch {
+        // Local storage can be unavailable in private or restricted contexts.
+      }
     },
   },
 });

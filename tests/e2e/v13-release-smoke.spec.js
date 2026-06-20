@@ -142,6 +142,35 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
+  const initialAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
+  await profileCard.getByTestId("partner-profile-avatar-button").click();
+  await expect(page.getByTestId("profile-photo-editor")).toBeVisible();
+  await page.getByTestId("profile-photo-file-input").setInputFiles({
+    name: "avatar.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR42mP8z8BQDwAFgwJ/l4D3HgAAAABJRU5ErkJggg==",
+      "base64",
+    ),
+  });
+  await expect(page.locator(".profile-photo-editor-preview")).toBeVisible();
+  await page.getByTestId("profile-photo-zoom").evaluate((input) => {
+    input.value = "3";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.getByTestId("profile-photo-x").evaluate((input) => {
+    input.value = "1";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.getByTestId("profile-photo-y").evaluate((input) => {
+    input.value = "3";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.getByTestId("profile-photo-save").click();
+  await expect(page.getByRole("dialog", { name: "Profil fotoğrafı" })).toHaveCount(0);
+  const updatedAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
+  expect(updatedAvatar).not.toBe(initialAvatar);
+  expect(updatedAvatar).toContain("data:image/jpeg");
   await expect(page.getByTestId("profile-preview-header-button")).toBeVisible();
   await page.getByTestId("profile-preview-header-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/partner-card-preview");
@@ -157,6 +186,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(drawerCard.locator("h3")).toHaveText(profileName.trim());
   await expect(drawerCard.locator(".partner-profile-tier")).toContainText(profileTier.trim());
   await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toBeVisible();
+  await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toHaveAttribute("src", updatedAvatar);
   await expect(drawerCard.locator(".drawer-avatar, .drawer-badge, .drawer-rating, .drawer-mini-badge")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-preview-button")).toHaveCount(0);
