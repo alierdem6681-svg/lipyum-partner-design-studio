@@ -3302,34 +3302,17 @@
 }
 
 .partner-profile-card--drawer {
-  container-type: inline-size;
-  row-gap: 12px;
-  min-height: 190px;
-  padding: 14px 14px 18px;
-  overflow: hidden;
-  border-color: color-mix(in srgb, var(--color-premium-gold-border) 34%, transparent);
-  background:
-    linear-gradient(135deg, var(--color-premium-gold-soft) 0%, var(--color-surface) 46%, var(--color-info-soft) 100%),
-    var(--color-surface);
-  box-shadow: 0 12px 26px rgba(16, 24, 40, 0.09);
-}
-
-.partner-profile-card--drawer .partner-profile-avatar-btn {
-  border-radius: 999px;
-  background: var(--color-neutral-900);
-}
-
-.partner-profile-card--drawer .partner-profile-avatar-btn img {
-  border-radius: inherit;
-}
-
-.partner-profile-card--drawer .partner-profile-actions {
-  grid-column: 1 / -1;
-  margin-top: 12px;
-}
-
-.drawer-profile-main {
-  display: contents;
+  display: block;
+  grid-template-columns: none;
+  column-gap: 0;
+  row-gap: 0;
+  align-items: initial;
+  min-height: auto;
+  padding: 16px;
+  overflow: visible;
+  border-color: var(--color-neutral-200);
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .partner-profile-name-row {
