@@ -128,6 +128,28 @@ for (const route of retiredRoutes) {
   });
 }
 
+test("partner card preview uses share button and channel options", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/partner-card-preview");
+  await expectVueShell(page);
+
+  await expect(page.getByTestId("partner-card-preview-page")).toBeVisible();
+  await expect(page.getByTestId("partner-embed-panel")).toHaveCount(0);
+  await expect(page.getByTestId("partner-share-options")).toHaveCount(0);
+  await expect(page.getByTestId("partner-preview-share-button")).toBeVisible();
+
+  await page.getByTestId("partner-preview-share-button").click();
+  await expect(page.getByTestId("partner-share-options")).toBeVisible();
+  await expect(page.getByTestId("partner-share-option-social")).toContainText("Sosyal medyada paylaş");
+  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web sitemde paylaş");
+  await expect(page.getByTestId("partner-share-option-story")).toContainText("Instagram hikayesi");
+  await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("WhatsApp'tan paylaş");
+
+  await page.getByTestId("partner-share-option-whatsapp").click();
+  await expect(page.locator("#toast")).toContainText("WhatsApp'tan paylaş hazırlandı.");
+  expect(errors).toEqual([]);
+});
+
 test("profile badges and drawer actions stay usable", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/profile");
