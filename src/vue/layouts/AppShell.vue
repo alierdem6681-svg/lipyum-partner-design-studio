@@ -72,10 +72,11 @@ function onHeaderAction(action) {
     });
   }
   if (action === "info") {
+    const infoSheet = meta.value.infoSheet || {};
     shell.openSheet({
-      title: meta.value.title || "Bilgi",
-      description: meta.value.subtitle || "Sayfa bilgisi",
-      body: "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      title: infoSheet.title || meta.value.title || "Bilgi",
+      description: infoSheet.description || meta.value.subtitle || "Sayfa bilgisi",
+      body: infoSheet.body || "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
     });
   }
   if (action === "status") {
