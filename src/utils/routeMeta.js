@@ -121,6 +121,10 @@ const titleOverrides = {
     title: "Performans Skoru",
     subtitle: "İş görünürlüğünü etkileyen kalite özeti",
   },
+  "/performance-improve": {
+    title: "Performansımı Artır",
+    subtitle: "Skorunu yükselten kriterleri takip et",
+  },
   "/partner-card-preview": {
     title: "Partner Kartı",
     subtitle: "Public rozet ve paylaşım önizlemesi",

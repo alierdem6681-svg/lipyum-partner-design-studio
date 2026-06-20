@@ -494,6 +494,263 @@
   font-weight: 700;
 }
 
+.performance-improve-page {
+  min-width: 0;
+}
+
+.performance-improve-stack {
+  display: grid;
+  gap: 12px;
+  padding-bottom: var(--lp-page-bottom);
+}
+
+.performance-improve-hero {
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--lp-green) 16%, transparent), transparent 34%),
+    linear-gradient(135deg, var(--lp-card), color-mix(in srgb, var(--lp-green) 5%, var(--lp-card)));
+}
+
+.performance-improve-hero__top {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.performance-score-ring--large {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+}
+
+.performance-score-ring--large strong {
+  font-size: 25px;
+}
+
+.performance-improve-hero__copy {
+  min-width: 0;
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+}
+
+.performance-improve-hero__copy h2,
+.performance-improve-hero__copy p,
+.performance-improve-note,
+.performance-criterion-card p,
+.performance-benefit-card p {
+  margin: 0;
+}
+
+.performance-improve-hero__copy h2 {
+  color: var(--lp-ink);
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.performance-improve-hero__copy p,
+.performance-improve-note,
+.performance-criterion-card p,
+.performance-benefit-card p {
+  color: var(--lp-muted);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.performance-improve-progress {
+  display: grid;
+  gap: 6px;
+}
+
+.performance-improve-progress__bar {
+  height: 9px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--lp-radius-pill);
+  background: color-mix(in srgb, var(--lp-green) 12%, var(--lp-border));
+}
+
+.performance-improve-progress__bar i {
+  width: 81%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lp-green-dark), var(--lp-green));
+}
+
+.performance-improve-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--lp-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.performance-criteria-section {
+  display: grid;
+  gap: 10px;
+}
+
+.performance-criterion-card {
+  display: grid;
+  gap: 12px;
+}
+
+.performance-criterion-card__head {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.performance-criterion-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--lp-green) 12%, var(--lp-card));
+  color: var(--lp-green-dark);
+}
+
+.performance-criterion-title {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.performance-criterion-title strong,
+.performance-criterion-title small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.performance-criterion-title strong {
+  color: var(--lp-ink);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.performance-criterion-title small {
+  color: var(--lp-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.performance-criterion-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.performance-criterion-values span {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--lp-border) 28%, var(--lp-card));
+  padding: 9px 10px;
+}
+
+.performance-criterion-values small {
+  color: var(--lp-muted);
+  font-size: 11.5px;
+  font-weight: 850;
+}
+
+.performance-criterion-values strong {
+  color: var(--lp-ink);
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.performance-criterion-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.performance-criterion-checks span {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid color-mix(in srgb, var(--lp-green) 26%, var(--lp-border));
+  border-radius: var(--lp-radius-pill);
+  background: color-mix(in srgb, var(--lp-green) 8%, var(--lp-card));
+  color: var(--lp-ink);
+  padding: 0 9px;
+  font-size: 11.5px;
+  font-weight: 800;
+}
+
+.performance-benefit-card {
+  display: grid;
+  gap: 12px;
+}
+
+.performance-benefit-card ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.performance-benefit-card li {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  color: var(--lp-ink);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.performance-benefit-card li .v-icon {
+  margin-top: 1px;
+  color: var(--lp-green-dark);
+}
+
+@media (max-width: 360px) {
+  .performance-improve-hero__top {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .performance-score-ring--large {
+    width: 66px;
+    height: 66px;
+    flex-basis: 66px;
+  }
+
+  .performance-criterion-card__head {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .performance-criterion-card__head .v-badge {
+    grid-column: 2;
+    width: fit-content;
+  }
+
+  .performance-criterion-values {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .live-support-card {
   text-align: left;
 }

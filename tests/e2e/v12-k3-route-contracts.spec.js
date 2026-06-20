@@ -12,6 +12,7 @@ const routes = [
   "/reviews",
   "/leaderboard",
   "/subscription",
+  "/performance-improve",
   "/referral",
   "/partner-card-preview",
   "/jobs",
