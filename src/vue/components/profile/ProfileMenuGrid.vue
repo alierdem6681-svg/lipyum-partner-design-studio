@@ -8,7 +8,7 @@ const router = useRouter();
 
 <template>
   <section class="profile-menu-section" data-testid="profile-menu-section" aria-label="Müşteriye görünen profil menüleri">
-    <div class="profile-menu-grid" id="profileMenuGrid">
+    <div class="profile-menu-grid" id="profileMenuGrid" data-testid="profile-menu-grid">
       <button
         v-for="item in PROFILE_MENU_ITEMS"
         :key="item.route"
