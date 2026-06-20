@@ -393,6 +393,107 @@
   gap: 12px;
 }
 
+.partner-share-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.partner-share-channel,
+.partner-share-qr,
+.partner-share-link {
+  min-width: 0;
+  border: 1px solid var(--lp-border);
+  border-radius: 16px;
+  background: var(--lp-card);
+  color: var(--lp-ink);
+  font: inherit;
+  font-weight: 800;
+  box-shadow: var(--lp-soft-shadow);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.partner-share-channel {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.partner-share-channel.is-active {
+  border-color: color-mix(in srgb, var(--lp-green) 46%, var(--lp-border));
+  background: linear-gradient(135deg, var(--lp-green-dark), var(--lp-green));
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2);
+}
+
+.partner-share-suboptions {
+  display: grid;
+  gap: 9px;
+  border: 1px solid var(--lp-border);
+  border-radius: 18px;
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.partner-share-suboptions > strong {
+  color: var(--lp-ink);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.partner-share-quick {
+  display: grid;
+  gap: 10px;
+}
+
+.partner-share-qr,
+.partner-share-link {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.partner-share-link {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.partner-share-qr span,
+.partner-share-link span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.partner-share-qr strong,
+.partner-share-link strong,
+.partner-share-qr small,
+.partner-share-link small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-share-qr strong,
+.partner-share-link strong {
+  color: var(--lp-ink);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.partner-share-qr small,
+.partner-share-link small {
+  color: var(--lp-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .live-support-card {
   text-align: left;
 }

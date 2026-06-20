@@ -124,6 +124,7 @@ const titleOverrides = {
   "/partner-card-preview": {
     title: "Partner Kartı",
     subtitle: "Public rozet ve paylaşım önizlemesi",
+    trailingActions: ["partner-share"],
   },
 };
 
