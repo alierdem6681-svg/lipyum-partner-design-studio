@@ -75,7 +75,7 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
   await expect(page.locator(".partner-profile-card")).toBeVisible();
-  await expect(page.locator(".profile-strength-card")).toBeVisible();
+  await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.locator(".profile-menu-grid")).toBeVisible();
   await expect(page.locator(".profile-menu-card")).toHaveCount(8);
   const menuLabels = await page.locator(".profile-menu-label").evaluateAll((nodes) =>
@@ -93,17 +93,14 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   expect(badgeLabels).toHaveLength(5);
   const order = await page.evaluate(() => {
     const profile = document.querySelector(".partner-profile-card").getBoundingClientRect();
-    const strength = document.querySelector(".profile-strength-card").getBoundingClientRect();
     const menu = document.querySelector(".profile-menu-section").getBoundingClientRect();
     return {
       profileTop: profile.top,
-      strengthTop: strength.top,
       menuTop: menu.top,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
-  expect(order.profileTop).toBeLessThan(order.strengthTop);
-  expect(order.strengthTop).toBeLessThan(order.menuTop);
+  expect(order.profileTop).toBeLessThan(order.menuTop);
   expect(order.overflow).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });

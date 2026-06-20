@@ -18,6 +18,7 @@ for (const viewport of [
       const section = document.querySelector('[data-testid="profile-menu-section"]')?.getBoundingClientRect();
       const grid = document.querySelector('[data-testid="profile-menu-grid"]')?.getBoundingClientRect();
       const cards = Array.from(document.querySelectorAll('[data-testid="profile-menu-card"]')).map((item) => item.getBoundingClientRect());
+      const iconBackground = getComputedStyle(document.querySelector(".profile-menu-icon-wrap")).backgroundImage;
       const maxLabelLines = Math.max(...Array.from(document.querySelectorAll(".profile-menu-label")).map((label) => {
         const style = window.getComputedStyle(label);
         const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
@@ -34,6 +35,7 @@ for (const viewport of [
         firstCardLeftDelta: profile && cards[0] ? Math.abs(profile.left - cards[0].left) : 999,
         lastCardRightDelta: profile && cards[3] ? Math.abs(profile.right - cards[3].right) : 999,
         cardSpread: cards.length ? Math.max(...cards.map((card) => card.width)) - Math.min(...cards.map((card) => card.width)) : 999,
+        iconBackground,
         maxLabelLines,
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
@@ -48,6 +50,8 @@ for (const viewport of [
     expect(geometry.firstCardLeftDelta).toBeLessThanOrEqual(2);
     expect(geometry.lastCardRightDelta).toBeLessThanOrEqual(2);
     expect(geometry.cardSpread).toBeLessThanOrEqual(1);
+    expect(geometry.iconBackground).toContain("18, 183, 106");
+    expect(geometry.iconBackground).toContain("7, 148, 85");
     expect(geometry.maxLabelLines).toBeLessThanOrEqual(2.15);
     expect(geometry.overflow).toBeLessThanOrEqual(1);
     expect(errors).toEqual([]);
