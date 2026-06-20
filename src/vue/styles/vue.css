@@ -3377,14 +3377,14 @@
 
 .v-header.app-header.home-header {
   grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
-  width: 100%;
-  min-height: calc(var(--top-safe-space) + var(--app-header-height, 58px));
-  margin: 0 0 12px;
-  padding: var(--top-safe-space) var(--page-x-padding) 9px;
-  background: #f6f8fa;
+  width: auto;
+  min-height: var(--app-header-height, 58px);
+  margin: var(--top-safe-space) var(--page-x-padding) 12px;
+  padding: 0;
+  background: var(--soft);
   border-bottom: 0;
   box-shadow: none;
-  backdrop-filter: blur(14px);
+  backdrop-filter: none;
 }
 
 .v-header.app-header.section-header,
