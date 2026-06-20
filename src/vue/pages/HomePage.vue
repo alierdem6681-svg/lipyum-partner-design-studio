@@ -10,6 +10,12 @@ const shell = useAppShellStore();
 
 const score = 81;
 
+const performanceMilestones = [
+  { score: 85, label: "İyi", tone: "good" },
+  { score: 90, label: "Çok iyi", tone: "strong" },
+  { score: 95, label: "Mükemmel", tone: "excellent" },
+];
+
 const activeRegionPeriod = ref("today");
 
 const regionPeriodOptions = [
@@ -70,6 +76,26 @@ function openConvertSheet() {
       >
         <div class="performance-card-head">
           <span class="performance-title">Performans Skoru</span>
+          <div
+            class="performance-milestones"
+            data-testid="home-performance-milestones"
+            aria-label="Performans eşikleri: 85 iyi, 90 çok iyi, 95 mükemmel"
+          >
+            <div class="performance-milestones__track" aria-hidden="true">
+              <span
+                v-for="milestone in performanceMilestones"
+                :key="milestone.score"
+                :class="['performance-milestones__dot', `is-${milestone.tone}`]"
+              >
+                {{ milestone.score }}
+              </span>
+            </div>
+            <div class="performance-milestones__labels" aria-hidden="true">
+              <span v-for="milestone in performanceMilestones" :key="milestone.label">
+                {{ milestone.label }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div class="performance-home-layout">
