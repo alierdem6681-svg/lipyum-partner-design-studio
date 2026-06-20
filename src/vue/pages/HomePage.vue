@@ -1,18 +1,44 @@
 ﻿<script setup>
+import { computed, ref } from "vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import AppSegmentedControl from "../components/ui/AppSegmentedControl.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
 
 const score = 81;
 
-const metrics = [
-  { label: "Partnerler", value: "34", icon: "users" },
-  { label: "Tamamlanan İş", value: "18", icon: "briefcase" },
-  { label: "Teklifler", value: "128", icon: "file-text" },
+const activeRegionPeriod = ref("today");
+
+const regionPeriodOptions = [
+  { label: "Bugün", value: "today", attrs: { "data-testid": "home-region-filter-today", "data-region-filter": "Bugün" } },
+  { label: "Dün", value: "yesterday", attrs: { "data-testid": "home-region-filter-yesterday", "data-region-filter": "Dün" } },
 ];
+
+const regionPeriodData = {
+  today: {
+    metrics: [
+      { label: "Partnerler", value: "34", icon: "users" },
+      { label: "Tamamlanan İş", value: "18", icon: "briefcase" },
+      { label: "Teklifler", value: "128", icon: "file-text" },
+    ],
+    activity: "Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.",
+  },
+  yesterday: {
+    metrics: [
+      { label: "Partnerler", value: "31", icon: "users" },
+      { label: "Tamamlanan İş", value: "22", icon: "briefcase" },
+      { label: "Teklifler", value: "104", icon: "file-text" },
+    ],
+    activity: "Aydın Ç. dün Şişli ilçesinde bir fırın tamiri işi için teklif verdi.",
+  },
+};
+
+const activeRegionData = computed(() => regionPeriodData[activeRegionPeriod.value] || regionPeriodData.today);
+const metrics = computed(() => activeRegionData.value.metrics);
+const regionActivityText = computed(() => activeRegionData.value.activity);
 
 function openInfoSheet(title, body) {
   shell.openSheet({
@@ -143,10 +169,13 @@ function openConvertSheet() {
       <AppCard padding="none" class="region-home-card" data-testid="home-region-card">
         <div class="region-card-head">
           <h3>Bölgendeki İşler</h3>
-          <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
-            <button class="chip-btn active" type="button" data-region-filter="Bugün">Bugün</button>
-            <button class="chip-btn" type="button" data-region-filter="Dün">Dün</button>
-          </div>
+          <AppSegmentedControl
+            v-model="activeRegionPeriod"
+            class="region-filter-row region-date-segment"
+            :options="regionPeriodOptions"
+            aria-label="Bölge iş tarihi filtreleri"
+            data-testid="home-region-filter"
+          />
         </div>
         <div class="kpi-row">
           <div v-for="item in metrics" :key="item.label" class="kpi-tile">
@@ -166,7 +195,7 @@ function openConvertSheet() {
         >
           <div class="region-activity-message">
             <span class="region-activity-dot" aria-hidden="true"></span>
-            <span data-region-activity-text>Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.</span>
+            <span data-region-activity-text>{{ regionActivityText }}</span>
           </div>
         </div>
       </AppCard>

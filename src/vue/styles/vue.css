@@ -1619,6 +1619,14 @@
   margin-right: 0;
 }
 
+.region-home-card .region-date-segment.v-segment {
+  width: auto;
+  min-height: 36px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 .region-home-card .region-filter-row .chip-btn {
   position: relative;
   min-width: 48px;
@@ -1629,6 +1637,21 @@
   font-weight: 900;
 }
 
+.region-home-card .region-date-segment.v-segment button {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: 48px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 999px;
+  background: #fff;
+  color: #344054;
+  font-size: 11.5px;
+  font-weight: 900;
+  box-shadow: none;
+}
+
 .region-home-card .region-filter-row .chip-btn::before {
   content: "";
   position: absolute;
@@ -1636,7 +1659,21 @@
   border-radius: inherit;
 }
 
+.region-home-card .region-date-segment.v-segment button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+}
+
 .region-home-card .region-filter-row .chip-btn.active {
+  border-color: #067647;
+  background: #067647;
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(6, 118, 71, 0.16);
+}
+
+.region-home-card .region-date-segment.v-segment button.is-active {
   border-color: #067647;
   background: #067647;
   color: #fff;
