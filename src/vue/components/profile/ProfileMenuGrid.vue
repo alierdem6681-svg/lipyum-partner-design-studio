@@ -21,7 +21,7 @@ const router = useRouter();
         @click="router.push(item.route)"
       >
         <span class="profile-menu-icon-wrap" aria-hidden="true">
-          <AppIcon :name="item.icon" :size="22" />
+          <AppIcon :name="item.icon" :size="25" />
         </span>
         <span class="profile-menu-label">{{ item.label }}</span>
       </button>

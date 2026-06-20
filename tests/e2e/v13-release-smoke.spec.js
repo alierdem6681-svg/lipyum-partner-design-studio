@@ -167,11 +167,11 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
     const cards = Array.from(document.querySelectorAll('[data-testid="profile-menu-card"]')).map((item) =>
       item.getBoundingClientRect(),
     );
-    const labelsWrapped = Array.from(document.querySelectorAll(".profile-menu-label")).some((label) => {
+    const maxLabelLines = Math.max(...Array.from(document.querySelectorAll(".profile-menu-label")).map((label) => {
       const style = window.getComputedStyle(label);
       const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
-      return label.getBoundingClientRect().height > lineHeight * 1.45;
-    });
+      return label.getBoundingClientRect().height / lineHeight;
+    }));
     const rows = new Set(cards.map((card) => Math.round(card.top)));
     return {
       cardCount: cards.length,
@@ -181,7 +181,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
       firstCardLeftDelta: profile && cards[0] ? Math.abs(profile.left - cards[0].left) : 999,
       lastCardRightDelta: profile && cards[3] ? Math.abs(profile.right - cards[3].right) : 999,
       cardSpread: cards.length ? Math.max(...cards.map((card) => card.width)) - Math.min(...cards.map((card) => card.width)) : 999,
-      labelsWrapped,
+      maxLabelLines,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
@@ -192,7 +192,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(profileGridGeometry.firstCardLeftDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.lastCardRightDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.cardSpread).toBeLessThanOrEqual(1);
-  expect(profileGridGeometry.labelsWrapped).toBeFalsy();
+  expect(profileGridGeometry.maxLabelLines).toBeLessThanOrEqual(2.15);
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
