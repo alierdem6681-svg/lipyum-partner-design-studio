@@ -20,6 +20,12 @@ test("home performance card opens the improve roadmap", async ({ page }) => {
   const card = page.getByTestId("home-performance-card");
   await expect(card).toBeVisible();
   await expect(card.getByText("Nedir?")).toHaveCount(0);
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("85");
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("90");
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("95");
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("İyi");
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("Çok iyi");
+  await expect(page.getByTestId("home-performance-milestones")).toContainText("Mükemmel");
   await expect(page.getByTestId("home-performance-improve-button")).toBeVisible();
   await expect(page.getByTestId("home-performance-improve-button")).toContainText("Performansımı Artır");
 

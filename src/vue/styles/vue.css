@@ -1313,6 +1313,88 @@
   white-space: nowrap;
 }
 
+.performance-milestones {
+  width: min(172px, 48vw);
+  min-width: 138px;
+  display: grid;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.performance-milestones__track {
+  position: relative;
+  min-height: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+}
+
+.performance-milestones__track::before {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 50%;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-primary) 0 45%, var(--color-neutral-200) 45% 100%);
+  transform: translateY(-50%);
+}
+
+.performance-milestones__dot {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow:
+    0 4px 10px rgba(16, 24, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.performance-milestones__dot.is-good {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.performance-milestones__dot.is-strong {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.performance-milestones__dot.is-excellent {
+  background: var(--color-premium-gold-soft);
+  color: var(--color-premium-gold);
+}
+
+.performance-milestones__labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  color: var(--color-neutral-600);
+  font-size: 8.8px;
+  font-weight: 820;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.performance-milestones__labels span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .performance-info-btn.text {
   position: relative;
   width: 58px;
@@ -1513,6 +1595,31 @@
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
+}
+
+@media (max-width: 360px) {
+  .performance-card-head {
+    gap: 6px;
+  }
+
+  .performance-title {
+    font-size: 15px;
+  }
+
+  .performance-milestones {
+    width: 138px;
+    min-width: 138px;
+  }
+
+  .performance-milestones__dot {
+    width: 26px;
+    height: 26px;
+    font-size: 10.4px;
+  }
+
+  .performance-milestones__labels {
+    font-size: 8.2px;
+  }
 }
 
 .wallet-summary-card {
