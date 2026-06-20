@@ -101,7 +101,15 @@ const titleOverrides = {
     infoSheet: {
       title: "Liderlik tablosu",
       description: "Haftanın Liderleri Nasıl Belirlenir?",
-      body: "Puanlama sistemi haftalık performansına göre hesaplanır: her tamamlanan iş 10 puan, her teklif verme 10 puan, havuzdan iş alma 10 puan, her iptal iş -3 puan, her müşteri şikayeti -5 puan etkiler.",
+      body: "Puanlama sistemi haftalık performansına göre hesaplanır. İş alma, teklif verme ve müşteri deneyimi birlikte değerlendirilir.",
+      scoreItems: [
+        { label: "Tamamlanan iş", value: "+10 puan", description: "Müşteriyle tamamlanan her iş sıralamana katkı sağlar.", tone: "positive" },
+        { label: "Teklif verme", value: "+10 puan", description: "Aktif tekliflerin haftalık hareketliliğini güçlendirir.", tone: "positive" },
+        { label: "Havuzdan iş alma", value: "+10 puan", description: "Havuzdaki fırsatları değerlendirmen puanını artırır.", tone: "positive" },
+        { label: "İptal iş", value: "-3 puan", description: "İptaller net haftalık puana düşük oranda yansır.", tone: "negative" },
+        { label: "Müşteri şikayeti", value: "-5 puan", description: "Şikayet kayıtları müşteri deneyimi skorunu etkiler.", tone: "negative" },
+      ],
+      note: "Puanlar haftalık güncellenir; amaç aktif, güvenilir ve düzenli hizmet veren partnerleri öne çıkarmaktır.",
     },
   },
   "/subscription": {
