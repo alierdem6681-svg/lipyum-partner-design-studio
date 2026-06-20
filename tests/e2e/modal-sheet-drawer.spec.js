@@ -38,27 +38,34 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   expect(errors).toEqual([]);
 });
 
-test("shared app sheet keeps side margins and closes by dragging the handle down", async ({ page }) => {
+test("shared app sheet keeps side margins, sits flush to bottom and closes by dragging the handle down", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.goto("/#/home");
+  await page.goto("/#/leaderboard");
   await waitForApp(page);
 
-  await page.getByRole("button", { name: "Performans skoru nedir?" }).click();
+  await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.getByTestId("app-sheet")).toBeVisible();
 
   const metrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
     const rect = sheet.getBoundingClientRect();
+    const style = window.getComputedStyle(sheet);
     return {
       left: rect.left,
       right: window.innerWidth - rect.right,
+      bottom: window.innerHeight - rect.bottom,
       width: rect.width,
       viewportWidth: window.innerWidth,
+      bottomLeftRadius: style.borderBottomLeftRadius,
+      bottomRightRadius: style.borderBottomRightRadius,
     };
   });
 
   expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 12));
   expect(metrics.left).toBeGreaterThanOrEqual(6);
   expect(metrics.right).toBeGreaterThanOrEqual(6);
+  expect(metrics.bottom).toBeLessThanOrEqual(1);
+  expect(metrics.bottomLeftRadius).toBe("0px");
+  expect(metrics.bottomRightRadius).toBe("0px");
 
   await dragHandleDown(page);
   await expect(page.getByTestId("app-sheet")).toHaveCount(0);
