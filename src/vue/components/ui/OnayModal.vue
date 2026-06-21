@@ -13,7 +13,7 @@ const emit = defineEmits(["confirm", "cancel"]);
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="onay-modal-overlay" role="presentation" data-testid="onay-modal-overlay">
+    <div v-if="open" class="onay-modal-overlay" role="presentation" data-testid="onay-modal-overlay" @click.self="emit('cancel')">
       <section
         class="onay-modal"
         role="dialog"

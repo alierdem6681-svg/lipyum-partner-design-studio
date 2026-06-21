@@ -97,6 +97,11 @@ test("notification bulk actions use OnayModal confirmations", async ({ page }) =
   await page.getByTestId("notifications-mark-all-read").click();
   await expect(page.getByTestId("onay-modal")).toBeVisible();
   await expect(page.getByTestId("onay-modal")).toContainText("Tüm bildirimler okundu yapılsın mı?");
+  await page.getByTestId("onay-modal-overlay").click({ position: { x: 4, y: 4 } });
+  await expect(page.getByTestId("onay-modal")).toHaveCount(0);
+
+  await page.getByTestId("notifications-mark-all-read").click();
+  await expect(page.getByTestId("onay-modal")).toBeVisible();
   await page.getByTestId("onay-modal-confirm").click();
   await expect(page.getByTestId("onay-modal")).toHaveCount(0);
   await expect(page.getByTestId("notification-card")).toHaveCount(0);

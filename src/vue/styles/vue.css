@@ -916,7 +916,7 @@
   width: 100%;
   display: grid;
   place-items: center;
-  min-height: 28px;
+  min-height: 42px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -929,8 +929,8 @@
 }
 
 .v-app-sheet__handle-bar {
-  width: 40px;
-  height: 4px;
+  width: 44px;
+  height: 5px;
   border-radius: var(--radius-pill);
   background: var(--color-neutral-300);
 }

@@ -6,8 +6,8 @@ async function dragHandleDown(page) {
     const startY = node.getBoundingClientRect().top + 2;
     const pointerId = 11;
     node.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientY: startY, pointerId }));
-    node.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientY: startY + 88, pointerId }));
-    node.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientY: startY + 88, pointerId }));
+    node.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientY: startY + 34, pointerId }));
+    node.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientY: startY + 34, pointerId }));
   });
 }
 
@@ -69,5 +69,22 @@ test("shared app sheet keeps side margins, sits flush to bottom and closes by dr
 
   await dragHandleDown(page);
   await expect(page.getByTestId("app-sheet")).toHaveCount(0);
+
+  await page.getByTestId("app-header").getByTestId("header-info-button").click();
+  await expect(page.getByTestId("app-sheet")).toBeVisible();
+  await page.getByTestId("app-sheet-overlay").click({ position: { x: 4, y: 4 } });
+  await expect(page.getByTestId("app-sheet")).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test("shared app modal closes when clicking outside the modal panel", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/profile");
+  await waitForApp(page);
+
+  await page.getByTestId("partner-profile-avatar-button").click();
+  await expect(page.getByTestId("app-modal")).toBeVisible();
+  await page.getByTestId("app-modal-overlay").click({ position: { x: 4, y: 4 } });
+  await expect(page.getByTestId("app-modal")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
