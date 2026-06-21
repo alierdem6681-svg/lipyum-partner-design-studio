@@ -94,6 +94,11 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Kombi Servisi");
   await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("");
   await expect(page.getByTestId("leaderboard-city-select")).toContainText("Şehir Ligi");
+  await expect(page.getByTestId("leaderboard-top-rankers-league")).toHaveText("Kombi Servisi Ligi");
+  await page.getByTestId("leaderboard-city-select").selectOption("Kayseri");
+  await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("Kayseri");
+  await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("");
+  await expect(page.getByTestId("leaderboard-top-rankers-league")).toHaveText("Kayseri Ligi");
   await expect(page.getByTestId("leaderboard-rank-row")).toHaveCount(5);
   await expect(page.getByTestId("leaderboard-load-more")).toHaveCount(0);
   await expect(page.getByTestId("leaderboard-nearby-card")).not.toContainText("Sen SEN");
@@ -106,8 +111,13 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await expect(page.getByTestId("leaderboard-top-rankers-card")).not.toContainText("Haftanın vitrini");
   await expect(page.getByTestId("leaderboard-top-rankers-card")).not.toContainText("Haftanın lideri");
   await expect(page.getByTestId("leaderboard-top-rankers-card").locator("img")).toHaveCount(3);
+  await expect(page.getByTestId("leaderboard-top-rankers-card")).toContainText("₺3.000");
+  await expect(page.getByTestId("leaderboard-top-rankers-card")).toContainText("₺1.000");
   await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("Haftalık ödül havuzu");
-  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("11.000 Bonus");
+  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("₺11.000 Bonus");
+  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("₺3.000 Bonus");
+  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("₺1.000 Bonus");
+  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("₺500 Bonus");
   await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Kazanılacak ödüller");
   await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Sıralamada yüksel, bonusu ve özel rozeti kap.");
   await expect(page.locator(".reward-path-rank")).toHaveCount(0);
@@ -140,6 +150,8 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");
   await expect(page.locator('[role="dialog"]')).toContainText("Haftanın Liderleri Nasıl Belirlenir?");
+  const sheetBox = await page.getByTestId("app-sheet").boundingBox();
+  expect(Math.round(sheetBox?.height || 0)).toBeGreaterThanOrEqual(720);
   await expect(page.getByTestId("info-score-list")).toBeVisible();
   await expect(page.getByTestId("info-score-item")).toHaveCount(6);
   await expect(page.locator('[role="dialog"]')).toContainText("Tamamlanan iş");
@@ -149,6 +161,8 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await expect(page.locator('[role="dialog"]')).toContainText("Bakiye durumu");
   await expect(page.locator('[role="dialog"]')).toContainText("Bakiye bitmesine rağmen 24 saatten uzun süre yüklenmediğinde");
   await expect(page.locator('[role="dialog"]')).toContainText("-10 puan");
+  await page.getByTestId("app-sheet-overlay").click({ position: { x: 8, y: 8 } });
+  await expect(page.getByTestId("app-sheet")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });

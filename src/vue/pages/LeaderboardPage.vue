@@ -22,6 +22,11 @@ const activeLeaderboard = computed(() => ({
   city: city.value || "Şehirler",
 }));
 const leagueLabel = computed(() => (city.value ? `${city.value} Ligi` : "Sektör Ligi"));
+const rankersLeagueTitle = computed(() => {
+  if (city.value) return `${city.value} Ligi`;
+  if (sector.value) return `${sector.value} Ligi`;
+  return "Sektör Ligi";
+});
 const progress = computed(() => Math.max(0, Math.min(100, Number(activeLeaderboard.value.targetProgress) || 0)));
 const windowItems = computed(() => {
   const items = activeLeaderboard.value.nearby || [];
@@ -37,7 +42,7 @@ const topRankers = computed(() =>
 );
 const rewardTotal = computed(() =>
   (activeLeaderboard.value.rewards || []).reduce((total, reward) => {
-    const value = Number(String(reward.value).replace(/\D/g, ""));
+    const value = getRewardValue(reward);
     const count = getRewardRecipientCount(reward.title);
     return total + (Number.isFinite(value) ? value * count : 0);
   }, 0),
@@ -47,9 +52,27 @@ function formatCredit(value) {
   return new Intl.NumberFormat("tr-TR").format(Number(value) || 0);
 }
 
+function formatMoney(value) {
+  return `₺${formatCredit(value)}`;
+}
+
+function formatBonus(value) {
+  return `${formatMoney(value)} Bonus`;
+}
+
+function getRewardValue(reward) {
+  return Number(String(reward?.value || "").replace(/\D/g, ""));
+}
+
 function getRewardRecipientCount(title = "") {
   const match = String(title).match(/\d+/);
   return Math.max(1, Number(match?.[0]) || 1);
+}
+
+function getRankerPrize(rank) {
+  if (Number(rank) === 1) return 3000;
+  if (Number(rank) === 2 || Number(rank) === 3) return 1000;
+  return 0;
 }
 
 function selectSector(event) {
@@ -102,6 +125,7 @@ function selectCity(event) {
       <div class="top-rankers-head">
         <div class="top-rankers-title">
           <h2>Geçen Haftanın En İyileri</h2>
+          <p data-testid="leaderboard-top-rankers-league">{{ rankersLeagueTitle }}</p>
         </div>
         <span class="top-rankers-score-label">Lig puanı</span>
       </div>
@@ -114,6 +138,7 @@ function selectCity(event) {
             </span>
             <strong>{{ ranker.name }}</strong>
             <small>{{ formatCredit(ranker.score) }} Puan</small>
+            <em class="top-ranker-prize">{{ formatMoney(getRankerPrize(ranker.rank)) }}</em>
           </article>
         </div>
       </div>
@@ -197,7 +222,7 @@ function selectCity(event) {
       <div class="reward-program">
         <div class="reward-program-hero">
           <span>Toplam havuz</span>
-          <strong>{{ formatCredit(rewardTotal) }} Bonus</strong>
+          <strong>{{ formatBonus(rewardTotal) }}</strong>
           <small>En iyi sıralamalar vitrinde daha görünür olur.</small>
         </div>
         <div class="reward-path-list">
@@ -209,7 +234,7 @@ function selectCity(event) {
             <span class="reward-path-icon"><AppIcon :name="index === 0 ? 'crown' : index === 1 ? 'trophy' : 'gift'" :size="19" /></span>
             <span class="reward-path-copy">
               <strong>{{ reward.title }}</strong>
-              <small>{{ reward.value }} · {{ reward.note.replace(/^\+\s*/, "") }}</small>
+              <small>{{ formatBonus(getRewardValue(reward)) }} · {{ reward.note.replace(/^\+\s*/, "") }}</small>
             </span>
           </article>
         </div>

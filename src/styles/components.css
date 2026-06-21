@@ -3235,6 +3235,18 @@
   white-space: nowrap;
 }
 
+.top-rankers-title p {
+  min-width: 0;
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .top-rankers-score-label {
   flex: 0 0 auto;
   color: var(--text-secondary);
@@ -3328,7 +3340,7 @@
 }
 
 .top-ranker.is-rank-3::after {
-  background: linear-gradient(90deg, #f59e0b, #b45309);
+  background: linear-gradient(90deg, var(--color-info), var(--color-primary));
 }
 
 .reward-tiers-card {
@@ -3737,6 +3749,32 @@
   color: var(--color-primary-dark);
   font-size: var(--font-size-caption);
   font-weight: var(--weight-extra-bold);
+}
+
+.top-ranker-prize {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  max-width: 100%;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-ranker.is-rank-1 .top-ranker-prize {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: var(--color-warning-soft);
+  color: var(--color-premium-gold);
 }
 
 @keyframes topRankersSweep {
