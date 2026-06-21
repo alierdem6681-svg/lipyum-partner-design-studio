@@ -107,6 +107,7 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await expect(page.getByTestId("leaderboard-top-rankers-card")).not.toContainText("Haftanın lideri");
   await expect(page.getByTestId("leaderboard-top-rankers-card").locator("img")).toHaveCount(3);
   await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("Haftalık ödül havuzu");
+  await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("11.000 Bonus");
   await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Kazanılacak ödüller");
   await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Sıralamada yüksel, bonusu ve özel rozeti kap.");
   await expect(page.locator(".reward-path-rank")).toHaveCount(0);
@@ -127,10 +128,14 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
         insideCard: !!medal && medal.left >= card.left && medal.top >= card.top && medal.right <= card.right && medal.bottom <= card.bottom,
       };
     });
-    return { gaps, medalIssues };
+    const topRankersIndex = children.findIndex((node) => node.getAttribute("data-testid") === "leaderboard-top-rankers-card");
+    const heroIndex = children.findIndex((node) => node.getAttribute("data-testid") === "leaderboard-hero-card");
+    return { gaps, medalIssues, topRankersIndex, heroIndex };
   });
   expect(leaderboardLayout.gaps.every((gap) => gap >= 12)).toBe(true);
   expect(leaderboardLayout.medalIssues.every((item) => item.visible && item.insideCard)).toBe(true);
+  expect(leaderboardLayout.topRankersIndex).toBe(1);
+  expect(leaderboardLayout.heroIndex).toBe(2);
 
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");

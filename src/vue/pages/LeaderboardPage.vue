@@ -38,12 +38,18 @@ const topRankers = computed(() =>
 const rewardTotal = computed(() =>
   (activeLeaderboard.value.rewards || []).reduce((total, reward) => {
     const value = Number(String(reward.value).replace(/\D/g, ""));
-    return total + (Number.isFinite(value) ? value : 0);
+    const count = getRewardRecipientCount(reward.title);
+    return total + (Number.isFinite(value) ? value * count : 0);
   }, 0),
 );
 
 function formatCredit(value) {
   return new Intl.NumberFormat("tr-TR").format(Number(value) || 0);
+}
+
+function getRewardRecipientCount(title = "") {
+  const match = String(title).match(/\d+/);
+  return Math.max(1, Number(match?.[0]) || 1);
 }
 
 function selectSector(event) {
@@ -87,6 +93,31 @@ function selectCity(event) {
         </select>
       </label>
     </section>
+
+    <AppCard class="top-rankers-card ui-card" aria-label="Geçen haftanın en iyileri" data-testid="leaderboard-top-rankers-card">
+      <span class="top-rankers-confetti confetti-one" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-two" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-three" aria-hidden="true"></span>
+      <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
+      <div class="top-rankers-head">
+        <div class="top-rankers-title">
+          <h2>Geçen Haftanın En İyileri</h2>
+        </div>
+        <span class="top-rankers-score-label">Lig puanı</span>
+      </div>
+      <div class="top-rankers-stage">
+        <div class="top-rankers-grid">
+          <article v-for="ranker in topRankers" :key="ranker.rank" :class="`top-ranker is-rank-${ranker.rank}`">
+            <span class="top-ranker-medal" aria-label="Sıra">{{ ranker.rank }}</span>
+            <span class="top-ranker-avatar">
+              <img :src="ranker.photo" :alt="`${ranker.name} profil fotoğrafı`" loading="lazy" />
+            </span>
+            <strong>{{ ranker.name }}</strong>
+            <small>{{ formatCredit(ranker.score) }} Puan</small>
+          </article>
+        </div>
+      </div>
+    </AppCard>
 
     <section class="leaderboard-hero-card-v4 is-progress-72" data-testid="leaderboard-hero-card">
       <span class="leaderboard-hero-glow glow-one" aria-hidden="true"></span>
@@ -153,31 +184,6 @@ function selectCity(event) {
           <strong>{{ item.self ? "Sen" : item.name }}</strong>
           <span>{{ formatCredit(item.score) }} puan</span>
         </article>
-      </div>
-    </AppCard>
-
-    <AppCard class="top-rankers-card ui-card" aria-label="Geçen haftanın en iyileri" data-testid="leaderboard-top-rankers-card">
-      <span class="top-rankers-confetti confetti-one" aria-hidden="true"></span>
-      <span class="top-rankers-confetti confetti-two" aria-hidden="true"></span>
-      <span class="top-rankers-confetti confetti-three" aria-hidden="true"></span>
-      <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
-      <div class="top-rankers-head">
-        <div class="top-rankers-title">
-          <h2>Geçen Haftanın En İyileri</h2>
-        </div>
-        <span class="top-rankers-score-label">Lig puanı</span>
-      </div>
-      <div class="top-rankers-stage">
-        <div class="top-rankers-grid">
-          <article v-for="ranker in topRankers" :key="ranker.rank" :class="`top-ranker is-rank-${ranker.rank}`">
-            <span class="top-ranker-medal" aria-label="Sıra">{{ ranker.rank }}</span>
-            <span class="top-ranker-avatar">
-              <img :src="ranker.photo" :alt="`${ranker.name} profil fotoğrafı`" loading="lazy" />
-            </span>
-            <strong>{{ ranker.name }}</strong>
-            <small>{{ formatCredit(ranker.score) }} Puan</small>
-          </article>
-        </div>
       </div>
     </AppCard>
 
