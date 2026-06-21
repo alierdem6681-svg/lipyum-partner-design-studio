@@ -96,18 +96,19 @@ const titleOverrides = {
     subtitle: "Değerlendirme ve geri bildirimler",
   },
   "/leaderboard": {
-    title: "Partner Seviyeleri",
-    subtitle: "Seviye ve rozet ilerlemeni gör",
+    title: "Liderlik Tablosu",
+    subtitle: "8-14 Haziran 2026 haftası",
     infoSheet: {
       title: "Liderlik tablosu",
       description: "Haftanın Liderleri Nasıl Belirlenir?",
-      body: "Puanlama sistemi haftalık performansına göre hesaplanır. İş alma, teklif verme ve müşteri deneyimi birlikte değerlendirilir.",
+      body: "Puanlama sistemi kapanmış haftanın performansına göre hesaplanır. İş alma, teklif verme, müşteri deneyimi ve bakiye sürekliliği birlikte değerlendirilir.",
       scoreItems: [
         { label: "Tamamlanan iş", value: "+10 puan", description: "Müşteriyle tamamlanan her iş sıralamana katkı sağlar.", tone: "positive" },
         { label: "Teklif verme", value: "+10 puan", description: "Aktif tekliflerin haftalık hareketliliğini güçlendirir.", tone: "positive" },
         { label: "Havuzdan iş alma", value: "+10 puan", description: "Havuzdaki fırsatları değerlendirmen puanını artırır.", tone: "positive" },
         { label: "İptal iş", value: "-3 puan", description: "İptaller net haftalık puana düşük oranda yansır.", tone: "negative" },
         { label: "Müşteri şikayeti", value: "-5 puan", description: "Şikayet kayıtları müşteri deneyimi skorunu etkiler.", tone: "negative" },
+        { label: "Bakiye durumu", value: "-10 puan", description: "Bakiye bitmesine rağmen 24 saatten uzun süre yüklenmediğinde puanın etkilenir.", tone: "negative" },
       ],
       note: "Puanlar haftalık güncellenir; amaç aktif, güvenilir ve düzenli hizmet veren partnerleri öne çıkarmaktır.",
     },

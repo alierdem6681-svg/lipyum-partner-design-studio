@@ -1785,7 +1785,9 @@
 }
 
 .leaderboard-page-v4 {
+  display: grid;
   align-content: start;
+  gap: 14px;
   padding-bottom: 96px;
 }
 
@@ -2539,7 +2541,7 @@
 .leaderboard-hero-copy {
   min-width: 0;
   display: grid;
-  align-content: start;
+  align-content: center;
   gap: 8px;
   position: relative;
   z-index: 2;
@@ -2567,7 +2569,7 @@
 
 .leaderboard-rank-line strong {
   flex: 0 0 auto;
-  font-size: clamp(44px, 15vw, 58px);
+  font-size: clamp(50px, 15vw, 62px);
   font-weight: var(--weight-extra-bold);
   line-height: 0.86;
   letter-spacing: -0.05em;
@@ -2599,7 +2601,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  max-width: 100%;
+  max-width: 180px;
   min-height: 26px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 999px;
@@ -3443,7 +3445,7 @@
 .reward-path-list article {
   min-width: 0;
   display: grid;
-  grid-template-columns: 32px 42px minmax(0, 1fr);
+  grid-template-columns: 42px minmax(0, 1fr);
   align-items: center;
   gap: 9px;
   min-height: 64px;
@@ -3584,6 +3586,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
+  z-index: 4;
   width: 23px;
   height: 23px;
   display: grid;

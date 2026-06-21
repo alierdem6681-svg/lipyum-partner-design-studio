@@ -29,12 +29,14 @@ test("wallet follows V12-E blank route scope", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("leaderboard selects and nearby rank window work", async ({ page }) => {
+test("leaderboard selects, spacing, rewards and score info follow the closed-week contract", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/leaderboard");
   await waitForApp(page);
 
   await expect(page.getByTestId("leaderboard-page")).toHaveCount(1);
+  await expect(page.getByTestId("app-header")).toContainText("Liderlik Tablosu");
+  await expect(page.getByTestId("app-header")).toContainText("8-14 Haziran 2026 haftası");
   await expect(page.getByTestId("leaderboard-sector-select")).toHaveValue("Beyaz Eşya Tamiri");
   await expect(page.getByTestId("leaderboard-city-select")).toHaveValue("");
   await page.getByTestId("leaderboard-sector-select").selectOption("Klima Tamiri");
@@ -53,23 +55,51 @@ test("leaderboard selects and nearby rank window work", async ({ page }) => {
   await expect(page.getByTestId("leaderboard-nearby-card")).not.toContainText("Sen SEN");
   await expect(page.getByTestId("leaderboard-nearby-card")).toContainText("#35");
   await expect(page.getByTestId("leaderboard-nearby-card")).toContainText("#39");
-  await expect(page.getByTestId("leaderboard-hero-card")).not.toContainText("2 güçlü iş daha seni vitrine taşır");
+  await expect(page.getByTestId("leaderboard-hero-card")).not.toContainText("Bu haftaki");
+  await expect(page.getByTestId("leaderboard-hero-card")).not.toContainText("İlk 20’ye çok yakınsın");
+  await expect(page.getByTestId("leaderboard-hero-card")).not.toContainText("Düzenli iş takibi ve güçlü puan seni öne çıkarır");
   await expect(page.getByTestId("leaderboard-hero-card")).not.toContainText("sıra hedef");
   await expect(page.getByTestId("leaderboard-top-rankers-card")).not.toContainText("Haftanın vitrini");
   await expect(page.getByTestId("leaderboard-top-rankers-card")).not.toContainText("Haftanın lideri");
   await expect(page.getByTestId("leaderboard-top-rankers-card").locator("img")).toHaveCount(3);
   await expect(page.getByTestId("leaderboard-rewards-card")).toContainText("Haftalık ödül havuzu");
+  await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Kazanılacak ödüller");
   await expect(page.getByTestId("leaderboard-rewards-card")).not.toContainText("Sıralamada yüksel, bonusu ve özel rozeti kap.");
+  await expect(page.locator(".reward-path-rank")).toHaveCount(0);
+
+  const leaderboardLayout = await page.evaluate(() => {
+    const pageRoot = document.querySelector('[data-testid="leaderboard-page"]');
+    const children = Array.from(pageRoot?.children || []);
+    const gaps = children.slice(1).map((node, index) => {
+      const previous = children[index].getBoundingClientRect();
+      const current = node.getBoundingClientRect();
+      return Math.round(current.top - previous.bottom);
+    });
+    const medalIssues = Array.from(document.querySelectorAll(".top-ranker")).map((node) => {
+      const card = node.getBoundingClientRect();
+      const medal = node.querySelector(".top-ranker-medal")?.getBoundingClientRect();
+      return {
+        visible: !!medal && medal.width >= 20 && medal.height >= 20,
+        insideCard: !!medal && medal.left >= card.left && medal.top >= card.top && medal.right <= card.right && medal.bottom <= card.bottom,
+      };
+    });
+    return { gaps, medalIssues };
+  });
+  expect(leaderboardLayout.gaps.every((gap) => gap >= 12)).toBe(true);
+  expect(leaderboardLayout.medalIssues.every((item) => item.visible && item.insideCard)).toBe(true);
 
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");
   await expect(page.locator('[role="dialog"]')).toContainText("Haftanın Liderleri Nasıl Belirlenir?");
   await expect(page.getByTestId("info-score-list")).toBeVisible();
-  await expect(page.getByTestId("info-score-item")).toHaveCount(5);
+  await expect(page.getByTestId("info-score-item")).toHaveCount(6);
   await expect(page.locator('[role="dialog"]')).toContainText("Tamamlanan iş");
   await expect(page.locator('[role="dialog"]')).toContainText("+10 puan");
   await expect(page.locator('[role="dialog"]')).toContainText("Müşteri şikayeti");
   await expect(page.locator('[role="dialog"]')).toContainText("-5 puan");
+  await expect(page.locator('[role="dialog"]')).toContainText("Bakiye durumu");
+  await expect(page.locator('[role="dialog"]')).toContainText("Bakiye bitmesine rağmen 24 saatten uzun süre yüklenmediğinde");
+  await expect(page.locator('[role="dialog"]')).toContainText("-10 puan");
 
   expect(errors).toEqual([]);
 });
