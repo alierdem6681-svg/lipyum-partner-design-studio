@@ -5,6 +5,7 @@ import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
+const leaderboardPeriod = "8-14 Haziran 2026 haftası";
 const sector = ref(sourceLeaderboard.sector);
 const city = ref("");
 const sectorOptions = ["Beyaz Eşya Tamiri", "Klima Tamiri", "Kombi Servisi", "Ev Temizliği"];
@@ -93,10 +94,10 @@ function selectCity(event) {
       <span class="leaderboard-hero-spark spark-one" aria-hidden="true"></span>
       <span class="leaderboard-hero-spark spark-two" aria-hidden="true"></span>
       <div class="leaderboard-hero-copy">
-        <span class="leaderboard-hero-eyebrow">Bu haftaki sıralaman</span>
+        <span class="leaderboard-hero-eyebrow">Geçen hafta sıralaman</span>
         <div class="leaderboard-rank-line"><strong>#{{ activeLeaderboard.myRank }}</strong></div>
-        <p><b>İlk 20’ye çok yakınsın.</b> Düzenli iş takibi ve güçlü puan seni öne çıkarır.</p>
-        <div class="leaderboard-hero-chips" aria-label="Lig motivasyonu">
+        <div class="leaderboard-hero-chips" aria-label="Lig dönemi ve puan">
+          <span><AppIcon name="calendar" :size="14" /> {{ leaderboardPeriod }}</span>
           <span><AppIcon name="trophy" :size="14" /> {{ formatCredit(activeLeaderboard.myScore) }} puan</span>
         </div>
       </div>
@@ -115,7 +116,7 @@ function selectCity(event) {
       <article>
         <span><AppIcon name="bar-chart" :size="18" /></span>
         <strong>{{ activeLeaderboard.myJobs }}</strong>
-        <small>Bu haftaki işlerim</small>
+        <small>Tamamlanan iş</small>
       </article>
       <article>
         <span><AppIcon name="trophy" :size="18" /></span>
@@ -155,21 +156,21 @@ function selectCity(event) {
       </div>
     </AppCard>
 
-    <AppCard class="top-rankers-card ui-card" aria-label="Haftanın en iyileri" data-testid="leaderboard-top-rankers-card">
+    <AppCard class="top-rankers-card ui-card" aria-label="Geçen haftanın en iyileri" data-testid="leaderboard-top-rankers-card">
       <span class="top-rankers-confetti confetti-one" aria-hidden="true"></span>
       <span class="top-rankers-confetti confetti-two" aria-hidden="true"></span>
       <span class="top-rankers-confetti confetti-three" aria-hidden="true"></span>
       <span class="top-rankers-confetti confetti-four" aria-hidden="true"></span>
       <div class="top-rankers-head">
         <div class="top-rankers-title">
-          <h2>Haftanın En İyileri</h2>
+          <h2>Geçen Haftanın En İyileri</h2>
         </div>
         <span class="top-rankers-score-label">Lig puanı</span>
       </div>
       <div class="top-rankers-stage">
         <div class="top-rankers-grid">
           <article v-for="ranker in topRankers" :key="ranker.rank" :class="`top-ranker is-rank-${ranker.rank}`">
-            <span class="top-ranker-medal">{{ ranker.rank }}</span>
+            <span class="top-ranker-medal" aria-label="Sıra">{{ ranker.rank }}</span>
             <span class="top-ranker-avatar">
               <img :src="ranker.photo" :alt="`${ranker.name} profil fotoğrafı`" loading="lazy" />
             </span>
@@ -185,29 +186,26 @@ function selectCity(event) {
       <span class="reward-tiers-spark spark-two" aria-hidden="true"></span>
       <span class="reward-tiers-spark spark-three" aria-hidden="true"></span>
       <div class="reward-tiers-head">
-        <span><AppIcon name="sparkles" :size="14" /> Kazanılacak ödüller</span>
-        <h2>Haftalık ödül havuzu</h2>
-        <p>Lig başarına göre bonus, rozet ve görünürlük avantajları kazan.</p>
+        <span><AppIcon name="sparkles" :size="14" /> Haftalık ödül havuzu</span>
       </div>
       <div class="reward-program">
         <div class="reward-program-hero">
           <span>Toplam havuz</span>
           <strong>{{ formatCredit(rewardTotal) }} Bonus</strong>
-          <small>En iyi sıralamalar haftalık vitrinde daha görünür olur.</small>
+          <small>En iyi sıralamalar vitrinde daha görünür olur.</small>
         </div>
         <div class="reward-path-list">
-        <article
-          v-for="(reward, index) in activeLeaderboard.rewards"
-          :key="reward.title"
-          :class="index === 0 ? 'is-prime' : index === 1 ? 'is-podium' : 'is-goal'"
-        >
-          <span class="reward-path-rank">{{ index === 0 ? "01" : index === 1 ? "02" : "03" }}</span>
-          <span class="reward-path-icon"><AppIcon :name="index === 0 ? 'crown' : index === 1 ? 'trophy' : 'gift'" :size="19" /></span>
-          <span class="reward-path-copy">
-            <strong>{{ reward.title }}</strong>
-            <small>{{ reward.value }} · {{ reward.note.replace(/^\+\s*/, "") }}</small>
-          </span>
-        </article>
+          <article
+            v-for="(reward, index) in activeLeaderboard.rewards"
+            :key="reward.title"
+            :class="index === 0 ? 'is-prime' : index === 1 ? 'is-podium' : 'is-goal'"
+          >
+            <span class="reward-path-icon"><AppIcon :name="index === 0 ? 'crown' : index === 1 ? 'trophy' : 'gift'" :size="19" /></span>
+            <span class="reward-path-copy">
+              <strong>{{ reward.title }}</strong>
+              <small>{{ reward.value }} · {{ reward.note.replace(/^\+\s*/, "") }}</small>
+            </span>
+          </article>
         </div>
       </div>
     </AppCard>
