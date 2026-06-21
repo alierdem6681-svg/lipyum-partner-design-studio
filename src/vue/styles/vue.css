@@ -902,7 +902,8 @@
 
 .v-app-sheet {
   width: min(430px, calc(100vw - 16px));
-  max-height: min(88dvh, 760px);
+  height: min(94dvh, 820px);
+  max-height: min(94dvh, 820px);
   padding: 8px 14px max(18px, env(safe-area-inset-bottom));
   border: 1px solid var(--color-border);
   border-bottom: 0;
@@ -991,10 +992,18 @@
 }
 
 .v-app-sheet__body {
-  max-height: calc(min(88dvh, 760px) - 112px);
+  max-height: calc(min(94dvh, 820px) - 112px);
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding-top: 16px;
+}
+
+.v-app-sheet__body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .v-sheet-content {
