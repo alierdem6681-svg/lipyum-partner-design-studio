@@ -12299,11 +12299,25 @@
         background: transparent;
       }
 
+      .profile-menu-disclosure {
+        width: 100%;
+        display: block;
+      }
+
+      .profile-menu-disclosure summary {
+        list-style: none;
+      }
+
+      .profile-menu-disclosure summary::-webkit-details-marker {
+        display: none;
+      }
+
       .profile-menu-list {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
         gap: 8px;
         width: 100%;
+        margin-top: 8px;
       }
 
       .profile-menu-row {
@@ -12438,15 +12452,34 @@
         width: 100%;
         min-height: 66px;
         display: grid;
-        grid-template-columns: 54px minmax(0, 1fr) 58px;
+        grid-template-columns: 54px minmax(0, 1fr) 58px 18px;
         align-items: center;
         gap: 10px;
-        margin-top: 8px;
+        margin-top: 0;
         padding: 9px 10px;
+        appearance: none;
         border: 1px solid var(--color-border);
         border-radius: 13px;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(248, 250, 252, 0.96) 100%);
         box-shadow: var(--shadow-soft);
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          transform 180ms ease;
+      }
+
+      .profile-menu-strength-summary:hover {
+        border-color: var(--color-primary-border);
+        box-shadow: var(--shadow-card);
+      }
+
+      .profile-menu-strength-summary:active {
+        transform: scale(0.99);
       }
 
       .profile-menu-strength-summary__ring {
@@ -12523,6 +12556,19 @@
         line-height: 1;
       }
 
+      .profile-menu-strength-summary__chevron {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-neutral-500);
+        transition: transform 180ms ease;
+      }
+
+      .profile-menu-strength-summary[aria-expanded="true"] .profile-menu-strength-summary__chevron,
+      .profile-menu-disclosure[open] .profile-menu-strength-summary__chevron {
+        transform: rotate(180deg);
+      }
+
       @media (max-width: 360px) {
         .profile-menu-section {
           padding: 0;
@@ -12567,7 +12613,7 @@
         }
 
         .profile-menu-strength-summary {
-          grid-template-columns: 50px minmax(0, 1fr) 52px;
+          grid-template-columns: 50px minmax(0, 1fr) 52px 16px;
           gap: 8px;
           padding: 8px;
         }

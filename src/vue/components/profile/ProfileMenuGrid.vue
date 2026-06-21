@@ -1,10 +1,11 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { PROFILE_MENU_ITEMS } from "../../../utils/constants.js";
 import AppIcon from "../ui/AppIcon.vue";
 
 const router = useRouter();
+const menuOpen = ref(false);
 
 const menuDetails = {
   "/about": {
@@ -59,7 +60,32 @@ const menuItems = computed(() =>
 
 <template>
   <section class="profile-menu-section" data-testid="profile-menu-section" aria-label="Müşteriye görünen profil menüleri">
-    <div class="profile-menu-list" id="profileMenuList" data-testid="profile-menu-list">
+    <button
+      class="profile-menu-strength-summary"
+      type="button"
+      data-testid="profile-menu-strength-summary"
+      :aria-expanded="menuOpen ? 'true' : 'false'"
+      aria-controls="profileMenuList"
+      aria-label="Profil gücünüz menüsünü aç"
+      @click="menuOpen = !menuOpen"
+    >
+      <span class="profile-menu-strength-summary__ring" aria-hidden="true">
+        <strong>78%</strong>
+      </span>
+      <span class="profile-menu-strength-summary__copy">
+        <strong>Profil Gücünüz</strong>
+        <small>Harika! Sadece 2 adım kaldı.</small>
+      </span>
+      <span class="profile-menu-strength-summary__points">
+        <strong>+28</strong>
+        <small>Puan</small>
+      </span>
+      <span class="profile-menu-strength-summary__chevron" aria-hidden="true">
+        <AppIcon name="chevron-down" :size="18" />
+      </span>
+    </button>
+
+    <div v-if="menuOpen" class="profile-menu-list" id="profileMenuList" data-testid="profile-menu-list">
       <button
         v-for="item in menuItems"
         :key="item.route"
@@ -86,18 +112,5 @@ const menuItems = computed(() =>
         </span>
       </button>
     </div>
-    <article class="profile-menu-strength-summary" data-testid="profile-menu-strength-summary" aria-label="Profil gücü özeti">
-      <span class="profile-menu-strength-summary__ring" aria-hidden="true">
-        <strong>78%</strong>
-      </span>
-      <span class="profile-menu-strength-summary__copy">
-        <strong>Profil Gücünüz</strong>
-        <small>Harika! Sadece 2 adım kaldı.</small>
-      </span>
-      <span class="profile-menu-strength-summary__points">
-        <strong>+28</strong>
-        <small>Puan</small>
-      </span>
-    </article>
   </section>
 </template>

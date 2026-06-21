@@ -76,9 +76,11 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
   await expect(page.locator(".partner-profile-card")).toBeVisible();
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
+  await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
+  await page.getByTestId("profile-menu-strength-summary").click();
   await expect(page.getByTestId("profile-menu-list")).toBeVisible();
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
-  await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
   const menuLabels = await page.locator(".profile-menu-row__title").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
