@@ -13,6 +13,7 @@ const emit = defineEmits(["close"]);
 const dragStartY = ref(0);
 const dragOffsetY = ref(0);
 const isDragging = ref(false);
+const closeDragThreshold = 28;
 
 function beginDrag(event) {
   isDragging.value = true;
@@ -32,7 +33,7 @@ function updateDrag(event) {
 
 function finishDrag() {
   if (!isDragging.value) return;
-  const shouldClose = dragOffsetY.value >= 64;
+  const shouldClose = dragOffsetY.value >= closeDragThreshold;
   isDragging.value = false;
   dragStartY.value = 0;
   dragOffsetY.value = 0;
@@ -53,6 +54,7 @@ function cancelDrag() {
       class="v-app-sheet-overlay fixed inset-0 z-50 flex items-end bg-slate-950/35"
       role="presentation"
       data-testid="app-sheet-overlay"
+      @click.self="emit('close')"
     >
       <section
         class="v-app-sheet"

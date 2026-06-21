@@ -13,12 +13,19 @@ const emit = defineEmits(["close"]);
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4" role="presentation">
+    <div
+      v-if="open"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4"
+      role="presentation"
+      data-testid="app-modal-overlay"
+      @click.self="emit('close')"
+    >
       <section
         class="w-full max-w-sm rounded-sheet border border-slate-200 bg-white p-4 shadow-elevated"
         role="dialog"
         aria-modal="true"
         :aria-label="title || closeLabel"
+        data-testid="app-modal"
       >
         <div class="flex items-start justify-between gap-3">
           <span class="min-w-0">
