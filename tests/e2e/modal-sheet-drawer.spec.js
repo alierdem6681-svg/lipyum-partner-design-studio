@@ -49,23 +49,30 @@ test("shared app sheet keeps side margins, sits flush to bottom and closes by dr
   const metrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
     const rect = sheet.getBoundingClientRect();
     const style = window.getComputedStyle(sheet);
+    const body = sheet.querySelector(".v-app-sheet__body");
+    const bodyStyle = body ? window.getComputedStyle(body) : null;
     return {
       left: rect.left,
       right: window.innerWidth - rect.right,
       bottom: window.innerHeight - rect.bottom,
+      height: rect.height,
       width: rect.width,
       viewportWidth: window.innerWidth,
       bottomLeftRadius: style.borderBottomLeftRadius,
       bottomRightRadius: style.borderBottomRightRadius,
+      bodyScrollbarWidth: bodyStyle?.scrollbarWidth,
+      bodyMsOverflowStyle: bodyStyle?.msOverflowStyle,
     };
   });
 
   expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 12));
+  expect(metrics.height).toBeGreaterThanOrEqual(780);
   expect(metrics.left).toBeGreaterThanOrEqual(6);
   expect(metrics.right).toBeGreaterThanOrEqual(6);
   expect(metrics.bottom).toBeLessThanOrEqual(1);
   expect(metrics.bottomLeftRadius).toBe("0px");
   expect(metrics.bottomRightRadius).toBe("0px");
+  expect(metrics.bodyScrollbarWidth).toBe("none");
 
   await dragHandleDown(page);
   await expect(page.getByTestId("app-sheet")).toHaveCount(0);

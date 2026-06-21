@@ -151,7 +151,12 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");
   await expect(page.locator('[role="dialog"]')).toContainText("Haftanın Liderleri Nasıl Belirlenir?");
   const sheetBox = await page.getByTestId("app-sheet").boundingBox();
-  expect(Math.round(sheetBox?.height || 0)).toBeGreaterThanOrEqual(720);
+  expect(Math.round(sheetBox?.height || 0)).toBeGreaterThanOrEqual(780);
+  const sheetBodyStyle = await page.getByTestId("app-sheet").locator(".v-app-sheet__body").evaluate((node) => {
+    const style = window.getComputedStyle(node);
+    return { scrollbarWidth: style.scrollbarWidth, msOverflowStyle: style.msOverflowStyle };
+  });
+  expect(sheetBodyStyle.scrollbarWidth).toBe("none");
   await expect(page.getByTestId("info-score-list")).toBeVisible();
   await expect(page.getByTestId("info-score-item")).toHaveCount(6);
   await expect(page.locator('[role="dialog"]')).toContainText("Tamamlanan iş");
