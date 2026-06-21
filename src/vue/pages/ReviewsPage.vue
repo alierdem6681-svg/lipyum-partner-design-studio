@@ -1,28 +1,37 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { reviewSummary, reviews } from "../../data/mockData.js";
-import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import OnayModal from "../components/ui/OnayModal.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
+
+const INITIAL_VISIBLE_COUNT = 4;
+const LOAD_INCREMENT = 3;
 
 const shell = useAppShellStore();
 const activeFilter = ref("all");
-const visibleCount = ref(4);
+const visibleCount = ref(INITIAL_VISIBLE_COUNT);
+const activeReplyId = ref("");
+const replyDrafts = ref({});
+const sentReplies = ref({});
+const pendingReport = ref(null);
+const listSentinel = ref(null);
+let listObserver;
 
 const filters = [
   { key: "all", label: "Tümü" },
-  { key: "five", label: "5 Yıldız" },
-  { key: "four", label: "4 Yıldız" },
-  { key: "three", label: "3 Yıldız" },
-  { key: "two", label: "2 Yıldız" },
-  { key: "one", label: "1 Yıldız" },
-  { key: "unanswered", label: "Cevaplanmamış" },
+  { key: "unanswered", label: "Yanıtlanmamış" },
+  { key: "five", label: "5 Puan" },
+  { key: "four", label: "4 Puan" },
+  { key: "three", label: "3 Puan" },
+  { key: "two", label: "2 Puan" },
+  { key: "one", label: "1 Puan" },
 ];
 
 const filteredReviews = computed(() => {
-  if (activeFilter.value === "unanswered") return reviews.filter((review) => !review.replied);
+  if (activeFilter.value === "unanswered") return reviews.filter((review) => !review.replied && !sentReplies.value[review.id]);
   if (activeFilter.value === "five") return reviews.filter((review) => review.rating === 5);
   if (activeFilter.value === "four") return reviews.filter((review) => review.rating === 4);
   if (activeFilter.value === "three") return reviews.filter((review) => review.rating === 3);
@@ -30,27 +39,123 @@ const filteredReviews = computed(() => {
   if (activeFilter.value === "one") return reviews.filter((review) => review.rating === 1);
   return reviews;
 });
-const visibleReviews = computed(() => filteredReviews.value.slice(0, visibleCount.value));
+const visibleReviews = computed(() => filteredReviews.value.slice(0, Math.min(visibleCount.value, filteredReviews.value.length)));
+const hasMoreReviews = computed(() => visibleReviews.value.length < filteredReviews.value.length);
 
 function renderStars(rating) {
   return Array.from({ length: 5 }, (_, index) => index < Math.round(rating));
 }
 
-function openReply(review) {
-  shell.openSheet({
-    title: "Yanıtla",
-    description: review.name,
-    body: "Yorum yanıtı için hızlı aksiyon hazırlandı.",
-  });
+function setFilter(filterKey) {
+  activeFilter.value = filterKey;
 }
 
-function reportReview(review) {
-  shell.openSheet({
-    title: "Yorumu bildir",
-    description: review.name,
-    body: "Uygunsuz yorum bildirimi mock akışı hazırlandı.",
-  });
+function isReviewReplied(review) {
+  return review.replied || !!sentReplies.value[review.id];
 }
+
+function getReviewReply(review) {
+  return sentReplies.value[review.id] || review.reply || "";
+}
+
+function openReply(review) {
+  activeReplyId.value = activeReplyId.value === review.id ? "" : review.id;
+  if (!replyDrafts.value[review.id]) {
+    replyDrafts.value = {
+      ...replyDrafts.value,
+      [review.id]: "Değerli yorumunuz için teşekkür ederiz. Geri bildiriminiz hizmet kalitemizi geliştirmemize yardımcı oluyor.",
+    };
+  }
+}
+
+function sendReply(review) {
+  const message = String(replyDrafts.value[review.id] || "").trim();
+  if (!message) return;
+  sentReplies.value = { ...sentReplies.value, [review.id]: message };
+  activeReplyId.value = "";
+  shell.showToast("Yanıt gönderildi.");
+}
+
+function openReportConfirm(review) {
+  pendingReport.value = review;
+}
+
+function closeReportConfirm() {
+  pendingReport.value = null;
+}
+
+function confirmReportReview() {
+  if (pendingReport.value) shell.showToast("Yorum bildirimi alındı.");
+  pendingReport.value = null;
+}
+
+function loadMoreReviews() {
+  if (!hasMoreReviews.value) return;
+  visibleCount.value = Math.min(filteredReviews.value.length, visibleCount.value + LOAD_INCREMENT);
+}
+
+function resetVisibleCount() {
+  visibleCount.value = Math.min(INITIAL_VISIBLE_COUNT, Math.max(filteredReviews.value.length, INITIAL_VISIBLE_COUNT));
+  activeReplyId.value = "";
+}
+
+function getScrollRoot() {
+  return document.querySelector("#appRoot") || document.querySelector(".v-shell__content");
+}
+
+function isLoadPointVisible() {
+  const node = listSentinel.value;
+  const root = getScrollRoot();
+  if (!node || !root) return false;
+  const nodeRect = node.getBoundingClientRect();
+  const rootRect = root.getBoundingClientRect();
+  return nodeRect.top <= rootRect.bottom + 8 && nodeRect.bottom >= rootRect.top;
+}
+
+async function loadIfSentinelVisible() {
+  await nextTick();
+  if (isLoadPointVisible()) loadMoreReviews();
+}
+
+function observeSentinel(node) {
+  if (!listObserver || !node) return;
+  listObserver.observe(node);
+}
+
+watch(filteredReviews, () => {
+  resetVisibleCount();
+  loadIfSentinelVisible();
+});
+
+watch(visibleCount, () => {
+  loadIfSentinelVisible();
+});
+
+watch(listSentinel, (node, oldNode) => {
+  if (!listObserver) return;
+  if (oldNode) listObserver.unobserve(oldNode);
+  observeSentinel(node);
+});
+
+onMounted(() => {
+  if (!("IntersectionObserver" in window)) return;
+  listObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) loadMoreReviews();
+    },
+    {
+      root: getScrollRoot(),
+      rootMargin: "80px 0px 120px",
+      threshold: 0.01,
+    },
+  );
+  observeSentinel(listSentinel.value);
+  loadIfSentinelVisible();
+});
+
+onBeforeUnmount(() => {
+  if (listObserver) listObserver.disconnect();
+});
 </script>
 
 <template>
@@ -64,8 +169,7 @@ function reportReview(review) {
         <small class="review-summary-count">{{ reviewSummary.total }} değerlendirme</small>
         <em class="review-summary-growth">
           <AppIcon name="trend-up" :size="16" class-name="icon" />
-          <span>+{{ reviewSummary.newLast30Days }} yeni yorum</span>
-          <small>Son 30 gün</small>
+          <span>Son 30 günde +{{ reviewSummary.newLast30Days }} yorum</span>
         </em>
       </div>
       <div class="review-summary-gauge" :aria-label="`Müşteri memnuniyeti yüzde ${reviewSummary.satisfaction}`">
@@ -76,7 +180,7 @@ function reportReview(review) {
       </div>
     </AppCard>
 
-    <section class="filter-chip-rail" aria-label="Yorum filtreleri">
+    <section class="filter-chip-rail reviews-filter-rail" aria-label="Yorum filtreleri">
       <button
         v-for="filter in filters"
         :key="filter.key"
@@ -84,7 +188,7 @@ function reportReview(review) {
         type="button"
         :data-review-filter="filter.key"
         data-testid="reviews-filter-chip"
-        @click="activeFilter = filter.key"
+        @click="setFilter(filter.key)"
       >
         <span class="responsive-button-label">{{ filter.label }}</span>
       </button>
@@ -112,8 +216,10 @@ function reportReview(review) {
               type="button"
               data-action="report-review-comment"
               data-testid="review-report-button"
-              :aria-label="`${review.name} yorumunu bildir`"
-              @click="reportReview(review)"
+              :data-review-service="review.service"
+              :title="review.service"
+              :aria-label="`${review.service} yorumunu bildir`"
+              @click="openReportConfirm(review)"
             >
               Bildir
             </button>
@@ -122,9 +228,8 @@ function reportReview(review) {
         <div class="review-card-body">
           <p>{{ review.text }}</p>
           <div class="review-card-foot">
-            <span class="review-service-tag-v4"><AppIcon name="settings" :size="14" /> {{ review.service }}</span>
             <button
-              v-if="!review.replied"
+              v-if="!isReviewReplied(review)"
               class="review-inline-action"
               type="button"
               data-action="reply-review"
@@ -137,23 +242,46 @@ function reportReview(review) {
             </button>
             <span v-else class="review-replied-pill"><AppIcon name="check" :size="14" /> Yanıtlandı</span>
           </div>
-          <div v-if="review.reply" class="review-partner-reply">
+          <form
+            v-if="activeReplyId === review.id"
+            class="review-reply-editor"
+            data-testid="review-reply-editor"
+            @submit.prevent="sendReply(review)"
+          >
+            <textarea
+              v-model="replyDrafts[review.id]"
+              rows="3"
+              data-testid="review-reply-textarea"
+              :aria-label="`${review.name} yorumu için yanıt`"
+            ></textarea>
+            <button type="submit" data-testid="review-reply-submit">Gönder</button>
+          </form>
+          <div v-if="getReviewReply(review)" class="review-partner-reply">
             <strong>Senin yanıtın</strong>
-            <p>{{ review.reply }}</p>
+            <p>{{ getReviewReply(review) }}</p>
           </div>
         </div>
       </article>
 
       <div v-if="!visibleReviews.length" class="empty-state-card">Bu filtrede yorum bulunmuyor.</div>
-      <AppButton
-        v-if="visibleReviews.length < filteredReviews.length"
-        class="lazy-load-button"
-        variant="secondary"
-        data-list-key="reviews"
-        @click="visibleCount += 3"
-      >
-        Daha Fazla Yorum Göster
-      </AppButton>
+      <div
+        ref="listSentinel"
+        class="review-load-sentinel"
+        data-testid="reviews-load-sentinel"
+        :data-complete="hasMoreReviews ? 'false' : 'true'"
+        aria-hidden="true"
+      ></div>
+      <div v-if="hasMoreReviews" class="review-more-indicator" aria-hidden="true"><span></span></div>
     </section>
+
+    <OnayModal
+      :open="!!pendingReport"
+      title="Yorum bildirilsin mi?"
+      :message="pendingReport ? `${pendingReport.name} yorumunu inceleme için bildirmek istiyor musun?` : 'Bu yorumu bildirmek istiyor musun?'"
+      confirm-label="Bildir"
+      cancel-label="Vazgeç"
+      @cancel="closeReportConfirm"
+      @confirm="confirmReportReview"
+    />
   </AppPage>
 </template>

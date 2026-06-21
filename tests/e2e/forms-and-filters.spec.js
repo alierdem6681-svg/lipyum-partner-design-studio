@@ -1,16 +1,60 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, waitForApp } from "./helpers.js";
 
-test("reviews filters and reply controls are interactive", async ({ page }) => {
+test("reviews filters, inline reply, report confirmation and lazy loading are interactive", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/reviews");
   await waitForApp(page);
 
   await expect(page.getByTestId("reviews-page")).toHaveCount(1);
+  await expect(page.getByTestId("review-card")).toHaveCount(4);
+  await expect(page.locator(".lazy-load-button")).toHaveCount(0);
+  await expect(page.locator(".review-service-tag-v4")).toHaveCount(0);
+  await expect(page.getByText("Klima Tamiri")).toHaveCount(0);
+  await expect(page.getByText("Kombi Bakımı")).toHaveCount(0);
+  await expect(page.locator(".review-summary-growth")).toContainText("+18 yorum");
+
+  const filterState = await page.evaluate(() => {
+    const chips = Array.from(document.querySelectorAll('[data-testid="reviews-filter-chip"]'));
+    const boxes = chips.map((chip) => chip.getBoundingClientRect());
+    return {
+      labels: chips.map((chip) => chip.textContent.trim().replace(/\s+/g, " ")),
+      gaps: boxes.slice(1).map((box, index) => Math.round(box.left - boxes[index].right)),
+      filterToListGap: Math.round(
+        document.querySelector(".review-list-v4").getBoundingClientRect().top -
+          document.querySelector(".reviews-filter-rail").getBoundingClientRect().bottom,
+      ),
+    };
+  });
+  expect(filterState.labels).toEqual(["Tümü", "Yanıtlanmamış", "5 Puan", "4 Puan", "3 Puan", "2 Puan", "1 Puan"]);
+  expect(filterState.gaps.every((gap) => gap >= 8)).toBe(true);
+  expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
+
   await page.locator('[data-review-filter="unanswered"]').click();
   await expect(page.locator('[data-review-filter="unanswered"]')).toHaveClass(/is-active/);
   await expect(page.getByTestId("review-card").first()).toBeVisible();
-  await expect(page.getByTestId("review-reply-button").first()).toBeVisible();
+  await page.getByTestId("review-reply-button").first().click();
+  await expect(page.getByTestId("review-reply-editor")).toBeVisible();
+  await page.getByTestId("review-reply-textarea").fill("Nazik geri bildiriminiz için teşekkür ederiz. Ekibimiz süreci takip ediyor.");
+  await page.getByTestId("review-reply-submit").click();
+  await expect(page.getByTestId("review-reply-editor")).toHaveCount(0);
+  await page.locator('[data-review-filter="all"]').click();
+  await expect(page.getByTestId("review-card").filter({ hasText: "Senin yanıtın" }).first()).toBeVisible();
+
+  await page.getByTestId("review-report-button").first().click();
+  await expect(page.getByTestId("onay-modal")).toBeVisible();
+  await expect(page.getByTestId("onay-modal")).toContainText("Yorum bildirilsin mi?");
+  await page.getByTestId("onay-modal-cancel").click();
+  await expect(page.getByTestId("onay-modal")).toHaveCount(0);
+
+  await page.locator('[data-review-filter="all"]').click();
+  await page.getByTestId("reviews-load-sentinel").scrollIntoViewIfNeeded();
+  await expect.poll(() => page.getByTestId("review-card").count()).toBeGreaterThan(4);
+
+  await page.getByTestId("app-header").getByTestId("header-info-button").click();
+  await expect(page.locator('[role="dialog"]')).toContainText("Müşteri yorumları");
+  await expect(page.locator('[role="dialog"]')).toContainText("kısa, nazik ve çözüm odaklı");
+  await expect(page.locator('[role="dialog"]')).toContainText("Daha fazla olumlu yorum");
 
   expect(errors).toEqual([]);
 });
