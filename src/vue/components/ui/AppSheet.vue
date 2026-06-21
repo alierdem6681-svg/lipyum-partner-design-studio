@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import AppIcon from "./AppIcon.vue";
 
-defineProps({
+const props = defineProps({
   title: { type: String, default: "" },
   description: { type: String, default: "" },
   open: { type: Boolean, default: true },
@@ -10,10 +10,54 @@ defineProps({
 
 const emit = defineEmits(["close"]);
 
+const sheetRef = ref(null);
+const bodyRef = ref(null);
 const dragStartY = ref(0);
 const dragOffsetY = ref(0);
 const isDragging = ref(false);
 const closeDragThreshold = 28;
+const minSheetHeight = 220;
+let resizeObserver;
+let animationFrameId = 0;
+
+function toNumber(value) {
+  return Number.parseFloat(value) || 0;
+}
+
+function getVerticalMargins(node) {
+  const style = window.getComputedStyle(node);
+  return toNumber(style.marginTop) + toNumber(style.marginBottom);
+}
+
+function updateSheetHeight() {
+  const sheet = sheetRef.value;
+  const body = bodyRef.value;
+  if (!props.open || !sheet || !body || typeof window === "undefined") {
+    sheet?.style.removeProperty("--app-sheet-dynamic-height");
+    return;
+  }
+
+  const sheetStyleValue = window.getComputedStyle(sheet);
+  const maxHeight = Math.floor(Math.min(window.innerHeight * 0.94, 820));
+  const shellHeight =
+    toNumber(sheetStyleValue.paddingTop) +
+    toNumber(sheetStyleValue.paddingBottom) +
+    toNumber(sheetStyleValue.borderTopWidth) +
+    toNumber(sheetStyleValue.borderBottomWidth);
+  const fixedChildrenHeight = Array.from(sheet.children).reduce((total, child) => {
+    if (child === body) return total;
+    return total + child.getBoundingClientRect().height + getVerticalMargins(child);
+  }, 0);
+  const desiredHeight = Math.ceil(shellHeight + fixedChildrenHeight + body.scrollHeight + 10);
+  const nextHeight = Math.max(Math.min(minSheetHeight, maxHeight), Math.min(desiredHeight, maxHeight));
+  sheet.style.setProperty("--app-sheet-dynamic-height", `${nextHeight}px`);
+}
+
+function scheduleSheetMeasure() {
+  if (typeof window === "undefined") return;
+  cancelAnimationFrame(animationFrameId);
+  animationFrameId = requestAnimationFrame(updateSheetHeight);
+}
 
 function beginDrag(event) {
   isDragging.value = true;
@@ -45,6 +89,28 @@ function cancelDrag() {
   dragStartY.value = 0;
   dragOffsetY.value = 0;
 }
+
+onMounted(() => {
+  if (typeof ResizeObserver !== "undefined") {
+    resizeObserver = new ResizeObserver(scheduleSheetMeasure);
+    if (sheetRef.value) resizeObserver.observe(sheetRef.value);
+    if (bodyRef.value) resizeObserver.observe(bodyRef.value);
+  }
+  window.addEventListener("resize", scheduleSheetMeasure);
+  nextTick(scheduleSheetMeasure);
+});
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+  window.removeEventListener("resize", scheduleSheetMeasure);
+  cancelAnimationFrame(animationFrameId);
+});
+
+watch(
+  () => [props.open, props.title, props.description],
+  () => nextTick(scheduleSheetMeasure),
+  { flush: "post" },
+);
 </script>
 
 <template>
@@ -57,6 +123,7 @@ function cancelDrag() {
       @click.self="emit('close')"
     >
       <section
+        ref="sheetRef"
         class="v-app-sheet"
         role="dialog"
         aria-modal="true"
@@ -85,7 +152,7 @@ function cancelDrag() {
             <AppIcon name="x" :size="20" />
           </button>
         </div>
-        <div class="v-app-sheet__body">
+        <div ref="bodyRef" class="v-app-sheet__body">
           <slot />
         </div>
       </section>
