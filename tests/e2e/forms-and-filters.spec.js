@@ -150,8 +150,22 @@ test("leaderboard selects, spacing, rewards and score info follow the closed-wee
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Liderlik tablosu");
   await expect(page.locator('[role="dialog"]')).toContainText("Haftanın Liderleri Nasıl Belirlenir?");
-  const sheetBox = await page.getByTestId("app-sheet").boundingBox();
-  expect(Math.round(sheetBox?.height || 0)).toBeGreaterThanOrEqual(780);
+  const sheetMetrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
+    const sheetBox = sheet.getBoundingClientRect();
+    const body = sheet.querySelector(".v-app-sheet__body");
+    const bodyStyle = body ? window.getComputedStyle(body) : null;
+    return {
+      height: Math.round(sheetBox.height),
+      bottomGap: Math.round(window.innerHeight - sheetBox.bottom),
+      bodyScrollHeight: body?.scrollHeight || 0,
+      bodyClientHeight: body?.clientHeight || 0,
+      scrollbarWidth: bodyStyle?.scrollbarWidth,
+    };
+  });
+  expect(sheetMetrics.height).toBeGreaterThanOrEqual(720);
+  expect(sheetMetrics.bottomGap).toBeLessThanOrEqual(1);
+  expect(sheetMetrics.bodyScrollHeight).toBeLessThanOrEqual(sheetMetrics.bodyClientHeight + 1);
+  expect(sheetMetrics.scrollbarWidth).toBe("none");
   const sheetBodyStyle = await page.getByTestId("app-sheet").locator(".v-app-sheet__body").evaluate((node) => {
     const style = window.getComputedStyle(node);
     return { scrollbarWidth: style.scrollbarWidth, msOverflowStyle: style.msOverflowStyle };

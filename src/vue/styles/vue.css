@@ -901,9 +901,10 @@
 }
 
 .v-app-sheet {
+  --app-sheet-max-height: min(94dvh, 820px);
   width: min(430px, calc(100vw - 16px));
-  height: min(94dvh, 820px);
-  max-height: min(94dvh, 820px);
+  height: var(--app-sheet-dynamic-height, auto);
+  max-height: var(--app-sheet-max-height);
   padding: 8px 14px max(18px, env(safe-area-inset-bottom));
   border: 1px solid var(--color-border);
   border-bottom: 0;
@@ -992,7 +993,7 @@
 }
 
 .v-app-sheet__body {
-  max-height: calc(min(94dvh, 820px) - 112px);
+  max-height: calc(var(--app-sheet-max-height) - 112px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;

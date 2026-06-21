@@ -40,6 +40,24 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
 
 test("shared app sheet keeps side margins, sits flush to bottom and closes by dragging the handle down", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
+  await page.goto("/#/home");
+  await waitForApp(page);
+  await page.getByRole("button", { name: /Krediye Çevir/ }).first().click();
+  await expect(page.getByTestId("app-sheet")).toBeVisible();
+  const compactMetrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
+    const rect = sheet.getBoundingClientRect();
+    const body = sheet.querySelector(".v-app-sheet__body");
+    return {
+      height: rect.height,
+      bodyScrollHeight: body?.scrollHeight || 0,
+      bodyClientHeight: body?.clientHeight || 0,
+    };
+  });
+  expect(compactMetrics.height).toBeLessThan(420);
+  expect(compactMetrics.bodyScrollHeight).toBeLessThanOrEqual(compactMetrics.bodyClientHeight + 1);
+  await page.getByTestId("sheet-close-button").click();
+  await expect(page.getByTestId("app-sheet")).toHaveCount(0);
+
   await page.goto("/#/leaderboard");
   await waitForApp(page);
 
@@ -58,6 +76,8 @@ test("shared app sheet keeps side margins, sits flush to bottom and closes by dr
       height: rect.height,
       width: rect.width,
       viewportWidth: window.innerWidth,
+      bodyScrollHeight: body?.scrollHeight || 0,
+      bodyClientHeight: body?.clientHeight || 0,
       bottomLeftRadius: style.borderBottomLeftRadius,
       bottomRightRadius: style.borderBottomRightRadius,
       bodyScrollbarWidth: bodyStyle?.scrollbarWidth,
@@ -66,7 +86,9 @@ test("shared app sheet keeps side margins, sits flush to bottom and closes by dr
   });
 
   expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 12));
-  expect(metrics.height).toBeGreaterThanOrEqual(780);
+  expect(metrics.height).toBeGreaterThanOrEqual(720);
+  expect(metrics.height).toBeGreaterThan(compactMetrics.height + 260);
+  expect(metrics.bodyScrollHeight).toBeLessThanOrEqual(metrics.bodyClientHeight + 1);
   expect(metrics.left).toBeGreaterThanOrEqual(6);
   expect(metrics.right).toBeGreaterThanOrEqual(6);
   expect(metrics.bottom).toBeLessThanOrEqual(1);
