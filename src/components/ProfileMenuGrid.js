@@ -46,39 +46,46 @@ const menuDetails = {
 export function ProfileMenuGrid({ items = [], icon = spriteIcon } = {}) {
   return `
     <section class="profile-menu-section" data-testid="profile-menu-section" aria-label="Müşteriye görünen profil menüleri">
-      <div class="profile-menu-list" data-testid="profile-menu-list">
-        ${items.map((item) => {
-          const detail = menuDetails[item.route] || {};
-          return `
-          <button
-            type="button"
-            class="profile-menu-row"
-            data-testid="profile-menu-card"
-            data-route="${item.route}"
-            aria-label="${item.label}"
-          >
-            <span class="profile-menu-row__icon" aria-hidden="true">${item.svg || icon(item.icon || "chevron-right")}</span>
-            <span class="profile-menu-row__copy">
-              <span class="profile-menu-row__title">${item.label}</span>
-              <span class="profile-menu-row__description">${detail.description || ""}</span>
-            </span>
-            <span class="profile-menu-row__status is-${detail.tone || "success"}">${detail.status || "Tamam"}</span>
-            <span class="profile-menu-row__chevron" aria-hidden="true">${icon("chevron-right")}</span>
-          </button>
-        `;
-        }).join("")}
-      </div>
-      <article class="profile-menu-strength-summary" data-testid="profile-menu-strength-summary" aria-label="Profil gücü özeti">
-        <span class="profile-menu-strength-summary__ring" aria-hidden="true"><strong>78%</strong></span>
-        <span class="profile-menu-strength-summary__copy">
-          <strong>Profil Gücünüz</strong>
-          <small>Harika! Sadece 2 adım kaldı.</small>
-        </span>
-        <span class="profile-menu-strength-summary__points">
-          <strong>+28</strong>
-          <small>Puan</small>
-        </span>
-      </article>
+      <details class="profile-menu-disclosure">
+        <summary
+          class="profile-menu-strength-summary"
+          data-testid="profile-menu-strength-summary"
+          aria-label="Profil gücünüz menüsünü aç"
+        >
+          <span class="profile-menu-strength-summary__ring" aria-hidden="true"><strong>78%</strong></span>
+          <span class="profile-menu-strength-summary__copy">
+            <strong>Profil Gücünüz</strong>
+            <small>Harika! Sadece 2 adım kaldı.</small>
+          </span>
+          <span class="profile-menu-strength-summary__points">
+            <strong>+28</strong>
+            <small>Puan</small>
+          </span>
+          <span class="profile-menu-strength-summary__chevron" aria-hidden="true">${icon("chevron-down")}</span>
+        </summary>
+        <div class="profile-menu-list" data-testid="profile-menu-list">
+          ${items.map((item) => {
+            const detail = menuDetails[item.route] || {};
+            return `
+            <button
+              type="button"
+              class="profile-menu-row"
+              data-testid="profile-menu-card"
+              data-route="${item.route}"
+              aria-label="${item.label}"
+            >
+              <span class="profile-menu-row__icon" aria-hidden="true">${item.svg || icon(item.icon || "chevron-right")}</span>
+              <span class="profile-menu-row__copy">
+                <span class="profile-menu-row__title">${item.label}</span>
+                <span class="profile-menu-row__description">${detail.description || ""}</span>
+              </span>
+              <span class="profile-menu-row__status is-${detail.tone || "success"}">${detail.status || "Tamam"}</span>
+              <span class="profile-menu-row__chevron" aria-hidden="true">${icon("chevron-right")}</span>
+            </button>
+          `;
+          }).join("")}
+        </div>
+      </details>
     </section>
   `;
 }

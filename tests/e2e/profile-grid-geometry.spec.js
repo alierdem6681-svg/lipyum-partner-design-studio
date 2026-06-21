@@ -7,11 +7,17 @@ for (const viewport of [
   { width: 390, height: 844 },
   { width: 430, height: 932 },
 ]) {
-  test(`profile menu list aligns with profile card at ${viewport.width}px`, async ({ page }) => {
+  test(`profile menu list opens below profile strength at ${viewport.width}px`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.setViewportSize(viewport);
     await page.goto("/#/profile");
     await waitForApp(page);
+
+    await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
+    await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
+    await page.getByTestId("profile-menu-strength-summary").click();
+    await expect(page.getByTestId("profile-menu-list")).toBeVisible();
+    await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
 
     const geometry = await page.evaluate(() => {
       const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
@@ -38,8 +44,12 @@ for (const viewport of [
           return label.getBoundingClientRect().height / lineHeight;
         }),
       );
-      const rowWidthSpread = rows.length ? Math.max(...rows.map((row) => row.width)) - Math.min(...rows.map((row) => row.width)) : 999;
-      const rowHeightSpread = rows.length ? Math.max(...rows.map((row) => row.height)) - Math.min(...rows.map((row) => row.height)) : 999;
+      const rowWidthSpread = rows.length
+        ? Math.max(...rows.map((row) => row.width)) - Math.min(...rows.map((row) => row.width))
+        : 999;
+      const rowHeightSpread = rows.length
+        ? Math.max(...rows.map((row) => row.height)) - Math.min(...rows.map((row) => row.height))
+        : 999;
       const verticalGaps = rows.slice(1).map((row, index) => Math.round(row.top - rows[index].bottom));
       return {
         rowCount: rows.length,
@@ -58,6 +68,7 @@ for (const viewport of [
         maxDescriptionLines,
         minVerticalGap: verticalGaps.length ? Math.min(...verticalGaps) : 0,
         summaryWidthDelta: profile && summary ? Math.abs(profile.width - summary.width) : 999,
+        summaryTopGap: profile && summary ? Math.round(summary.top - profile.bottom) : 999,
         summaryText: document.querySelector('[data-testid="profile-menu-strength-summary"]')?.textContent ?? "",
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
@@ -79,6 +90,8 @@ for (const viewport of [
     expect(geometry.maxTitleLines).toBeLessThanOrEqual(1.15);
     expect(geometry.maxDescriptionLines).toBeLessThanOrEqual(1.15);
     expect(geometry.summaryWidthDelta).toBeLessThanOrEqual(2);
+    expect(geometry.summaryTopGap).toBeGreaterThanOrEqual(8);
+    expect(geometry.summaryTopGap).toBeLessThanOrEqual(18);
     expect(geometry.summaryText).toContain("Profil Gücünüz");
     expect(geometry.summaryText).toContain("78%");
     expect(geometry.summaryText).toContain("+28");

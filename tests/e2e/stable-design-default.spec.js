@@ -42,9 +42,12 @@ test("normal URLs use the stable profile, sidebar and bottom bar design", async 
 
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "legacy");
   await expect(page.locator(".partner-profile-card")).toBeVisible();
-  await expect(page.locator(".profile-strength-card")).toBeVisible();
-  await expect(page.getByTestId("profile-menu-list")).toBeVisible();
+  await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
+  await page.getByTestId("profile-menu-strength-summary").click();
+  await expect(page.getByTestId("profile-menu-list")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
 
   const { boxes, ctaCenterDelta, outerSymmetryDelta, innerSymmetryDelta, nonCtaBaselineDelta } = await bottomBarMetrics(page);
@@ -76,10 +79,12 @@ test("Vue preview keeps stable profile design through explicit preview flag", as
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
   await expect(page.locator(".partner-profile-card")).toBeVisible();
-  await expect(page.locator(".profile-strength-card")).toBeVisible();
+  await expect(page.locator(".profile-strength-card")).toHaveCount(0);
+  await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
+  await page.getByTestId("profile-menu-strength-summary").click();
   await expect(page.getByTestId("profile-menu-list")).toBeVisible();
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
-  await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
 });
 
 for (const viewport of bottomViewports) {

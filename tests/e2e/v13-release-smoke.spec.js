@@ -170,8 +170,11 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(profileCard).toBeVisible();
   const profileName = await profileCard.locator("h3").textContent();
   const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
-  await expect(page.getByTestId("profile-menu-list")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
+  await page.getByTestId("profile-menu-strength-summary").click();
+  await expect(page.getByTestId("profile-menu-list")).toBeVisible();
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
   const profileGridGeometry = await page.evaluate(() => {
     const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
     const list = document.querySelector('[data-testid="profile-menu-list"]')?.getBoundingClientRect();
@@ -198,6 +201,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
       cardSpread: cards.length ? Math.max(...cards.map((card) => card.width)) - Math.min(...cards.map((card) => card.width)) : 999,
       maxTitleLines,
       summaryWidthDelta: profile && summary ? Math.abs(profile.width - summary.width) : 999,
+      summaryTopGap: profile && summary ? Math.round(summary.top - profile.bottom) : 999,
       summaryText: document.querySelector('[data-testid="profile-menu-strength-summary"]')?.textContent ?? "",
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
@@ -212,6 +216,8 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(profileGridGeometry.cardSpread).toBeLessThanOrEqual(1);
   expect(profileGridGeometry.maxTitleLines).toBeLessThanOrEqual(1.15);
   expect(profileGridGeometry.summaryWidthDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.summaryTopGap).toBeGreaterThanOrEqual(8);
+  expect(profileGridGeometry.summaryTopGap).toBeLessThanOrEqual(18);
   expect(profileGridGeometry.summaryText).toContain("Profil Gücünüz");
   expect(profileGridGeometry.summaryText).toContain("+28");
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
