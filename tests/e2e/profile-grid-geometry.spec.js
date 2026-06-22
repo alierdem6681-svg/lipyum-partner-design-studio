@@ -73,6 +73,7 @@ for (const viewport of [
         summaryWidthDelta: profile && summary ? Math.abs(profile.width - summary.width) : 999,
         summaryTopGap: profile && summary ? Math.round(summary.top - profile.bottom) : 999,
         summaryText: document.querySelector('[data-testid="profile-menu-strength-summary"]')?.textContent ?? "",
+        summaryRingText: document.querySelector(".profile-menu-strength-summary__ring strong")?.textContent?.trim() ?? "",
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
@@ -97,7 +98,8 @@ for (const viewport of [
     expect(geometry.summaryTopGap).toBeGreaterThanOrEqual(8);
     expect(geometry.summaryTopGap).toBeLessThanOrEqual(18);
     expect(geometry.summaryText).toContain("Profil Gücünüz");
-    expect(geometry.summaryText).toContain("78%");
+    expect(geometry.summaryRingText).toBe("78");
+    expect(geometry.summaryText).not.toContain("78%");
     expect(geometry.summaryText).toContain("+28");
     expect(geometry.overflow).toBeLessThanOrEqual(1);
     expect(errors).toEqual([]);

@@ -12506,9 +12506,10 @@
         position: relative;
         z-index: 1;
         color: var(--color-neutral-900);
-        font-size: 15px;
-        font-weight: 900;
+        font-size: 19px;
+        font-weight: 920;
         line-height: 1;
+        text-align: center;
       }
 
       .profile-menu-strength-summary__copy {
