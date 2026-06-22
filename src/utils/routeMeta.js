@@ -120,6 +120,26 @@ const titleOverrides = {
     title: "Performans Skoru",
     subtitle: "İş görünürlüğünü etkileyen kalite özeti",
   },
+  "/customer-management": {
+    title: "Müşteri Yönetimi",
+    subtitle: "",
+    trailingActions: [],
+  },
+  "/account-transactions": {
+    title: "Hesap Hareketleri",
+    subtitle: "",
+    trailingActions: [],
+  },
+  "/digital-service-form": {
+    title: "Dijital Servis Formu",
+    subtitle: "",
+    trailingActions: [],
+  },
+  "/create-offer": {
+    title: "Teklif Oluştur",
+    subtitle: "",
+    trailingActions: [],
+  },
   "/partner-card-preview": {
     title: "Partner Kartı",
     subtitle: "Public rozet ve paylaşım önizlemesi",

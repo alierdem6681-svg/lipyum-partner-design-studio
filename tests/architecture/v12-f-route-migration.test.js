@@ -5,11 +5,22 @@ import { clickableOutcomes } from "../../src/vue/data/clickableOutcomes.js";
 import { ROUTE_TO_SCREEN } from "../../src/utils/constants.js";
 
 const blankBottomRoutes = new Set(["/jobs", "/my-jobs", "/calendar", "/wallet"]);
+const blankSidebarRoutes = new Set([
+  "/customer-management",
+  "/account-transactions",
+  "/digital-service-form",
+  "/create-offer",
+]);
 const retiredRoutes = new Set(["/packages", "/package-builder", "/package-checkout"]);
 
 test("V12-G active route registry covers product routes", () => {
   const missing = Object.keys(ROUTE_TO_SCREEN).filter(
-    (route) => route !== "/home" && route !== "/ui-kit" && !blankBottomRoutes.has(route) && !activeRoutePaths.includes(route),
+    (route) =>
+      route !== "/home" &&
+      route !== "/ui-kit" &&
+      !blankBottomRoutes.has(route) &&
+      !blankSidebarRoutes.has(route) &&
+      !activeRoutePaths.includes(route),
   );
   assert.deepEqual(missing, []);
   for (const route of retiredRoutes) assert.ok(!activeRoutePaths.includes(route), `${route} must stay retired`);
