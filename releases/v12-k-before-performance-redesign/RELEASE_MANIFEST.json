@@ -1,0 +1,27 @@
+{
+  "name": "v12-k-before-performance-redesign",
+  "createdAt": "2026-06-22",
+  "commitSha": "d52077033385b07e9b261842057055000a8f26bd",
+  "branch": "main",
+  "backupTag": "v12-k-before-performance-redesign",
+  "archiveBranch": "archive/v12-k-before-performance-redesign",
+  "runtimePolicy": {
+    "changedByThisTask": false,
+    "defaultRuntimeAtBackup": "vue",
+    "legacyRuntime": "not active in this main snapshot"
+  },
+  "scope": "Backup before performance score flow redesign",
+  "productionPolicy": {
+    "mainMerge": false,
+    "productionDeploy": false,
+    "vercelDeploy": false
+  },
+  "rollback": {
+    "tag": "git checkout v12-k-before-performance-redesign",
+    "archiveBranch": "git switch archive/v12-k-before-performance-redesign"
+  },
+  "notes": [
+    "Backup tag and archive branch point to the exact pre-change main SHA.",
+    "Performance redesign work is implemented on a separate feature branch."
+  ]
+}

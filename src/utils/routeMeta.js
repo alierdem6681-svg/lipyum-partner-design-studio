@@ -121,7 +121,8 @@ const titleOverrides = {
   },
   "/subscription": {
     title: "Aboneliğim",
-    subtitle: "Gold, Pro ve VIP avantajlarını yönet",
+    subtitle: "Daha görünür ol, daha hızlı destek al.",
+    ctaVariant: "hidden",
   },
   "/wallet": {
     title: "Cüzdan",
@@ -138,12 +139,38 @@ const titleOverrides = {
     subtitle: "Bonus kazanç geçmişi ve detayları",
   },
   "/performance-score": {
-    title: "Performans Skoru",
-    subtitle: "İş görünürlüğünü etkileyen kalite özeti",
+    title: "Daha Fazla İş Al",
+    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
+    trailingActions: [],
+  },
+  "/performance-score/task/job-result": {
+    title: "İş Bilgilerini Gir",
+    subtitle: "Tamamlayınca puanın hemen güncellenir.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/tasks": {
+    title: "Tüm Görevler",
+    subtitle: "En kolay ve yüksek puanlı işler üstte.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/details": {
+    title: "Puanın Nasıl Hesaplanır?",
+    subtitle: "Toplam 100 puan üzerinden hesaplanır.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/success": {
+    title: "Görev Tamamlandı",
+    subtitle: "Yaptığın işlem puanına eklendi.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
   },
   "/performance-improve": {
-    title: "Performansımı Artır",
-    subtitle: "Skorunu yükselten kriterleri takip et",
+    title: "Daha Fazla İş Al",
+    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
+    trailingActions: [],
   },
   "/customer-management": {
     title: "Müşteri Yönetimi",
@@ -195,7 +222,7 @@ export const routeMeta = Object.fromEntries(
         infoSheet: override.infoSheet || null,
         showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
-        ctaVariant: "subpage",
+        ctaVariant: override.ctaVariant || "subpage",
         parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,

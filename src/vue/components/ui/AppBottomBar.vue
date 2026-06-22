@@ -36,7 +36,7 @@ const tabs = BOTTOM_TABS;
       </span>
       <AppIcon v-else-if="!tab.featured" :name="tab.icon" :size="24" class-name="icon" />
       <span class="v-bottom__label" data-fit-text>{{ tab.label }}</span>
-      <em v-if="tab.featured && notificationCount" class="v-bottom__badge bottom-badge">{{ notificationCount }}</em>
+      <em v-if="tab.featured && showCta && notificationCount" class="v-bottom__badge bottom-badge">{{ notificationCount }}</em>
     </button>
   </nav>
 </template>

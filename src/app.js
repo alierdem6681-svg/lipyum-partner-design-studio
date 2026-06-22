@@ -1,9 +1,9 @@
 import { resolveDeepLinkRoute } from "./utils/deepLinks.js";
-import { mountVueApp } from "./vue/main.js";
 
 const resolvedDeepLinkRoute = resolveDeepLinkRoute();
+const currentHash = window.location.hash;
 
-if (resolvedDeepLinkRoute && !window.location.hash) {
+if (resolvedDeepLinkRoute && (!currentHash || currentHash === "#/home")) {
   window.history.replaceState(
     {},
     "",
@@ -44,8 +44,13 @@ function renderVueBootError(error) {
 
 markRuntime("vue");
 
-try {
-  mountVueApp();
-} catch (error) {
-  renderVueBootError(error);
+async function bootVue() {
+  try {
+    const { mountVueApp } = await import("./vue/main.js");
+    mountVueApp();
+  } catch (error) {
+    renderVueBootError(error);
+  }
 }
+
+bootVue();
