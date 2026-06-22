@@ -237,18 +237,17 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
     ),
   });
   await expect(page.locator(".profile-photo-editor-preview")).toBeVisible();
-  await page.getByTestId("profile-photo-zoom").evaluate((input) => {
-    input.value = "3";
-    input.dispatchEvent(new Event("input", { bubbles: true }));
+  await expect(page.getByTestId("profile-photo-crop-area")).toBeVisible();
+  await expect(page.locator(".profile-photo-controls input")).toHaveCount(0);
+  await page.getByTestId("profile-photo-zoom-in").click();
+  await page.getByTestId("profile-photo-zoom-in").click();
+  await expect(page.locator(".profile-photo-zoom-label")).toContainText("4/5");
+  await page.getByTestId("profile-photo-crop-area").dragTo(page.getByTestId("profile-photo-crop-area"), {
+    sourcePosition: { x: 110, y: 110 },
+    targetPosition: { x: 72, y: 138 },
   });
-  await page.getByTestId("profile-photo-x").evaluate((input) => {
-    input.value = "1";
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-  });
-  await page.getByTestId("profile-photo-y").evaluate((input) => {
-    input.value = "3";
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-  });
+  await page.getByTestId("profile-photo-center").click();
+  await expect(page.locator(".profile-photo-zoom-label")).toContainText("2/5");
   await page.getByTestId("profile-photo-save").click();
   await expect(page.getByRole("dialog", { name: "Profil fotoğrafı" })).toHaveCount(0);
   const updatedAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
