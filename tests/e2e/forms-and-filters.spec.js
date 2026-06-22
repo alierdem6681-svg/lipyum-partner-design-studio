@@ -34,6 +34,18 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
   await expect(page.locator('[data-testid="reviews-filter-chip"] .filter-chip-dot')).toHaveCount(0);
 
+  const repliedCard = page.getByTestId("review-card").filter({ hasText: "Murat K." });
+  await expect(repliedCard.getByTestId("review-reply-button")).toHaveCount(0);
+  await expect(repliedCard.locator(".review-replied-pill")).toHaveCount(0);
+  await expect(repliedCard.getByTestId("review-edit-reply-button")).toBeVisible();
+  await repliedCard.getByTestId("review-edit-reply-button").click();
+  await expect(repliedCard.getByTestId("review-reply-editor")).toBeVisible();
+  await expect(repliedCard.getByTestId("review-reply-textarea")).toHaveValue(/Geri bildiriminiz/);
+  await repliedCard.getByTestId("review-reply-textarea").fill("Geri bildiriminiz için teşekkür ederiz. Ekibimiz not aldı.");
+  await repliedCard.getByTestId("review-reply-submit").click();
+  await expect(repliedCard.getByText("Ekibimiz not aldı.")).toBeVisible();
+  await expect(repliedCard.getByTestId("review-edit-reply-button")).toBeVisible();
+
   await page.locator('[data-filter="unanswered"]').click();
   await expect(page.locator('[data-filter="unanswered"]')).toHaveClass(/is-active/);
   await expect(page.getByTestId("review-card").first()).toBeVisible();

@@ -2179,6 +2179,32 @@
   padding: 8px 10px;
 }
 
+.review-partner-reply-head {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.review-edit-reply-btn {
+  flex: 0 0 auto;
+  min-width: 72px;
+  min-height: 28px;
+  border: 1px solid var(--color-primary-border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-primary-dark);
+  padding: 0 10px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+}
+
+.review-edit-reply-btn:active {
+  transform: scale(0.97);
+}
+
 .review-reply-editor {
   display: grid;
   gap: 8px;
