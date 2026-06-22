@@ -121,7 +121,8 @@ const titleOverrides = {
   },
   "/subscription": {
     title: "Aboneliğim",
-    subtitle: "Gold, Pro ve VIP avantajlarını yönet",
+    subtitle: "Daha görünür ol, daha hızlı destek al.",
+    ctaVariant: "hidden",
   },
   "/wallet": {
     title: "Cüzdan",
@@ -195,7 +196,7 @@ export const routeMeta = Object.fromEntries(
         infoSheet: override.infoSheet || null,
         showBottomBar: true,
         activeBottomTab: bottomTabByRoute.get(route) || null,
-        ctaVariant: "subpage",
+        ctaVariant: override.ctaVariant || "subpage",
         parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,

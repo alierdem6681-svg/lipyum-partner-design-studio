@@ -8,7 +8,7 @@ const appSource = fs.readFileSync(path.join(root, "src/app.js"), "utf8");
 const vueMainSource = fs.readFileSync(path.join(root, "src/vue/main.js"), "utf8");
 
 test("normal URLs mount Vue directly", () => {
-  assert.match(appSource, /import\s+\{\s*mountVueApp\s*\}\s+from\s+["']\.\/vue\/main\.js["']/, "app.js must import Vue root");
+  assert.match(appSource, /import\(["']\.\/vue\/main\.js["']\)/, "app.js must import Vue root before mounting");
   assert.match(appSource, /markRuntime\(["']vue["']\)/, "normal URL must mark Vue");
   assert.match(appSource, /mountVueApp\(\)/, "normal URL must mount Vue");
   assert.doesNotMatch(appSource, /legacyApp/, "legacy runtime must not be imported");

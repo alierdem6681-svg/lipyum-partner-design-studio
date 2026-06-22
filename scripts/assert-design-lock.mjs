@@ -103,7 +103,7 @@ if (DESIGN_SENSITIVE_PREFIXES.length < 20) {
 }
 
 const appJs = read("src/app.js");
-requireIncludes("src/app.js", appJs, "import { mountVueApp } from \"./vue/main.js\";");
+requireIncludes("src/app.js", appJs, "import(\"./vue/main.js\")");
 requireIncludes("src/app.js", appJs, "markRuntime(\"vue\")");
 requireIncludes("src/app.js", appJs, "mountVueApp()");
 forbidIncludes("src/app.js", appJs, "legacyApp");

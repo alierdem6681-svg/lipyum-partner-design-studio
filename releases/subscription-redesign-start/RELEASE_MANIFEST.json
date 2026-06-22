@@ -1,0 +1,14 @@
+{
+  "name": "subscription-redesign-start",
+  "commitSha": "b8cbba4377c8cab37c6f7024d04e7a1063bf5faa",
+  "branch": "main",
+  "createdAt": "2026-06-22T19:18:00+03:00",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5173/",
+  "runtime": "vue",
+  "route": "/subscription",
+  "scope": "Subscription conversion redesign start backup",
+  "backupTag": "subscription-redesign-start",
+  "archiveBranch": "archive/subscription-redesign-start",
+  "rollback": "git checkout subscription-redesign-start"
+}

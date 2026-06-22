@@ -28,6 +28,7 @@
     "test:bottom-labels": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/bottom-labels.spec.js",
     "test:retired-package-routes": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/retired-package-routes.spec.js",
     "test:subscription-retained": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/subscription-retained.spec.js",
+    "test:subscription-conversion-flow": "node scripts/run-local-node.mjs --test tests/unit/subscriptionConversion.test.js && node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test subscription-conversion-flow.spec.js",
     "test:package-feature-removed": "node_modules/node/bin/node --test tests/architecture/package-feature-removed.test.js",
     "test:referral-flow": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/referral-flow.spec.js",
     "test:support-ticket": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/support-ticket.spec.js",
