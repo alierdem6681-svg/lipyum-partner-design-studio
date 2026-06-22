@@ -22,6 +22,10 @@ export const routes = [
   "/bonus",
   "/performance-score",
   "/performance-improve",
+  "/performance-score/task/job-result",
+  "/performance-score/tasks",
+  "/performance-score/details",
+  "/performance-score/success",
   "/invoices",
   "/income-expense",
   "/appointment-link",
@@ -56,7 +60,7 @@ export const criticalRoutes = [
   "/reviews",
   "/leaderboard",
   "/subscription",
-  "/performance-improve",
+  "/performance-score",
   "/partner-card-preview",
 ];
 

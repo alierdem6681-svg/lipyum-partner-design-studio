@@ -15,7 +15,11 @@ import MyJobsPage from "../pages/MyJobsPage.vue";
 import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
-import PerformanceImprovePage from "../pages/PerformanceImprovePage.vue";
+import PerformanceDetailsPage from "../pages/PerformanceDetailsPage.vue";
+import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
+import PerformanceSuccessPage from "../pages/PerformanceSuccessPage.vue";
+import PerformanceTaskPage from "../pages/PerformanceTaskPage.vue";
+import PerformanceTasksPage from "../pages/PerformanceTasksPage.vue";
 import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
@@ -48,7 +52,6 @@ const simpleContentRoutes = new Set([
   "/account-settings",
   "/contact-settings",
   "/bonus",
-  "/performance-score",
   "/customers",
   "/invoices",
   "/income-expense",
@@ -58,7 +61,11 @@ const simpleContentRoutes = new Set([
 const dedicatedRouteComponents = {
   "/profile": ProfilePage,
   "/partner-card-preview": PartnerCardPreviewPage,
-  "/performance-improve": PerformanceImprovePage,
+  "/performance-score": PerformanceScorePage,
+  "/performance-score/task/job-result": PerformanceTaskPage,
+  "/performance-score/tasks": PerformanceTasksPage,
+  "/performance-score/details": PerformanceDetailsPage,
+  "/performance-score/success": PerformanceSuccessPage,
   "/photo-gallery": PhotoGalleryPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
@@ -106,6 +113,7 @@ const routes = [
   ...blankBottomRoutes,
   ...simpleRoutes,
   ...dedicatedRoutes,
+  { path: "/performance-improve", redirect: "/performance-score" },
   { path: "/packages", redirect: "/subscription" },
   { path: "/package-builder", redirect: "/subscription" },
   { path: "/package-checkout", redirect: "/subscription" },
