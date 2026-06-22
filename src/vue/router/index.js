@@ -1,6 +1,7 @@
 ﻿import { createRouter, createWebHashHistory } from "vue-router";
 import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "../../utils/constants.js";
 import { activeRoutePaths } from "../data/activeRouteContent.js";
+import AccountTransactionsPage from "../pages/AccountTransactionsPage.vue";
 import BlankBottomRoutePage from "../pages/BlankBottomRoutePage.vue";
 import CalendarPage from "../pages/CalendarPage.vue";
 import ContentRoutePage from "../pages/ContentRoutePage.vue";
@@ -40,7 +41,6 @@ const blankBottomRoutes = [
 
 const emptySidebarRoutes = [
   { path: "/customer-management", title: "Müşteri Yönetimi", testId: "customer-management-page" },
-  { path: "/account-transactions", title: "Hesap Hareketleri", testId: "account-transactions-page" },
   { path: "/digital-service-form", title: "Dijital Servis Formu", testId: "digital-service-form-page" },
   { path: "/create-offer", title: "Teklif Oluştur", testId: "create-offer-page" },
 ].map((item) => ({
@@ -96,6 +96,7 @@ const dedicatedRouteComponents = {
   "/referral/partners": ReferralPartnersPage,
   "/referral-earnings": ReferralEarningsPage,
   "/job-referral": JobReferralPage,
+  "/account-transactions": AccountTransactionsPage,
 };
 
 const simpleRoutes = activeRoutePaths

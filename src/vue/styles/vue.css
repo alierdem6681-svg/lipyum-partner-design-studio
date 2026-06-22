@@ -5095,3 +5095,212 @@
     padding-inline: 2px;
   }
 }
+
+.account-transactions-page {
+  display: grid;
+  gap: 12px;
+}
+
+.account-transactions-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.account-transactions-summary span {
+  min-height: 72px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--lp-card);
+  box-shadow: var(--shadow-soft);
+  padding: 12px;
+}
+
+.account-transactions-summary small,
+.account-ledger-head,
+.account-ledger-type small,
+.account-ledger-load-note {
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+}
+
+.account-transactions-summary strong {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.account-transactions-summary em,
+.account-ledger-money em {
+  color: inherit;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.account-ledger-card {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--lp-card);
+  box-shadow: var(--shadow-card);
+}
+
+.account-ledger-head,
+.account-ledger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 70px;
+  column-gap: 6px;
+  align-items: center;
+}
+
+.account-ledger-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 42px;
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--soft) 74%, var(--lp-card));
+  padding: 0 12px;
+}
+
+.account-ledger-head span:nth-child(2),
+.account-ledger-head span:nth-child(3) {
+  text-align: right;
+}
+
+.account-ledger-list {
+  display: grid;
+}
+
+.account-ledger-row {
+  min-height: 66px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent);
+  padding: 9px 12px;
+}
+
+.account-ledger-row:last-child {
+  border-bottom: 0;
+}
+
+.account-ledger-type {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+}
+
+.account-ledger-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.account-ledger-icon.is-wallet {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.account-ledger-icon.is-gift {
+  background: var(--color-warning-soft);
+  color: var(--color-premium-gold);
+}
+
+.account-ledger-icon.is-x {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.account-ledger-type span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.account-ledger-type strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: 900;
+  line-height: 1.18;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.account-ledger-money {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 2px;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.account-ledger-money.positive {
+  color: var(--color-primary-dark);
+}
+
+.account-ledger-money.negative {
+  color: var(--color-danger);
+}
+
+.account-ledger-money.balance {
+  color: var(--text-primary);
+}
+
+.account-ledger-sentinel {
+  height: 1px;
+}
+
+.account-ledger-load-note {
+  margin: 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--soft);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .account-ledger-head,
+  .account-ledger-row {
+    grid-template-columns: minmax(0, 1fr) 62px 62px;
+    column-gap: 5px;
+  }
+
+  .account-ledger-head,
+  .account-ledger-row {
+    padding-inline: 8px;
+  }
+
+  .account-ledger-type {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .account-ledger-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+  }
+
+  .account-ledger-type strong,
+  .account-ledger-money {
+    font-size: 12px;
+  }
+}
