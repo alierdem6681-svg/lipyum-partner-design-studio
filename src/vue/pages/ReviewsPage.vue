@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { reviewSummary, reviews } from "../../data/mockData.js";
 import AppCard from "../components/ui/AppCard.vue";
+import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import OnayModal from "../components/ui/OnayModal.vue";
@@ -30,6 +31,15 @@ const filters = [
   { key: "one", label: "1 Puan" },
 ];
 
+const reviewFilterChips = computed(() =>
+  filters.map((filter) => ({
+    value: filter.key,
+    filterId: filter.key,
+    label: filter.label,
+    testId: "reviews-filter-chip",
+  })),
+);
+
 const filteredReviews = computed(() => {
   if (activeFilter.value === "unanswered") return reviews.filter((review) => !review.replied && !sentReplies.value[review.id]);
   if (activeFilter.value === "five") return reviews.filter((review) => review.rating === 5);
@@ -44,10 +54,6 @@ const hasMoreReviews = computed(() => visibleReviews.value.length < filteredRevi
 
 function renderStars(rating) {
   return Array.from({ length: 5 }, (_, index) => index < Math.round(rating));
-}
-
-function setFilter(filterKey) {
-  activeFilter.value = filterKey;
 }
 
 function isReviewReplied(review) {
@@ -180,19 +186,12 @@ onBeforeUnmount(() => {
       </div>
     </AppCard>
 
-    <section class="filter-chip-rail reviews-filter-rail" aria-label="Yorum filtreleri">
-      <button
-        v-for="filter in filters"
-        :key="filter.key"
-        :class="['filter-chip', activeFilter === filter.key ? 'is-active' : '']"
-        type="button"
-        :data-review-filter="filter.key"
-        data-testid="reviews-filter-chip"
-        @click="setFilter(filter.key)"
-      >
-        <span class="responsive-button-label">{{ filter.label }}</span>
-      </button>
-    </section>
+    <AppFilterChips
+      v-model="activeFilter"
+      :items="reviewFilterChips"
+      aria-label="Yorum filtreleri"
+      data-testid="reviews-filter-chips"
+    />
 
     <section class="review-list-v4" aria-label="Yorum listesi">
       <div class="section-title compact">

@@ -15,30 +15,33 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   await expect(page.locator(".review-summary-growth")).toContainText("+18 yorum");
 
   const filterState = await page.evaluate(() => {
+    const rail = document.querySelector('[data-testid="reviews-filter-chips"]');
     const chips = Array.from(document.querySelectorAll('[data-testid="reviews-filter-chip"]'));
     const boxes = chips.map((chip) => chip.getBoundingClientRect());
     return {
+      hasSharedRail: rail?.classList.contains("filter-chip-rail"),
       labels: chips.map((chip) => chip.textContent.trim().replace(/\s+/g, " ")),
       gaps: boxes.slice(1).map((box, index) => Math.round(box.left - boxes[index].right)),
       filterToListGap: Math.round(
         document.querySelector(".review-list-v4").getBoundingClientRect().top -
-          document.querySelector(".reviews-filter-rail").getBoundingClientRect().bottom,
+          rail.getBoundingClientRect().bottom,
       ),
     };
   });
+  expect(filterState.hasSharedRail).toBe(true);
   expect(filterState.labels).toEqual(["Tümü", "Yanıtlanmamış", "5 Puan", "4 Puan", "3 Puan", "2 Puan", "1 Puan"]);
   expect(filterState.gaps.every((gap) => gap >= 8)).toBe(true);
   expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
 
-  await page.locator('[data-review-filter="unanswered"]').click();
-  await expect(page.locator('[data-review-filter="unanswered"]')).toHaveClass(/is-active/);
+  await page.locator('[data-filter="unanswered"]').click();
+  await expect(page.locator('[data-filter="unanswered"]')).toHaveClass(/is-active/);
   await expect(page.getByTestId("review-card").first()).toBeVisible();
   await page.getByTestId("review-reply-button").first().click();
   await expect(page.getByTestId("review-reply-editor")).toBeVisible();
   await page.getByTestId("review-reply-textarea").fill("Nazik geri bildiriminiz için teşekkür ederiz. Ekibimiz süreci takip ediyor.");
   await page.getByTestId("review-reply-submit").click();
   await expect(page.getByTestId("review-reply-editor")).toHaveCount(0);
-  await page.locator('[data-review-filter="all"]').click();
+  await page.locator('[data-filter="all"]').click();
   await expect(page.getByTestId("review-card").filter({ hasText: "Senin yanıtın" }).first()).toBeVisible();
 
   await page.getByTestId("review-report-button").first().click();
@@ -47,7 +50,7 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   await page.getByTestId("onay-modal-cancel").click();
   await expect(page.getByTestId("onay-modal")).toHaveCount(0);
 
-  await page.locator('[data-review-filter="all"]').click();
+  await page.locator('[data-filter="all"]').click();
   await page.getByTestId("reviews-load-sentinel").scrollIntoViewIfNeeded();
   await expect.poll(() => page.getByTestId("review-card").count()).toBeGreaterThan(4);
 
