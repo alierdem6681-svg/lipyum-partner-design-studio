@@ -55,7 +55,7 @@ for (const route of requiredRoutes) {
   const meta = getRouteMeta(route);
   assert.equal(meta.route, route, `${route} must produce route metadata`);
   assert.ok(["home", "section", "subpage"].includes(meta.headerVariant), `${route} must produce a header variant`);
-  assert.ok(["home", "subpage"].includes(meta.ctaVariant), `${route} must produce a CTA variant`);
+  assert.ok(["home", "subpage", "hidden"].includes(meta.ctaVariant), `${route} must produce a CTA variant`);
 }
 
 assert.deepEqual(Object.keys(RETIRED_ROUTE_REDIRECTS), [

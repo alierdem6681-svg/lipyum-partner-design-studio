@@ -26,6 +26,7 @@ const partnerPathRoutes = {
   "/partner/job-referral": "/job-referral",
   "/partner/satisfaction": "/satisfaction",
   "/partner/card": "/partner-card-preview",
+  "/partner/packages": "/subscription",
 };
 
 function normalizeHostedPathname(pathname) {
@@ -45,7 +46,7 @@ export function resolveDeepLinkRoute(urlLike = window.location.href) {
   if (deepLink && deepLinkAliases[deepLink]) return deepLinkAliases[deepLink];
   if (deepLink === "packages") return "/subscription";
 
-  const pathname = normalizeHostedPathname(url.pathname);
+  const pathname = normalizeHostedPathname(url.pathname).replace(/\/+$/, "") || "/";
   if (RETIRED_ROUTE_REDIRECTS[pathname]) return RETIRED_ROUTE_REDIRECTS[pathname];
   return partnerPathRoutes[pathname] || "";
 }
