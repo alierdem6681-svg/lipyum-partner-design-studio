@@ -36,6 +36,7 @@ const reviewFilterChips = computed(() =>
     value: filter.key,
     filterId: filter.key,
     label: filter.label,
+    dot: false,
     testId: "reviews-filter-chip",
   })),
 );
