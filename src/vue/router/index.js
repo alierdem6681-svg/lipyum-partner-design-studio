@@ -1,6 +1,7 @@
 ﻿import { createRouter, createWebHashHistory } from "vue-router";
 import { ROUTE_TITLES, ROUTE_TO_SCREEN } from "../../utils/constants.js";
 import { activeRoutePaths } from "../data/activeRouteContent.js";
+import BlankBottomRoutePage from "../pages/BlankBottomRoutePage.vue";
 import CalendarPage from "../pages/CalendarPage.vue";
 import ContentRoutePage from "../pages/ContentRoutePage.vue";
 import CreateTicketPage from "../pages/CreateTicketPage.vue";
@@ -36,6 +37,24 @@ const blankBottomRoutes = [
   { path: "/calendar", name: "calendar", component: CalendarPage },
   { path: "/wallet", name: "wallet", component: WalletPage },
 ];
+
+const emptySidebarRoutes = [
+  { path: "/customer-management", title: "Müşteri Yönetimi", testId: "customer-management-page" },
+  { path: "/account-transactions", title: "Hesap Hareketleri", testId: "account-transactions-page" },
+  { path: "/digital-service-form", title: "Dijital Servis Formu", testId: "digital-service-form-page" },
+  { path: "/create-offer", title: "Teklif Oluştur", testId: "create-offer-page" },
+].map((item) => ({
+  path: item.path,
+  name: `empty-${item.path.replace(/\W+/g, "-")}`,
+  component: BlankBottomRoutePage,
+  props: {
+    title: item.title,
+    testId: item.testId,
+  },
+  meta: {
+    title: item.title,
+  },
+}));
 
 const simpleContentRoutes = new Set([
   "/about",
@@ -104,6 +123,7 @@ const dedicatedRoutes = Object.entries(dedicatedRouteComponents).map(([route, co
 const routes = [
   { path: "/home", name: "home", component: HomePage },
   ...blankBottomRoutes,
+  ...emptySidebarRoutes,
   ...simpleRoutes,
   ...dedicatedRoutes,
   { path: "/packages", redirect: "/subscription" },

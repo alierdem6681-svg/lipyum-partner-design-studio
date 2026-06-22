@@ -40,6 +40,7 @@ import {
   WalletPage,
   WorkingHoursPage,
 } from "./index.js";
+import { BlankRoutePage } from "./BlankRoutePage.js";
 
 export const pageRoutes = {
   "/home": HomePage,
@@ -66,6 +67,10 @@ export const pageRoutes = {
   "/referral-earnings": ReferralEarningsPage,
   "/subscription": SubscriptionPage,
   "/bonus": BonusPage,
+  "/customer-management": () => BlankRoutePage({ title: "Müşteri Yönetimi", route: "/customer-management", showBack: true }),
+  "/account-transactions": () => BlankRoutePage({ title: "Hesap Hareketleri", route: "/account-transactions", showBack: true }),
+  "/digital-service-form": () => BlankRoutePage({ title: "Dijital Servis Formu", route: "/digital-service-form", showBack: true }),
+  "/create-offer": () => BlankRoutePage({ title: "Teklif Oluştur", route: "/create-offer", showBack: true }),
   "/appointment-link": AppointmentLinkPage,
   "/performance-score": PerformanceScorePage,
   "/account-settings": AccountSettingsPage,
