@@ -11,14 +11,6 @@ const INITIAL_VISIBLE_COUNT = 7;
 const LOAD_INCREMENT = 4;
 const defaultNotifications = sourceNotifications.slice(0, DEFAULT_NOTIFICATION_LIMIT);
 
-const FILTER_CHIPS = [
-  { value: "all", label: "Tümü", testId: "notifications-filter-pill" },
-  { value: "read", label: "Okunanlar", size: "wide", testId: "notifications-filter-pill" },
-  { value: "unread", label: "Okunmayanlar", size: "xwide", testId: "notifications-filter-pill" },
-  { value: "mark-all-read", label: "Tümü okundu", kind: "action", testId: "notifications-mark-all-read" },
-  { value: "delete-all", label: "Tümünü sil", kind: "action", tone: "danger", testId: "notifications-delete-all" },
-];
-
 const router = useRouter();
 const activeFilter = ref("all");
 const visibleCount = ref(INITIAL_VISIBLE_COUNT);
@@ -40,6 +32,18 @@ const displayedItems = computed(() => {
   if (activeFilter.value === "read") return allItems.value.filter((item) => item.isRead);
   if (activeFilter.value === "unread") return allItems.value.filter((item) => !item.isRead);
   return allItems.value;
+});
+const filterChips = computed(() => {
+  const readCount = allItems.value.filter((item) => item.isRead).length;
+  const unreadCount = allItems.value.filter((item) => !item.isRead).length;
+
+  return [
+    { value: "all", label: "Tümü", count: allItems.value.length, dot: true, tone: "primary", testId: "notifications-filter-pill" },
+    { value: "read", label: "Okunanlar", count: readCount, dot: true, tone: "success", size: "wide", testId: "notifications-filter-pill" },
+    { value: "unread", label: "Okunmamış", count: unreadCount, dot: true, tone: "info", size: "xwide", testId: "notifications-filter-pill" },
+    { value: "mark-all-read", label: "Tümü okundu", kind: "action", testId: "notifications-mark-all-read" },
+    { value: "delete-all", label: "Tümünü sil", kind: "action", tone: "danger", testId: "notifications-delete-all" },
+  ];
 });
 const visibleItems = computed(() => displayedItems.value.slice(0, Math.min(visibleCount.value, displayedItems.value.length)));
 const showMoreIndicator = computed(() => displayedItems.value.length > visibleCount.value);
@@ -151,7 +155,7 @@ onBeforeUnmount(() => {
   <AppPage title="Bildirimler" class="notifications-page" data-testid="notifications-page">
     <AppFilterChips
       v-model="activeFilter"
-      :items="FILTER_CHIPS"
+      :items="filterChips"
       aria-label="Bildirim filtreleri"
       sticky
       data-testid="notifications-filter-chips"

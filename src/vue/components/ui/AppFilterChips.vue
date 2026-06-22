@@ -11,6 +11,7 @@ const emit = defineEmits(["update:modelValue", "select"]);
 function getChipClass(item) {
   return [
     "filter-chip",
+    item.tone ? `is-tone-${item.tone}` : "",
     {
       "is-active": props.modelValue === item.value,
       "is-action": item.kind === "action",
@@ -37,11 +38,13 @@ function selectItem(item) {
       type="button"
       :data-testid="item.testId"
       :data-filter="item.filterId || item.value"
-      :aria-pressed="item.kind === 'action' ? undefined : modelValue === item.value ? 'true' : 'false'"
+      :aria-pressed="item.kind === 'action' ? undefined : props.modelValue === item.value ? 'true' : 'false'"
       :disabled="item.disabled"
       @click="selectItem(item)"
     >
-      {{ item.label }}
+      <span v-if="item.dot" class="filter-chip-dot" aria-hidden="true"></span>
+      <span class="filter-chip-label">{{ item.label }}</span>
+      <span v-if="item.count !== undefined" class="filter-chip-count" aria-hidden="true">{{ item.count }}</span>
     </button>
   </div>
 </template>
