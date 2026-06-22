@@ -29,6 +29,13 @@ test("notifications use wide filter pills and header settings navigation", async
   await expect(counts.nth(0)).toHaveText("15");
   await expect(counts.nth(2)).toHaveText("5");
   await expect(actions).toHaveClass(/filter-chip-rail/);
+  await expect
+    .poll(async () =>
+      page
+        .getByTestId("notifications-filter-pill")
+        .evaluateAll((buttons) => buttons.map((button) => getComputedStyle(button).boxShadow)),
+    )
+    .toEqual(["none", "none", "none"]);
   await expect(actions.getByTestId("notification-settings-button")).toHaveCount(0);
   await expect(page.getByTestId("notifications-mark-all-read")).toBeVisible();
   await expect(page.getByTestId("notifications-delete-all")).toBeVisible();
