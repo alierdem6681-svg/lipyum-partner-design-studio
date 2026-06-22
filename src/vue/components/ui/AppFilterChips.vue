@@ -22,6 +22,10 @@ function getChipClass(item) {
   ];
 }
 
+function getDotClass(item) {
+  return ["filter-chip-dot", item.tone ? `is-tone-${item.tone}` : "is-tone-primary"];
+}
+
 function selectItem(item) {
   emit("select", item);
   if (item.kind === "action" || item.disabled) return;
@@ -42,7 +46,7 @@ function selectItem(item) {
       :disabled="item.disabled"
       @click="selectItem(item)"
     >
-      <span v-if="item.dot" class="filter-chip-dot" aria-hidden="true"></span>
+      <span v-if="item.dot" :class="getDotClass(item)" aria-hidden="true"></span>
       <span class="filter-chip-label">{{ item.label }}</span>
       <span v-if="item.count !== undefined" class="filter-chip-count" aria-hidden="true">{{ item.count }}</span>
     </button>
