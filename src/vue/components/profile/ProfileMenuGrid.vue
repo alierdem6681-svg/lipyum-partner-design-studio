@@ -70,7 +70,7 @@ const menuItems = computed(() =>
       @click="menuOpen = !menuOpen"
     >
       <span class="profile-menu-strength-summary__ring" aria-hidden="true">
-        <strong>78%</strong>
+        <strong>78</strong>
       </span>
       <span class="profile-menu-strength-summary__copy">
         <strong>Profil Gücünüz</strong>

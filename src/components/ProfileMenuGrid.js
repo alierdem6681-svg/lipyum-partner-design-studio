@@ -52,7 +52,7 @@ export function ProfileMenuGrid({ items = [], icon = spriteIcon } = {}) {
           data-testid="profile-menu-strength-summary"
           aria-label="Profil gücünüz menüsünü aç"
         >
-          <span class="profile-menu-strength-summary__ring" aria-hidden="true"><strong>78%</strong></span>
+          <span class="profile-menu-strength-summary__ring" aria-hidden="true"><strong>78</strong></span>
           <span class="profile-menu-strength-summary__copy">
             <strong>Profil Gücünüz</strong>
             <small>Harika! Sadece 2 adım kaldı.</small>
