@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notifications as sourceNotifications } from "../../data/mockData.js";
+import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import OnayModal from "../components/ui/OnayModal.vue";
 
@@ -10,10 +11,12 @@ const INITIAL_VISIBLE_COUNT = 7;
 const LOAD_INCREMENT = 4;
 const defaultNotifications = sourceNotifications.slice(0, DEFAULT_NOTIFICATION_LIMIT);
 
-const FILTERS = [
-  { id: "all", label: "Tümü" },
-  { id: "read", label: "Okunanlar" },
-  { id: "unread", label: "Okunmayanlar" },
+const FILTER_CHIPS = [
+  { value: "all", label: "Tümü", testId: "notifications-filter-pill" },
+  { value: "read", label: "Okunanlar", size: "wide", testId: "notifications-filter-pill" },
+  { value: "unread", label: "Okunmayanlar", size: "xwide", testId: "notifications-filter-pill" },
+  { value: "mark-all-read", label: "Tümü okundu", kind: "action", testId: "notifications-mark-all-read" },
+  { value: "delete-all", label: "Tümünü sil", kind: "action", tone: "danger", testId: "notifications-delete-all" },
 ];
 
 const router = useRouter();
@@ -43,6 +46,14 @@ const showMoreIndicator = computed(() => displayedItems.value.length > visibleCo
 
 function setFilter(filterId) {
   activeFilter.value = filterId;
+}
+
+function handleFilterChipSelect(item) {
+  if (item.kind === "action") {
+    openConfirm(item.value);
+    return;
+  }
+  setFilter(item.value);
 }
 
 function loadMoreNotifications() {
@@ -138,37 +149,14 @@ onBeforeUnmount(() => {
 
 <template>
   <AppPage title="Bildirimler" class="notifications-page" data-testid="notifications-page">
-    <section class="notification-actions-bar" aria-label="Bildirim filtreleri">
-      <button
-        v-for="filter in FILTERS"
-        :key="filter.id"
-        class="notification-filter-pill"
-        :class="{ 'is-active': activeFilter === filter.id }"
-        type="button"
-        data-testid="notifications-filter-pill"
-        :data-filter="filter.id"
-        :aria-pressed="activeFilter === filter.id ? 'true' : 'false'"
-        @click="setFilter(filter.id)"
-      >
-        {{ filter.label }}
-      </button>
-      <button
-        class="notification-filter-pill is-action"
-        type="button"
-        data-testid="notifications-mark-all-read"
-        @click="openConfirm('mark-all-read')"
-      >
-        Tümü okundu
-      </button>
-      <button
-        class="notification-filter-pill is-action is-danger"
-        type="button"
-        data-testid="notifications-delete-all"
-        @click="openConfirm('delete-all')"
-      >
-        Tümünü sil
-      </button>
-    </section>
+    <AppFilterChips
+      v-model="activeFilter"
+      :items="FILTER_CHIPS"
+      aria-label="Bildirim filtreleri"
+      sticky
+      data-testid="notifications-filter-chips"
+      @select="handleFilterChipSelect"
+    />
 
     <section v-if="!visibleItems.length" class="notification-empty" aria-label="Boş bildirim kutusu">
       <span>

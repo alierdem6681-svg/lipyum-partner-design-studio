@@ -1,22 +1,45 @@
 <script setup>
-defineProps({
+const props = defineProps({
   items: { type: Array, default: () => [] },
   modelValue: { type: String, default: "" },
   ariaLabel: { type: String, default: "Filtreler" },
+  sticky: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "select"]);
+
+function getChipClass(item) {
+  return [
+    "filter-chip",
+    {
+      "is-active": props.modelValue === item.value,
+      "is-action": item.kind === "action",
+      "is-danger": item.tone === "danger",
+      "is-wide": item.size === "wide",
+      "is-xwide": item.size === "xwide",
+    },
+  ];
+}
+
+function selectItem(item) {
+  emit("select", item);
+  if (item.kind === "action" || item.disabled) return;
+  emit("update:modelValue", item.value);
+}
 </script>
 
 <template>
-  <div class="-mx-1 flex gap-2 overflow-x-auto px-1 py-1" :aria-label="ariaLabel">
+  <div class="filter-chip-rail" :class="{ 'is-sticky': sticky }" :aria-label="ariaLabel">
     <button
       v-for="item in items"
       :key="item.value"
-      class="h-9 shrink-0 rounded-pill border px-3 text-caption font-bold"
-      :class="modelValue === item.value ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-600'"
+      :class="getChipClass(item)"
       type="button"
-      @click="emit('update:modelValue', item.value)"
+      :data-testid="item.testId"
+      :data-filter="item.filterId || item.value"
+      :aria-pressed="item.kind === 'action' ? undefined : modelValue === item.value ? 'true' : 'false'"
+      :disabled="item.disabled"
+      @click="selectItem(item)"
     >
       {{ item.label }}
     </button>

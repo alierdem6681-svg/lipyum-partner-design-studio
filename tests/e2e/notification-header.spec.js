@@ -13,7 +13,7 @@ test("notifications use wide filter pills and header settings navigation", async
   await waitForApp(page);
 
   const header = page.getByTestId("app-header");
-  const actions = page.locator(".notification-actions-bar");
+  const actions = page.getByTestId("notifications-filter-chips");
   const headerSettingsButton = header.getByTestId("notification-settings-button");
   const pills = page.getByTestId("notifications-filter-pill");
 
@@ -22,6 +22,7 @@ test("notifications use wide filter pills and header settings navigation", async
   await expect(pills.nth(0)).toHaveText("Tümü");
   await expect(pills.nth(1)).toHaveText("Okunanlar");
   await expect(pills.nth(2)).toHaveText("Okunmayanlar");
+  await expect(actions).toHaveClass(/filter-chip-rail/);
   await expect(actions.getByTestId("notification-settings-button")).toHaveCount(0);
   await expect(page.getByTestId("notifications-mark-all-read")).toBeVisible();
   await expect(page.getByTestId("notifications-delete-all")).toBeVisible();
@@ -29,7 +30,7 @@ test("notifications use wide filter pills and header settings navigation", async
 
   const geometry = await page.evaluate(() => {
     const headerRect = document.querySelector('[data-testid="app-header"]')?.getBoundingClientRect();
-    const actionsRect = document.querySelector(".notification-actions-bar")?.getBoundingClientRect();
+    const actionsRect = document.querySelector('[data-testid="notifications-filter-chips"]')?.getBoundingClientRect();
     const pills = Array.from(document.querySelectorAll('[data-testid="notifications-filter-pill"]')).map((button) => ({
       text: button.textContent.trim(),
       width: button.getBoundingClientRect().width,
