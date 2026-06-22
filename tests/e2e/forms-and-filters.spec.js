@@ -32,6 +32,7 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   expect(filterState.labels).toEqual(["Tümü", "Yanıtlanmamış", "5 Puan", "4 Puan", "3 Puan", "2 Puan", "1 Puan"]);
   expect(filterState.gaps.every((gap) => gap >= 8)).toBe(true);
   expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
+  await expect(page.locator('[data-testid="reviews-filter-chip"] .filter-chip-dot')).toHaveCount(0);
 
   await page.locator('[data-filter="unanswered"]').click();
   await expect(page.locator('[data-filter="unanswered"]')).toHaveClass(/is-active/);
