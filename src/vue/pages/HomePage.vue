@@ -1,9 +1,9 @@
 ﻿<script setup>
 import { computed, ref } from "vue";
 import AppCard from "../components/ui/AppCard.vue";
+import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
-import AppSegmentedControl from "../components/ui/AppSegmentedControl.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
@@ -19,8 +19,8 @@ const performanceMilestones = [
 const activeRegionPeriod = ref("today");
 
 const regionPeriodOptions = [
-  { label: "Bugün", value: "today", attrs: { "data-testid": "home-region-filter-today", "data-region-filter": "Bugün" } },
-  { label: "Dün", value: "yesterday", attrs: { "data-testid": "home-region-filter-yesterday", "data-region-filter": "Dün" } },
+  { label: "Bugün", value: "today", testId: "home-region-filter-today", attrs: { "data-region-filter": "Bugün" } },
+  { label: "Dün", value: "yesterday", testId: "home-region-filter-yesterday", attrs: { "data-region-filter": "Dün" } },
 ];
 
 const regionPeriodData = {
@@ -187,10 +187,9 @@ function openConvertSheet() {
       <AppCard padding="none" class="region-home-card" data-testid="home-region-card">
         <div class="region-card-head">
           <h3>Bölgendeki İşler</h3>
-          <AppSegmentedControl
+          <AppFilterChips
             v-model="activeRegionPeriod"
-            class="region-filter-row region-date-segment"
-            :options="regionPeriodOptions"
+            :items="regionPeriodOptions"
             aria-label="Bölge iş tarihi filtreleri"
             data-testid="home-region-filter"
           />
