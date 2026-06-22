@@ -4592,3 +4592,506 @@
     grid-template-columns: 1fr;
   }
 }
+
+.job-referral-dashboard {
+  display: grid;
+  gap: 12px;
+}
+
+.job-referral-role-switch {
+  width: min(226px, 100%);
+  min-height: 44px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--lp-card);
+  padding: 4px;
+  box-shadow: var(--shadow-soft);
+}
+
+.role-tab {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+}
+
+.role-tab.is-active {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--color-info) 85%, var(--color-primary)), var(--color-info));
+  color: var(--lp-card);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-info) 28%, transparent);
+}
+
+.job-referral-wallet-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 176px;
+  display: grid;
+  gap: 14px;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 95% 14%, color-mix(in srgb, var(--lp-card) 15%, transparent) 0 44px, transparent 45px),
+    radial-gradient(circle at -10% 100%, color-mix(in srgb, var(--color-primary-dark) 28%, transparent) 0 52px, transparent 53px),
+    linear-gradient(135deg, var(--color-primary-dark), color-mix(in srgb, var(--color-primary) 70%, var(--text-primary)));
+  color: var(--lp-card);
+  padding: 18px 16px 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.wallet-info {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, var(--lp-card) 80%, transparent);
+  border-radius: 999px;
+  color: var(--lp-card);
+}
+
+.wallet-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.wallet-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.wallet-values span {
+  display: grid;
+  gap: 4px;
+}
+
+.wallet-values small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: color-mix(in srgb, var(--lp-card) 82%, transparent);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.wallet-values i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+.wallet-values strong {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wallet-withdraw {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--lp-card);
+  color: var(--color-primary-dark);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.job-referral-onboarding-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.job-referral-onboarding-card .onboarding-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.job-referral-onboarding-card strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: 900;
+}
+
+.job-referral-onboarding-card small {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+}
+
+.job-referral-tab-panel {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--lp-card) 78%, var(--soft));
+  padding: 10px 8px;
+}
+
+.job-referral-period-note {
+  margin: -2px 0 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  text-align: center;
+}
+
+.job-referral-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.job-referral-stat-card {
+  min-height: 76px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.job-referral-stat-card span,
+.job-referral-stat-card small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.job-referral-stat-card small {
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.job-referral-stat-card strong {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.job-referral-stat-card.is-blue {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.job-referral-stat-card.is-green {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.job-referral-stat-card.is-red {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.job-referral-stat-card.is-gold {
+  background: var(--color-warning-soft);
+  color: var(--color-premium-gold);
+}
+
+.job-referral-flow {
+  min-height: calc(100dvh - 180px);
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  background: var(--lp-card);
+}
+
+.job-referral-flow-top {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flow-back,
+.flow-close {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.flow-back {
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-semibold);
+}
+
+.flow-close {
+  width: 38px;
+}
+
+.job-referral-progress {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 18%, var(--color-border));
+}
+
+.job-referral-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary-dark);
+  transform-origin: left center;
+  transition: transform 180ms ease;
+}
+
+.job-referral-progress.is-progress-1 span { transform: scaleX(0.25); }
+.job-referral-progress.is-progress-2 span { transform: scaleX(0.5); }
+.job-referral-progress.is-progress-3 span { transform: scaleX(0.75); }
+.job-referral-progress.is-progress-4 span { transform: scaleX(1); }
+
+.job-referral-intro {
+  min-height: 620px;
+  display: grid;
+  align-content: center;
+  gap: 13px;
+  padding: 18px 14px 40px;
+  text-align: center;
+}
+
+.intro-logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: var(--color-primary-dark);
+  color: var(--lp-card);
+}
+
+.job-referral-intro h2,
+.job-referral-summary-step h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.job-referral-intro > p,
+.job-referral-summary-step > p {
+  max-width: 270px;
+  margin: 0 auto 10px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+  text-align: center;
+}
+
+.intro-benefit {
+  min-height: 68px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--lp-card);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.intro-benefit span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.intro-benefit strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: 900;
+}
+
+.intro-benefit small {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+}
+
+.job-referral-form-step {
+  display: grid;
+  gap: 24px;
+  padding: 0 2px 26px;
+}
+
+.job-referral-form-step.is-lower {
+  padding-top: min(28dvh, 230px);
+}
+
+.job-referral-input,
+.job-referral-search input {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--text-muted));
+  border-radius: 4px;
+  background: var(--lp-card);
+  color: var(--text-primary);
+  padding: 0 13px;
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-semibold);
+}
+
+.job-referral-input::placeholder,
+.job-referral-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.job-referral-list-step {
+  display: grid;
+  gap: 11px;
+  padding: 8px 0 18px;
+}
+
+.job-referral-list-step label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.job-referral-search {
+  position: relative;
+}
+
+.job-referral-search input {
+  padding-right: 42px;
+}
+
+.job-referral-search .v-icon {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  color: var(--text-primary);
+  transform: translateY(-50%);
+}
+
+.job-referral-choice-list {
+  display: grid;
+}
+
+.job-referral-choice-list button {
+  min-height: 41px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--text-primary);
+  padding: 0 6px;
+  font-size: 17px;
+  font-weight: var(--weight-semibold);
+  text-align: left;
+}
+
+.job-referral-choice-list button span {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--text-muted));
+  border-radius: 999px;
+  color: var(--text-muted);
+}
+
+.job-referral-summary-step {
+  min-height: 560px;
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: 18px 4px 36px;
+}
+
+.job-referral-summary-card {
+  display: grid;
+  gap: 10px;
+}
+
+.job-referral-summary-card span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-semibold);
+}
+
+.job-referral-summary-card strong {
+  color: var(--text-primary);
+  font-weight: 900;
+}
+
+.job-referral-summary-card em {
+  color: var(--color-primary-dark);
+  font-style: normal;
+  font-weight: 900;
+  text-align: right;
+}
+
+@media (max-width: 360px) {
+  .job-referral-onboarding-card {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .job-referral-onboarding-card .v-btn {
+    grid-column: 1 / -1;
+  }
+
+  .job-referral-stat-grid,
+  .wallet-values {
+    gap: 7px;
+  }
+
+  .job-referral-intro {
+    padding-inline: 2px;
+  }
+}
