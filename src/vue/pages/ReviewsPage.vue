@@ -75,6 +75,14 @@ function openReply(review) {
   }
 }
 
+function editReply(review) {
+  activeReplyId.value = review.id;
+  replyDrafts.value = {
+    ...replyDrafts.value,
+    [review.id]: getReviewReply(review),
+  };
+}
+
 function sendReply(review) {
   const message = String(replyDrafts.value[review.id] || "").trim();
   if (!message) return;
@@ -227,9 +235,8 @@ onBeforeUnmount(() => {
         </div>
         <div class="review-card-body">
           <p>{{ review.text }}</p>
-          <div class="review-card-foot">
+          <div v-if="!isReviewReplied(review)" class="review-card-foot">
             <button
-              v-if="!isReviewReplied(review)"
               class="review-inline-action"
               type="button"
               data-action="reply-review"
@@ -240,7 +247,6 @@ onBeforeUnmount(() => {
             >
               <AppIcon name="message" :size="14" /> Yanıtla
             </button>
-            <span v-else class="review-replied-pill"><AppIcon name="check" :size="14" /> Yanıtlandı</span>
           </div>
           <form
             v-if="activeReplyId === review.id"
@@ -256,8 +262,19 @@ onBeforeUnmount(() => {
             ></textarea>
             <button type="submit" data-testid="review-reply-submit">Gönder</button>
           </form>
-          <div v-if="getReviewReply(review)" class="review-partner-reply">
-            <strong>Senin yanıtın</strong>
+          <div v-if="getReviewReply(review) && activeReplyId !== review.id" class="review-partner-reply">
+            <span class="review-partner-reply-head">
+              <strong>Senin yanıtın</strong>
+              <button
+                class="review-edit-reply-btn"
+                type="button"
+                data-testid="review-edit-reply-button"
+                :aria-label="`${review.name} yorumu için yanıtı düzenle`"
+                @click="editReply(review)"
+              >
+                Düzenle
+              </button>
+            </span>
             <p>{{ getReviewReply(review) }}</p>
           </div>
         </div>
