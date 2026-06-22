@@ -27,24 +27,26 @@ test("home region period filter updates active state, metrics and activity", asy
   await waitForApp(page);
 
   const regionCard = page.getByTestId("home-region-card");
+  const filterRail = page.getByTestId("home-region-filter");
   const today = page.getByTestId("home-region-filter-today");
   const yesterday = page.getByTestId("home-region-filter-yesterday");
   const activity = page.locator("[data-region-activity-text]");
 
-  await expect(today).toHaveAttribute("aria-selected", "true");
-  await expect(yesterday).toHaveAttribute("aria-selected", "false");
+  await expect(filterRail).toHaveClass(/filter-chip-rail/);
+  await expect(today).toHaveAttribute("aria-pressed", "true");
+  await expect(yesterday).toHaveAttribute("aria-pressed", "false");
   await expect(regionCard).toContainText("128");
   await expect(activity).toContainText("Mehmet Ali A.");
 
   await yesterday.click();
-  await expect(today).toHaveAttribute("aria-selected", "false");
-  await expect(yesterday).toHaveAttribute("aria-selected", "true");
+  await expect(today).toHaveAttribute("aria-pressed", "false");
+  await expect(yesterday).toHaveAttribute("aria-pressed", "true");
   await expect(regionCard).toContainText("104");
   await expect(activity).toContainText("Aydın Ç.");
 
   await today.click();
-  await expect(today).toHaveAttribute("aria-selected", "true");
-  await expect(yesterday).toHaveAttribute("aria-selected", "false");
+  await expect(today).toHaveAttribute("aria-pressed", "true");
+  await expect(yesterday).toHaveAttribute("aria-pressed", "false");
   await expect(regionCard).toContainText("128");
   await expect(activity).toContainText("Mehmet Ali A.");
 

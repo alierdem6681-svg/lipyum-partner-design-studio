@@ -552,8 +552,7 @@
   white-space: nowrap;
 }
 
-.v-select,
-.v-segment {
+.v-select {
   width: 100%;
   min-height: 44px;
   border: 1px solid var(--color-border);
@@ -577,33 +576,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.v-segment {
-  display: flex;
-  padding: 4px;
-  gap: 4px;
-}
-
-.v-segment button {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 36px;
-  border: 0;
-  border-radius: 11px;
-  background: transparent;
-  color: var(--color-neutral-600);
-  font-size: var(--font-size-caption);
-  font-weight: var(--weight-bold);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.v-segment button.is-active {
-  background: var(--color-primary-soft);
-  color: var(--color-primary-dark);
-  box-shadow: inset 0 0 0 1px var(--color-primary-border);
 }
 
 .v-empty {
@@ -1818,39 +1790,6 @@
   white-space: nowrap;
 }
 
-.region-filter-row {
-  display: flex;
-  gap: 4px;
-  max-width: 245px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding: 1px;
-}
-
-.region-filter-row::-webkit-scrollbar {
-  display: none;
-}
-
-.chip-btn {
-  min-height: 44px;
-  padding: 0 12px;
-  border-radius: 10px;
-  border: 1px solid #d0d5dd;
-  background: #fff;
-  color: #344054;
-  font-family: var(--font-family-base);
-  font-size: 13px;
-  font-weight: 800;
-  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
-}
-
-.chip-btn.active,
-.chip-btn:hover {
-  border-color: #abefc6;
-  background: #ecfdf3;
-  color: #067647;
-}
-
 .region-home-card {
   padding: 10px 12px 10px;
   margin-bottom: 4px;
@@ -1868,76 +1807,6 @@
 .region-home-card .region-card-head h3 {
   font-size: 15px;
   line-height: 1.2;
-}
-
-.region-home-card .region-filter-row {
-  flex: 0 0 auto;
-  gap: 6px;
-  max-width: none;
-  overflow: visible;
-  padding: 0;
-  margin-right: 0;
-}
-
-.region-home-card .region-date-segment.v-segment {
-  width: auto;
-  min-height: 36px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
-
-.region-home-card .region-filter-row .chip-btn {
-  position: relative;
-  min-width: 48px;
-  min-height: 36px;
-  padding: 0 12px;
-  border-radius: 999px;
-  font-size: 11.5px;
-  font-weight: 900;
-}
-
-.region-home-card .region-date-segment.v-segment button {
-  position: relative;
-  flex: 0 0 auto;
-  min-width: 48px;
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid #d0d5dd;
-  border-radius: 999px;
-  background: #fff;
-  color: #344054;
-  font-size: 11.5px;
-  font-weight: 900;
-  box-shadow: none;
-}
-
-.region-home-card .region-filter-row .chip-btn::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-}
-
-.region-home-card .region-date-segment.v-segment button::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-}
-
-.region-home-card .region-filter-row .chip-btn.active {
-  border-color: #067647;
-  background: #067647;
-  color: #fff;
-  box-shadow: 0 7px 16px rgba(6, 118, 71, 0.16);
-}
-
-.region-home-card .region-date-segment.v-segment button.is-active {
-  border-color: #067647;
-  background: #067647;
-  color: #fff;
-  box-shadow: 0 7px 16px rgba(6, 118, 71, 0.16);
 }
 
 .kpi-row {
@@ -2098,10 +1967,6 @@
   .region-card-head {
     align-items: center;
     margin-top: 2px;
-  }
-
-  .region-filter-row {
-    max-width: 100%;
   }
 
   .kpi-row {

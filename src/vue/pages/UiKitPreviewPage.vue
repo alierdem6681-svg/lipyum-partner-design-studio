@@ -9,11 +9,11 @@ import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppChip from "../components/ui/AppChip.vue";
 import AppEmptyState from "../components/ui/AppEmptyState.vue";
+import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppHeader from "../components/ui/AppHeader.vue";
 import AppListItem from "../components/ui/AppListItem.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import AppSectionTitle from "../components/ui/AppSectionTitle.vue";
-import AppSegmentedControl from "../components/ui/AppSegmentedControl.vue";
 import AppSelect from "../components/ui/AppSelect.vue";
 import { useNavigation } from "../composables/useNavigation.js";
 
@@ -23,6 +23,11 @@ const props = defineProps({
 
 const segment = ref("active");
 const { navigateTo, goBack } = useNavigation(props.navigateTo);
+const segmentItems = [
+  { label: "Aktif", value: "active" },
+  { label: "Bekleyen", value: "pending" },
+  { label: "Pasif", value: "passive" },
+];
 
 const listItems = [
   ["Müşteri Yorumları", "Yanıt bekleyen yorumları kontrol et", "message", "/reviews"],
@@ -80,13 +85,10 @@ const listItems = [
         <AppSelect label="Şehir Ligi" />
       </div>
 
-      <AppSegmentedControl
+      <AppFilterChips
         v-model="segment"
-        :options="[
-          { label: 'Aktif', value: 'active' },
-          { label: 'Bekleyen', value: 'pending' },
-          { label: 'Pasif', value: 'passive' }
-        ]"
+        :items="segmentItems"
+        aria-label="UI kit filtre örneği"
       />
 
       <div class="v-ui-kit-preview__grid">
