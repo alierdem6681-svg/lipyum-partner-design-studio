@@ -152,6 +152,7 @@ export const DRAWER_SECTIONS = [
     items: [
       { label: "Müşteri Yönetimi", icon: "users", route: "/customer-management", screen: "customerManagement", tone: "green" },
       { label: "Hesap Hareketleri", icon: "receipt", route: "/account-transactions", screen: "accountTransactions", tone: "blue" },
+      { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", tone: "gold" },
       { label: "Dijital Servis Formu", icon: "file-text", route: "/digital-service-form", screen: "digitalServiceForm", tone: "gold" },
       { label: "Teklif Oluştur", icon: "edit", route: "/create-offer", screen: "createOffer", tone: "green" },
     ],

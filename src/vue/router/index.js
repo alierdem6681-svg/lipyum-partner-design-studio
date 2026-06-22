@@ -8,6 +8,7 @@ import ContentRoutePage from "../pages/ContentRoutePage.vue";
 import CreateTicketPage from "../pages/CreateTicketPage.vue";
 import CustomerServicePage from "../pages/CustomerServicePage.vue";
 import HomePage from "../pages/HomePage.vue";
+import InvoicesPage from "../pages/InvoicesPage.vue";
 import JobReferralPage from "../pages/JobReferralPage.vue";
 import LeaderboardPage from "../pages/LeaderboardPage.vue";
 import LiveSupportPage from "../pages/LiveSupportPage.vue";
@@ -72,7 +73,6 @@ const simpleContentRoutes = new Set([
   "/contact-settings",
   "/bonus",
   "/customers",
-  "/invoices",
   "/income-expense",
   "/appointment-link",
 ]);
@@ -97,6 +97,7 @@ const dedicatedRouteComponents = {
   "/reviews": ReviewsPage,
   "/leaderboard": LeaderboardPage,
   "/subscription": SubscriptionPage,
+  "/invoices": InvoicesPage,
   "/referral": ReferralPage,
   "/partners": ReferralPartnersPage,
   "/referral/tasks": ReferralTasksPage,

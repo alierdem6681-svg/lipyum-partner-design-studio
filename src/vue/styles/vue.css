@@ -5302,6 +5302,9 @@
   .account-ledger-type strong,
   .account-ledger-money {
     font-size: 12px;
+  }
+}
+
 .performance-flow-page {
   padding: 12px 12px calc(var(--bottom-bar-height, 92px) + 24px);
 }
