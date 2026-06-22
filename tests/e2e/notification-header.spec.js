@@ -16,12 +16,18 @@ test("notifications use wide filter pills and header settings navigation", async
   const actions = page.getByTestId("notifications-filter-chips");
   const headerSettingsButton = header.getByTestId("notification-settings-button");
   const pills = page.getByTestId("notifications-filter-pill");
+  const labels = pills.locator(".filter-chip-label");
+  const counts = pills.locator(".filter-chip-count");
 
   await expect(actions).toBeVisible();
   await expect(pills).toHaveCount(3);
-  await expect(pills.nth(0)).toHaveText("Tümü");
-  await expect(pills.nth(1)).toHaveText("Okunanlar");
-  await expect(pills.nth(2)).toHaveText("Okunmayanlar");
+  await expect(labels.nth(0)).toHaveText("Tümü");
+  await expect(labels.nth(1)).toHaveText("Okunanlar");
+  await expect(labels.nth(2)).toHaveText("Okunmamış");
+  await expect(pills.locator(".filter-chip-dot")).toHaveCount(3);
+  await expect(counts).toHaveCount(3);
+  await expect(counts.nth(0)).toHaveText("15");
+  await expect(counts.nth(2)).toHaveText("5");
   await expect(actions).toHaveClass(/filter-chip-rail/);
   await expect(actions.getByTestId("notification-settings-button")).toHaveCount(0);
   await expect(page.getByTestId("notifications-mark-all-read")).toBeVisible();
