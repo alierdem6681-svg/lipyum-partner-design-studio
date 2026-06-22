@@ -26,9 +26,9 @@ for (const viewport of [
       const rows = Array.from(document.querySelectorAll('[data-testid="profile-menu-card"]')).map((item) =>
         item.getBoundingClientRect(),
       );
-      const statuses = Array.from(document.querySelectorAll(".profile-menu-row__status")).map((item) =>
-        item.textContent.trim(),
-      );
+      const statusNodes = Array.from(document.querySelectorAll(".profile-menu-row__status"));
+      const statuses = statusNodes.map((item) => item.textContent.trim());
+      const statusWidths = statusNodes.map((item) => item.getBoundingClientRect().width);
       const summary = document.querySelector('[data-testid="profile-menu-strength-summary"]')?.getBoundingClientRect();
       const maxTitleLines = Math.max(
         ...Array.from(document.querySelectorAll(".profile-menu-row__title")).map((label) => {
@@ -55,6 +55,9 @@ for (const viewport of [
         rowCount: rows.length,
         statusCount: statuses.length,
         statuses,
+        statusWidthSpread: statusWidths.length
+          ? Math.max(...statusWidths) - Math.min(...statusWidths)
+          : 999,
         leftDelta: profile && section ? Math.abs(profile.left - section.left) : 999,
         rightDelta: profile && section ? Math.abs(profile.right - section.right) : 999,
         listLeftDelta: profile && list ? Math.abs(profile.left - list.left) : 999,
@@ -77,6 +80,7 @@ for (const viewport of [
     expect(geometry.rowCount).toBe(8);
     expect(geometry.statusCount).toBe(8);
     expect(geometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
+    expect(geometry.statusWidthSpread).toBeLessThanOrEqual(1);
     expect(geometry.leftDelta).toBeLessThanOrEqual(2);
     expect(geometry.rightDelta).toBeLessThanOrEqual(2);
     expect(geometry.listLeftDelta).toBeLessThanOrEqual(2);
