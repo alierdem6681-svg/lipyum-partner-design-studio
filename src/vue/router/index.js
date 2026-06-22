@@ -19,6 +19,11 @@ import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
 import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
+import PerformanceDetailsPage from "../pages/PerformanceDetailsPage.vue";
+import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
+import PerformanceSuccessPage from "../pages/PerformanceSuccessPage.vue";
+import PerformanceTaskPage from "../pages/PerformanceTaskPage.vue";
+import PerformanceTasksPage from "../pages/PerformanceTasksPage.vue";
 import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
@@ -88,6 +93,10 @@ const dedicatedRouteComponents = {
   "/profile": ProfilePage,
   "/partner-card-preview": PartnerCardPreviewPage,
   "/performance-score": PerformanceScorePage,
+  "/performance-score/task/job-result": PerformanceTaskPage,
+  "/performance-score/tasks": PerformanceTasksPage,
+  "/performance-score/details": PerformanceDetailsPage,
+  "/performance-score/success": PerformanceSuccessPage,
   "/photo-gallery": PhotoGalleryPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
