@@ -3562,17 +3562,37 @@
   font-weight: var(--weight-semibold);
 }
 
+.profile-photo-editor-stage {
+  display: grid;
+  gap: 12px;
+}
+
 .profile-photo-editor-preview {
-  width: 184px;
-  height: 184px;
+  position: relative;
+  width: 216px;
+  height: 216px;
   display: grid;
   place-items: center;
   justify-self: center;
   overflow: hidden;
   border: 1px solid var(--color-neutral-200);
-  border-radius: 28px;
-  background: var(--color-neutral-100);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.88) 0 57%, rgba(15, 23, 42, 0.08) 58% 100%),
+    var(--color-neutral-100);
   box-shadow: var(--shadow-card);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.profile-photo-editor-preview:focus-visible {
+  outline: 3px solid rgba(18, 183, 106, 0.22);
+  outline-offset: 4px;
+}
+
+.profile-photo-editor-preview.is-dragging {
+  cursor: grabbing;
 }
 
 .profile-photo-editor-image {
@@ -3580,6 +3600,7 @@
   height: 100%;
   display: block;
   object-fit: cover;
+  pointer-events: none;
   transition:
     transform 180ms ease,
     object-position 180ms ease;
@@ -3645,22 +3666,87 @@
   object-position-y: 100%;
 }
 
-.profile-photo-controls {
-  display: grid;
-  gap: 10px;
+.profile-photo-crop-ring {
+  position: absolute;
+  inset: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.1),
+    0 0 0 999px rgba(15, 23, 42, 0.1);
+  pointer-events: none;
 }
 
-.profile-photo-controls label {
+.profile-photo-crop-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  padding: 0 12px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.profile-photo-tool-row {
   display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 40px auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #fff;
+  padding: 8px;
+}
+
+.profile-photo-tool,
+.profile-photo-center-btn {
+  min-height: 40px;
+  border: 1px solid var(--color-primary-border);
+  border-radius: 13px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-weight: var(--weight-extra-bold);
+}
+
+.profile-photo-tool {
+  width: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.profile-photo-center-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
+  padding: 0 12px;
+  font-size: var(--font-size-small);
+}
+
+.profile-photo-zoom-label {
+  min-width: 0;
+  text-align: center;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+}
+
+.profile-photo-editor-tip {
+  margin: 0;
   color: var(--text-secondary);
   font-size: var(--font-size-caption);
-  font-weight: var(--weight-bold);
-}
-
-.profile-photo-controls input {
-  width: 100%;
-  accent-color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+  text-align: center;
 }
 
 .profile-photo-editor-actions {

@@ -23,6 +23,8 @@ const draftImage = ref("");
 const zoomLevel = ref(1);
 const xLevel = ref(2);
 const yLevel = ref(2);
+const isDraggingPhoto = ref(false);
+const dragOrigin = ref({ x: 0, y: 0, xLevel: 2, yLevel: 2 });
 
 const isDrawer = computed(() => props.variant === "drawer");
 const badgeExpanded = computed(() => props.expandBadges || (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
@@ -81,11 +83,13 @@ function openPhotoEditor() {
   zoomLevel.value = 1;
   xLevel.value = 2;
   yLevel.value = 2;
+  isDraggingPhoto.value = false;
 }
 
 function closePhotoEditor() {
   editorOpen.value = false;
   draftImage.value = "";
+  isDraggingPhoto.value = false;
 }
 
 function choosePhoto() {
@@ -106,6 +110,7 @@ function onFileSelected(event) {
     zoomLevel.value = 1;
     xLevel.value = 2;
     yLevel.value = 2;
+    isDraggingPhoto.value = false;
   };
   reader.onerror = () => shell.showToast("Resim okunamadı.");
   reader.readAsDataURL(file);
@@ -122,6 +127,59 @@ function loadImage(src) {
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
+}
+
+function adjustZoom(delta) {
+  zoomLevel.value = clamp(Number(zoomLevel.value) + delta, 0, 4);
+}
+
+function nudgePhoto(axis, delta) {
+  if (axis === "x") xLevel.value = clamp(Number(xLevel.value) + delta, 0, 4);
+  if (axis === "y") yLevel.value = clamp(Number(yLevel.value) + delta, 0, 4);
+}
+
+function centerPhoto() {
+  zoomLevel.value = 1;
+  xLevel.value = 2;
+  yLevel.value = 2;
+}
+
+function startPhotoDrag(event) {
+  if (!draftImage.value) return;
+  isDraggingPhoto.value = true;
+  dragOrigin.value = {
+    x: event.clientX,
+    y: event.clientY,
+    xLevel: Number(xLevel.value),
+    yLevel: Number(yLevel.value),
+  };
+  event.currentTarget?.setPointerCapture?.(event.pointerId);
+}
+
+function dragPhoto(event) {
+  if (!isDraggingPhoto.value) return;
+  const deltaX = event.clientX - dragOrigin.value.x;
+  const deltaY = event.clientY - dragOrigin.value.y;
+  xLevel.value = clamp(Math.round(dragOrigin.value.xLevel - deltaX / 34), 0, 4);
+  yLevel.value = clamp(Math.round(dragOrigin.value.yLevel - deltaY / 34), 0, 4);
+}
+
+function stopPhotoDrag(event) {
+  if (!isDraggingPhoto.value) return;
+  isDraggingPhoto.value = false;
+  event.currentTarget?.releasePointerCapture?.(event.pointerId);
+}
+
+function handlePhotoKeydown(event) {
+  if (event.key === "ArrowLeft") nudgePhoto("x", -1);
+  else if (event.key === "ArrowRight") nudgePhoto("x", 1);
+  else if (event.key === "ArrowUp") nudgePhoto("y", -1);
+  else if (event.key === "ArrowDown") nudgePhoto("y", 1);
+  else if (event.key === "+" || event.key === "=") adjustZoom(1);
+  else if (event.key === "-" || event.key === "_") adjustZoom(-1);
+  else if (event.key === "0") centerPhoto();
+  else return;
+  event.preventDefault();
 }
 
 async function cropImageToAvatar(src) {
@@ -268,23 +326,52 @@ async function savePhoto() {
         </button>
 
         <template v-else>
-          <div class="profile-photo-editor-preview" aria-label="Profil fotoğrafı önizleme">
-            <img :class="previewImageClasses" :src="draftImage" alt="Seçilen profil fotoğrafı" />
-          </div>
+          <div class="profile-photo-editor-stage">
+            <div
+              class="profile-photo-editor-preview"
+              :class="{ 'is-dragging': isDraggingPhoto }"
+              role="application"
+              tabindex="0"
+              data-testid="profile-photo-crop-area"
+              aria-label="Profil fotoğrafını dairesel alan içinde konumlandır"
+              @pointerdown="startPhotoDrag"
+              @pointermove="dragPhoto"
+              @pointerup="stopPhotoDrag"
+              @pointercancel="stopPhotoDrag"
+              @keydown="handlePhotoKeydown"
+            >
+              <img :class="previewImageClasses" :src="draftImage" alt="Seçilen profil fotoğrafı" draggable="false" />
+              <span class="profile-photo-crop-ring" aria-hidden="true"></span>
+              <span class="profile-photo-crop-hint">Sürükle ve yerleştir</span>
+            </div>
 
-          <div class="profile-photo-controls">
-            <label>
-              <span>Yakınlaştır</span>
-              <input v-model="zoomLevel" type="range" min="0" max="4" step="1" data-testid="profile-photo-zoom" />
-            </label>
-            <label>
-              <span>Yatay konum</span>
-              <input v-model="xLevel" type="range" min="0" max="4" step="1" data-testid="profile-photo-x" />
-            </label>
-            <label>
-              <span>Dikey konum</span>
-              <input v-model="yLevel" type="range" min="0" max="4" step="1" data-testid="profile-photo-y" />
-            </label>
+            <div class="profile-photo-tool-row" aria-label="Profil fotoğrafı araçları">
+              <button
+                class="profile-photo-tool"
+                type="button"
+                data-testid="profile-photo-zoom-out"
+                aria-label="Uzaklaştır"
+                @click="adjustZoom(-1)"
+              >
+                <AppIcon name="minus" :size="17" />
+              </button>
+              <span class="profile-photo-zoom-label">Yakınlık {{ Number(zoomLevel) + 1 }}/5</span>
+              <button
+                class="profile-photo-tool"
+                type="button"
+                data-testid="profile-photo-zoom-in"
+                aria-label="Yakınlaştır"
+                @click="adjustZoom(1)"
+              >
+                <AppIcon name="plus" :size="17" />
+              </button>
+              <button class="profile-photo-center-btn" type="button" data-testid="profile-photo-center" @click="centerPhoto">
+                <AppIcon name="refresh" :size="16" />
+                Ortala
+              </button>
+            </div>
+
+            <p class="profile-photo-editor-tip">Fotoğrafı dairesel alan içinde sürükle; artı ve eksi ile yakınlığı ayarla.</p>
           </div>
         </template>
 
