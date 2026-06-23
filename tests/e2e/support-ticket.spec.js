@@ -18,11 +18,22 @@ test("sidebar support group opens create ticket flow", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/new");
 
   await expect(page.getByTestId("support-ticket-form")).toBeVisible();
-  await page.getByTestId("support-ticket-category").selectOption("Teknik Sorun");
-  await page.getByTestId("support-ticket-subject").fill("Bildirim testi");
+  await expect(page.getByText("Hızlı destek talebi")).toHaveCount(0);
+  await expect(page.getByTestId("support-ticket-subject")).toHaveCount(0);
+  await page.getByTestId("support-ticket-category").selectOption("Sistem ile ilgili konular");
+  await expect(page.getByTestId("support-ticket-category")).toContainText("Şikayet bildirmek istiyorum");
+  await expect(page.getByTestId("support-ticket-description")).toHaveAttribute(
+    "placeholder",
+    "Profilime daha fazla bölge eklemek için yardım istiyorum.",
+  );
+  await page.getByTestId("support-ticket-description").focus();
+  await expect(page.getByTestId("support-ticket-description")).toHaveAttribute("placeholder", "");
   await page.getByTestId("support-ticket-description").fill("Mock talep oluşturma akışı kontrol ediliyor.");
-  await page.getByTestId("support-ticket-priority").selectOption("Öncelikli");
-  await page.getByTestId("support-ticket-upload").click();
+  await expect(page.getByTestId("support-ticket-character-count")).toContainText("456 karakter kaldı");
+  await page.getByTestId("support-ticket-priority").selectOption("Acil");
+  await expect(page.getByTestId("support-ticket-priority")).toContainText("Kritik");
+  await expect(page.getByTestId("support-ticket-image-upload")).toBeVisible();
+  await expect(page.getByTestId("support-ticket-file-upload")).toBeVisible();
   await page.getByTestId("support-ticket-submit").click();
   await expect(page.getByTestId("support-ticket-success")).toBeVisible();
   await expect(page.getByTestId("support-ticket-success").getByText("LP-000123")).toBeVisible();
