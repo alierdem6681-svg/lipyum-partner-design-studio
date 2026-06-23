@@ -105,7 +105,7 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
 
   await page.getByTestId("live-support-input").fill("Merhaba");
   await page.getByTestId("live-support-send").click();
-  await expect(page.getByText("Merhaba")).toBeVisible();
+  await expect(page.getByText("Merhaba", { exact: true })).toBeVisible();
   await expect(page.getByTestId("live-support-typing")).toBeVisible();
   await page.getByTestId("live-support-end-header").click();
   await expect(page.getByTestId("live-support-ended")).toBeVisible();
