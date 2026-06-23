@@ -75,6 +75,7 @@ const releaseSteps = [
   { name: "runtime and architecture", command: nodeBin, args: ["--test", ...architectureFiles] },
   { name: "V13 release smoke", command: nodeBin, args: [playwrightCli, "test", e2e("v13-release-smoke.spec.js"), "--workers=1", "--trace=off"] },
   { name: "performance improve flow", command: nodeBin, args: [playwrightCli, "test", e2e("performance-improve.spec.js"), "--workers=1", "--trace=off"] },
+  { name: "subscription direct purchase flow", command: npmBin, args: ["run", "test:subscription-conversion-no-trial"] },
   { name: "build", command: npmBin, args: ["run", "build"] },
   { name: "git diff check", command: "git", args: ["diff", "--check"] },
 ];

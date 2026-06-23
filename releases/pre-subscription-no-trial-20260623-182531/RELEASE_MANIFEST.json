@@ -1,0 +1,12 @@
+{
+  "name": "pre-subscription-no-trial-20260623-182531",
+  "commitSha": "330d3db39cc4ce593fe1c483ea473d512c013e5d",
+  "branch": "main",
+  "backupTag": "pre-subscription-no-trial-20260623-182531",
+  "archiveBranch": "archive/pre-subscription-no-trial-20260623-182531",
+  "route": "/subscription",
+  "runtime": "vue",
+  "liveUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "backupReason": "Before rebuilding Aboneligim as a no-trial direct purchase subscription flow.",
+  "rollback": "git revert <merge-sha> or git switch archive/pre-subscription-no-trial-20260623-182531"
+}

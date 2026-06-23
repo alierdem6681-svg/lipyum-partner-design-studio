@@ -1,13 +1,18 @@
 <script setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const router = useRouter();
+const subscriptionStore = useSubscriptionStore();
 const supportPhoneNumber = "4442368";
 const supportPhoneLabel = "444 23 68";
+const supportLevel = computed(() => subscriptionStore.currentPlan?.entitlements?.customerService || "standart destek");
+const hasPhoneSupport = computed(() => Boolean(subscriptionStore.currentPlan?.entitlements?.phoneSupport));
 </script>
 
 <template>
@@ -66,7 +71,8 @@ const supportPhoneLabel = "444 23 68";
       <div>
         <span class="customer-service-eyebrow"><AppIcon name="shield" :size="14" /> Yardım seçenekleri</span>
         <h3>Konuna göre en uygun destek kanalını seç.</h3>
-        <p>Yazılı talep ve canlı destek kayıtları uygulama içinde takip edilir.</p>
+        <p>Mevcut destek seviyen: {{ supportLevel }}. Yazılı talep ve canlı destek kayıtları uygulama içinde takip edilir.</p>
+        <p v-if="hasPhoneSupport">Telefon ve öncelikli destek hakkın aktif.</p>
       </div>
       <div class="customer-service-actions">
         <AppButton class="primary-btn" icon="file-text" data-testid="customer-service-ticket" @click="router.push('/support/new')">
