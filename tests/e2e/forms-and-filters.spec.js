@@ -34,10 +34,41 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
   await expect(page.locator('[data-testid="reviews-filter-chip"] .filter-chip-dot')).toHaveCount(0);
 
-  const repliedCard = page.getByTestId("review-card").filter({ hasText: "Murat K." });
+  await expect(page.getByTestId("review-card").first()).toContainText("Elif Yılmaz");
+  const firstCardActionState = await page.getByTestId("review-card").first().evaluate((card) => {
+    const report = card.querySelector('[data-testid="review-report-button"]')?.getBoundingClientRect();
+    const reply = card.querySelector('[data-testid="review-reply-button"]')?.getBoundingClientRect();
+    const name = card.querySelector(".review-card-head strong")?.getBoundingClientRect();
+    const date = card.querySelector(".review-card-actions small")?.getBoundingClientRect();
+    return {
+      reportLeft: Math.round(report?.left || 0),
+      replyLeft: Math.round(reply?.left || 0),
+      centerDelta: Math.abs(Math.round((report?.top || 0) + (report?.height || 0) / 2 - ((reply?.top || 0) + (reply?.height || 0) / 2))),
+      dateNameTopDelta: Math.abs(Math.round((date?.top || 0) - (name?.top || 0))),
+    };
+  });
+  expect(firstCardActionState.reportLeft).toBeLessThan(firstCardActionState.replyLeft);
+  expect(firstCardActionState.centerDelta).toBeLessThanOrEqual(1);
+  expect(firstCardActionState.dateNameTopDelta).toBeLessThanOrEqual(2);
+
+  const satisfactionGaugeState = await page.evaluate(() => {
+    const meter = document.querySelector(".review-summary-meter");
+    const unit = meter?.querySelector("small")?.textContent?.trim();
+    const value = meter?.querySelector("strong")?.textContent?.trim();
+    const box = meter?.getBoundingClientRect();
+    return { value, unit, width: Math.round(box?.width || 0), height: Math.round(box?.height || 0) };
+  });
+  expect(satisfactionGaugeState.value).toBe("92");
+  expect(satisfactionGaugeState.unit).toBe("puan");
+  expect(satisfactionGaugeState.width).toBeGreaterThanOrEqual(96);
+  expect(satisfactionGaugeState.height).toBeGreaterThanOrEqual(96);
+
+  const repliedCard = page.getByTestId("review-card").filter({ hasText: "Murat Kaya" });
   await expect(repliedCard.getByTestId("review-reply-button")).toHaveCount(0);
+  await expect(repliedCard.getByTestId("review-report-button")).toHaveCount(0);
   await expect(repliedCard.locator(".review-replied-pill")).toHaveCount(0);
   await expect(repliedCard.getByTestId("review-edit-reply-button")).toBeVisible();
+  await expect(repliedCard.getByTestId("review-edit-reply-button")).not.toContainText("Düzenle");
   await repliedCard.getByTestId("review-edit-reply-button").click();
   await expect(repliedCard.getByTestId("review-reply-editor")).toBeVisible();
   await expect(repliedCard.getByTestId("review-reply-textarea")).toHaveValue(/Geri bildiriminiz/);
@@ -69,8 +100,12 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
 
   await page.getByTestId("app-header").getByTestId("header-info-button").click();
   await expect(page.locator('[role="dialog"]')).toContainText("Müşteri yorumları");
-  await expect(page.locator('[role="dialog"]')).toContainText("kısa, nazik ve çözüm odaklı");
-  await expect(page.locator('[role="dialog"]')).toContainText("Daha fazla olumlu yorum");
+  await expect(page.locator('[role="dialog"]')).toContainText("Hızlı yanıt, daha güçlü güven.");
+  await expect(page.getByTestId("info-score-item")).toHaveCount(4);
+  await expect(page.locator('[role="dialog"]')).toContainText("Kısa yaz");
+  await expect(page.locator('[role="dialog"]')).toContainText("Nazik kal");
+  await expect(page.locator('[role="dialog"]')).toContainText("İyi yorumu büyüt");
+  await expect(page.locator('[role="dialog"]')).toContainText("Uzun açıklama yerine net ve sakin yanıt kullan.");
 
   expect(errors).toEqual([]);
 });

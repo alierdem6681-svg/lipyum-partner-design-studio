@@ -1,5 +1,5 @@
 ﻿<script setup>
-import { computed, onMounted, onUnmounted, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { DRAWER_SECTIONS } from "../../utils/constants.js";
 import { getRouteMeta } from "../../utils/routeMeta.js";
@@ -8,6 +8,7 @@ import DrawerProfileCard from "../components/drawer/DrawerProfileCard.vue";
 import AppBottomBar from "../components/ui/AppBottomBar.vue";
 import AppDrawer from "../components/ui/AppDrawer.vue";
 import AppHeader from "../components/ui/AppHeader.vue";
+import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import AppToast from "../components/ui/AppToast.vue";
 import MobileLayout from "./MobileLayout.vue";
@@ -25,7 +26,13 @@ const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
 const showBack = computed(() => meta.value.leadingAction === "back");
 const rightActions = computed(() => meta.value.trailingActions || []);
+const contentRef = ref(null);
+const pullDistance = ref(0);
+const isPulling = ref(false);
+const isRefreshing = ref(false);
 let navigationSource = "init";
+let pullStartY = 0;
+let pullLocked = false;
 
 watch(
   () => route.path,
@@ -39,9 +46,16 @@ watch(
     shell.closeSheet();
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
+    isPulling.value = false;
+    isRefreshing.value = false;
+    pullDistance.value = 0;
   },
   { immediate: true },
 );
+
+watch(pullDistance, (value) => {
+  contentRef.value?.style.setProperty("--pull-refresh-height", `${value}px`);
+});
 
 function navigateTo(target) {
   shell.closeDrawer();
@@ -76,7 +90,7 @@ function onHeaderAction(action) {
     shell.openSheet({
       title: infoSheet.title || meta.value.title || "Bilgi",
       description: infoSheet.description || meta.value.subtitle || "Sayfa bilgisi",
-      body: infoSheet.body || "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      body: infoSheet.body ?? "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
       scoreItems: infoSheet.scoreItems || [],
       note: infoSheet.note || "",
     });
@@ -96,6 +110,54 @@ function onHeaderAction(action) {
 
 function handlePopState() {
   navigationSource = "history";
+}
+
+function canStartPullRefresh() {
+  return !shell.drawerOpen && !shell.activeSheet && !isRefreshing.value && (contentRef.value?.scrollTop || 0) <= 0;
+}
+
+function handlePullStart(event) {
+  if (!event.touches?.length || !canStartPullRefresh()) {
+    pullLocked = false;
+    return;
+  }
+  pullStartY = event.touches[0].clientY;
+  pullLocked = true;
+}
+
+function handlePullMove(event) {
+  if (!pullLocked || !event.touches?.length) return;
+  const distance = event.touches[0].clientY - pullStartY;
+  if (distance <= 0 || (contentRef.value?.scrollTop || 0) > 0) {
+    pullDistance.value = 0;
+    isPulling.value = false;
+    return;
+  }
+  event.preventDefault();
+  isPulling.value = true;
+  pullDistance.value = Math.min(92, Math.round(distance * 0.48));
+}
+
+function finishPullRefresh() {
+  window.setTimeout(() => {
+    isRefreshing.value = false;
+    isPulling.value = false;
+    pullDistance.value = 0;
+  }, 620);
+}
+
+function handlePullEnd() {
+  if (!pullLocked) return;
+  pullLocked = false;
+  if (pullDistance.value >= 58) {
+    isRefreshing.value = true;
+    isPulling.value = false;
+    pullDistance.value = 64;
+    finishPullRefresh();
+    return;
+  }
+  isPulling.value = false;
+  pullDistance.value = 0;
 }
 
 onMounted(() => {
@@ -127,7 +189,26 @@ onUnmounted(() => {
         @action="onHeaderAction"
       />
 
-      <div id="appRoot" class="v-shell__content">
+      <div
+        id="appRoot"
+        ref="contentRef"
+        class="v-shell__content"
+        :class="{ 'is-pulling': isPulling, 'is-refreshing': isRefreshing }"
+        @touchstart="handlePullStart"
+        @touchmove="handlePullMove"
+        @touchend="handlePullEnd"
+        @touchcancel="handlePullEnd"
+      >
+        <div
+          class="v-pull-refresh"
+          :class="{ 'is-visible': pullDistance > 0, 'is-refreshing': isRefreshing }"
+          data-testid="pull-refresh-indicator"
+          aria-hidden="true"
+        >
+          <span class="v-pull-refresh__spinner">
+            <AppIcon name="refresh" :size="20" />
+          </span>
+        </div>
         <RouterView />
       </div>
 
@@ -170,9 +251,12 @@ onUnmounted(() => {
             <article
               v-for="item in shell.activeSheet.scoreItems"
               :key="item.label"
-              :class="['v-info-score-item', `is-${item.tone || 'neutral'}`]"
+              :class="['v-info-score-item', `is-${item.tone || 'neutral'}`, { 'has-icon': item.icon }]"
               data-testid="info-score-item"
             >
+              <span v-if="item.icon" class="v-info-score-item__icon" aria-hidden="true">
+                <AppIcon :name="item.icon" :size="18" />
+              </span>
               <span class="v-info-score-item__copy">
                 <strong>{{ item.label }}</strong>
                 <small>{{ item.description }}</small>

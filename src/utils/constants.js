@@ -43,6 +43,10 @@
   "/create-offer": "createOffer",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
+  "/performance-score/task/job-result": "performanceTaskJobResult",
+  "/performance-score/tasks": "performanceTasks",
+  "/performance-score/details": "performanceDetails",
+  "/performance-score/success": "performanceSuccess",
   "/performance-improve": "performanceImprove",
   "/partner-card-preview": "partnerCardPreview",
 };
@@ -91,7 +95,11 @@ export const ROUTE_TITLES = {
   "/digital-service-form": "Dijital Servis Formu",
   "/create-offer": "Teklif Oluştur",
   "/appointment-link": "Randevu Linki",
-  "/performance-score": "Performans Skoru",
+  "/performance-score": "Daha Fazla İş Al",
+  "/performance-score/task/job-result": "İş Bilgilerini Gir",
+  "/performance-score/tasks": "Tüm Görevler",
+  "/performance-score/details": "Puanın Nasıl Hesaplanır?",
+  "/performance-score/success": "Görev Tamamlandı",
   "/performance-improve": "Performansımı Artır",
   "/partner-card-preview": "Partner Kartı Önizleme",
 };
@@ -144,6 +152,7 @@ export const DRAWER_SECTIONS = [
     items: [
       { label: "Müşteri Yönetimi", icon: "users", route: "/customer-management", screen: "customerManagement", tone: "green" },
       { label: "Hesap Hareketleri", icon: "receipt", route: "/account-transactions", screen: "accountTransactions", tone: "blue" },
+      { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", tone: "gold" },
       { label: "Dijital Servis Formu", icon: "file-text", route: "/digital-service-form", screen: "digitalServiceForm", tone: "gold" },
       { label: "Teklif Oluştur", icon: "edit", route: "/create-offer", screen: "createOffer", tone: "green" },
     ],
