@@ -57,6 +57,17 @@ const titleOverrides = {
     title: "Partner Davet Programı",
     compactTitle: "Partner Davet",
     subtitle: "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan",
+    infoSheet: {
+      title: "Partner Davet Programı",
+      description: "Davet et, iş aldır, pasif bonus kazan.",
+      body: "Davet ettiğin partner aynı cep numarasıyla kayıt olur. İlk işini aldığında bonus açılır. Aktif kaldıkça bakiye yüklemelerinden pasif bonus kazanırsın.",
+      scoreItems: [
+        { label: "Kayıt et", value: "100 TL", description: "Partner aynı cep numarasıyla kayıt olduğunda ilk bonus takip edilir.", tone: "positive", icon: "users" },
+        { label: "İş aldır", value: "500 TL", description: "Partner ilk işini alınca ikinci ödül açılır.", tone: "positive", icon: "briefcase" },
+        { label: "Bakiye yüklet", value: "%3", description: "Her bakiye yüklemesinden pasif bonus kazanırsın.", tone: "positive", icon: "wallet" },
+      ],
+      note: "Bu program aktif partner ağı kurman için tasarlandı. Partner çalıştıkça kazanç fırsatın devam eder.",
+    },
   },
   "/referral/tasks": {
     title: "Referral Görevleri",
