@@ -1,120 +1,207 @@
 <script setup>
-import { onBeforeUnmount, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import AppButton from "../components/ui/AppButton.vue";
-import AppCard from "../components/ui/AppCard.vue";
-import AppChip from "../components/ui/AppChip.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 
-const router = useRouter();
 const state = ref("idle");
-const title = ref("Kredi kullanımı hakkında destek");
-const description = ref("Kredi ve bonus kullanımıyla ilgili canlı destek almak istiyorum.");
+const subject = ref("");
+const description = ref("");
+const subjectFocused = ref(false);
+const descriptionFocused = ref(false);
 const draft = ref("");
 const typing = ref(false);
 const messages = ref([]);
+const agentOnline = ref(false);
 let connectTimer = 0;
 let typingTimer = 0;
 
-onBeforeUnmount(clearTimers);
+const defaultSubject = "İş sayıları hakkında destek";
+const defaultDescription = "Daha fazla iş alabilmek için ne yapmalıyım?";
+const subjectPlaceholder = computed(() => (subjectFocused.value ? "" : defaultSubject));
+const descriptionPlaceholder = computed(() => (descriptionFocused.value ? "" : defaultDescription));
+
+onMounted(() => {
+  window.addEventListener("lipyum:live-support-end", endChatFromHeader);
+  syncHeaderAction();
+});
+
+onBeforeUnmount(() => {
+  clearTimers();
+  window.removeEventListener("lipyum:live-support-end", endChatFromHeader);
+  window.dispatchEvent(new CustomEvent("lipyum:header-actions", { detail: { route: "/support/live", actions: [] } }));
+});
+
+watch(state, syncHeaderAction);
 
 function clearTimers() {
   window.clearTimeout(connectTimer);
   window.clearTimeout(typingTimer);
 }
 
+function syncHeaderAction() {
+  const actions = state.value === "idle" ? [] : ["end-live-chat"];
+  window.dispatchEvent(new CustomEvent("lipyum:header-actions", { detail: { route: "/support/live", actions } }));
+}
+
+function getConnectionDelay() {
+  if (Number.isFinite(window.__LIPYUM_SUPPORT_DELAY__)) return window.__LIPYUM_SUPPORT_DELAY__;
+  return Math.floor(5000 + Math.random() * 10000);
+}
+
+function getRequestText() {
+  const cleanSubject = subject.value.trim() || defaultSubject;
+  const cleanDescription = description.value.trim() || defaultDescription;
+  return { cleanSubject, cleanDescription };
+}
+
 function startChat() {
   clearTimers();
+  const { cleanSubject, cleanDescription } = getRequestText();
   state.value = "waiting";
-  messages.value = [{ from: "system", text: "Talep başlığı alındı. Tahmini süre 2 dakika." }];
+  agentOnline.value = false;
+  typing.value = false;
+  messages.value = [
+    {
+      from: "user",
+      text: `Konu: ${cleanSubject}`,
+      time: "09:41",
+      status: "read",
+    },
+    {
+      from: "user",
+      text: cleanDescription,
+      time: "09:41",
+      status: "read",
+    },
+  ];
   connectTimer = window.setTimeout(() => {
     state.value = "connected";
-    messages.value.push({ from: "agent", text: "Lipyum destekten Elif bağlandı. Size nasıl yardımcı olabiliriz?" });
-  }, 5000);
+    agentOnline.value = true;
+    messages.value.push({
+      from: "agent",
+      text: "Merhaba, ben Elif. İş sayını artırmak için profil, bölge ve bakiye durumunu birlikte kontrol edebiliriz. 🙂",
+      time: "09:41",
+    });
+  }, getConnectionDelay());
 }
 
 function sendMessage() {
   const text = draft.value.trim();
-  if (!text) return;
-  messages.value.push({ from: "user", text });
+  if (!text || state.value !== "connected") return;
+  messages.value.push({ from: "user", text, time: "09:42", status: "read" });
   draft.value = "";
   typing.value = true;
   window.clearTimeout(typingTimer);
   typingTimer = window.setTimeout(() => {
     typing.value = false;
-    messages.value.push({ from: "agent", text: "Mesajınızı aldım, ilgili kaydı kontrol ediyorum." });
+    messages.value.push({
+      from: "agent",
+      text: "Mesajınızı aldım. Size en hızlı yol haritasını çıkarmak için ekranınızı kontrol ediyorum.",
+      time: "09:42",
+    });
   }, 1200);
+}
+
+function endChatFromHeader() {
+  if (state.value === "idle") return;
+  endChat();
 }
 
 function endChat() {
   clearTimers();
-  state.value = "ended";
   typing.value = false;
-  messages.value.push({ from: "system", text: "Konuşma bitirildi." });
+  agentOnline.value = false;
+  if (state.value !== "ended") {
+    messages.value.push({ from: "system", text: "Konuşma bitirildi." });
+  }
+  state.value = "ended";
 }
 </script>
 
 <template>
-  <AppPage title="Canlı Destek" class="support-live-page" data-testid="live-support-page">
-    <AppCard class="live-support-card">
-      <span class="live-support-icon" aria-hidden="true">
-        <AppIcon :name="state === 'idle' ? 'message' : 'headphones'" :size="24" />
-      </span>
+  <AppPage title="Canlı Destek" class="support-live-page support-live-page--whatsapp" data-testid="live-support-page">
+    <section class="live-whatsapp-shell" :class="`is-${state}`">
+      <div class="live-whatsapp-contact">
+        <span class="live-whatsapp-avatar" aria-hidden="true">
+          <AppIcon name="headphones" :size="22" />
+        </span>
+        <span class="live-whatsapp-contact__copy">
+          <strong>Lipyum Müşteri Temsilcisi</strong>
+          <small>{{ agentOnline ? "çevrimiçi" : state === "waiting" ? "bağlanıyor..." : "genelde birkaç saniyede yanıt verir" }}</small>
+        </span>
+        <span class="live-whatsapp-lock"><AppIcon name="shield" :size="15" /> Güvenli</span>
+      </div>
 
       <template v-if="state === 'idle'">
-        <h2>Canlı sohbeti başlat</h2>
-        <p>Kısa bir başlık ve not bırak, doğru temsilciye hızlıca yönlendirelim.</p>
-        <label>
-          <span>Konu başlığı</span>
-          <input v-model="title" data-testid="live-support-title" type="text" />
-        </label>
-        <label>
-          <span>Kısa açıklama</span>
-          <textarea v-model="description" data-testid="live-support-description" rows="3" />
-        </label>
-        <AppButton class="primary-btn" icon="message" data-testid="live-support-start" @click="startChat">
-          Canlı sohbete başla
-        </AppButton>
+        <div class="live-whatsapp-start" data-testid="live-support-start-form">
+          <span class="live-whatsapp-start__icon"><AppIcon name="message" :size="24" /></span>
+          <h2>Canlı desteğe bağlan</h2>
+          <p>Konu ve kısa açıklaman sohbet açılınca ilk mesaj olarak temsilciye gönderilir.</p>
+
+          <label>
+            <span>Konu</span>
+            <input
+              v-model="subject"
+              data-testid="live-support-title"
+              type="text"
+              :placeholder="subjectPlaceholder"
+              @focus="subjectFocused = true"
+              @blur="subjectFocused = false"
+            />
+          </label>
+          <label>
+            <span>Kısa açıklama</span>
+            <textarea
+              v-model="description"
+              data-testid="live-support-description"
+              rows="3"
+              :placeholder="descriptionPlaceholder"
+              @focus="descriptionFocused = true"
+              @blur="descriptionFocused = false"
+            ></textarea>
+          </label>
+          <AppButton class="primary-btn" icon="message" data-testid="live-support-start" @click="startChat">
+            Müşteri Temsilcisine Bağlan
+          </AppButton>
+        </div>
       </template>
 
       <template v-else>
-        <div
-          class="v-live-waiting"
-          :data-testid="state === 'waiting' ? 'live-support-waiting' : state === 'ended' ? 'live-support-ended' : undefined"
-        >
-          <h2>{{ state === "waiting" ? "Temsilci bağlanıyor" : state === "connected" ? "Lipyum canlı destek" : "Konuşma tamamlandı" }}</h2>
-          <p>{{ state === "waiting" ? "Talebin canlı destek kuyruğuna alındı." : "Temsilci konuşma akışı hazır." }}</p>
-          <AppChip tone="warning">Tahmini süre 2 dakika</AppChip>
-          <div v-if="state === 'waiting'" class="live-support-queue" role="status" aria-live="polite">
-            <span></span><span></span><span></span>
+        <div class="live-whatsapp-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
+          <div v-if="state === 'waiting'" class="live-whatsapp-connecting" data-testid="live-support-waiting">
+            <span class="live-whatsapp-spinner" aria-hidden="true"></span>
+            <strong>Temsilci bağlanıyor</strong>
+            <small>Talebin iletildi. Uygun temsilci birkaç saniye içinde sohbete katılacak.</small>
+            <span class="live-whatsapp-typing-dots"><i></i><i></i><i></i></span>
           </div>
-          <AppButton
-            v-if="state === 'waiting'"
-            class="secondary-btn"
-            variant="secondary"
-            icon="file-text"
-            data-testid="live-support-create-ticket"
-            @click="router.push('/support/new')"
-          >
-            Beklerken Talep Oluştur
-          </AppButton>
-        </div>
 
-        <div class="v-chat-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
           <span v-if="state === 'connected'" class="v-agent-chip" data-testid="live-support-agent">Elif · Lipyum Destek</span>
-          <div v-for="(message, index) in messages" :key="`${message.from}-${index}`" :class="['v-chat-bubble', `is-${message.from}`]">
-            {{ message.text }}
+          <div v-for="(message, index) in messages" :key="`${message.from}-${index}`" :class="['live-whatsapp-bubble', `is-${message.from}`]">
+            <span>{{ message.text }}</span>
+            <small v-if="message.from !== 'system'">
+              {{ message.time }}
+              <em v-if="message.from === 'user'" aria-label="okundu">✓✓</em>
+            </small>
           </div>
-          <div v-if="typing" class="v-chat-bubble is-agent" data-testid="live-support-typing">Yazıyor...</div>
+          <div v-if="typing" class="live-whatsapp-bubble is-agent is-typing" data-testid="live-support-typing">
+            <span class="live-whatsapp-typing-dots"><i></i><i></i><i></i></span>
+          </div>
+          <div v-if="state === 'ended'" class="live-whatsapp-ended" data-testid="live-support-ended">
+            <AppIcon name="check" :size="18" />
+            Konuşma tamamlandı
+          </div>
         </div>
 
-        <div v-if="state === 'connected'" class="v-chat-input">
+        <div v-if="state === 'connected'" class="live-whatsapp-input">
+          <button type="button" aria-label="Emoji seç">😊</button>
           <input v-model="draft" data-testid="live-support-input" type="text" placeholder="Mesaj yaz" @keyup.enter="sendMessage" />
-          <AppButton size="sm" icon="send" data-testid="live-support-send" @click="sendMessage">Gönder</AppButton>
-          <AppButton size="sm" variant="ghost" data-testid="live-support-end" @click="endChat">Konuşmayı bitir</AppButton>
+          <button type="button" aria-label="Dosya ekle"><AppIcon name="plus" :size="18" /></button>
+          <button type="button" class="is-send" data-testid="live-support-send" aria-label="Gönder" @click="sendMessage">
+            <AppIcon name="message" :size="18" />
+          </button>
         </div>
       </template>
-    </AppCard>
+    </section>
   </AppPage>
 </template>

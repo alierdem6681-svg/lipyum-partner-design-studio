@@ -36,6 +36,9 @@ test("sidebar support group opens create ticket flow", async ({ page }) => {
 
 test("sidebar support group opens live support flow", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
+  await page.addInitScript(() => {
+    window.__LIPYUM_SUPPORT_DELAY__ = 50;
+  });
   await page.goto("/#/home");
   await waitForApp(page);
 
@@ -43,10 +46,23 @@ test("sidebar support group opens live support flow", async ({ page }) => {
   await page.getByRole("button", { name: "Canlı Destek" }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/live");
   await expect(page.getByTestId("live-support-page")).toBeVisible();
+  await expect(page.getByTestId("bottom-nav")).toHaveCount(0);
+  await expect(page.getByTestId("live-support-title")).toHaveAttribute("placeholder", "İş sayıları hakkında destek");
+  await page.getByTestId("live-support-title").focus();
+  await expect(page.getByTestId("live-support-title")).toHaveAttribute("placeholder", "");
   await page.getByTestId("live-support-title").fill("Canlı destek testi");
+  await expect(page.getByTestId("live-support-description")).toHaveAttribute(
+    "placeholder",
+    "Daha fazla iş alabilmek için ne yapmalıyım?",
+  );
   await page.getByTestId("live-support-description").fill("Temsilci bağlantı durumunu kontrol etmek istiyorum.");
+  await expect(page.getByTestId("live-support-start")).toHaveText(/Müşteri Temsilcisine Bağlan/);
   await page.getByTestId("live-support-start").click();
-  await expect(page.getByRole("heading", { name: "Temsilci bağlanıyor" })).toBeVisible();
+  await expect(page.getByTestId("live-support-waiting").getByText("Temsilci bağlanıyor")).toBeVisible();
+  await expect(page.getByText("Konu: Canlı destek testi")).toBeVisible();
+  await expect(page.getByTestId("live-support-chat")).toBeVisible({ timeout: 2_000 });
+  await page.getByTestId("live-support-end-header").click();
+  await expect(page.getByTestId("live-support-ended")).toBeVisible();
 
   expect(errors).toEqual([]);
 });

@@ -302,9 +302,14 @@ test("navigation and live support remain functional", async ({ page }) => {
   await page.goBack();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
 
+  await page.addInitScript(() => {
+    window.__LIPYUM_SUPPORT_DELAY__ = 50;
+  });
   await page.goto("/#/support/live");
   await expectVueShell(page, "/support/live");
-  await page.getByRole("button", { name: /Canl/i }).first().click();
-  await expect(page.getByTestId("live-support-waiting").getByText(/Tahmini süre 2 dakika/i)).toBeVisible();
+  await expect(page.getByTestId("bottom-nav")).toHaveCount(0);
+  await page.getByTestId("live-support-start").click();
+  await expect(page.getByTestId("live-support-waiting")).toBeVisible();
+  await expect(page.getByTestId("live-support-chat")).toBeVisible({ timeout: 2_000 });
   expect(errors).toEqual([]);
 });
