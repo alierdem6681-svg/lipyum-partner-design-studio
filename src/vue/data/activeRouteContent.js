@@ -452,24 +452,6 @@ const content = {
       },
     ],
   },
-  "/performance-score": {
-    group: "finance",
-    title: "Performans Skoru",
-    lead: "Skorunu etkileyen güçlü ve gelişime açık alanlar.",
-    metrics: [
-      { label: "Skor", value: "81", icon: "trend-up" },
-      { label: "Hedef", value: "85", icon: "target" },
-    ],
-    sections: [
-      {
-        title: "Skor kırılımı",
-        items: [
-          { title: "Yanıt hızı", body: "Tekliflere hızlı dönüş puanı artırır.", icon: "timer" },
-          { title: "Profil kalitesi", body: "Güncel fotoğraf ve hizmet bilgisi etkili.", icon: "user" },
-        ],
-      },
-    ],
-  },
   "/customers": {
     group: "finance",
     title: "Müşteri Defteri",
