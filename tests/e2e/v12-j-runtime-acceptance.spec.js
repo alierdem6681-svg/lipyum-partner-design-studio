@@ -5,7 +5,6 @@ const blankRoutes = [
   { route: "/jobs", testId: "jobs-page", active: "bottom-cta-job" },
   { route: "/my-jobs", testId: "my-jobs-page", active: "bottom-tab-jobs" },
   { route: "/calendar", testId: "calendar-page", active: "bottom-tab-calendar" },
-  { route: "/wallet", testId: "wallet-page", active: "bottom-tab-wallet" },
 ];
 
 const dedicatedRoutes = [
@@ -19,6 +18,9 @@ const dedicatedRoutes = [
   { route: "/support/live", testId: "live-support-page" },
   { route: "/support/customer-service", testId: "customer-service-page" },
   { route: "/messages", testId: "messages-page" },
+  { route: "/wallet", testId: "wallet-page" },
+  { route: "/wallet/history", testId: "wallet-history-page" },
+  { route: "/wallet/settings", testId: "wallet-settings-page" },
   { route: "/satisfaction", testId: "satisfaction-page" },
   { route: "/reviews", testId: "reviews-page" },
   { route: "/leaderboard", testId: "leaderboard-page" },

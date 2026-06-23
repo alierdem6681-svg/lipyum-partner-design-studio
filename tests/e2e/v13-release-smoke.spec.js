@@ -13,13 +13,13 @@ const criticalRoutes = [
   ["/performance-score", "performance-score-flow-page"],
   ["/referral", "referral-page"],
   ["/partner-card-preview", "partner-card-preview-page"],
+  ["/wallet", "wallet-page"],
 ];
 
 const blankRoutes = [
   ["/jobs", "jobs-page", "bottom-cta-job"],
   ["/my-jobs", "my-jobs-page", "bottom-tab-jobs"],
   ["/calendar", "calendar-page", "bottom-tab-calendar"],
-  ["/wallet", "wallet-page", "bottom-tab-wallet"],
 ];
 
 const retiredRoutes = ["/packages", "/package-builder", "/package-checkout", "/partner/packages"];

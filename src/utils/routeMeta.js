@@ -160,10 +160,44 @@ const titleOverrides = {
     showBottomBar: false,
   },
   "/wallet": {
-    title: "Cüzdan",
+    title: "Cüzdanım",
     compactTitle: "Cüzdan",
-    subtitle: "",
-    trailingActions: ["account-transactions"],
+    subtitle: "İş bakiyeni ve bonuslarını yönet.",
+    trailingActions: ["wallet-info"],
+  },
+  "/wallet/top-up": {
+    title: "Bakiye Yükle",
+    compactTitle: "Bakiye Yükle",
+    subtitle: "Tutarı seç, bonusunu kullan, özetini gör.",
+    parentRoute: "/wallet",
+    trailingActions: [],
+    showBottomBar: false,
+    ctaVariant: "hidden",
+  },
+  "/wallet/top-up/success": {
+    title: "Bakiye Yüklendi",
+    compactTitle: "Bakiye Yüklendi",
+    subtitle: "İş bakiyen güncellendi.",
+    parentRoute: "/wallet",
+    trailingActions: [],
+    showBottomBar: false,
+    ctaVariant: "hidden",
+  },
+  "/wallet/history": {
+    title: "Cüzdan Hareketleri",
+    compactTitle: "Hareketler",
+    subtitle: "Yükleme, iş alımı, bonus ve iadeler",
+    parentRoute: "/wallet",
+    trailingActions: [],
+    activeBottomTab: "wallet",
+  },
+  "/wallet/settings": {
+    title: "Cüzdan Ayarları",
+    compactTitle: "Ayarlar",
+    subtitle: "Uyarı, otomatik yükleme ve bonus kuralları",
+    parentRoute: "/wallet",
+    trailingActions: [],
+    activeBottomTab: "wallet",
   },
   "/job-referral": {
     title: "İş Yönlendirme Programı",
@@ -269,7 +303,7 @@ export const routeMeta = Object.fromEntries(
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
         infoSheet: override.infoSheet || null,
         showBottomBar: override.showBottomBar ?? true,
-        activeBottomTab: bottomTabByRoute.get(route) || null,
+        activeBottomTab: override.activeBottomTab || bottomTabByRoute.get(route) || null,
         ctaVariant: override.ctaVariant || (isHome ? "home" : "subpage"),
         parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
@@ -281,6 +315,16 @@ export const routeMeta = Object.fromEntries(
 );
 
 export function getRouteMeta(route = "/home") {
+  if (route.startsWith("/wallet/transaction/")) {
+    return {
+      ...routeMeta["/wallet/history"],
+      route,
+      title: "İşlem Detayı",
+      compactTitle: "İşlem Detayı",
+      subtitle: "Cüzdan hareketinin ayrıntısı",
+      parentRoute: "/wallet/history",
+    };
+  }
   if (route.startsWith("/referral/partner/")) {
     return {
       ...routeMeta["/referral/partners"],

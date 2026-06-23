@@ -38,12 +38,16 @@ import SubscriptionPage from "../pages/SubscriptionPage.vue";
 import SupportPage from "../pages/SupportPage.vue";
 import UiKitPreviewPage from "../pages/UiKitPreviewPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
+import WalletHistoryPage from "../pages/WalletHistoryPage.vue";
+import WalletSettingsPage from "../pages/WalletSettingsPage.vue";
+import WalletTopUpPage from "../pages/WalletTopUpPage.vue";
+import WalletTopUpSuccessPage from "../pages/WalletTopUpSuccessPage.vue";
+import WalletTransactionDetailPage from "../pages/WalletTransactionDetailPage.vue";
 
 const blankBottomRoutes = [
   { path: "/jobs", name: "jobs", component: JobsPage },
   { path: "/my-jobs", name: "my-jobs", component: MyJobsPage },
   { path: "/calendar", name: "calendar", component: CalendarPage },
-  { path: "/wallet", name: "wallet", component: WalletPage },
 ];
 
 const emptySidebarRoutes = [
@@ -80,6 +84,11 @@ const simpleContentRoutes = new Set([
 ]);
 
 const dedicatedRouteComponents = {
+  "/wallet": WalletPage,
+  "/wallet/top-up": WalletTopUpPage,
+  "/wallet/top-up/success": WalletTopUpSuccessPage,
+  "/wallet/history": WalletHistoryPage,
+  "/wallet/settings": WalletSettingsPage,
   "/profile": ProfilePage,
   "/partner-card-preview": PartnerCardPreviewPage,
   "/performance-score": PerformanceScorePage,
@@ -146,6 +155,7 @@ const routes = [
   { path: "/partner/packages", redirect: "/subscription" },
   { path: "/ui-kit", name: "ui-kit", component: UiKitPreviewPage },
   { path: "/referral/partner/:id", name: "referral-partner-detail", component: ReferralPartnerDetailPage },
+  { path: "/wallet/transaction/:id", name: "wallet-transaction-detail", component: WalletTransactionDetailPage },
   { path: "/", redirect: "/home" },
   { path: "/:pathMatch(.*)*", redirect: "/home" },
 ];

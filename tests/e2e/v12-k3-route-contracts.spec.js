@@ -54,7 +54,6 @@ const blankRoutes = {
   "/jobs": { title: "İş Al", testId: "jobs-page" },
   "/my-jobs": { title: "İşler", testId: "my-jobs-page" },
   "/calendar": { title: "Randevu", testId: "calendar-page" },
-  "/wallet": { title: "Cüzdan", testId: "wallet-page" },
 };
 
 function expectedUrl(route) {
@@ -216,9 +215,8 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
 
   await page.goto(expectedUrl("/wallet"));
   await waitForApp(page);
-  await page.getByTestId("app-header").getByTestId("account-transactions-header-button").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/account-transactions");
-  await expect(page.getByTestId("account-transactions-page")).toBeVisible();
+  await page.getByTestId("app-header").getByTestId("wallet-info-button").click();
+  await expect(page.getByTestId("app-sheet")).toContainText("Cüzdan nasıl çalışır?");
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);

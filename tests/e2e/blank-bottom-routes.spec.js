@@ -5,7 +5,6 @@ const blankRoutes = [
   { route: "/jobs", title: "İş Al", testId: "jobs-page", active: "bottom-cta-job" },
   { route: "/my-jobs", title: "İşler", testId: "my-jobs-page", active: "bottom-tab-jobs" },
   { route: "/calendar", title: "Randevu", testId: "calendar-page", active: "bottom-tab-calendar" },
-  { route: "/wallet", title: "Cüzdan", testId: "wallet-page", active: "bottom-tab-wallet" },
 ];
 
 const runtimeScenarios = [

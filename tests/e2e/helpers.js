@@ -4,6 +4,8 @@ export const routes = [
   "/my-jobs",
   "/calendar",
   "/wallet",
+  "/wallet/history",
+  "/wallet/settings",
   "/profile",
   "/notifications",
   "/support",
@@ -72,13 +74,14 @@ export const bottomBarHiddenRoutes = new Set([
   "/subscription",
   "/subscription/compare",
   "/subscription/checkout",
+  "/wallet/top-up",
+  "/wallet/top-up/success",
 ]);
 
 export const blankBottomRoutes = new Set([
   "/jobs",
   "/my-jobs",
   "/calendar",
-  "/wallet",
 ]);
 
 export async function collectConsoleErrors(page) {
