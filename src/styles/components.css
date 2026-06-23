@@ -1921,31 +1921,6 @@
     transform 160ms ease;
 }
 
-.filter-chip-dot {
-  width: 7px;
-  height: 7px;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--filter-chip-dot-color, var(--color-primary));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--filter-chip-dot-color, var(--color-primary)) 12%, transparent);
-}
-
-.filter-chip-dot.is-tone-primary {
-  --filter-chip-dot-color: var(--color-neutral-800);
-}
-
-.filter-chip-dot.is-tone-success {
-  --filter-chip-dot-color: var(--color-primary);
-}
-
-.filter-chip-dot.is-tone-info {
-  --filter-chip-dot-color: var(--color-info);
-}
-
-.filter-chip-dot.is-tone-danger {
-  --filter-chip-dot-color: var(--color-danger);
-}
-
 .filter-chip-label {
   min-width: 0;
   overflow: hidden;
@@ -1970,14 +1945,16 @@
 }
 
 .filter-chip.is-active {
-  background: var(--color-neutral-800);
-  color: var(--color-surface);
+  border-color: color-mix(in srgb, var(--color-primary) 44%, var(--color-primary-border));
+  background: color-mix(in srgb, var(--color-primary-soft) 82%, var(--color-surface));
+  color: var(--color-primary-dark);
   box-shadow: none;
 }
 
 .filter-chip.is-active .filter-chip-count {
-  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
-  color: var(--color-neutral-800);
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 16%, transparent);
 }
 
 .filter-chip.is-tone-success:not(.is-active) {
