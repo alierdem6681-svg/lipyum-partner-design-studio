@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-const storageKey = "lipyum.subscription.directPurchase";
+const storageKey = "lipyum.subscription.directPurchase.v2";
 
 async function resetSubscription(page) {
   await page.addInitScript((key) => window.localStorage.removeItem(key), storageKey);
@@ -21,21 +21,21 @@ test.describe("subscription direct purchase flow", () => {
     await expect(page.getByTestId("subscription-plan-gold")).toBeVisible();
     await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
     await expect(page.getByTestId("subscription-plan-vip")).toBeVisible();
-    await expect(page.getByTestId("subscription-plan-plus")).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByTestId("subscription-plan-gold")).toHaveAttribute("aria-selected", "true");
     await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
-    await expect(page.getByText("499 TL / ay").first()).toBeVisible();
-    await expect(page.getByTestId("selected-plan-cta")).toContainText("PLUS'A GEÇ");
-
-    await page.getByTestId("subscription-plan-gold").click();
-    await expect(page.getByTestId("selected-plan-card")).toContainText("Lipyum Gold");
+    await expect(page.getByText("2.091 TL / ay").first()).toBeVisible();
     await expect(page.getByTestId("selected-plan-cta")).toContainText("GOLD'A GEÇ");
+
+    await page.getByTestId("subscription-plan-plus").click();
+    await expect(page.getByTestId("selected-plan-card")).toContainText("Lipyum Plus");
+    await expect(page.getByTestId("selected-plan-cta")).toContainText("PLUS'A GEÇ");
 
     await page.getByTestId("subscription-plan-vip").click();
     await expect(page.getByTestId("selected-plan-card")).toContainText("Lipyum VIP");
     await expect(page.getByTestId("selected-plan-cta")).toContainText("VIP'E GEÇ");
 
     await page.getByTestId("billing-annual").click();
-    await expect(page.getByTestId("selected-plan-card")).toContainText("8.630 TL / yıl");
+    await expect(page.getByTestId("selected-plan-card")).toContainText("34.860 TL / yıl");
     await expectNoAppHorizontalOverflow(page);
   });
 
@@ -55,7 +55,7 @@ test.describe("subscription direct purchase flow", () => {
     await expect(page.getByTestId("subscription-checkout-page")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Lipyum VIP" })).toBeVisible();
     await expect(page.getByTestId("subscription-checkout-page").getByText("Bugün ödenecek")).toBeVisible();
-    await expect(page.getByTestId("subscription-checkout-page").getByText("899 TL", { exact: true })).toBeVisible();
+    await expect(page.getByTestId("subscription-checkout-page").getByText("3.486 TL", { exact: true })).toBeVisible();
     await expect(page.getByText("Ödeme sonrası hemen aktif").first()).toBeVisible();
     await expect(page.getByText("Her ay aynı tarihte otomatik yenilenir")).toBeVisible();
 

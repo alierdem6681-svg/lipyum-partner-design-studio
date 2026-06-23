@@ -13,7 +13,7 @@ import {
 } from "../data/subscriptionPlans.js";
 import { subscriptionService } from "../services/subscriptionService.js";
 
-const STORAGE_KEY = "lipyum.subscription.directPurchase";
+const STORAGE_KEY = "lipyum.subscription.directPurchase.v2";
 
 function initialState() {
   return {
@@ -28,7 +28,7 @@ function initialState() {
     paymentIssue: false,
     purchaseState: "idle",
     usedBenefits: [
-      { label: "Plus profil rozeti", value: "Aktif", icon: "crown" },
+      { label: "Plan profil rozeti", value: "Aktif", icon: "crown" },
       { label: "Müşteri hizmetleri", value: "2 görüşme", icon: "headphones" },
       { label: "Performans önerileri", value: "4 öneri", icon: "trend-up" },
     ],

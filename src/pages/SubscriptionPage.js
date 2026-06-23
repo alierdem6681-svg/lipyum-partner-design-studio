@@ -1,13 +1,13 @@
-import { PlaceholderPage } from "../components/PlaceholderPage.js";
+import { PlaceholderPage } from "./PageScaffold.js";
 
 export function SubscriptionPage() {
   return PlaceholderPage({
-    title: "Aboneliğim",
-    subtitle: "Gold, Plus veya VIP planını seç; ödeme sonrası avantajların hemen aktif olur.",
+    title: "Abonelik",
+    subtitle: "Plus, Gold veya VIP planını seç; ödeme sonrası avantajların hemen aktif olur.",
     route: "/subscription",
     notes: [
       "Free mevcut durum olarak kalır.",
-      "Gold, Plus ve VIP doğrudan seçilebilir.",
+      "Plus, Gold ve VIP doğrudan seçilebilir.",
       "Her plan otomatik yenilenir ve istenen zaman iptal edilebilir.",
     ],
   });

@@ -12,19 +12,19 @@ import {
 } from "../../src/vue/data/subscriptionPlans.js";
 import { useSubscriptionStore } from "../../src/vue/stores/subscriptionStore.js";
 
-test("subscription plans use Gold Plus VIP direct purchase model", () => {
-  assert.deepEqual(subscriptionPlans.map((plan) => plan.id), ["gold", "plus", "vip"]);
-  assert.equal(getPlanById("gold").monthlyPrice, 249);
-  assert.equal(getPlanById("plus").monthlyPrice, 499);
-  assert.equal(getPlanById("vip").monthlyPrice, 899);
-  assert.equal(getPlanById("plus").recommended, true);
-  assert.equal(formatPrice(4790), "4.790");
+test("subscription plans use Plus Gold VIP direct purchase model", () => {
+  assert.deepEqual(subscriptionPlans.map((plan) => plan.id), ["plus", "gold", "vip"]);
+  assert.equal(getPlanById("plus").monthlyPrice, 930);
+  assert.equal(getPlanById("gold").monthlyPrice, 2091);
+  assert.equal(getPlanById("vip").monthlyPrice, 3486);
+  assert.equal(getPlanById("gold").recommended, true);
+  assert.equal(formatPrice(20910), "20.910");
 });
 
 test("monthly and annual prices are centralized", () => {
-  const plus = getPlanById("plus");
-  assert.equal(getPlanPrice(plus, "monthly"), 499);
-  assert.equal(getPlanPrice(plus, "annual"), 4790);
+  const gold = getPlanById("gold");
+  assert.equal(getPlanPrice(gold, "monthly"), 2091);
+  assert.equal(getPlanPrice(gold, "annual"), 20910);
 });
 
 test("status aliases avoid stale subscription states", () => {
@@ -38,11 +38,11 @@ test("subscription store purchase, upgrade, downgrade, restore and reset work", 
   const store = useSubscriptionStore();
 
   assert.equal(store.status, "free");
-  assert.equal(store.selectedPlanId, "plus");
+  assert.equal(store.selectedPlanId, "gold");
 
   store.selectPlan("vip");
   assert.equal(store.selectedPlanId, "vip");
-  assert.equal(store.selectedPrice, 899);
+  assert.equal(store.selectedPrice, 3486);
 
   await store.mockPurchase("vip");
   assert.equal(store.status, "active");
