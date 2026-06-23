@@ -137,15 +137,15 @@ export const walletActions = [
 ];
 
 export const reviews = [
-  { id: "r1", name: "Elif Y.", rating: 5, service: "Klima Tamiri", text: "Hızlı dönüş yaptı, servis süreci çok düzenliydi.", date: "Bugün", replied: false },
-  { id: "r2", name: "Murat K.", rating: 4, service: "Kombi Bakımı", text: "Randevu saatine uydu ve işlemi temiz anlattı.", date: "Dün", replied: true, reply: "Geri bildiriminiz için teşekkür ederiz, yeniden yardımcı olmak isteriz." },
-  { id: "r3", name: "Selin A.", rating: 5, service: "Petek Temizliği", text: "Beklentimin üstünde bir hizmet aldım.", date: "2 gün önce", replied: true, reply: "Değerli yorumunuz için teşekkür ederiz." },
-  { id: "r4", name: "Burak T.", rating: 3, service: "Buzdolabı Tamiri", text: "İletişim iyiydi ama randevu biraz gecikti.", date: "3 gün önce", replied: false },
-  { id: "r5", name: "Nermin K.", rating: 5, service: "Çamaşır Makinesi", text: "Sorun hızlı çözüldü, servis personeli çok açıklayıcıydı.", date: "4 gün önce", replied: false },
-  { id: "r6", name: "Ali R.", rating: 4, service: "Klima Bakımı", text: "Temiz çalışıldı ve ücret bilgisi net verildi.", date: "5 gün önce", replied: true, reply: "Memnun kalmanıza sevindik." },
-  { id: "r7", name: "Ceren M.", rating: 2, service: "Kombi Servisi", text: "Tekrar kontrol için dönüş bekliyorum.", date: "6 gün önce", replied: false },
-  { id: "r8", name: "Hakan S.", rating: 5, service: "Fırın Tamiri", text: "Dakik ve güvenilir bir hizmet aldım.", date: "1 hafta önce", replied: true, reply: "Güzel yorumunuz için teşekkür ederiz." },
-  { id: "r9", name: "Pelin D.", rating: 5, service: "Klima Montajı", text: "Montaj süreci beklediğimden hızlı tamamlandı.", date: "1 hafta önce", replied: false },
+  { id: "r1", name: "Elif Yılmaz", rating: 5, service: "Klima Tamiri", text: "Hızlı dönüş yaptı, servis süreci çok düzenliydi.", date: "Bugün", replied: false },
+  { id: "r2", name: "Murat Kaya", rating: 4, service: "Kombi Bakımı", text: "Randevu saatine uydu ve işlemi temiz anlattı.", date: "Dün", replied: true, reply: "Geri bildiriminiz için teşekkür ederiz, yeniden yardımcı olmak isteriz." },
+  { id: "r3", name: "Selin Aksoy", rating: 5, service: "Petek Temizliği", text: "Beklentimin üstünde bir hizmet aldım.", date: "2 gün önce", replied: true, reply: "Değerli yorumunuz için teşekkür ederiz." },
+  { id: "r4", name: "Burak Turan", rating: 3, service: "Buzdolabı Tamiri", text: "İletişim iyiydi ama randevu biraz gecikti.", date: "3 gün önce", replied: false },
+  { id: "r5", name: "Nermin Koç", rating: 5, service: "Çamaşır Makinesi", text: "Sorun hızlı çözüldü, servis personeli çok açıklayıcıydı.", date: "4 gün önce", replied: false },
+  { id: "r6", name: "Ali Rıza", rating: 4, service: "Klima Bakımı", text: "Temiz çalışıldı ve ücret bilgisi net verildi.", date: "5 gün önce", replied: true, reply: "Memnun kalmanıza sevindik." },
+  { id: "r7", name: "Ceren Mutlu", rating: 2, service: "Kombi Servisi", text: "Tekrar kontrol için dönüş bekliyorum.", date: "6 gün önce", replied: false },
+  { id: "r8", name: "Hakan Şahin", rating: 5, service: "Fırın Tamiri", text: "Dakik ve güvenilir bir hizmet aldım.", date: "1 hafta önce", replied: true, reply: "Güzel yorumunuz için teşekkür ederiz." },
+  { id: "r9", name: "Pelin Demir", rating: 5, service: "Klima Montajı", text: "Montaj süreci beklediğimden hızlı tamamlandı.", date: "1 hafta önce", replied: false },
 ];
 
 export const reviewSummary = {

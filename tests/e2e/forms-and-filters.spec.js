@@ -34,10 +34,36 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   expect(filterState.filterToListGap).toBeGreaterThanOrEqual(10);
   await expect(page.locator('[data-testid="reviews-filter-chip"] .filter-chip-dot')).toHaveCount(0);
 
-  const repliedCard = page.getByTestId("review-card").filter({ hasText: "Murat K." });
+  await expect(page.getByTestId("review-card").first()).toContainText("Elif Yılmaz");
+  const firstCardActionState = await page.getByTestId("review-card").first().evaluate((card) => {
+    const report = card.querySelector('[data-testid="review-report-button"]')?.getBoundingClientRect();
+    const reply = card.querySelector('[data-testid="review-reply-button"]')?.getBoundingClientRect();
+    return {
+      reportLeft: Math.round(report?.left || 0),
+      replyLeft: Math.round(reply?.left || 0),
+      centerDelta: Math.abs(Math.round((report?.top || 0) + (report?.height || 0) / 2 - ((reply?.top || 0) + (reply?.height || 0) / 2))),
+    };
+  });
+  expect(firstCardActionState.reportLeft).toBeLessThan(firstCardActionState.replyLeft);
+  expect(firstCardActionState.centerDelta).toBeLessThanOrEqual(1);
+
+  const satisfactionGaugeState = await page.evaluate(() => {
+    const meter = document.querySelector(".review-summary-meter");
+    const label = document.querySelector(".review-summary-gauge small");
+    const value = meter?.querySelector("strong")?.textContent?.trim();
+    const box = meter?.getBoundingClientRect();
+    return { value, hasLabel: !!label, width: Math.round(box?.width || 0), height: Math.round(box?.height || 0) };
+  });
+  expect(satisfactionGaugeState.value).toBe("92");
+  expect(satisfactionGaugeState.hasLabel).toBe(false);
+  expect(satisfactionGaugeState.width).toBeGreaterThanOrEqual(80);
+  expect(satisfactionGaugeState.height).toBeGreaterThanOrEqual(80);
+
+  const repliedCard = page.getByTestId("review-card").filter({ hasText: "Murat Kaya" });
   await expect(repliedCard.getByTestId("review-reply-button")).toHaveCount(0);
   await expect(repliedCard.locator(".review-replied-pill")).toHaveCount(0);
   await expect(repliedCard.getByTestId("review-edit-reply-button")).toBeVisible();
+  await expect(repliedCard.getByTestId("review-edit-reply-button")).not.toContainText("Düzenle");
   await repliedCard.getByTestId("review-edit-reply-button").click();
   await expect(repliedCard.getByTestId("review-reply-editor")).toBeVisible();
   await expect(repliedCard.getByTestId("review-reply-textarea")).toHaveValue(/Geri bildiriminiz/);

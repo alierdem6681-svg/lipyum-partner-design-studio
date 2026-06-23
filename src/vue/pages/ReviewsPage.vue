@@ -187,11 +187,10 @@ onBeforeUnmount(() => {
           <span>Son 30 günde +{{ reviewSummary.newLast30Days }} yorum</span>
         </em>
       </div>
-      <div class="review-summary-gauge" :aria-label="`Müşteri memnuniyeti yüzde ${reviewSummary.satisfaction}`">
+      <div class="review-summary-gauge" :aria-label="`Müşteri memnuniyeti ${reviewSummary.satisfaction}`">
         <span class="review-summary-meter" aria-hidden="true">
-          <strong>%{{ reviewSummary.satisfaction }}</strong>
+          <strong>{{ reviewSummary.satisfaction }}</strong>
         </span>
-        <small>Müşteri memnuniyeti</small>
       </div>
     </AppCard>
 
@@ -219,6 +218,11 @@ onBeforeUnmount(() => {
           </span>
           <span class="review-card-actions">
             <small>{{ review.date }}</small>
+          </span>
+        </div>
+        <div class="review-card-body">
+          <p>{{ review.text }}</p>
+          <div class="review-card-foot">
             <button
               class="review-report-btn"
               type="button"
@@ -231,12 +235,8 @@ onBeforeUnmount(() => {
             >
               Bildir
             </button>
-          </span>
-        </div>
-        <div class="review-card-body">
-          <p>{{ review.text }}</p>
-          <div v-if="!isReviewReplied(review)" class="review-card-foot">
             <button
+              v-if="!isReviewReplied(review)"
               class="review-inline-action"
               type="button"
               data-action="reply-review"
@@ -272,7 +272,7 @@ onBeforeUnmount(() => {
                 :aria-label="`${review.name} yorumu için yanıtı düzenle`"
                 @click="editReply(review)"
               >
-                Düzenle
+                <AppIcon name="edit" :size="14" />
               </button>
             </span>
             <p>{{ getReviewReply(review) }}</p>
