@@ -754,6 +754,16 @@
   --top-safe-space: 12px;
 }
 
+.phone-screen .v-shell {
+  --top-safe-space: var(--simulator-status-height, 58px);
+}
+
+@media (max-width: 520px) and (hover: none) and (pointer: coarse) {
+  .phone-screen .v-shell {
+    --top-safe-space: calc(env(safe-area-inset-top, 0px) + 12px);
+  }
+}
+
 .v-shell__content {
   min-width: 0;
   min-height: 0;
