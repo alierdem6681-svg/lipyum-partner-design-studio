@@ -8,6 +8,7 @@ import DrawerProfileCard from "../components/drawer/DrawerProfileCard.vue";
 import AppBottomBar from "../components/ui/AppBottomBar.vue";
 import AppDrawer from "../components/ui/AppDrawer.vue";
 import AppHeader from "../components/ui/AppHeader.vue";
+import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import AppToast from "../components/ui/AppToast.vue";
 import MobileLayout from "./MobileLayout.vue";
@@ -76,7 +77,7 @@ function onHeaderAction(action) {
     shell.openSheet({
       title: infoSheet.title || meta.value.title || "Bilgi",
       description: infoSheet.description || meta.value.subtitle || "Sayfa bilgisi",
-      body: infoSheet.body || "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      body: infoSheet.body ?? "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
       scoreItems: infoSheet.scoreItems || [],
       note: infoSheet.note || "",
     });
@@ -170,9 +171,12 @@ onUnmounted(() => {
             <article
               v-for="item in shell.activeSheet.scoreItems"
               :key="item.label"
-              :class="['v-info-score-item', `is-${item.tone || 'neutral'}`]"
+              :class="['v-info-score-item', `is-${item.tone || 'neutral'}`, { 'has-icon': item.icon }]"
               data-testid="info-score-item"
             >
+              <span v-if="item.icon" class="v-info-score-item__icon" aria-hidden="true">
+                <AppIcon :name="item.icon" :size="18" />
+              </span>
               <span class="v-info-score-item__copy">
                 <strong>{{ item.label }}</strong>
                 <small>{{ item.description }}</small>
