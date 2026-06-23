@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
 const criticalRoutes = [
   ["/home", "home-performance-card"],
@@ -24,24 +24,28 @@ const blankRoutes = [
 
 const retiredRoutes = ["/packages", "/package-builder", "/package-checkout", "/partner/packages"];
 
-async function expectVueShell(page) {
+async function expectVueShell(page, route = "/home") {
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.getByTestId("app-header")).toBeVisible();
-  await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
+  if (bottomBarHiddenRoutes.has(route)) {
+    await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+  } else {
+    await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
+  }
   await expectNoAppHorizontalOverflow(page);
 }
 
 test("boots Vue on normal URLs and does not expose legacy rollback", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
-  await expectVueShell(page);
+  await expectVueShell(page, "/home");
 
   await page.goto("/?engine=vue#/home");
-  await expectVueShell(page);
+  await expectVueShell(page, "/home");
 
   await page.goto("/?engine=legacy#/home");
-  await expectVueShell(page);
+  await expectVueShell(page, "/home");
   expect(errors).toEqual([]);
 });
 
@@ -49,7 +53,7 @@ for (const [route, testId] of criticalRoutes) {
   test(`critical route opens in final Vue runtime: ${route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.goto(`/#${route}`);
-    await expectVueShell(page);
+    await expectVueShell(page, route);
     await expect(page.getByTestId(testId)).toBeVisible();
     expect(errors).toEqual([]);
   });
@@ -59,7 +63,7 @@ for (const [route, testId, activeTab] of blankRoutes) {
   test(`blank bottom route remains empty: ${route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.goto(`/#${route}`);
-    await expectVueShell(page);
+    await expectVueShell(page, route);
     await expect(page.getByTestId(testId)).toBeVisible();
     await expect(page.getByTestId(activeTab)).toHaveAttribute("aria-current", "page");
     await expect(page.getByTestId(testId).locator("> *")).toHaveCount(0);
@@ -72,7 +76,7 @@ test("home and bottom routes share the same shell geometry", async ({ page }) =>
 
   async function readShell(route) {
     await page.goto(`/#${route}`);
-    await expectVueShell(page);
+    await expectVueShell(page, route);
     return page.evaluate(() => {
       const box = (selector) => {
         const node = document.querySelector(selector);
@@ -122,7 +126,7 @@ for (const route of retiredRoutes) {
   test(`retired package route redirects to subscription: ${route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.goto(`/#${route}`);
-    await expectVueShell(page);
+    await expectVueShell(page, "/subscription");
     await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
     await expect(page.getByTestId("subscription-page")).toBeVisible();
     expect(errors).toEqual([]);
@@ -132,7 +136,7 @@ for (const route of retiredRoutes) {
 test("partner card preview uses share button and channel options", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/partner-card-preview");
-  await expectVueShell(page);
+  await expectVueShell(page, "/partner-card-preview");
 
   await expect(page.getByTestId("partner-card-preview-page")).toBeVisible();
   await expect(page.getByTestId("partner-embed-panel")).toHaveCount(0);
@@ -163,7 +167,7 @@ test("partner card preview uses share button and channel options", async ({ page
 test("profile badges and drawer actions stay usable", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/profile");
-  await expectVueShell(page);
+  await expectVueShell(page, "/profile");
   const profileCard = page
     .getByTestId("partner-profile-card")
     .and(page.locator('[data-component="PartnerProfileCard"][data-profile-card-variant="page"]'));
@@ -258,7 +262,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/partner-card-preview");
 
   await page.goto("/#/home");
-  await expectVueShell(page);
+  await expectVueShell(page, "/home");
   await page.getByTestId("hamburger-button").click();
   await expect(page.getByTestId("sidebar-drawer")).toBeVisible();
   const drawerCard = page
@@ -278,7 +282,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
 test("navigation and live support remain functional", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
-  await expectVueShell(page);
+  await expectVueShell(page, "/home");
   await page.evaluate(() => window.navigateToPage("/profile"));
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
   await page.evaluate(() => window.navigateToPage("/partner-card-preview"));
@@ -287,7 +291,7 @@ test("navigation and live support remain functional", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
 
   await page.goto("/#/support/live");
-  await expectVueShell(page);
+  await expectVueShell(page, "/support/live");
   await page.getByRole("button", { name: /Canl/i }).first().click();
   await expect(page.getByTestId("live-support-waiting").getByText(/Tahmini süre 2 dakika/i)).toBeVisible();
   expect(errors).toEqual([]);

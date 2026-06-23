@@ -3728,22 +3728,6 @@
         color: #475569;
       }
 
-      .bottom-item.featured.cta-fab--subpage .cta-lightning-wrap {
-        top: -18px;
-        width: 58px;
-        height: 58px;
-        border-radius: 18px;
-        box-shadow:
-          0 8px 18px rgba(0, 122, 61, 0.18),
-          0 3px 8px rgba(0, 88, 43, 0.12),
-          inset 0 -8px 14px rgba(0, 78, 38, 0.24);
-      }
-
-      .bottom-item.featured.cta-fab--subpage .cta-lightning-wrap .icon {
-        width: 27px;
-        height: 27px;
-      }
-
       .bottom-item.featured.active,
       .bottom-item.featured:hover {
         color: #16a34a;
