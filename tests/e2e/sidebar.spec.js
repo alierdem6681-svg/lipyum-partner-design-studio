@@ -12,6 +12,19 @@ test("hamburger opens and close button closes sidebar", async ({ page }) => {
   await waitForApp(page);
 
   await openSidebar(page);
+  await expect(page.getByTestId("sidebar-upgrade-banner")).toBeVisible();
+  await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Müşterilere Plus olarak görün");
+  await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Yükselt");
+  const geometry = await page.evaluate(() => {
+    const drawer = document.querySelector('[data-testid="sidebar-drawer"]')?.getBoundingClientRect();
+    const banner = document.querySelector('[data-testid="sidebar-upgrade-banner"]')?.getBoundingClientRect();
+    const close = document.querySelector('[data-testid="sidebar-close"]')?.getBoundingClientRect();
+    return {
+      closeIsRightOfBanner: close.left > banner.right,
+      closeNearDrawerRight: drawer.right - close.right <= 14,
+    };
+  });
+  expect(geometry).toEqual({ closeIsRightOfBanner: true, closeNearDrawerRight: true });
   await page.getByTestId("sidebar-close").click();
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
 
