@@ -190,6 +190,7 @@ onBeforeUnmount(() => {
       <div class="review-summary-gauge" :aria-label="`Müşteri memnuniyeti ${reviewSummary.satisfaction}`">
         <span class="review-summary-meter" aria-hidden="true">
           <strong>{{ reviewSummary.satisfaction }}</strong>
+          <small>puan</small>
         </span>
       </div>
     </AppCard>
@@ -222,7 +223,7 @@ onBeforeUnmount(() => {
         </div>
         <div class="review-card-body">
           <p>{{ review.text }}</p>
-          <div class="review-card-foot">
+          <div v-if="!isReviewReplied(review)" class="review-card-foot">
             <button
               class="review-report-btn"
               type="button"
@@ -236,7 +237,6 @@ onBeforeUnmount(() => {
               Bildir
             </button>
             <button
-              v-if="!isReviewReplied(review)"
               class="review-inline-action"
               type="button"
               data-action="reply-review"

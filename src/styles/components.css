@@ -1721,7 +1721,7 @@
 
 .review-summary-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 108px;
+  grid-template-columns: minmax(0, 1fr) 116px;
   align-items: center;
   gap: 12px;
   overflow: hidden;
@@ -1801,7 +1801,7 @@
 
 .review-summary-gauge {
   min-width: 0;
-  width: 108px;
+  width: 116px;
   display: grid;
   justify-self: center;
   justify-items: center;
@@ -1810,10 +1810,12 @@
 
 .review-summary-meter {
   position: relative;
-  width: 88px;
+  width: 97px;
   aspect-ratio: 1;
   display: grid;
+  align-content: center;
   place-items: center;
+  gap: 2px;
   border-radius: 999px;
   background:
     conic-gradient(from -90deg, #079455 0 calc(var(--review-score) * 1%), #e5f7ed 0 100%);
@@ -1835,13 +1837,23 @@
   position: relative;
   z-index: 1;
   color: #067647;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: var(--weight-extra-bold);
   line-height: 1;
   transform: translateY(0);
 }
 
-.review-summary-gauge small {
+.review-summary-meter small {
+  position: relative;
+  z-index: 1;
+  color: var(--color-primary-dark);
+  font-size: 10.5px;
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.review-summary-gauge > small {
   color: var(--text-secondary);
   font-size: var(--font-size-caption);
   font-weight: var(--weight-bold);
@@ -2062,6 +2074,7 @@
 
 .review-card-head {
   min-height: 42px;
+  align-items: flex-start;
 }
 
 .review-card-head span {
@@ -2072,6 +2085,7 @@
 
 .review-card-actions {
   flex: 0 0 auto;
+  align-self: flex-start;
   justify-items: end;
 }
 
@@ -4029,11 +4043,11 @@
   }
 
   .review-summary-gauge {
-    width: 104px;
+    width: 108px;
   }
 
   .review-summary-meter {
-    width: 80px;
+    width: 90px;
   }
 
   .wallet-card-metric strong {

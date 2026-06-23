@@ -96,9 +96,15 @@ const titleOverrides = {
     subtitle: "Değerlendirme ve geri bildirimler",
     infoSheet: {
       title: "Müşteri yorumları",
-      description: "Yorumlara nasıl yanıt verilmeli?",
-      body: "Yorumlara kısa, nazik ve çözüm odaklı yanıt ver. Müşterinin deneyimini anladığını göster, savunmacı veya sert bir üslup kullanma. Olumlu yorumlar güveni artırır; düzenli ve profesyonel yanıtlar da yeni müşterilerin karar vermesine destek olur.",
-      note: "Daha fazla olumlu yorum, profil güvenini ve uygun işlerde güçlü görünmeni destekler. İş sayısı bölge, sektör ve talebe göre değişebilir.",
+      description: "Hızlı yanıt, daha güçlü güven.",
+      body: "",
+      scoreItems: [
+        { label: "Kısa yaz", value: "1-2 cümle", description: "Müşterinin konusuna net cevap ver.", tone: "positive", icon: "message" },
+        { label: "Nazik kal", value: "Güven", description: "Savunma yapma; çözüm dilini koru.", tone: "positive", icon: "shield" },
+        { label: "İyi yorumu büyüt", value: "5★", description: "Olumlu yorum profil güvenini artırır.", tone: "positive", icon: "star" },
+        { label: "Düzenli yanıtla", value: "Takip", description: "Yanıtlanan yorumlar karar vermeyi kolaylaştırır.", tone: "positive", icon: "trend-up" },
+      ],
+      note: "Amaç müşteriye hızlıca güven vermek. Uzun açıklama yerine net ve sakin yanıt kullan.",
     },
   },
   "/leaderboard": {
