@@ -18,7 +18,7 @@ function applyQuery() {
   const plan = typeof route.query.plan === "string" ? route.query.plan : undefined;
   const billing = route.query.billing === "annual" ? "annual" : "monthly";
 
-  if (route.query.subscriptionState) store.applyStatus(status, plan || "plus");
+  if (route.query.subscriptionState) store.applyStatus(status, plan || "gold");
   if (plan) store.selectPlan(plan);
   store.selectBillingPeriod(billing);
 }
@@ -38,7 +38,7 @@ watch(() => route.query, applyQuery);
 </script>
 
 <template>
-  <AppPage title="Aboneliğim" class="subscription-page" data-testid="subscription-page">
+  <AppPage title="Abonelik" class="subscription-page" data-testid="subscription-page">
     <FreeSubscriptionView v-if="store.status === 'free'" :store="store" />
     <ActiveSubscriptionView v-else-if="store.status === 'active'" :store="store" />
     <CanceledSubscriptionView v-else-if="store.status === 'canceled_active'" :store="store" />

@@ -5,7 +5,7 @@ const retiredRoutes = ["/packages", "/package-builder", "/package-checkout"];
 
 async function expectSubscriptionHeader(page) {
   await expect(
-    page.getByTestId("app-header").first().getByRole("heading", { name: "Aboneliğim" }),
+    page.getByTestId("app-header").first().getByRole("heading", { name: "Abonelik" }),
   ).toBeVisible();
 }
 

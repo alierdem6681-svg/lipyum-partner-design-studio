@@ -15,7 +15,8 @@ const emit = defineEmits(["update:modelValue"]);
       data-testid="billing-monthly"
       @click="emit('update:modelValue', 'monthly')"
     >
-      Aylık
+      <strong>Aylık</strong>
+      <small>Aylık ödeme</small>
     </button>
     <button
       type="button"
@@ -24,7 +25,8 @@ const emit = defineEmits(["update:modelValue"]);
       data-testid="billing-annual"
       @click="emit('update:modelValue', 'annual')"
     >
-      Yıllık · %20 avantaj
+      <strong>Yıllık · 2 ay ücretsiz</strong>
+      <small>%16 tasarruf et</small>
     </button>
   </div>
 </template>

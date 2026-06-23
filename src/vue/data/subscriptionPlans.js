@@ -1,3 +1,13 @@
+export const USD_TRY_RATE = 46.4761;
+
+function usdToTry(usd) {
+  return Math.round(usd * USD_TRY_RATE);
+}
+
+function annualPriceFromMonthly(monthlyPrice) {
+  return monthlyPrice * 10;
+}
+
 export const BILLING_PERIODS = {
   monthly: {
     id: "monthly",
@@ -10,7 +20,7 @@ export const BILLING_PERIODS = {
     label: "Yıllık",
     suffix: "yıl",
     periodCopy: "Her yıl otomatik yenilenir",
-    advantageCopy: "Yıllık %20 avantaj",
+    advantageCopy: "Yıllık · 2 ay ücretsiz",
   },
 };
 
@@ -30,88 +40,89 @@ export const freeSubscriptionPlan = {
 
 export const subscriptionPlans = [
   {
-    id: "gold",
-    title: "Gold",
-    monthlyPrice: 249,
-    annualPrice: 2390,
-    monthlyEquivalent: 199,
-    targetUser: "Temel profesyonel avantajlar",
-    shortPromise: "Profilini daha profesyonel göster.",
+    id: "plus",
+    title: "Plus",
+    usdPrice: 20,
+    monthlyPrice: usdToTry(20),
+    targetUser: "Başlangıç",
+    shortPromise: "Daha görünür bir profil ve temel destek.",
     benefits: [
-      "Gold profil rozeti",
-      "Geliştirilmiş profil kartı",
-      "Standart müşteri hizmetleri",
+      "Daha fazla görünürlük",
+      "Standart destek",
+      "Profil kartı güçlendirme",
       "Temel performans önerileri",
     ],
     reasons: [
-      "Profil kartında profesyonel rozet istiyorsun",
-      "Temel destek kanallarını kullanmak istiyorsun",
-      "Profilini daha düzenli göstermek istiyorsun",
+      "Profilini ücretsiz kullanımdan daha güçlü göstermek istiyorsun",
+      "Destek ihtiyacında standart müşteri hizmetlerine ulaşmak istiyorsun",
+      "Düşük maliyetle abonelik avantajlarını başlatmak istiyorsun",
     ],
     entitlements: {
-      badge: "Gold",
+      badge: "Plus",
       customerService: "standart müşteri hizmetleri",
       phoneSupport: false,
       prioritySupport: false,
     },
-    ctaLabel: "GOLD'A GEÇ",
-    sentenceLabel: "Gold'a geç",
-    badge: "GOLD",
+    ctaLabel: "PLUS'A GEÇ",
+    sentenceLabel: "Plus'a geç",
+    badge: "PLUS",
+    tone: "green",
+    icon: "star",
     recommended: false,
     sortOrder: 1,
   },
   {
-    id: "plus",
-    title: "Plus",
-    monthlyPrice: 499,
-    annualPrice: 4790,
-    monthlyEquivalent: 399,
-    targetUser: "Büyümek isteyen partnerler için",
-    shortPromise: "Daha hızlı destek ve güçlü profil araçları.",
+    id: "gold",
+    title: "Gold",
+    usdPrice: 45,
+    monthlyPrice: usdToTry(45),
+    targetUser: "En iyi değer",
+    shortPromise: "Daha hızlı destek ve daha güçlü görünüm.",
     benefits: [
-      "Plus profil rozeti",
-      "Hızlı müşteri hizmetleri",
-      "Güçlendirilmiş profil kartı ve paylaşım",
+      "Gold profil rozeti",
+      "Öncelikli destek",
+      "Plus'taki her şey",
       "Gelişmiş paylaşım araçları",
       "Özel performans önerileri",
     ],
     reasons: [
-      "Profil kartını daha güçlü göstermek istiyorsun",
-      "Yardıma ihtiyaç duyduğunda hızlı destek istiyorsun",
-      "Performansını artıracak net öneriler görmek istiyorsun",
+      "Daha güçlü görünmek ve daha hızlı destek almak istiyorsun",
+      "Profil kartını daha ikna edici hale getirmek istiyorsun",
+      "Fiyat ve performans dengesinde en avantajlı planı istiyorsun",
     ],
     entitlements: {
-      badge: "Plus",
-      customerService: "hızlı müşteri hizmetleri",
+      badge: "Gold",
+      customerService: "öncelikli müşteri hizmetleri",
       phoneSupport: false,
       prioritySupport: true,
     },
-    ctaLabel: "PLUS'A GEÇ",
-    sentenceLabel: "Plus'a geç",
+    ctaLabel: "GOLD'A GEÇ",
+    sentenceLabel: "Gold'a geç",
     badge: "ÖNERİLEN",
+    tone: "gold",
+    icon: "crown",
     recommended: true,
     sortOrder: 2,
   },
   {
     id: "vip",
     title: "VIP",
-    monthlyPrice: 899,
-    annualPrice: 8630,
-    monthlyEquivalent: 719,
-    targetUser: "Maksimum destek isteyen partnerler için",
-    shortPromise: "En güçlü görünüm ve öncelikli destek.",
+    usdPrice: 75,
+    monthlyPrice: usdToTry(75),
+    targetUser: "Maksimum",
+    shortPromise: "En yüksek görünürlük ve ayrıcalıklı deneyim.",
     benefits: [
       "VIP profil rozeti",
       "Telefon desteği",
-      "Öncelikli müşteri hizmetleri",
+      "En hızlı destek",
+      "Gold'daki her şey",
       "VIP profil görünümü",
-      "Gelişmiş performans içgörüleri",
       "Öncelikli profil incelemesi",
     ],
     reasons: [
-      "Telefon ve öncelikli destek istiyorsun",
+      "Telefon ve en hızlı destek istiyorsun",
       "Profil görünümünü en güçlü seviyeye taşımak istiyorsun",
-      "Yoğun iş akışında daha fazla destek bekliyorsun",
+      "Yoğun iş akışında en yüksek destek deneyimini istiyorsun",
     ],
     entitlements: {
       badge: "VIP",
@@ -122,12 +133,20 @@ export const subscriptionPlans = [
     ctaLabel: "VIP'E GEÇ",
     sentenceLabel: "VIP'e geç",
     badge: "VIP",
+    tone: "purple",
+    icon: "zap",
     recommended: false,
     sortOrder: 3,
   },
-].sort((a, b) => a.sortOrder - b.sortOrder);
+]
+  .map((plan) => ({
+    ...plan,
+    annualPrice: annualPriceFromMonthly(plan.monthlyPrice),
+    monthlyEquivalent: Math.round(annualPriceFromMonthly(plan.monthlyPrice) / 12),
+  }))
+  .sort((a, b) => a.sortOrder - b.sortOrder);
 
-export const recommendedPlanId = "plus";
+export const recommendedPlanId = "gold";
 
 export const subscriptionStatusAliases = {
   canceled: "canceled_active",

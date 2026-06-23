@@ -25,8 +25,8 @@ function dailyCopy() {
 </script>
 
 <template>
-  <AppCard class="subscription-selected-card" data-testid="selected-plan-card">
-    <span class="subscription-pill">SANA UYGUN</span>
+  <AppCard :class="['subscription-selected-card', `is-${plan.tone || plan.id}`]" data-testid="selected-plan-card">
+    <span class="subscription-pill">{{ plan.recommended ? "SANA UYGUN" : "SEÇİLEN PLAN" }}</span>
     <div class="subscription-selected-card__top">
       <div>
         <h2>Lipyum {{ plan.title }}</h2>
@@ -40,7 +40,7 @@ function dailyCopy() {
 
     <div class="subscription-activation-note">
       <AppIcon name="zap" :size="16" />
-      <span>Ödeme tamamlanınca özellikler hemen aktif olur</span>
+      <span>Ödeme tamamlanınca rozet, destek ve görünürlük avantajları hemen açılır.</span>
     </div>
 
     <AppButton full-width size="lg" data-testid="selected-plan-cta" @click="emit('checkout')">

@@ -137,7 +137,7 @@ const titleOverrides = {
     },
   },
   "/subscription": {
-    title: "Aboneliğim",
+    title: "Abonelik",
     subtitle: "Daha güçlü görün, desteğe daha hızlı ulaş.",
     trailingActions: [],
     ctaVariant: "hidden",
@@ -145,7 +145,7 @@ const titleOverrides = {
   },
   "/subscription/compare": {
     title: "Planları Karşılaştır",
-    subtitle: "Gold, Plus veya VIP'i doğrudan seç.",
+    subtitle: "Plus, Gold veya VIP'i doğrudan seç.",
     parentRoute: "/subscription",
     trailingActions: [],
     ctaVariant: "hidden",
