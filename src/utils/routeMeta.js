@@ -57,6 +57,8 @@ const titleOverrides = {
     title: "Partner Davet Programı",
     compactTitle: "Partner Davet",
     subtitle: "Davet ettiğin partnerlerin yüklemelerinden %3 bonus kazan",
+    ctaVariant: "hidden",
+    showBottomBar: false,
     infoSheet: {
       title: "Partner Davet Programı",
       description: "Davet et, iş aldır, pasif bonus kazan.",

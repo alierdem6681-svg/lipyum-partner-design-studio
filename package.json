@@ -31,7 +31,7 @@
     "test:retired-package-routes": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/retired-package-routes.spec.js",
     "test:subscription-retained": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/subscription-retained.spec.js",
     "test:package-feature-removed": "node_modules/node/bin/node --test tests/architecture/package-feature-removed.test.js",
-    "test:referral-flow": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/referral-flow.spec.js",
+    "test:referral-flow": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/referral-flow.spec.js",
     "test:support-ticket": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/support-ticket.spec.js",
     "test:profile-badges": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/profile-badges.spec.js",
     "test:clickable-inventory": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/clickable-inventory.spec.js",
