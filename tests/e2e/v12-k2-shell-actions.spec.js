@@ -11,9 +11,9 @@ test("Vue preview header actions produce outcomes", async ({ page }) => {
 
   await page.goto("/?engine=vue#/wallet");
   await waitForApp(page);
-  await page.locator('[data-testid="app-header"] [data-testid="wallet-info-button"]').click();
-  await expect(page.locator(".v-sheet-copy")).toContainText("Kredilerini");
-  await page.keyboard.press("Escape").catch(() => {});
+  await page.locator('[data-testid="app-header"] [data-testid="account-transactions-header-button"]').click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/account-transactions");
+  await expect(page.getByTestId("account-transactions-page")).toBeVisible();
 
   await page.goto("/?engine=vue#/reviews");
   await waitForApp(page);

@@ -96,7 +96,7 @@ test("home and bottom routes share the same shell geometry", async ({ page }) =>
       return {
         header: box('[data-testid="app-header"]'),
         hamburger: box('[data-testid="hamburger-button"]'),
-        notification: box('[data-testid="app-header"] [data-testid="notification-button"], [data-testid="app-header"] [data-testid="wallet-info-button"]'),
+        notification: box('[data-testid="app-header"] [data-testid="notification-button"], [data-testid="app-header"] [data-testid="wallet-info-button"], [data-testid="app-header"] [data-testid="account-transactions-header-button"]'),
         profile: box('[data-testid="profile-button"]'),
         cta: box('[data-testid="bottom-cta-job"] .cta-lightning-wrap'),
         ctaRadius: ctaStyle.borderRadius,

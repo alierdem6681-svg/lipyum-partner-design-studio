@@ -37,6 +37,7 @@ const rightActionTestIds = {
   info: "header-info-button",
   "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
+  "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",
   "partner-share": "partner-preview-header-share",
 };
@@ -215,8 +216,9 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
 
   await page.goto(expectedUrl("/wallet"));
   await waitForApp(page);
-  await page.getByTestId("app-header").getByTestId("wallet-info-button").click();
-  await expect(page.locator('[role="dialog"]')).toBeVisible();
+  await page.getByTestId("app-header").getByTestId("account-transactions-header-button").click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/account-transactions");
+  await expect(page.getByTestId("account-transactions-page")).toBeVisible();
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);

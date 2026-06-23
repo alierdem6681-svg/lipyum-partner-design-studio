@@ -123,6 +123,7 @@ function onHeaderAction(action) {
   if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "notification-settings") navigateTo("/notification-settings");
+  if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {
     shell.openSheet({
       title: "Cüzdan",
