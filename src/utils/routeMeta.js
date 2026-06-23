@@ -167,7 +167,19 @@ const titleOverrides = {
   },
   "/job-referral": {
     title: "İş Yönlendirme Programı",
-    subtitle: "Servis talebi gönder, iş gerçekleşirse kazanç elde et",
+    subtitle: "İş gönder, kazancı sen al",
+    subtitleIcon: "wallet",
+    infoSheet: {
+      title: "İş Yönlendirme Programı",
+      description: "İşi sen gönder, kazancı sen takip et.",
+      body: "Elinde işi olan kişi veya firmalar müşteri talebini Lipyum'a gönderir. İş satışı tamamlandığında kazanç, kesinleşen kazanç ve çekilebilir bakiye olarak takip edilir.",
+      scoreItems: [
+        { label: "İşi gönder", value: "1 dk", description: "Müşteri, sektör ve şehir bilgisini adım adım gir.", tone: "positive", icon: "send" },
+        { label: "Eşleşme başlar", value: "Hızlı", description: "Talep uygun hizmet ve bölgeye göre işleme alınır.", tone: "positive", icon: "briefcase" },
+        { label: "Kazancını takip et", value: "TL", description: "Tamamlanan satıştan doğan kazanç bakiyene yansır.", tone: "positive", icon: "wallet" },
+      ],
+      note: "Site yöneticileri, pazarlamacılar, çağrı ekipleri, asist firmaları ve ek iş yapmak isteyenler için ek kazanç kanalıdır.",
+    },
   },
   "/referral-earnings": {
     title: "Kazançlarım",
@@ -251,6 +263,7 @@ export const routeMeta = Object.fromEntries(
         title: override.title || defaultTitle,
         compactTitle: override.compactTitle || defaultTitle,
         subtitle: override.subtitle || "",
+        subtitleIcon: override.subtitleIcon || "",
         headerVariant: isHome ? "home" : isBottomRoute ? "section" : "subpage",
         leadingAction: isHome || isBottomRoute ? "hamburger" : "back",
         trailingActions: override.trailingActions || (isHome || isBottomRoute ? ["notifications", "profile"] : ["info"]),
