@@ -13,6 +13,7 @@ test("hamburger opens and close button closes sidebar", async ({ page }) => {
 
   await openSidebar(page);
   await expect(page.getByTestId("sidebar-upgrade-banner")).toBeVisible();
+  await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
   await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Müşterilere Plus olarak görün");
   await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Yükselt");
   const geometry = await page.evaluate(() => {

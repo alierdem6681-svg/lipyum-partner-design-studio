@@ -43,6 +43,7 @@ test("normal URLs use the stable profile, sidebar and bottom bar design", async 
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "legacy");
   await expect(page.locator(".partner-profile-card")).toBeVisible();
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
+  await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
@@ -66,6 +67,7 @@ test("normal URLs use the stable profile, sidebar and bottom bar design", async 
   await expect(page.getByTestId("sidebar-drawer")).toBeVisible();
   await expect(page.locator(".partner-menu")).toBeVisible();
   await expect(page.locator(".drawer-profile-card")).toBeVisible();
+  await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
   await expect(page.locator(".drawer-menu-card").first()).toBeVisible();
   await expect(page.locator(".v-drawer-menu__item")).toHaveCount(0);
 
@@ -80,6 +82,7 @@ test("Vue preview keeps stable profile design through explicit preview flag", as
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
   await expect(page.locator(".partner-profile-card")).toBeVisible();
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
+  await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
