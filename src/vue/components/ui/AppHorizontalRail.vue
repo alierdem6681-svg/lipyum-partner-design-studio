@@ -9,7 +9,7 @@ defineProps({
 <template>
   <section
     :class="[
-      'flex snap-x snap-mandatory gap-3 overflow-x-auto py-1 [-webkit-overflow-scrolling:touch]',
+      'flex snap-x snap-mandatory gap-3 overflow-x-auto py-1 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
       edgeBleed ? '-mx-3 px-3' : 'mx-0 px-0',
     ]"
     :aria-label="ariaLabel"

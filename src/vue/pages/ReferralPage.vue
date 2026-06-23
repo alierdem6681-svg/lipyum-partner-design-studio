@@ -7,6 +7,13 @@ import AppHorizontalRail from "../components/ui/AppHorizontalRail.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
+import {
+  referralEarningRules,
+  referralGuideTask,
+  referralPartners,
+  referralSummaryItems,
+  referralTopEarners,
+} from "../data/referralProgram.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const router = useRouter();
@@ -15,129 +22,13 @@ const invitePhone = ref("");
 const selectedPartnerId = ref("");
 const sheetType = ref("");
 
-const partners = [
-  {
-    id: "ahmet-kaya",
-    name: "Ahmet Kaya",
-    initials: "A",
-    city: "İstanbul",
-    stage: "Davet gönderildi",
-    status: "Kayıt olmalı",
-    bonus: "100 TL",
-    bonusUnit: "Bonus",
-    earnedTotal: "15.876 TL Bonus",
-    phone: "+90 532 224 18 74",
-    avatarTone: "amber",
-    cardTone: "invited",
-    steps: [
-      { label: "Bekleniyor", icon: "send", current: true },
-      { label: "Kayıt oldu", icon: "check", done: false },
-      { label: "İlk işi aldı", icon: "briefcase", done: false },
-      { label: "Bakiye yükledi", icon: "wallet", done: false },
-    ],
-    message: "Ahmet aynı cep telefonu numarasıyla kayıt olduğunda ilk bonus açılır.",
-    nextStep: "Davet mesajını gördüğünü kısa bir arama ile teyit edebilirsin.",
-    rewardRule: "Kayıt ve profil tamamlandığında ilk bonus açılır.",
-  },
-  {
-    id: "mehmet-yilmaz",
-    name: "Mehmet Yılmaz",
-    initials: "M",
-    city: "Ankara",
-    stage: "Profil eksik",
-    status: "Profilini tamamlamalı",
-    bonus: "500 TL",
-    bonusUnit: "Bonus",
-    earnedTotal: "8.420 TL Bonus",
-    phone: "+90 535 118 32 90",
-    avatarTone: "blue",
-    cardTone: "profile",
-    steps: [
-      { label: "Kayıt oldu", icon: "check", done: true },
-      { label: "Bekleniyor", icon: "user", current: true },
-      { label: "İlk işi aldı", icon: "briefcase", done: false },
-      { label: "Bakiye yükledi", icon: "wallet", done: false },
-    ],
-    message: "Profil bilgilerini tamamladığında ilk iş bonus süreci başlar.",
-    nextStep: "Kimlik, belge, hizmet alanı ve bölge bilgilerini tamamlamasını hatırlat.",
-    rewardRule: "Profil tamamlandığında ilk iş bonusu takip edilir.",
-  },
-  {
-    id: "ayse-demir",
-    name: "Ayşe Demir",
-    initials: "A",
-    city: "İzmir",
-    stage: "İlk iş bekleniyor",
-    status: "İlk işini almalı",
-    bonus: "500 TL",
-    bonusUnit: "Bonus",
-    earnedTotal: "6.950 TL Bonus",
-    phone: "+90 536 902 10 44",
-    avatarTone: "violet",
-    cardTone: "need-job",
-    steps: [
-      { label: "Kayıt oldu", icon: "check", done: true },
-      { label: "Profil tamam", icon: "check", done: true },
-      { label: "Bekleniyor", icon: "briefcase", current: true },
-      { label: "Bakiye yükledi", icon: "wallet", done: false },
-    ],
-    message: "İlk işini aldığında ikinci bonus kazanma adımı açılır.",
-    nextStep: "İlk işi alması için bölge ve bakiye ayarlarını kontrol etmesini öner.",
-    rewardRule: "İlk hazır iş veya havuz işi alındığında bonus hak edişe döner.",
-  },
-  {
-    id: "derya-aksoy",
-    name: "Derya Aksoy",
-    initials: "D",
-    city: "Bursa",
-    stage: "Bakiye yüklemeli",
-    status: "Tekrar bakiye yüklemeli",
-    bonus: "%3",
-    bonusUnit: "Bonus",
-    earnedTotal: "12.240 TL Bonus",
-    phone: "+90 533 440 72 16",
-    avatarTone: "green",
-    cardTone: "topup",
-    steps: [
-      { label: "Kayıt oldu", icon: "check", done: true },
-      { label: "İlk işi aldı", icon: "check", done: true },
-      { label: "Bekleniyor", icon: "wallet", current: true },
-    ],
-    message: "Tekrar bakiye yüklediğinde yükleme tutarından %3 bonus kazanırsın.",
-    nextStep: "Bakiye yüklediğinde hem o iş alır hem sen bonus kazanırsın.",
-    rewardRule: "Aktif partnerlerin sonraki bakiye yüklemelerinde %3 bonus hesaplanır.",
-  },
-];
-
-const guideTask = {
-  id: "guide",
-  type: "guide",
-  title: "İlk partnerini kazan",
-  stage: "Henüz davet edilen partner yoksa",
-  message: "Davet ettiğin partner kayıt olur, ilk işini alır ve bakiye yükledikçe sen ömür boyu bonus kazanırsın.",
-};
-
-const topEarners = [
-  { name: "Hüseyin Usta", value: "32.450 TL", rank: 1 },
-  { name: "Murat Servis", value: "24.900 TL", rank: 2 },
-  { name: "Ayşe Teknik", value: "18.700 TL", rank: 3 },
-];
-
+const partners = referralPartners;
+const guideTask = referralGuideTask;
+const topEarners = referralTopEarners;
+const summaryItems = referralSummaryItems;
+const earningRules = referralEarningRules;
 const taskCards = computed(() => [guideTask, ...partners.slice(0, 4)]);
 const selectedPartner = computed(() => partners.find((partner) => partner.id === selectedPartnerId.value) || partners[0]);
-
-const summaryItems = [
-  { label: "Toplam", value: "18", icon: "users", tone: "teal" },
-  { label: "Aktif", value: "11", icon: "check", tone: "green" },
-  { label: "Bekleyen", value: "5", icon: "clock", tone: "amber" },
-  { label: "Bu ay", value: "2.450", icon: "gift", tone: "blue" },
-];
-
-const earningRules = [
-  { title: "Kayıt", value: "100 TL Bonus", body: "Davet ettiğin kişi aynı cep numarasıyla kayıt olur." },
-  { title: "İlk iş", value: "500 TL Bonus", body: "Partner ilk işini alınca ikinci ödül açılır." },
-  { title: "Bakiye", value: "%3 Bonus", body: "Aktif kaldıkça her bakiye yüklemesinden pay kazanırsın." },
-];
 
 const inviteTarget = computed(() => invitePhone.value.trim() || "05xx xxx xx xx");
 
@@ -175,13 +66,13 @@ function messagePartner() {
   <AppPage title="Partner Davet Programı" data-testid="referral-page">
     <div class="referral-page-rich">
       <section class="referral-hero">
-        <button class="referral-info-button" type="button" aria-label="Partner davet programı nasıl çalışır?" @click="openInfoSheet">
-          <AppIcon name="help-circle" :size="18" />
-        </button>
+        <span class="referral-hero-shine" aria-hidden="true"></span>
+        <span class="referral-hero-bill" aria-hidden="true">₺</span>
         <div class="referral-hero-copy">
-          <span class="referral-hero-label">Bu ay kazancın</span>
+          <span class="referral-hero-label">Pasif kazanç fırsatı</span>
           <strong class="referral-hero-amount">2.450</strong>
           <span class="referral-hero-bonus">Bonus</span>
+          <p>Bir partner davet et, çalıştıkça sen de kazanmaya devam et.</p>
           <button class="referral-hero-btn" type="button" @click="router.push('/referral-earnings')">
             Kazançlarını Gör <AppIcon name="chevron-right" :size="16" />
           </button>
@@ -197,31 +88,10 @@ function messagePartner() {
         </div>
       </section>
 
-      <AppCard padding="md" class="referral-phone-card">
-        <div class="referral-phone-head">
-          <span class="referral-icon-soft"><AppIcon name="phone" :size="20" /></span>
-          <span>
-            <strong>Yeni partner ekle</strong>
-            <small>Cep numarasını gir, davet mesajını gönder.</small>
-          </span>
-        </div>
-        <div class="referral-phone-form">
-          <input
-            v-model="invitePhone"
-            class="referral-phone-input"
-            type="tel"
-            inputmode="tel"
-            placeholder="05xx xxx xx xx"
-            aria-label="Davet edilecek cep telefonu"
-          />
-          <AppButton icon="send" data-testid="referral-invite-button" @click="sendInvite">Davet Gönder</AppButton>
-        </div>
-      </AppCard>
-
       <div class="referral-section-head">
         <h3>Görevlerin</h3>
-        <button type="button" data-testid="referral-view-all" @click="router.push('/referral/tasks')">
-          Tümünü gör <AppIcon name="chevron-right" :size="16" />
+        <button class="referral-view-all-game" type="button" data-testid="referral-view-all" @click="router.push('/referral/tasks')">
+          Görev avına git <AppIcon name="sparkles" :size="15" />
         </button>
       </div>
 
@@ -260,7 +130,7 @@ function messagePartner() {
               <span :class="['referral-avatar', `is-${item.avatarTone}`]">{{ item.initials }}</span>
               <span class="referral-candidate-copy">
                 <strong>{{ item.name }}</strong>
-                <small>{{ item.stage }}</small>
+                <small>{{ item.city }}</small>
               </span>
               <span class="referral-bonus"><strong>{{ item.bonus }}</strong><small>{{ item.bonusUnit }}</small></span>
               <AppIcon name="chevron-right" :size="17" />
@@ -297,16 +167,16 @@ function messagePartner() {
         </button>
       </div>
       <section class="referral-summary-strip" aria-label="Partner özeti">
-        <button
-          v-for="summary in summaryItems"
-          :key="summary.label"
-          :class="['referral-summary-card', `is-${summary.tone}`]"
-          type="button"
-          @click="router.push('/referral/partners')"
-        >
-          <span class="referral-summary-icon"><AppIcon :name="summary.icon" :size="17" /></span>
-          <strong>{{ summary.value }}</strong>
-          <small>{{ summary.label }}</small>
+        <button class="referral-summary-panel" type="button" @click="router.push('/referral/partners')">
+          <span
+            v-for="summary in summaryItems"
+            :key="summary.label"
+            :class="['referral-summary-card', `is-${summary.tone}`]"
+          >
+            <span class="referral-summary-icon"><AppIcon :name="summary.icon" :size="17" /></span>
+            <strong>{{ summary.value }}</strong>
+            <small>{{ summary.label }}</small>
+          </span>
         </button>
       </section>
 
@@ -325,6 +195,24 @@ function messagePartner() {
         <span class="earn-coin two">B</span>
       </button>
     </div>
+
+    <section class="referral-sticky-invite" aria-label="Yeni partner ekle">
+      <div class="referral-sticky-invite__copy">
+        <strong>Yeni partner ekle</strong>
+        <small>Cep numarasını gir, daveti gönder.</small>
+      </div>
+      <div class="referral-sticky-invite__form">
+        <input
+          v-model="invitePhone"
+          class="referral-phone-input"
+          type="tel"
+          inputmode="tel"
+          placeholder="05xx xxx xx xx"
+          aria-label="Davet edilecek cep telefonu"
+        />
+        <AppButton icon="send" data-testid="referral-invite-button" @click="sendInvite">Davet</AppButton>
+      </div>
+    </section>
 
     <AppSheet v-if="sheetType === 'invite'" open title="Davet hazır" description="Göndermeden önce numarayı kontrol et." @close="closeSheet">
       <div class="referral-invite-sheet" data-testid="referral-invite-confirmation">
