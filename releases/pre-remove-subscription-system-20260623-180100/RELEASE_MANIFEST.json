@@ -1,0 +1,18 @@
+﻿{
+  "name": "pre-remove-subscription-system-20260623-180100",
+  "commitSha": "aea7cd8cd1d8ad7b4dbb6054ee6a483fb44f498a",
+  "sourceBranch": "main",
+  "workingBranch": "feature/remove-subscription-system",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "route": "/#/subscription",
+  "purpose": "Backup before removing subscription system while keeping Aboneliğim menu route",
+  "rollback": {
+    "tag": "pre-remove-subscription-system-20260623-180100",
+    "archiveBranch": "archive/pre-remove-subscription-system-20260623-180100",
+    "commands": [
+      "git switch main",
+      "git revert <merge-sha>",
+      "git push origin main"
+    ]
+  }
+}

@@ -18,7 +18,6 @@ import MyJobsPage from "../pages/MyJobsPage.vue";
 import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
-import PlanComparisonPage from "../pages/PlanComparisonPage.vue";
 import PerformanceDetailsPage from "../pages/PerformanceDetailsPage.vue";
 import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
 import PerformanceSuccessPage from "../pages/PerformanceSuccessPage.vue";
@@ -98,7 +97,6 @@ const dedicatedRouteComponents = {
   "/reviews": ReviewsPage,
   "/leaderboard": LeaderboardPage,
   "/subscription": SubscriptionPage,
-  "/subscription/compare": PlanComparisonPage,
   "/invoices": InvoicesPage,
   "/referral": ReferralPage,
   "/partners": ReferralPartnersPage,

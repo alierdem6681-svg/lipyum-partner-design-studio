@@ -127,7 +127,7 @@ function statusAriaLabel(status) {
 
     <div class="v-header__actions header-actions">
       <button
-        v-for="action in (rightIcon ? [rightIcon] : rightActions.length ? rightActions : ['info'])"
+        v-for="action in (rightIcon ? [rightIcon] : rightActions)"
         :key="action"
         class="v-header__action icon-btn page-header-action"
         :class="[

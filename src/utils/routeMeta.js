@@ -100,7 +100,7 @@ const titleOverrides = {
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
-    subtitle: "Telefonla öncelikli destek",
+    subtitle: "Telefon ve destek kanalları",
   },
   "/reviews": {
     title: "Müşteri Yorumları",
@@ -138,14 +138,8 @@ const titleOverrides = {
   },
   "/subscription": {
     title: "Aboneliğim",
-    subtitle: "Sana uygun planı seç, avantajlarını hemen kullan.",
-    ctaVariant: "hidden",
-    showBottomBar: false,
-  },
-  "/subscription/compare": {
-    title: "Planları Karşılaştır",
-    subtitle: "Gold, Plus ve VIP avantajlarını incele.",
-    parentRoute: "/subscription",
+    subtitle: "",
+    trailingActions: [],
     ctaVariant: "hidden",
     showBottomBar: false,
   },

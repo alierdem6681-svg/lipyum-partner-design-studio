@@ -105,29 +105,26 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("V12-G customer service access is subscription-plan based", async ({ page }) => {
+test("V12-G customer service access is direct", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto(vueRoute("/support/customer-service"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-phone-number")).toBeVisible();
-  await expect(page.getByText(/paket/i)).toHaveCount(0);
-  await page.getByTestId("customer-service-upgrade").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
+  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
-test("V12-G subscription plan selection updates active plan", async ({ page }) => {
+test("V12-G Aboneliğim route is retained as an empty page", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto(vueRoute("/subscription"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("subscription-page")).toBeVisible();
-  await page.getByTestId("subscription-plan-plus").click();
-  await expect(page.getByTestId("subscription-active-plan")).toContainText(/plus/i);
-  await page.getByTestId("subscription-plan-pro").click();
-  await expect(page.getByTestId("subscription-active-plan")).toContainText(/pro/i);
+  await expect(page.getByTestId("subscription-empty-state")).toBeVisible();
+  await expect(page.getByText(/Gold|Plus|VIP|plan|paket|ücretsiz|satın|ödeme/i)).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

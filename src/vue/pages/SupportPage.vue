@@ -59,7 +59,7 @@ function openAction(action) {
         <span class="v-content-list-item__icon"><AppIcon name="phone" :size="20" /></span>
         <span class="v-content-list-item__copy">
           <strong>Müşteri Hizmetleri</strong>
-          <small>Abonelik planına bağlı öncelikli telefon desteği.</small>
+          <small>Telefon ve destek kanallarını kullan.</small>
         </span>
         <AppIcon name="chevron-right" :size="18" />
       </AppCard>

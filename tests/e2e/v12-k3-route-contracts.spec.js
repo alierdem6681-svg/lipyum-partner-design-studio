@@ -172,17 +172,21 @@ for (const route of routes) {
       expect(button.height).toBeLessThanOrEqual(45);
     }
 
-    expect(metrics.bottom.width).toBeGreaterThanOrEqual(392);
-    expect(metrics.bottom.height).toBeGreaterThanOrEqual(90);
-    expect(metrics.bottomItems.map((item) => item.id)).toEqual(bottomOrder);
-    expect(metrics.bottomItems.map((item) => item.label)).toEqual(bottomLabels);
-    expect(metrics.ctaDelta).toBeLessThanOrEqual(1);
-    expect(metrics.gapDelta).toBeLessThanOrEqual(1.5);
-    expect(metrics.sidePairDelta).toBeLessThanOrEqual(1.5);
+    if (meta.showBottomBar) {
+      expect(metrics.bottom.width).toBeGreaterThanOrEqual(392);
+      expect(metrics.bottom.height).toBeGreaterThanOrEqual(90);
+      expect(metrics.bottomItems.map((item) => item.id)).toEqual(bottomOrder);
+      expect(metrics.bottomItems.map((item) => item.label)).toEqual(bottomLabels);
+      expect(metrics.ctaDelta).toBeLessThanOrEqual(1);
+      expect(metrics.gapDelta).toBeLessThanOrEqual(1.5);
+      expect(metrics.sidePairDelta).toBeLessThanOrEqual(1.5);
 
-    const activeId = activeBottomByRoute[route];
-    for (const item of metrics.bottomItems) {
-      expect(item.current).toBe(item.id === activeId ? "page" : null);
+      const activeId = activeBottomByRoute[route];
+      for (const item of metrics.bottomItems) {
+        expect(item.current).toBe(item.id === activeId ? "page" : null);
+      }
+    } else {
+      expect(metrics.bottom.width).toBe(0);
     }
 
     expect(errors).toEqual([]);
@@ -216,17 +220,12 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);
-  await page.getByTestId("app-header").getByTestId("header-info-button").click();
-  await expect(page.locator('[role="dialog"]')).toBeVisible();
+  await expect(page.getByTestId("subscription-empty-state")).toBeVisible();
+  await expect(page.getByTestId("app-header").getByTestId("header-info-button")).toHaveCount(0);
 });
 
-test("Vue customer service exposes call action after paid subscription", async ({ page }) => {
+test("Vue customer service exposes call action without subscription dependency", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
-
-  await page.goto(expectedUrl("/subscription"));
-  await waitForApp(page);
-  await page.getByTestId("subscription-option-vip").click();
-  await page.getByTestId("subscription-primary-cta").click();
 
   await page.goto(expectedUrl("/support/customer-service"));
   await waitForApp(page);

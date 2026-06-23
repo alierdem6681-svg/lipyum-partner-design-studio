@@ -226,7 +226,6 @@ onUnmounted(() => {
         :open="shell.drawerOpen"
         title="Partner menüsü"
         @close="shell.closeDrawer"
-        @upgrade="navigateTo('/subscription')"
       >
         <DrawerProfileCard />
         <DrawerMenuCard
