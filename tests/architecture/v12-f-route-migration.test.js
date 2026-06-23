@@ -4,14 +4,20 @@ import { activeRoutePaths } from "../../src/vue/data/activeRouteContent.js";
 import { clickableOutcomes } from "../../src/vue/data/clickableOutcomes.js";
 import { ROUTE_TO_SCREEN } from "../../src/utils/constants.js";
 
-const blankBottomRoutes = new Set(["/jobs", "/my-jobs", "/calendar", "/wallet"]);
+const blankBottomRoutes = new Set(["/jobs", "/my-jobs", "/calendar"]);
 const blankSidebarRoutes = new Set([
   "/customer-management",
   "/account-transactions",
   "/digital-service-form",
   "/create-offer",
 ]);
-const dedicatedStandaloneRoutes = new Set(["/performance-improve"]);
+const dedicatedStandaloneRoutes = new Set([
+  "/performance-improve",
+  "/wallet/top-up",
+  "/wallet/top-up/success",
+  "/wallet/history",
+  "/wallet/settings",
+]);
 const retiredRoutes = new Set(["/packages", "/package-builder", "/package-checkout"]);
 
 test("V12-G active route registry covers product routes", () => {

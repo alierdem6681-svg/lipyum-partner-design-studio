@@ -1,0 +1,14 @@
+{
+  "name": "pre-wallet-redesign-20260624-020057",
+  "startMainSha": "c37ac660add5c705ba58be26afb83b7265143785",
+  "tag": "pre-wallet-redesign-20260624-020057",
+  "archiveBranch": "archive/pre-wallet-redesign-20260624-020057",
+  "createdAt": "2026-06-24T02:00:57+03:00",
+  "runtimePolicy": "final Vue runtime",
+  "activeDeployUrls": [
+    "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/"
+  ],
+  "walletPageBefore": "WalletPage.vue rendered BlankBottomRoutePage only.",
+  "buildResult": "PASS before wallet redesign; npm run build completed after npm ci.",
+  "rollbackCommand": "git revert <wallet-merge-sha> && git push origin main"
+}

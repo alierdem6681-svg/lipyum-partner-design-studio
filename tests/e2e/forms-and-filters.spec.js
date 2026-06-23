@@ -110,20 +110,6 @@ test("reviews filters, inline reply, report confirmation and lazy loading are in
   expect(errors).toEqual([]);
 });
 
-test("wallet follows V12-E blank route scope", async ({ page }) => {
-  const errors = await collectConsoleErrors(page);
-  await page.goto("/#/wallet");
-  await waitForApp(page);
-
-  const main = page.getByTestId("wallet-page");
-  await expect(main).toHaveCount(1);
-  await expect(main).toBeVisible();
-  await expect(main.locator(".card, .filter-chip, [data-testid='wallet-transaction-card']")).toHaveCount(0);
-  await expect(main.getByRole("button")).toHaveCount(0);
-
-  expect(errors).toEqual([]);
-});
-
 test("leaderboard selects, spacing, rewards and score info follow the closed-week contract", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/leaderboard");

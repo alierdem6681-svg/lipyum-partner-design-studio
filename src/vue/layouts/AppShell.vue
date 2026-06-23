@@ -126,9 +126,15 @@ function onHeaderAction(action) {
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {
     shell.openSheet({
-      title: "Cüzdan",
-      description: "Kredi ve bakiye bilgisi",
-      body: "Kredilerini iş almak, teklif vermek ve öne çıkmak için kullanırsın.",
+      title: "Cüzdan nasıl çalışır?",
+      description: "İş bakiyesi ve bonus bakiyesi ayrı takip edilir.",
+      body: "İş bakiyesi yüklediğin kullanılabilir bakiyedir. Bonus bakiyesi doğrudan iş alımında veya nakit çekimde kullanılamaz; yalnız bakiye yüklerken indirim sağlar. İptal edilen iş iadeleri bonus olarak görünebilir ve yakın biten bonuslar önce kullanılır.",
+      scoreItems: [
+        { label: "İş bakiyesi", value: "Kullanılır", description: "İş fırsatı satın almak için kullanılır.", tone: "positive", icon: "wallet" },
+        { label: "Bonus bakiyesi", value: "İndirim", description: "Yükleme sırasında kartından çekilecek tutarı düşürür.", tone: "positive", icon: "gift" },
+        { label: "Nakit çekim", value: "Yok", description: "Bonus nakde çevrilmez ve tek başına iş aldırmaz.", tone: "neutral", icon: "shield" },
+      ],
+      note: "Ödeme özetinde cüzdanına eklenecek tutar, kullanılan bonus ve kartından çekilecek tutar ayrı gösterilir.",
     });
   }
   if (action === "info") {

@@ -64,7 +64,7 @@ test("sidebar routes kazanc ortakligi items and closes after navigation", async 
   expect(errors).toEqual([]);
 });
 
-test("account transactions moved from sidebar to wallet header", async ({ page }) => {
+test("account transactions stay out of sidebar and wallet exposes history", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -75,10 +75,10 @@ test("account transactions moved from sidebar to wallet header", async ({ page }
 
   await page.goto("/#/wallet");
   await waitForApp(page);
-  await expect(page.getByTestId("account-transactions-header-button")).toBeVisible();
-  await page.getByTestId("account-transactions-header-button").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/account-transactions");
-  await expect(page.getByTestId("account-transactions-page")).toBeVisible();
+  await expect(page.getByTestId("wallet-info-button")).toBeVisible();
+  await page.getByRole("button", { name: "Tümünü gör" }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet/history");
+  await expect(page.getByTestId("wallet-history-page")).toBeVisible();
 
   expect(errors).toEqual([]);
 });

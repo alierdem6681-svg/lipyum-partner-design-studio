@@ -21,6 +21,7 @@
     "test:performance": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/performance.spec.js",
     "test:performance-score-flow": "node scripts/run-local-node.mjs --test tests/unit/performanceScoreModel.test.js && node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/performance-score-flow.spec.js --workers=1 --trace=off && npm run build && git diff --check",
     "test:subscription-conversion-no-trial": "node scripts/run-local-node.mjs --test tests/unit/subscriptionNoTrial.test.js && node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/subscription-no-trial-flow.spec.js --workers=1 --trace=off && npm run build && git diff --check",
+    "test:wallet-flow": "node scripts/run-local-node.mjs --test tests/unit/walletCalculations.test.js && node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/wallet-flow.spec.js --workers=1 --trace=off && npm run build && git diff --check",
     "test:visual-alignment": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/visual-alignment.spec.js",
     "test:deeplinks": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/deeplinks.spec.js",
     "test:satisfaction": "node_modules/node/bin/node node_modules/@playwright/test/cli.js test tests/e2e/satisfaction.spec.js",
