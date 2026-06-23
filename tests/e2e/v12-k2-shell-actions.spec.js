@@ -18,12 +18,15 @@ test("Vue preview header actions produce outcomes", async ({ page }) => {
   await page.goto("/?engine=vue#/reviews");
   await waitForApp(page);
   await page.locator('[data-testid="app-header"] [data-testid="header-info-button"]').click();
-  await expect(page.locator(".v-sheet-copy")).toContainText("Lipyum Partner");
+  await expect(page.getByTestId("info-score-list")).toBeVisible();
 
   await page.goto("/?engine=vue#/home");
   await waitForApp(page);
   await page.locator('[data-action="credit"]').first().click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet");
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/home");
+  await expect(page.getByTestId("quick-topup-sheet")).toBeVisible();
+  await page.getByTestId("sheet-close-button").click();
+  await expect(page.getByTestId("quick-topup-sheet")).toHaveCount(0);
 
   await page.goto("/?engine=vue#/home");
   await waitForApp(page);

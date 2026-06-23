@@ -10,7 +10,7 @@
         { "testid": "profile-button", "label": "Profil", "action": "profile", "expectedRoute": "/profile", "reset": "route:/home" },
         { "label": "Nedir?", "action": "performance-info", "expectedSheet": "Performans Skoru", "reset": "close-sheet" },
         { "label": "Skorumu Artır", "action": "performanceScore", "expectedRoute": "/performance-score", "reset": "route:/home" },
-        { "label": "Bakiye Yükle", "action": "credit", "expectedRoute": "/wallet", "reset": "route:/home" },
+        { "label": "Bakiye Yükle", "action": "credit", "expectedSheet": "Kredi Yükle", "reset": "close-sheet" },
         { "label": "Krediye Çevir", "action": "bonus-convert", "expectedSheet": "Krediye Çevir", "reset": "close-sheet" },
         { "testid": "bottom-cta-job", "label": "İş Al", "action": "work", "expectedRoute": "/jobs", "reset": "route:/home" }
       ]
