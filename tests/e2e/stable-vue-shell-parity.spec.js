@@ -76,6 +76,10 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.locator(".v-route-hero")).toHaveCount(0);
   await expect(page.locator(".partner-profile-card")).toBeVisible();
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
+  await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
+  await expect(page.getByTestId("profile-work-status-toggle")).toHaveAttribute("aria-pressed", "true");
+  await page.getByTestId("profile-work-status-toggle").click();
+  await expect(page.getByTestId("profile-work-status-toggle")).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByTestId("profile-menu-strength-summary")).toContainText("Profil Gücünüz");
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
@@ -118,9 +122,9 @@ test("Vue preview drawer uses stable Lipyum sidebar contract", async ({ page }) 
   await expect(page.getByTestId("sidebar-drawer")).toBeVisible();
   await expect(page.locator(".partner-menu")).toBeVisible();
   await expect(page.locator(".drawer-profile-card")).toBeVisible();
-  await expect(page.locator(".drawer-work-status-card")).toBeVisible();
+  await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
   await expect(page.locator(".drawer-menu-card")).toHaveCount(4);
-  await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(11);
+  await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(13);
   await page.getByTestId("drawer-profile-badge-more").click();
   await expect(page.getByTestId("drawer-profile-badge-more")).toHaveCount(0);
   const drawerBadgeLabels = await page.locator(".drawer-profile-card .partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>

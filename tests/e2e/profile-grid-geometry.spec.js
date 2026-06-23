@@ -14,6 +14,7 @@ for (const viewport of [
     await waitForApp(page);
 
     await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
+    await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
     await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
     await page.getByTestId("profile-menu-strength-summary").click();
     await expect(page.getByTestId("profile-menu-list")).toBeVisible();
@@ -29,6 +30,7 @@ for (const viewport of [
       const statusNodes = Array.from(document.querySelectorAll(".profile-menu-row__status"));
       const statuses = statusNodes.map((item) => item.textContent.trim());
       const statusWidths = statusNodes.map((item) => item.getBoundingClientRect().width);
+      const workStatus = document.querySelector('[data-testid="profile-work-status-card"]')?.getBoundingClientRect();
       const summary = document.querySelector('[data-testid="profile-menu-strength-summary"]')?.getBoundingClientRect();
       const maxTitleLines = Math.max(
         ...Array.from(document.querySelectorAll(".profile-menu-row__title")).map((label) => {
@@ -60,6 +62,9 @@ for (const viewport of [
           : 999,
         leftDelta: profile && section ? Math.abs(profile.left - section.left) : 999,
         rightDelta: profile && section ? Math.abs(profile.right - section.right) : 999,
+        workStatusWidthDelta: profile && workStatus ? Math.abs(profile.width - workStatus.width) : 999,
+        workStatusTopGap: profile && workStatus ? Math.round(workStatus.top - profile.bottom) : 999,
+        summaryAfterWorkStatusGap: workStatus && summary ? Math.round(summary.top - workStatus.bottom) : 999,
         listLeftDelta: profile && list ? Math.abs(profile.left - list.left) : 999,
         listRightDelta: profile && list ? Math.abs(profile.right - list.right) : 999,
         firstRowLeftDelta: profile && rows[0] ? Math.abs(profile.left - rows[0].left) : 999,
@@ -84,6 +89,11 @@ for (const viewport of [
     expect(geometry.statusWidthSpread).toBeLessThanOrEqual(1);
     expect(geometry.leftDelta).toBeLessThanOrEqual(2);
     expect(geometry.rightDelta).toBeLessThanOrEqual(2);
+    expect(geometry.workStatusWidthDelta).toBeLessThanOrEqual(2);
+    expect(geometry.workStatusTopGap).toBeGreaterThanOrEqual(8);
+    expect(geometry.workStatusTopGap).toBeLessThanOrEqual(18);
+    expect(geometry.summaryAfterWorkStatusGap).toBeGreaterThanOrEqual(8);
+    expect(geometry.summaryAfterWorkStatusGap).toBeLessThanOrEqual(14);
     expect(geometry.listLeftDelta).toBeLessThanOrEqual(2);
     expect(geometry.listRightDelta).toBeLessThanOrEqual(2);
     expect(geometry.firstRowLeftDelta).toBeLessThanOrEqual(2);
@@ -95,8 +105,8 @@ for (const viewport of [
     expect(geometry.maxTitleLines).toBeLessThanOrEqual(1.15);
     expect(geometry.maxDescriptionLines).toBeLessThanOrEqual(1.15);
     expect(geometry.summaryWidthDelta).toBeLessThanOrEqual(2);
-    expect(geometry.summaryTopGap).toBeGreaterThanOrEqual(8);
-    expect(geometry.summaryTopGap).toBeLessThanOrEqual(18);
+    expect(geometry.summaryTopGap).toBeGreaterThanOrEqual(76);
+    expect(geometry.summaryTopGap).toBeLessThanOrEqual(92);
     expect(geometry.summaryText).toContain("Profil Gücünüz");
     expect(geometry.summaryRingText).toBe("78");
     expect(geometry.summaryText).not.toContain("78%");

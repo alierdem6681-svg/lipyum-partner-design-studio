@@ -11854,6 +11854,97 @@
         color: var(--color-neutral-500);
       }
 
+      .profile-work-status-card {
+        width: 100%;
+        min-height: 60px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 92px;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 10px;
+        padding: 9px 10px 9px 12px;
+        border: 1px solid var(--color-primary-border);
+        border-radius: 13px;
+        background: linear-gradient(180deg, rgba(236, 253, 245, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+        box-shadow: var(--shadow-soft);
+        box-sizing: border-box;
+      }
+
+      .profile-work-status-card.is-resting {
+        border-color: rgba(148, 163, 184, 0.46);
+        background: linear-gradient(180deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      }
+
+      .profile-work-status-card__copy {
+        min-width: 0;
+        display: grid;
+        gap: 3px;
+      }
+
+      .profile-work-status-card__copy strong {
+        overflow: hidden;
+        color: var(--color-neutral-900);
+        font-size: 13.4px;
+        font-weight: 900;
+        line-height: 1.08;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .profile-work-status-card__copy small {
+        overflow: hidden;
+        color: var(--color-neutral-600);
+        font-size: 10.8px;
+        font-weight: 730;
+        line-height: 1.2;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .profile-work-status-card .toggle {
+        width: 92px;
+        min-width: 92px;
+        min-height: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        justify-self: end;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .profile-work-status-card .toggle::before,
+      .profile-work-status-card .toggle::after {
+        display: none;
+      }
+
+      .profile-work-status-card .toggle span {
+        position: static;
+        width: 8px;
+        height: 8px;
+        flex: 0 0 8px;
+        border-radius: 999px;
+        background: currentColor;
+        box-shadow: none;
+        transform: none;
+      }
+
+      .profile-work-status-card .toggle.is-on span {
+        transform: none;
+      }
+
+      .profile-work-status-card .toggle strong {
+        color: inherit;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
       .profile-menu-strength-summary {
         width: 100%;
         min-height: 66px;
@@ -11985,6 +12076,17 @@
 
         .profile-menu-list {
           gap: 7px;
+        }
+
+        .profile-work-status-card {
+          grid-template-columns: minmax(0, 1fr) 84px;
+          gap: 8px;
+          padding: 8px;
+        }
+
+        .profile-work-status-card .toggle {
+          width: 84px;
+          min-width: 84px;
         }
 
         .profile-menu-row {

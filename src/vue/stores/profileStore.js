@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { partnerProfile, profileStrength } from "../../data/mockData.js";
 
 const PROFILE_AVATAR_STORAGE_KEY = "lipyum.partner.avatar";
+const PROFILE_WORK_STATUS_STORAGE_KEY = "lipyum.partner.workStatus";
 
 function initialsFromName(name) {
   return name
@@ -21,10 +22,23 @@ function readSavedAvatar() {
   }
 }
 
+function readSavedWorkStatus() {
+  if (typeof window === "undefined") return true;
+  try {
+    const saved = window.localStorage.getItem(PROFILE_WORK_STATUS_STORAGE_KEY);
+    if (saved === "active") return true;
+    if (saved === "passive") return false;
+    return true;
+  } catch {
+    return true;
+  }
+}
+
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     expandedBadges: false,
     drawerBadgesExpanded: false,
+    isWorking: readSavedWorkStatus(),
     partner: {
       ...partnerProfile,
       avatar: readSavedAvatar() || partnerProfile.avatar,
@@ -63,6 +77,18 @@ export const useProfileStore = defineStore("profile", {
       } catch {
         // Local storage can be unavailable in private or restricted contexts.
       }
+    },
+    setWorkingStatus(isWorking) {
+      this.isWorking = Boolean(isWorking);
+      if (typeof window === "undefined") return;
+      try {
+        window.localStorage.setItem(PROFILE_WORK_STATUS_STORAGE_KEY, this.isWorking ? "active" : "passive");
+      } catch {
+        // Local storage can be unavailable in private or restricted contexts.
+      }
+    },
+    toggleWorkingStatus() {
+      this.setWorkingStatus(!this.isWorking);
     },
   },
 });

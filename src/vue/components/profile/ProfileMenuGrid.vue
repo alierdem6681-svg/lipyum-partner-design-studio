@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { PROFILE_MENU_ITEMS } from "../../../utils/constants.js";
+import ProfileWorkStatusCard from "./ProfileWorkStatusCard.vue";
 import AppIcon from "../ui/AppIcon.vue";
 
 const router = useRouter();
@@ -60,6 +61,8 @@ const menuItems = computed(() =>
 
 <template>
   <section class="profile-menu-section" data-testid="profile-menu-section" aria-label="Müşteriye görünen profil menüleri">
+    <ProfileWorkStatusCard />
+
     <button
       class="profile-menu-strength-summary"
       type="button"

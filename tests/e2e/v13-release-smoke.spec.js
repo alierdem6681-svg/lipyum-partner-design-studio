@@ -174,6 +174,8 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(profileCard).toBeVisible();
   const profileName = await profileCard.locator("h3").textContent();
   const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
+  await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
+  await expect(page.getByTestId("profile-work-status-toggle")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
@@ -193,6 +195,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
     const statuses = Array.from(document.querySelectorAll(".profile-menu-row__status")).map((item) =>
       item.textContent.trim(),
     );
+    const workStatus = document.querySelector('[data-testid="profile-work-status-card"]')?.getBoundingClientRect();
     const summary = document.querySelector('[data-testid="profile-menu-strength-summary"]')?.getBoundingClientRect();
     return {
       cardCount: cards.length,
@@ -204,6 +207,9 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
       firstCardRightDelta: profile && cards[0] ? Math.abs(profile.right - cards[0].right) : 999,
       cardSpread: cards.length ? Math.max(...cards.map((card) => card.width)) - Math.min(...cards.map((card) => card.width)) : 999,
       maxTitleLines,
+      workStatusWidthDelta: profile && workStatus ? Math.abs(profile.width - workStatus.width) : 999,
+      workStatusTopGap: profile && workStatus ? Math.round(workStatus.top - profile.bottom) : 999,
+      summaryAfterWorkStatusGap: workStatus && summary ? Math.round(summary.top - workStatus.bottom) : 999,
       summaryWidthDelta: profile && summary ? Math.abs(profile.width - summary.width) : 999,
       summaryTopGap: profile && summary ? Math.round(summary.top - profile.bottom) : 999,
       summaryText: document.querySelector('[data-testid="profile-menu-strength-summary"]')?.textContent ?? "",
@@ -219,9 +225,14 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(profileGridGeometry.firstCardRightDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.cardSpread).toBeLessThanOrEqual(1);
   expect(profileGridGeometry.maxTitleLines).toBeLessThanOrEqual(1.15);
+  expect(profileGridGeometry.workStatusWidthDelta).toBeLessThanOrEqual(2);
+  expect(profileGridGeometry.workStatusTopGap).toBeGreaterThanOrEqual(8);
+  expect(profileGridGeometry.workStatusTopGap).toBeLessThanOrEqual(18);
+  expect(profileGridGeometry.summaryAfterWorkStatusGap).toBeGreaterThanOrEqual(8);
+  expect(profileGridGeometry.summaryAfterWorkStatusGap).toBeLessThanOrEqual(14);
   expect(profileGridGeometry.summaryWidthDelta).toBeLessThanOrEqual(2);
-  expect(profileGridGeometry.summaryTopGap).toBeGreaterThanOrEqual(8);
-  expect(profileGridGeometry.summaryTopGap).toBeLessThanOrEqual(18);
+  expect(profileGridGeometry.summaryTopGap).toBeGreaterThanOrEqual(76);
+  expect(profileGridGeometry.summaryTopGap).toBeLessThanOrEqual(92);
   expect(profileGridGeometry.summaryText).toContain("Profil Gücünüz");
   expect(profileGridGeometry.summaryText).toContain("+28");
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
@@ -273,6 +284,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(drawerCard.locator(".partner-profile-tier")).toContainText(profileTier.trim());
   await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toBeVisible();
   await expect(drawerCard.locator(".partner-profile-avatar-btn img")).toHaveAttribute("src", updatedAvatar);
+  await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
   await expect(drawerCard.locator(".drawer-avatar, .drawer-badge, .drawer-rating, .drawer-mini-badge")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(drawerCard.getByTestId("partner-preview-button")).toHaveCount(0);
