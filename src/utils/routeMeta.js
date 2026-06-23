@@ -93,6 +93,18 @@ const titleOverrides = {
   "/support/new": {
     title: "Talep Oluştur",
     subtitle: "Sorununu seç, hızlıca takip edelim",
+    infoSheet: {
+      title: "İyi bir talep nasıl yazılır?",
+      description: "Net yaz, hızlı çözülsün.",
+      body: "",
+      scoreItems: [
+        { label: "Tek konu seç", value: "1 talep", description: "Aynı kayıtta tek problemi veya isteği anlat.", tone: "positive", icon: "file-text" },
+        { label: "Ne istiyorsun?", value: "Net", description: "Ekibin tam olarak ne yapmasını istediğini ilk cümlede yaz.", tone: "positive", icon: "message" },
+        { label: "Kanıt ekle", value: "Resim", description: "Ekran görüntüsü veya dosya eklersen kontrol daha hızlı olur.", tone: "positive", icon: "plus" },
+        { label: "Acil olanı işaretle", value: "Öncelik", description: "İşini durduran konuları acil veya kritik olarak seç.", tone: "warning", icon: "alert" },
+      ],
+      note: "En iyi destek kayıtları kısa, saygılı ve kanıtlıdır. Kişisel veri, kart numarası veya şifre yazma.",
+    },
   },
   "/support/live": {
     title: "Canlı Destek",
