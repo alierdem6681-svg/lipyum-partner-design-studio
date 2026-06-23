@@ -27,7 +27,8 @@ const profile = useProfileStore();
 const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
 const showBack = computed(() => meta.value.leadingAction === "back");
-const rightActions = computed(() => meta.value.trailingActions || []);
+const headerActionOverride = ref(null);
+const rightActions = computed(() => headerActionOverride.value ?? meta.value.trailingActions ?? []);
 const contentRef = ref(null);
 const pullDistance = ref(0);
 const isPulling = ref(false);
@@ -50,6 +51,7 @@ watch(
     shell.closeSheet();
     quickBonusOpen.value = false;
     quickTopUpOpen.value = false;
+    headerActionOverride.value = null;
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
     isPulling.value = false;
@@ -122,6 +124,7 @@ function onHeaderAction(action) {
   if (action === "profile") navigateTo("/profile");
   if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
+  if (action === "end-live-chat") window.dispatchEvent(new CustomEvent("lipyum:live-support-end"));
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {
@@ -152,6 +155,11 @@ function onHeaderAction(action) {
   if (action === "workPlan") navigateTo("/working-hours");
   if (action === "support") navigateTo("/support");
   if (action === "activate-dispatch") shell.showToast("İş alımı tekrar aktif hale getirildi.");
+}
+
+function handleHeaderActions(event) {
+  if (event.detail?.route && event.detail.route !== route.path) return;
+  headerActionOverride.value = Array.isArray(event.detail?.actions) ? event.detail.actions : null;
 }
 
 function handlePopState() {
@@ -210,6 +218,7 @@ onMounted(() => {
   window.addEventListener("popstate", handlePopState);
   window.addEventListener("lipyum:bonus-convert", openQuickBonusConvert);
   window.addEventListener("lipyum:quick-topup", openQuickTopUp);
+  window.addEventListener("lipyum:header-actions", handleHeaderActions);
   window.navigateToPage = navigateTo;
   window.goBack = goBack;
   window.lipyumRouter = { navigateTo, goBack };
@@ -219,6 +228,7 @@ onUnmounted(() => {
   window.removeEventListener("popstate", handlePopState);
   window.removeEventListener("lipyum:bonus-convert", openQuickBonusConvert);
   window.removeEventListener("lipyum:quick-topup", openQuickTopUp);
+  window.removeEventListener("lipyum:header-actions", handleHeaderActions);
   if (window.navigateToPage === navigateTo) delete window.navigateToPage;
   if (window.goBack === goBack) delete window.goBack;
   if (window.lipyumRouter?.navigateTo === navigateTo) delete window.lipyumRouter;

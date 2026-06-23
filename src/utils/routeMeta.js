@@ -96,7 +96,10 @@ const titleOverrides = {
   },
   "/support/live": {
     title: "Canlı Destek",
-    subtitle: "Temsilciyle hızlıca görüş",
+    subtitle: "WhatsApp tarzı hızlı destek",
+    trailingActions: [],
+    ctaVariant: "hidden",
+    showBottomBar: false,
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
