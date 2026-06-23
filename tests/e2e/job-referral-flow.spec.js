@@ -19,6 +19,8 @@ test("job referral dashboard and sell-job flow work", async ({ page }) => {
 
   await page.getByTestId("job-referral-withdraw-button").click();
   await expect(page.getByTestId("job-referral-withdraw-sheet")).toBeVisible();
+  await page.getByTestId("job-referral-withdraw-amount").fill("0.5");
+  await expect(page.getByTestId("job-referral-withdraw-submit")).toBeDisabled();
   await page.getByTestId("job-referral-withdraw-amount").fill("2500");
   await page.getByTestId("job-referral-withdraw-submit").click();
   await expect(page.locator("#toast")).toContainText("₺2.500 çekim talebi alındı.");
@@ -36,12 +38,15 @@ test("job referral dashboard and sell-job flow work", async ({ page }) => {
 
   await page.getByTestId("job-referral-city-search").fill("Antalya");
   await page.getByTestId("job-referral-city-option").filter({ hasText: "Antalya" }).click();
+  await page.getByTestId("job-referral-city-search").fill("Adıyaman");
+  await expect(page.getByTestId("job-referral-location-next")).toBeDisabled();
+  await page.getByTestId("job-referral-city-option").filter({ hasText: "Adıyaman" }).click();
   await page.getByTestId("job-referral-district").fill("Muratpaşa");
   await page.getByTestId("job-referral-location-next").click();
 
   await expect(page.getByText("Murat Kaya")).toBeVisible();
   await expect(page.getByText("Klima Tamiri")).toBeVisible();
-  await expect(page.getByText("Antalya / Muratpaşa")).toBeVisible();
+  await expect(page.getByText("Adıyaman / Muratpaşa")).toBeVisible();
   await page.getByTestId("job-referral-submit").click();
   await expect(page.locator("#toast")).toContainText("İş satışı kaydı hazırlandı.");
 
