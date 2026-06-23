@@ -256,7 +256,12 @@ async function savePhoto() {
     </div>
 
     <div :class="badgesClasses" aria-label="Profil rozetleri">
-      <span v-for="(badge, index) in visibleBadges" :key="badge.label" :class="badgeClass(index)">
+      <span
+        v-for="(badge, index) in visibleBadges"
+        :key="badge.label"
+        :class="badgeClass(index)"
+        :data-testid="variant === 'public' ? 'partner-public-badge' : undefined"
+      >
         <AppIcon :name="badge.icon" :size="14" class-name="icon" />
         {{ badge.label }}
       </span>

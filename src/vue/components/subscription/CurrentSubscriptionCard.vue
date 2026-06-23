@@ -21,15 +21,11 @@ const emit = defineEmits(["manage"]);
     </div>
     <dl>
       <div>
-        <dt>Durum</dt>
-        <dd>{{ statusLabel }}</dd>
+        <dt>Sonraki yenileme</dt>
+        <dd>{{ renewalCopy.replace('Sonraki yenileme: ', '') }}</dd>
       </div>
       <div>
-        <dt>Yenileme</dt>
-        <dd>{{ renewalCopy }}</dd>
-      </div>
-      <div>
-        <dt>Ödeme</dt>
+        <dt>Ödeme platformu</dt>
         <dd>{{ platform }}</dd>
       </div>
     </dl>

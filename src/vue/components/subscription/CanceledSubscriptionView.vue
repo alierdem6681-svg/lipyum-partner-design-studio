@@ -21,8 +21,8 @@ const emit = defineEmits(["reactivate", "manage", "restore"]);
       @manage="emit('manage')"
     />
     <section class="subscription-message-card">
-      <h2>Plus erişimin aktif</h2>
-      <p>Aboneliğin erişim tarihinin sonunda sona erecek ve yenilenmeyecek.</p>
+      <h2>{{ store.currentPlan.title }} erişimin aktif</h2>
+      <p>Bu tarihten sonra aboneliğin yenilenmeyecek.</p>
       <AppButton full-width data-testid="subscription-reactivate" @click="emit('reactivate')">
         YENİDEN ETKİNLEŞTİR
       </AppButton>

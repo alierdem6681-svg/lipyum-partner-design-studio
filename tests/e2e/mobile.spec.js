@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, expectNoAppHorizontalOverflow, routes, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, expectNoAppHorizontalOverflow, routes, waitForApp } from "./helpers.js";
 
 const viewports = [
   { width: 320, height: 568 },
@@ -19,6 +19,12 @@ for (const viewport of viewports) {
       await page.setViewportSize(viewport);
       await page.goto(`/#${route}`);
       await waitForApp(page);
+      if (bottomBarHiddenRoutes.has(route)) {
+        await expect(page.locator("#bottomNav")).toHaveCount(0);
+        await expectNoAppHorizontalOverflow(page);
+        expect(errors).toEqual([]);
+        return;
+      }
       await expect(page.locator("#bottomNav")).toBeVisible();
       await expectNoAppHorizontalOverflow(page);
       const twoLineLabels = await page.locator(".bottom-item > span").evaluateAll((labels) => (

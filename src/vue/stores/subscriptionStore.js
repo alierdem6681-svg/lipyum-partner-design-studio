@@ -4,12 +4,13 @@ import {
   SUBSCRIPTION_STATUSES,
   freePlan,
   paywallRemoteConfig,
+  recommendedPlanId,
   subscriptionPlans,
   subscriptionUsageItems,
 } from "../data/subscriptionPlans.js";
 import { subscriptionService, trackSubscriptionEvent } from "../services/subscriptionService.js";
 
-const STORAGE_KEY = "lipyum.subscription.demo.v1";
+const STORAGE_KEY = "lipyum.subscription.demo.v2";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 function addDays(date, days) {
@@ -53,20 +54,19 @@ function writeStoredState(state) {
   );
 }
 
-function normalizePlanId(planId) {
-  if (!planId) return null;
-  const value = String(planId).toLowerCase();
-  return subscriptionPlans.some((plan) => plan.id === value) ? value : null;
-}
-
 function demoDates() {
-  const now = new Date();
+  const now = new Date("2026-06-19T09:00:00+03:00");
   return {
     trialStartedAt: now.toISOString(),
     trialEndsAt: addDays(now, 30),
     nextRenewalAt: addDays(now, 30),
     accessEndsAt: addDays(now, 30),
   };
+}
+
+function normalizePlanId(planId) {
+  const value = String(planId || "").toLowerCase();
+  return subscriptionPlans.some((plan) => plan.id === value) ? value : null;
 }
 
 function formatDateTr(value) {
@@ -77,14 +77,22 @@ function formatDateTr(value) {
   }).format(new Date(value));
 }
 
+function priceFor(plan, period) {
+  if (!plan || plan.id === "free") return 0;
+  return period === BILLING_PERIODS.ANNUAL ? plan.annualPrice : plan.monthlyPrice;
+}
+
 export const useSubscriptionStore = defineStore("subscription", {
   state: () => {
     const stored = readStoredState();
     const dates = demoDates();
+    const storedSelected = normalizePlanId(stored.selectedPlanId) || recommendedPlanId;
+    const storedActive = normalizePlanId(stored.activePlanId);
+
     return {
       subscriptionStatus: stored.subscriptionStatus || SUBSCRIPTION_STATUSES.FREE,
-      activePlanId: stored.activePlanId || null,
-      selectedPlanId: stored.selectedPlanId || "plus",
+      activePlanId: storedActive,
+      selectedPlanId: storedSelected,
       selectedBillingPeriod: stored.selectedBillingPeriod || paywallRemoteConfig.defaultBillingPeriod,
       trialEligible: stored.trialEligible ?? true,
       trialStartedAt: stored.trialStartedAt || null,
@@ -103,7 +111,7 @@ export const useSubscriptionStore = defineStore("subscription", {
   getters: {
     plans: () => subscriptionPlans,
     freePlan: () => freePlan,
-    recommendedPlan: () => subscriptionPlans.find((plan) => plan.recommended) || subscriptionPlans[0],
+    recommendedPlan: () => subscriptionPlans.find((plan) => plan.id === recommendedPlanId) || subscriptionPlans[0],
     selectedPlan: (state) => subscriptionPlans.find((plan) => plan.id === state.selectedPlanId) || subscriptionPlans[0],
     currentPlan(state) {
       return subscriptionPlans.find((plan) => plan.id === state.activePlanId) || freePlan;
@@ -123,7 +131,18 @@ export const useSubscriptionStore = defineStore("subscription", {
       ].includes(state.subscriptionStatus);
     },
     activeSubscriptionPlan() {
-      return this.hasPaidSubscription ? this.currentPlan.title : null;
+      return this.hasPaidSubscription ? `Lipyum ${this.currentPlan.title}` : null;
+    },
+    activeEntitlements() {
+      return new Set(this.currentPlan.entitlements || []);
+    },
+    customerServiceLevel() {
+      if (!this.hasPaidSubscription) return "none";
+      if (this.activeEntitlements.has("phone_support")) return "phone";
+      if (this.activeEntitlements.has("customer_service_priority")) return "priority";
+      if (this.activeEntitlements.has("customer_service_fast")) return "fast";
+      if (this.activeEntitlements.has("customer_service_standard")) return "standard";
+      return "none";
     },
     canStartTrial: (state) => state.trialEligible && state.subscriptionStatus === SUBSCRIPTION_STATUSES.FREE,
     daysRemaining(state) {
@@ -131,12 +150,15 @@ export const useSubscriptionStore = defineStore("subscription", {
       const diff = Math.ceil((new Date(end).getTime() - Date.now()) / DAY_MS);
       return Math.max(0, diff);
     },
+    selectedPrice() {
+      return priceFor(this.selectedPlan, this.selectedBillingPeriod);
+    },
     renewalCopy() {
       if (this.isTrial) return `Deneme bitişi: ${formatDateTr(this.trialEndsAt)}`;
       if (this.isCanceledButActive) return `Erişim bitişi: ${formatDateTr(this.accessEndsAt)}`;
       if (this.hasPaymentIssue) return "Avantajların 3 gün daha açık";
       if (this.isPaid) return `Sonraki yenileme: ${formatDateTr(this.nextRenewalAt)}`;
-      return "Free kullanım";
+      return "Temel kullanım aktif";
     },
   },
   actions: {
@@ -149,7 +171,7 @@ export const useSubscriptionStore = defineStore("subscription", {
         selectedPlan: this.selectedPlanId,
         billingPeriod: this.selectedBillingPeriod,
         paywallVariant: this.paywallVariant,
-        subscriptionState: this.subscriptionStatus,
+        subscriptionStatus: this.subscriptionStatus,
         sourceRoute: "/subscription",
         ...payload,
       });
@@ -158,9 +180,11 @@ export const useSubscriptionStore = defineStore("subscription", {
     },
     applyDemoState(status) {
       const dates = demoDates();
+      const isFreeLike = [SUBSCRIPTION_STATUSES.FREE, SUBSCRIPTION_STATUSES.EXPIRED].includes(status);
       this.subscriptionStatus = status;
-      this.activePlanId = status === SUBSCRIPTION_STATUSES.FREE || status === SUBSCRIPTION_STATUSES.EXPIRED ? null : "plus";
-      this.selectedPlanId = this.activePlanId || "plus";
+      this.activePlanId = isFreeLike ? null : recommendedPlanId;
+      this.selectedPlanId = this.activePlanId || recommendedPlanId;
+      this.selectedBillingPeriod = BILLING_PERIODS.MONTHLY;
       this.trialEligible = status === SUBSCRIPTION_STATUSES.FREE;
       this.trialStartedAt = status === SUBSCRIPTION_STATUSES.TRIAL ? dates.trialStartedAt : null;
       this.trialEndsAt = dates.trialEndsAt;
@@ -172,8 +196,18 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.persist();
       this.track("subscription_page_view", { demoState: status });
     },
-    startTrial(planId = "plus") {
-      const normalized = normalizePlanId(planId) || "plus";
+    selectPlan(planId) {
+      this.selectedPlanId = normalizePlanId(planId) || recommendedPlanId;
+      this.persist();
+      this.track("plan_select", { selectedPlan: this.selectedPlanId });
+    },
+    selectBillingPeriod(period) {
+      this.selectedBillingPeriod = period === BILLING_PERIODS.ANNUAL ? BILLING_PERIODS.ANNUAL : BILLING_PERIODS.MONTHLY;
+      this.persist();
+      this.track("billing_period_change");
+    },
+    startTrial(planId = this.selectedPlanId) {
+      const normalized = normalizePlanId(planId) || recommendedPlanId;
       const dates = demoDates();
       this.activePlanId = normalized;
       this.selectedPlanId = normalized;
@@ -187,23 +221,8 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.track("trial_cta_click", { selectedPlan: normalized });
       this.track("purchase_success", { selectedPlan: normalized, type: "trial" });
     },
-    selectPlan(planId) {
-      const normalized = normalizePlanId(planId);
-      this.selectedPlanId = normalized || "plus";
-      if (!normalized) {
-        this.activePlanId = null;
-        this.subscriptionStatus = SUBSCRIPTION_STATUSES.FREE;
-      }
-      this.persist();
-      this.track("recommended_plan_view", { selectedPlan: this.selectedPlanId });
-    },
-    selectBillingPeriod(period) {
-      this.selectedBillingPeriod = period === BILLING_PERIODS.ANNUAL ? BILLING_PERIODS.ANNUAL : BILLING_PERIODS.MONTHLY;
-      this.persist();
-      this.track("billing_period_change");
-    },
     async mockPurchase(planId = this.selectedPlanId) {
-      const normalized = normalizePlanId(planId) || "plus";
+      const normalized = normalizePlanId(planId) || recommendedPlanId;
       this.purchaseState = "loading";
       this.track("checkout_start", { selectedPlan: normalized });
       await subscriptionService.purchase({ planId: normalized, billingPeriod: this.selectedBillingPeriod });
@@ -218,7 +237,7 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.track("purchase_success", { selectedPlan: normalized });
     },
     async upgradePlan(planId) {
-      const normalized = normalizePlanId(planId) || "pro";
+      const normalized = normalizePlanId(planId) || "vip";
       await subscriptionService.upgrade({ planId: normalized });
       this.activePlanId = normalized;
       this.selectedPlanId = normalized;
@@ -227,10 +246,11 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.track("upgrade_click", { selectedPlan: normalized });
     },
     async downgradePlan(planId) {
-      const normalized = normalizePlanId(planId) || "plus";
+      const normalized = normalizePlanId(planId) || "gold";
       await subscriptionService.downgrade({ planId: normalized });
       this.activePlanId = normalized;
       this.selectedPlanId = normalized;
+      this.subscriptionStatus = SUBSCRIPTION_STATUSES.ACTIVE;
       this.persist();
       this.track("downgrade_click", { selectedPlan: normalized });
     },
@@ -242,7 +262,7 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.track("purchase_cancel");
     },
     async reactivateMock() {
-      await subscriptionService.reactivate({ planId: this.activePlanId || "plus" });
+      await subscriptionService.reactivate({ planId: this.activePlanId || recommendedPlanId });
       this.subscriptionStatus = SUBSCRIPTION_STATUSES.ACTIVE;
       this.cancelAtPeriodEnd = false;
       this.persist();
@@ -252,13 +272,15 @@ export const useSubscriptionStore = defineStore("subscription", {
       await subscriptionService.restorePurchases();
       this.track("restore_click");
       this.track("restore_success");
+      this.purchaseState = "restored";
+      this.persist();
     },
     async openManageSubscriptionsMock() {
       await subscriptionService.manageSubscriptions();
       this.track("manage_subscription_open");
     },
     async resolvePaymentIssueMock() {
-      await subscriptionService.resolvePaymentIssue({ planId: this.activePlanId || "plus" });
+      await subscriptionService.resolvePaymentIssue({ planId: this.activePlanId || recommendedPlanId });
       this.subscriptionStatus = SUBSCRIPTION_STATUSES.ACTIVE;
       this.paymentIssue = null;
       this.persist();
@@ -269,7 +291,7 @@ export const useSubscriptionStore = defineStore("subscription", {
       const dates = demoDates();
       this.subscriptionStatus = SUBSCRIPTION_STATUSES.FREE;
       this.activePlanId = null;
-      this.selectedPlanId = "plus";
+      this.selectedPlanId = recommendedPlanId;
       this.selectedBillingPeriod = BILLING_PERIODS.MONTHLY;
       this.trialEligible = true;
       this.trialStartedAt = null;
@@ -279,6 +301,7 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.accessEndsAt = dates.accessEndsAt;
       this.paymentIssue = null;
       this.purchaseState = "idle";
+      this.usedBenefits = subscriptionUsageItems;
       this.persist();
     },
   },

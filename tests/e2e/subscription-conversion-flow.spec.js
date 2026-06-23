@@ -8,41 +8,54 @@ async function openSubscription(page, state = "free") {
   await expect(page.getByTestId(`subscription-state-${state === "payment-issue" ? "payment-issue" : state}`)).toBeVisible();
 }
 
-async function expectSinglePrimaryCta(page) {
-  await expect(page.getByTestId("subscription-primary-cta")).toHaveCount(1);
-}
-
 test.describe("subscription conversion flow", () => {
-  test("free user sees focused plan options, transparent trial copy and comparison sheet", async ({ page }) => {
+  test("free user sees all paid plans, Plus default and one selected-plan detail card", async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await openSubscription(page, "free");
 
     await expect(page.getByRole("heading", { name: "Aboneliğim" })).toBeVisible();
-    await expect(page.getByText("Şu an Free")).toBeVisible();
-    await expect(page.getByText("İş alma gücünü büyüt")).toBeVisible();
+    await expect(page.getByText("Mevcut plan")).toBeVisible();
+    await expect(page.getByText("Free")).toBeVisible();
+    await expect(page.getByTestId("subscription-option-gold")).toBeVisible();
     await expect(page.getByTestId("subscription-option-plus")).toBeVisible();
-    await expect(page.getByTestId("subscription-option-pro")).toBeVisible();
     await expect(page.getByTestId("subscription-option-vip")).toBeVisible();
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("Lipyum Plus");
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("499 TL");
+    await expect(page.getByText("30 gün ücretsiz. Sonrasında 499 TL/ay olarak yenilenir.")).toBeVisible();
+    await expect(page.getByTestId("subscription-primary-cta")).toHaveCount(1);
+
+    await page.getByTestId("subscription-option-gold").click();
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("Lipyum Gold");
     await expect(page.getByTestId("subscription-recommended-card")).toContainText("249 TL");
-    await expect(page.getByText("30 gün ücretsiz. Sonrasında 249 TL/ay.")).toBeVisible();
-    await expect(page.getByTestId("subscription-trial-timeline")).toContainText("28. gün");
-    await expectSinglePrimaryCta(page);
 
     await page.getByTestId("subscription-option-vip").click();
-    await expect(page.getByText("VIP PLANINI SEÇ")).toBeVisible();
-    await page.getByTestId("subscription-option-plus").click();
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("Lipyum VIP");
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("899 TL");
 
-    await page.getByTestId("subscription-compare-open").click();
-    await expect(page.getByText("Planları Karşılaştır")).toBeVisible();
-    await expect(page.getByTestId("subscription-billing-monthly")).toHaveClass(/is-active/);
-    await expect(page.getByTestId("subscription-plan-pro")).toContainText("499 TL");
-    await expect(page.getByTestId("subscription-plan-vip")).toContainText("899 TL");
-    await page.getByTestId("subscription-billing-annual").click();
-    await expect(page.getByTestId("subscription-plan-plus")).toContainText("2.388 TL");
-    await page.getByTestId("subscription-compare-close").click();
+    await page.getByTestId("subscription-option-plus").click();
+    await expect(page.getByTestId("subscription-trial-timeline")).toContainText("499 TL/ay olarak yenilenir.");
 
     await expectNoAppHorizontalOverflow(page);
     expect(errors).toEqual([]);
+  });
+
+  test("billing period and plan comparison route work", async ({ page }) => {
+    await openSubscription(page, "free");
+
+    await page.getByTestId("subscription-billing-annual").click();
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("4.788 TL");
+    await expect(page.getByTestId("subscription-recommended-card")).toContainText("Aylık karşılığı 399 TL");
+
+    await page.getByTestId("subscription-compare-open").click();
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription/compare");
+    await expect(page.getByTestId("subscription-compare-page")).toBeVisible();
+    await expect(page.getByTestId("subscription-plan-gold")).toContainText("249 TL");
+    await expect(page.getByTestId("subscription-plan-plus")).toContainText("499 TL");
+    await expect(page.getByTestId("subscription-plan-vip")).toContainText("899 TL");
+    await page.getByTestId("subscription-billing-annual").click();
+    await expect(page.getByTestId("subscription-plan-plus")).toContainText("4.788 TL");
+    await page.getByTestId("subscription-compare-close").click();
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
   });
 
   test("trial user sees remaining days and management actions", async ({ page }) => {
@@ -54,11 +67,13 @@ test.describe("subscription conversion flow", () => {
     await expectNoAppHorizontalOverflow(page);
   });
 
-  test("active user can manage subscription and restore purchases", async ({ page }) => {
+  test("active user can manage, restore and select another plan", async ({ page }) => {
     await openSubscription(page, "active");
 
     await expect(page.getByTestId("subscription-current-card")).toContainText("Aktif");
     await expect(page.getByTestId("subscription-usage-card")).toContainText("Müşteri hizmetleri");
+    await page.getByTestId("subscription-option-vip").click();
+    await expect(page.getByTestId("subscription-change-plan")).toContainText("VIP’E GEÇ");
     await page.getByTestId("subscription-manage").click();
     await page.getByTestId("subscription-active-restore").click();
     await expectNoAppHorizontalOverflow(page);
@@ -88,6 +103,9 @@ test.describe("subscription conversion flow", () => {
       await page.setViewportSize(viewport);
       await openSubscription(page, "free");
       await expect(page.getByTestId("subscription-primary-cta")).toBeVisible();
+      await expect(page.getByTestId("subscription-option-gold")).toBeVisible();
+      await expect(page.getByTestId("subscription-option-plus")).toBeVisible();
+      await expect(page.getByTestId("subscription-option-vip")).toBeVisible();
       await expectNoAppHorizontalOverflow(page);
     });
   }

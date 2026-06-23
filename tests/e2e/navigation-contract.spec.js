@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, routes, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, routes, waitForApp } from "./helpers.js";
 
 test("core contract test ids are present on home", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
@@ -25,9 +25,13 @@ test("core contract test ids are present on home", async ({ page }) => {
 });
 
 for (const route of routes) {
-  test(`navigation contract has bottom bar on ${route}`, async ({ page }) => {
+  test(`navigation contract bottom bar visibility on ${route}`, async ({ page }) => {
     await page.goto(`/#${route}`);
     await waitForApp(page);
+    if (bottomBarHiddenRoutes.has(route)) {
+      await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+      return;
+    }
     await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
   });
 }

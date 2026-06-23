@@ -1,7 +1,7 @@
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { SUBSCRIPTION_QUERY_STATE_MAP, SUBSCRIPTION_STATUSES } from "../data/subscriptionPlans.js";
+import { computed, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { SUBSCRIPTION_QUERY_STATE_MAP } from "../data/subscriptionPlans.js";
 import ActiveSubscriptionView from "../components/subscription/ActiveSubscriptionView.vue";
 import CanceledSubscriptionView from "../components/subscription/CanceledSubscriptionView.vue";
 import ExpiredSubscriptionView from "../components/subscription/ExpiredSubscriptionView.vue";
@@ -13,9 +13,9 @@ import { useAppShellStore } from "../stores/appShellStore.js";
 import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const route = useRoute();
+const router = useRouter();
 const shell = useAppShellStore();
 const subscription = useSubscriptionStore();
-const showComparison = ref(false);
 
 const stateComponent = computed(() => {
   if (subscription.isTrial) return TrialSubscriptionView;
@@ -32,12 +32,8 @@ function applyQueryState() {
 }
 
 function openComparison() {
-  showComparison.value = true;
   subscription.track("plan_compare_open");
-}
-
-function closeComparison() {
-  showComparison.value = false;
+  router.push("/subscription/compare");
 }
 
 function selectPlan(planId) {
@@ -49,18 +45,32 @@ function selectBillingPeriod(period) {
 }
 
 async function purchase(planId) {
-  if (planId === "plus" && subscription.canStartTrial) {
-    subscription.startTrial(planId);
-    shell.showToast("30 günlük Plus denemen başladı.");
+  const isManagingPaidPlan = subscription.isPaid || subscription.isCanceledButActive || subscription.hasPaymentIssue;
+  if (isManagingPaidPlan) {
+    const selectedOrder = subscription.selectedPlan.sortOrder || 0;
+    const currentOrder = subscription.currentPlan.sortOrder || 0;
+    if (selectedOrder > currentOrder) {
+      await subscription.upgradePlan(planId);
+    } else if (selectedOrder < currentOrder) {
+      await subscription.downgradePlan(planId);
+    }
+    shell.showToast(`Lipyum ${subscription.currentPlan.title} planı seçildi.`);
     return;
   }
+
+  if (subscription.canStartTrial) {
+    subscription.startTrial(planId);
+    shell.showToast("30 günlük deneme başladı.");
+    return;
+  }
+
   await subscription.mockPurchase(planId);
-  shell.showToast(`${subscription.currentPlan.title} planı aktif.`);
+  shell.showToast(`Lipyum ${subscription.currentPlan.title} aktif.`);
 }
 
 async function manageSubscription() {
   await subscription.openManageSubscriptionsMock();
-  shell.showToast("Abonelik yönetimi mock olarak açıldı.");
+  shell.showToast("Abonelik yönetimi açıldı.");
 }
 
 async function restorePurchases() {
@@ -94,9 +104,7 @@ watch(
     <component
       :is="stateComponent"
       :store="subscription"
-      :show-comparison="showComparison"
       @compare="openComparison"
-      @close-compare="closeComparison"
       @select-plan="selectPlan"
       @billing-period="selectBillingPeriod"
       @purchase="purchase"

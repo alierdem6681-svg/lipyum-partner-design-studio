@@ -22,7 +22,7 @@ const emit = defineEmits(["resolve", "manage", "restore"]);
     />
     <section class="subscription-message-card is-warning">
       <h2>Ödeme alınamadı</h2>
-      <p>Plus avantajların 3 gün daha açık kalacak.</p>
+      <p>{{ store.currentPlan.title }} avantajların 3 gün daha açık kalacak.</p>
       <AppButton full-width data-testid="subscription-resolve-payment" @click="emit('resolve')">
         ÖDEME YÖNTEMİNİ GÜNCELLE
       </AppButton>

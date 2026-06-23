@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
 const visualRoutes = [
   "/home",
@@ -19,7 +19,11 @@ test("V10 visual smoke keeps core screens framed and nonblank", async ({ page })
     await page.goto(`/#${route}`);
     await waitForApp(page);
     await expect(page.getByTestId("app-header")).toBeVisible();
-    await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
+    if (bottomBarHiddenRoutes.has(route)) {
+      await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+    } else {
+      await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
+    }
     await expectNoAppHorizontalOverflow(page);
 
     const contentHeight = await page.locator("#appRoot").evaluate((root) => root.scrollHeight);

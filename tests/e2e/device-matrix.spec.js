@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, criticalRoutes, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, criticalRoutes, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
 test.describe.configure({ timeout: 120_000 });
 
@@ -22,7 +22,11 @@ for (const device of devices) {
       await page.goto(`/#${route}`);
       await waitForApp(page);
       await expect(page.getByTestId("app-header").first()).toBeVisible();
-      await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
+      if (bottomBarHiddenRoutes.has(route)) {
+        await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+      } else {
+        await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
+      }
       await expectNoAppHorizontalOverflow(page);
 
       const headerBox = await page.getByTestId("app-header").first().boundingBox();

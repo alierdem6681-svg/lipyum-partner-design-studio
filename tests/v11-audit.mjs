@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { ROUTE_TO_SCREEN } from "../src/utils/constants.js";
 import { routeMeta } from "../src/utils/routeMeta.js";
 import { pageRoutes } from "../src/pages/routePages.js";
@@ -46,7 +46,7 @@ const missingRouteMap = requiredRoutes.filter((route) => !ROUTE_TO_SCREEN[route]
 const missingMeta = requiredRoutes.filter((route) => !routeMeta[route]);
 const missingPageRoute = requiredRoutes.filter((route) => !pageRoutes[route]);
 
-const legacySource = readFileSync("src/legacyApp.js", "utf8");
+const legacySource = existsSync("src/legacyApp.js") ? readFileSync("src/legacyApp.js", "utf8") : "";
 const appSource = readFileSync("src/app.js", "utf8");
 const migrationStatus = readFileSync("MIGRATION_STATUS.md", "utf8");
 const stillLegacyBoot = appSource.includes("./legacyApp.js");
@@ -80,7 +80,7 @@ const hardFailures = [
   missingRouteMap.length && `Missing route map: ${missingRouteMap.join(", ")}`,
   missingMeta.length && `Missing route meta: ${missingMeta.join(", ")}`,
   missingPageRoute.length && `Missing page route: ${missingPageRoute.join(", ")}`,
-  !p0Recorded && "P0 migration debt is not documented in MIGRATION_STATUS.md",
+  (stillLegacyBoot || activeLegacyRender) && !p0Recorded && "P0 migration debt is not documented in MIGRATION_STATUS.md",
 ].filter(Boolean);
 
 if (hardFailures.length) {
