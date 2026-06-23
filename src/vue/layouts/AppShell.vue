@@ -11,6 +11,7 @@ import AppHeader from "../components/ui/AppHeader.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import AppToast from "../components/ui/AppToast.vue";
+import QuickBonusConvertSheet from "../components/wallet/QuickBonusConvertSheet.vue";
 import QuickTopUpSheet from "../components/wallet/QuickTopUpSheet.vue";
 import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
@@ -31,6 +32,7 @@ const contentRef = ref(null);
 const pullDistance = ref(0);
 const isPulling = ref(false);
 const isRefreshing = ref(false);
+const quickBonusOpen = ref(false);
 const quickTopUpOpen = ref(false);
 let navigationSource = "init";
 let pullStartY = 0;
@@ -46,6 +48,7 @@ watch(
     else navigation.push(path, navigationSource);
     navigationSource = "router";
     shell.closeSheet();
+    quickBonusOpen.value = false;
     quickTopUpOpen.value = false;
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
@@ -62,6 +65,7 @@ watch(pullDistance, (value) => {
 
 function navigateTo(target) {
   shell.closeDrawer();
+  quickBonusOpen.value = false;
   quickTopUpOpen.value = false;
   navigationSource = "app";
   router.push(target);
@@ -70,6 +74,7 @@ function navigateTo(target) {
 function openQuickTopUp() {
   shell.closeDrawer();
   shell.closeSheet();
+  quickBonusOpen.value = false;
   quickTopUpOpen.value = true;
 }
 
@@ -77,8 +82,29 @@ function closeQuickTopUp() {
   quickTopUpOpen.value = false;
 }
 
+function openQuickBonusConvert() {
+  shell.closeDrawer();
+  shell.closeSheet();
+  quickTopUpOpen.value = false;
+  quickBonusOpen.value = true;
+}
+
+function closeQuickBonusConvert() {
+  quickBonusOpen.value = false;
+}
+
 function completeQuickTopUp(packageInfo) {
   shell.showToast(`${new Intl.NumberFormat("tr-TR").format(packageInfo.credit)} kredi hesabına eklendi.`);
+  if (route.path !== "/home") navigateTo("/home");
+}
+
+function completeQuickBonusConvert(result) {
+  const formatter = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 2 });
+  const message =
+    result.mode === "topup"
+      ? `${formatter.format(result.totalCredit)} kredi hesabına geçti.`
+      : `₺${formatter.format(result.cashAmount)} nakit cüzdana aktarıldı.`;
+  shell.showToast(message);
   if (route.path !== "/home") navigateTo("/home");
 }
 
@@ -181,6 +207,7 @@ function handlePullEnd() {
 
 onMounted(() => {
   window.addEventListener("popstate", handlePopState);
+  window.addEventListener("lipyum:bonus-convert", openQuickBonusConvert);
   window.addEventListener("lipyum:quick-topup", openQuickTopUp);
   window.navigateToPage = navigateTo;
   window.goBack = goBack;
@@ -189,6 +216,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("popstate", handlePopState);
+  window.removeEventListener("lipyum:bonus-convert", openQuickBonusConvert);
   window.removeEventListener("lipyum:quick-topup", openQuickTopUp);
   if (window.navigateToPage === navigateTo) delete window.navigateToPage;
   if (window.goBack === goBack) delete window.goBack;
@@ -287,6 +315,12 @@ onUnmounted(() => {
           <p v-if="shell.activeSheet?.note" class="v-info-sheet-note">{{ shell.activeSheet.note }}</p>
         </div>
       </AppSheet>
+
+      <QuickBonusConvertSheet
+        :open="quickBonusOpen"
+        @close="closeQuickBonusConvert"
+        @complete="completeQuickBonusConvert"
+      />
 
       <QuickTopUpSheet
         :open="quickTopUpOpen"
