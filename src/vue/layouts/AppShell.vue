@@ -231,6 +231,7 @@ onUnmounted(() => {
       <AppHeader
         :title="meta.title"
         :subtitle="meta.subtitle"
+        :subtitle-icon="meta.subtitleIcon"
         :variant="meta.headerVariant"
         :show-back="showBack"
         :right-actions="rightActions"

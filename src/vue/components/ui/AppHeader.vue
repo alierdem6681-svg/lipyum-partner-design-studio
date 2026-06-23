@@ -5,6 +5,7 @@ const emit = defineEmits(["back", "right", "menu", "action"]);
 defineProps({
   title: { type: String, required: true },
   subtitle: { type: String, default: "" },
+  subtitleIcon: { type: String, default: "" },
   showBack: { type: Boolean, default: true },
   variant: { type: String, default: "subpage" },
   rightIcon: { type: String, default: "" },
@@ -125,7 +126,10 @@ function statusAriaLabel(status) {
     </div>
     <div v-else class="v-header__copy page-header-copy">
       <h1>{{ title }}</h1>
-      <p v-if="subtitle">{{ subtitle }}</p>
+      <p v-if="subtitle" :class="{ 'has-subtitle-icon': subtitleIcon }">
+        <AppIcon v-if="subtitleIcon" :name="subtitleIcon" :size="13" class-name="v-header__subtitle-icon" />
+        <span>{{ subtitle }}</span>
+      </p>
     </div>
 
     <div class="v-header__actions header-actions">
