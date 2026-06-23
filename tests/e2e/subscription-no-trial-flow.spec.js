@@ -96,7 +96,10 @@ test.describe("subscription direct purchase flow", () => {
     await waitForApp(page);
     await expect(page.getByTestId("subscription-active-state")).toBeVisible();
     await expect(page.getByTestId("active-subscription-card")).toContainText("Lipyum VIP");
-    await page.goto("#/support/customer-service");
+    await page.evaluate(() => {
+      window.location.hash = "/support/customer-service";
+    });
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/support/customer-service");
     await expect(page.getByText("Mevcut destek seviyen: telefon ve öncelikli destek.")).toBeVisible();
     await expect(page.getByText("Telefon ve öncelikli destek hakkın aktif.")).toBeVisible();
   });
