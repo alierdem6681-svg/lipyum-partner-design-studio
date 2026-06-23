@@ -55,11 +55,7 @@ function openInfoSheet(title, body) {
 }
 
 function openConvertSheet() {
-  shell.openSheet({
-    title: "Krediye Çevir",
-    description: "Bonuslarını krediye dönüştür",
-    body: "240 bonusun hazır. Mock akışta bonuslarını krediye çevirme onayı burada gösterilir.",
-  });
+  window.dispatchEvent(new CustomEvent("lipyum:bonus-convert"));
 }
 
 function openTopUpSheet() {

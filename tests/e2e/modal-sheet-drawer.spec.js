@@ -16,7 +16,7 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   await page.goto("/#/home");
   await waitForApp(page);
 
-  await page.getByRole("button", { name: /Krediye Çevir/ }).first().click();
+  await page.locator('[data-open="bonus-convert"]').click();
   await expect(page.getByTestId("sheet-close-button")).toBeVisible();
   await page.getByTestId("sheet-close-button").click();
   await expect(page.getByTestId("sheet-close-button")).toHaveCount(0);
@@ -42,7 +42,7 @@ test("shared app sheet keeps side margins, sits flush to bottom and closes by dr
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
-  await page.getByRole("button", { name: /Krediye Çevir/ }).first().click();
+  await page.locator('[data-open="bonus-info"]').click();
   await expect(page.getByTestId("app-sheet")).toBeVisible();
   const compactMetrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
     const rect = sheet.getBoundingClientRect();

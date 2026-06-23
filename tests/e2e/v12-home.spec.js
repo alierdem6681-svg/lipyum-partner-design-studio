@@ -10,7 +10,7 @@ test("V12 Vue home route exposes core actions without activating default cutover
 
   await page.getByRole("button", { name: /Krediye Çevir/ }).click();
   await expect(page.getByRole("dialog", { name: "Krediye Çevir" })).toBeVisible();
-  await page.getByLabel("Kapat").click();
+  await page.getByTestId("sheet-close-button").click();
   await expect(page.getByRole("dialog", { name: "Krediye Çevir" })).toBeHidden();
 
   await page.getByTestId("bottom-cta-job").click();
