@@ -32,6 +32,8 @@ import ReferralPartnersPage from "../pages/ReferralPartnersPage.vue";
 import ReferralTasksPage from "../pages/ReferralTasksPage.vue";
 import ReviewsPage from "../pages/ReviewsPage.vue";
 import SatisfactionPage from "../pages/SatisfactionPage.vue";
+import PlanComparisonPage from "../pages/PlanComparisonPage.vue";
+import SubscriptionCheckoutPage from "../pages/SubscriptionCheckoutPage.vue";
 import SubscriptionPage from "../pages/SubscriptionPage.vue";
 import SupportPage from "../pages/SupportPage.vue";
 import UiKitPreviewPage from "../pages/UiKitPreviewPage.vue";
@@ -97,6 +99,8 @@ const dedicatedRouteComponents = {
   "/reviews": ReviewsPage,
   "/leaderboard": LeaderboardPage,
   "/subscription": SubscriptionPage,
+  "/subscription/compare": PlanComparisonPage,
+  "/subscription/checkout": SubscriptionCheckoutPage,
   "/invoices": InvoicesPage,
   "/referral": ReferralPage,
   "/partners": ReferralPartnersPage,

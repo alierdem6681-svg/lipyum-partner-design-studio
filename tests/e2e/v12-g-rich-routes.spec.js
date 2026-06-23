@@ -117,14 +117,17 @@ test("V12-G customer service access is direct", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("V12-G Aboneliğim route is retained as an empty page", async ({ page }) => {
+test("V12-G Aboneliğim route opens direct subscription purchase page", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto(vueRoute("/subscription"));
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("subscription-page")).toBeVisible();
-  await expect(page.getByTestId("subscription-empty-state")).toBeVisible();
-  await expect(page.getByText(/Gold|Plus|VIP|plan|paket|ücretsiz|satın|ödeme/i)).toHaveCount(0);
+  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-gold")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-vip")).toBeVisible();
+  await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

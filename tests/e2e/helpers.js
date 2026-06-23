@@ -19,6 +19,8 @@ export const routes = [
   "/reviews",
   "/leaderboard",
   "/subscription",
+  "/subscription/compare",
+  "/subscription/checkout",
   "/bonus",
   "/performance-score",
   "/performance-improve",
@@ -68,6 +70,8 @@ export const ctaHiddenRoutes = new Set();
 
 export const bottomBarHiddenRoutes = new Set([
   "/subscription",
+  "/subscription/compare",
+  "/subscription/checkout",
 ]);
 
 export const blankBottomRoutes = new Set([

@@ -8,13 +8,8 @@ async function openSidebar(page) {
   ).toBeVisible();
 }
 
-async function expectSubscriptionHeader(page) {
-  await expect(
-    page.getByTestId("app-header").first().getByRole("heading", { name: "Aboneliğim" }),
-  ).toBeVisible();
-}
-
-test("Aboneliğim menu is retained with an empty content area", async ({ page }) => {
+test("Aboneliğim menu opens the direct purchase subscription page", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.removeItem("lipyum.subscription.directPurchase"));
   await page.goto("#/home");
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
@@ -25,9 +20,10 @@ test("Aboneliğim menu is retained with an empty content area", async ({ page })
 
   await page.getByRole("button", { name: "Aboneliğim" }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
-  await expectSubscriptionHeader(page);
   await expect(page.getByTestId("subscription-page")).toBeVisible();
-  await expect(page.getByTestId("subscription-empty-state")).toBeVisible();
-  await expect(page.getByText("Bu alan şu anda boş.")).toBeVisible();
-  await expect(page.getByText(/Gold|Plus|VIP|plan|paket|ücretsiz|satın|ödeme/i)).toHaveCount(0);
+  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-gold")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-vip")).toBeVisible();
+  await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
 });
