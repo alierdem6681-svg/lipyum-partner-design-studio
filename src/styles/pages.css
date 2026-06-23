@@ -3286,11 +3286,8 @@
       }
 
       .bottom-item.featured::after {
-        content: "";
-        position: absolute;
-        inset: -4px;
-        border-radius: 999px;
-        pointer-events: none;
+        content: none;
+        display: none;
       }
 
       .bottom-item.featured .icon {
@@ -3317,62 +3314,23 @@
         display: grid;
         place-items: center;
         border-radius: 22px;
-        background:
-          radial-gradient(circle at 74% 86%, rgba(0, 87, 43, 0.38) 0 20%, transparent 56%),
-          linear-gradient(180deg, #27d97a 0%, #0bae57 48%, #007a3d 100%);
-        background-size: 150% 150%, 100% 100%;
-        background-position: 78% 90%, center;
+        background: linear-gradient(180deg, #22c76f 0%, #0bae57 48%, #007a3d 100%);
+        background-size: 100% 100%;
+        background-position: center;
         color: #fff;
         overflow: hidden;
         transform: translateX(-50%);
         isolation: isolate;
         box-shadow:
-          0 12px 24px rgba(0, 122, 61, 0.24),
-          0 4px 10px rgba(0, 88, 43, 0.18),
-          inset 0 3px 5px rgba(255, 255, 255, 0.28),
-          inset 0 -10px 16px rgba(0, 78, 38, 0.3),
-          0 0 0 4px rgba(255, 255, 255, 0.98);
-        animation: ctaFabBreathe 3.2s ease-in-out infinite;
+          0 10px 20px rgba(0, 122, 61, 0.22),
+          0 3px 8px rgba(0, 88, 43, 0.14),
+          inset 0 -9px 14px rgba(0, 78, 38, 0.24);
+        animation: none;
       }
 
       .cta-lightning-wrap .icon {
         position: relative;
         z-index: 4;
-      }
-
-      @keyframes ctaFabBreathe {
-        0%,
-        100% {
-          transform: translateX(-50%) scale(1);
-          box-shadow:
-            0 12px 24px rgba(0, 122, 61, 0.22),
-            0 4px 10px rgba(0, 88, 43, 0.16),
-            inset 0 3px 5px rgba(255, 255, 255, 0.28),
-            inset 0 -10px 16px rgba(0, 78, 38, 0.3),
-            0 0 0 4px rgba(255, 255, 255, 0.98);
-        }
-        50% {
-          transform: translateX(-50%) scale(1.018);
-          box-shadow:
-            0 12px 24px rgba(0, 122, 61, 0.24),
-            0 4px 10px rgba(0, 88, 43, 0.18),
-            inset 0 3px 5px rgba(255, 255, 255, 0.28),
-            inset 0 -10px 16px rgba(0, 78, 38, 0.3),
-            0 0 0 4px rgba(255, 255, 255, 0.98);
-        }
-      }
-
-      @keyframes ctaGradientDrift {
-        0%,
-        100% {
-          background-position: 78% 90%, center;
-        }
-        35% {
-          background-position: 60% 78%, center;
-        }
-        68% {
-          background-position: 34% 84%, center;
-        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -3405,9 +3363,7 @@
         box-shadow:
           0 8px 18px rgba(0, 122, 61, 0.18),
           0 3px 8px rgba(0, 88, 43, 0.12),
-          inset 0 3px 5px rgba(255, 255, 255, 0.24),
-          inset 0 -8px 14px rgba(0, 78, 38, 0.24),
-          0 0 0 4px rgba(255, 255, 255, 0.98);
+          inset 0 -8px 14px rgba(0, 78, 38, 0.24);
       }
 
       .bottom-item.featured.cta-fab--subpage .cta-lightning-wrap .icon {
@@ -3424,16 +3380,12 @@
 
       .bottom-item.featured.active .cta-lightning-wrap,
       .bottom-item.featured:hover .cta-lightning-wrap {
-        background:
-          radial-gradient(circle at 74% 86%, rgba(0, 87, 43, 0.38) 0 20%, transparent 56%),
-          linear-gradient(180deg, #27d97a 0%, #0bae57 48%, #007a3d 100%);
-        background-size: 150% 150%, 100% 100%;
+        background: linear-gradient(180deg, #22c76f 0%, #0bae57 48%, #007a3d 100%);
+        background-size: 100% 100%;
         box-shadow:
-          0 12px 24px rgba(0, 122, 61, 0.24),
-          0 4px 10px rgba(0, 88, 43, 0.18),
-          inset 0 3px 5px rgba(255, 255, 255, 0.28),
-          inset 0 -10px 16px rgba(0, 78, 38, 0.3),
-          0 0 0 4px rgba(255, 255, 255, 0.98);
+          0 10px 20px rgba(0, 122, 61, 0.22),
+          0 3px 8px rgba(0, 88, 43, 0.14),
+          inset 0 -9px 14px rgba(0, 78, 38, 0.24);
       }
 
       .bottom-item.featured:active {
@@ -3444,15 +3396,11 @@
       .bottom-item.featured:active .cta-lightning-wrap {
         transform: translateX(-50%) scale(0.96);
         animation: none;
-        background:
-          radial-gradient(circle at 74% 86%, rgba(0, 76, 38, 0.56) 0 20%, transparent 56%),
-          linear-gradient(180deg, #13b964 0%, #0a9148 48%, #006f37 100%);
+        background: linear-gradient(180deg, #13b964 0%, #0a9148 48%, #006f37 100%);
         box-shadow:
           0 8px 19px rgba(0, 122, 61, 0.22),
           0 3px 8px rgba(0, 88, 43, 0.2),
-          inset 0 2px 4px rgba(255, 255, 255, 0.22),
-          inset 0 -9px 14px rgba(0, 78, 38, 0.34),
-          0 0 0 4px rgba(255, 255, 255, 0.98);
+          inset 0 -9px 14px rgba(0, 78, 38, 0.34);
       }
 
       .bottom-item.featured[disabled],
@@ -3463,9 +3411,7 @@
         color: rgba(255, 255, 255, 0.64);
         box-shadow:
           0 8px 18px rgba(71, 85, 105, 0.18),
-          inset 0 3px 5px rgba(255, 255, 255, 0.18),
-          inset 0 -8px 14px rgba(71, 85, 105, 0.18),
-          0 0 0 4px rgba(255, 255, 255, 0.98);
+          inset 0 -8px 14px rgba(71, 85, 105, 0.18);
       }
 
       .bottom-badge {
