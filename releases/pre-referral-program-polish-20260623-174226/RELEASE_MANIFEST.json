@@ -1,0 +1,18 @@
+{
+  "name": "pre-referral-program-polish-20260623-174226",
+  "commitSha": "75f7149345b75aa0256c600c6d60fb652b1e7d87",
+  "sourceBranch": "main",
+  "workingBranch": "feature/referral-program-polish",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "route": "/#/referral",
+  "purpose": "Backup before referral program visual and interaction polish",
+  "rollback": {
+    "tag": "pre-referral-program-polish-20260623-174226",
+    "archiveBranch": "archive/pre-referral-program-polish-20260623-174226",
+    "commands": [
+      "git switch main",
+      "git revert <merge-sha>",
+      "git push origin main"
+    ]
+  }
+}
