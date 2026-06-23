@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-test("home performance card opens the new performance score flow", async ({ page }) => {
+test("home performance card opens the empty performance score page", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -13,18 +13,19 @@ test("home performance card opens the new performance score flow", async ({ page
 
   await page.getByTestId("home-performance-improve-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-score");
-  await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
-  await expect(page.getByTestId("performance-score-card")).toContainText("81,7");
+  await expect(page.getByTestId("performance-score-empty-page")).toBeVisible();
+  await expect(page.locator("[data-testid='performance-score-card']")).toHaveCount(0);
+  await expect(page.locator("[data-testid='performance-main-task-button']")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
-test("old performance improve URL redirects to the score flow", async ({ page }) => {
+test("old performance improve URL redirects to the empty performance page", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/performance-improve");
   await waitForApp(page);
 
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-score");
-  await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
+  await expect(page.getByTestId("performance-score-empty-page")).toBeVisible();
   await expectNoAppHorizontalOverflow(page);
   expect(errors).toEqual([]);
 });
@@ -40,7 +41,7 @@ for (const viewport of [
     await waitForApp(page);
     await expect(page.getByTestId("app-header")).toBeVisible();
     await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
-    await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
+    await expect(page.getByTestId("performance-score-empty-page")).toBeVisible();
     await expectNoAppHorizontalOverflow(page);
     expect(errors).toEqual([]);
   });

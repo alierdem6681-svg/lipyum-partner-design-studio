@@ -49,10 +49,6 @@
   "/create-offer": "createOffer",
   "/appointment-link": "appointmentLink",
   "/performance-score": "performanceScore",
-  "/performance-score/task/job-result": "performanceTaskJobResult",
-  "/performance-score/tasks": "performanceTasks",
-  "/performance-score/details": "performanceDetails",
-  "/performance-score/success": "performanceSuccess",
   "/performance-improve": "performanceImprove",
   "/partner-card-preview": "partnerCardPreview",
 };
@@ -108,10 +104,6 @@ export const ROUTE_TITLES = {
   "/create-offer": "Teklif Oluştur",
   "/appointment-link": "Randevu Linki",
   "/performance-score": "Daha Fazla İş Al",
-  "/performance-score/task/job-result": "İş Bilgilerini Gir",
-  "/performance-score/tasks": "Tüm Görevler",
-  "/performance-score/details": "Puanın Nasıl Hesaplanır?",
-  "/performance-score/success": "Görev Tamamlandı",
   "/performance-improve": "Performansımı Artır",
   "/partner-card-preview": "Partner Kartı Önizleme",
 };

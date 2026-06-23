@@ -221,36 +221,12 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Daha Fazla İş Al",
-    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
-    trailingActions: [],
-  },
-  "/performance-score/task/job-result": {
-    title: "İş Bilgilerini Gir",
-    subtitle: "Tamamlayınca puanın hemen güncellenir.",
-    parentRoute: "/performance-score",
-    trailingActions: [],
-  },
-  "/performance-score/tasks": {
-    title: "Tüm Görevler",
-    subtitle: "En kolay ve yüksek puanlı işler üstte.",
-    parentRoute: "/performance-score",
-    trailingActions: [],
-  },
-  "/performance-score/details": {
-    title: "Puanın Nasıl Hesaplanır?",
-    subtitle: "Toplam 100 puan üzerinden hesaplanır.",
-    parentRoute: "/performance-score",
-    trailingActions: [],
-  },
-  "/performance-score/success": {
-    title: "Görev Tamamlandı",
-    subtitle: "Yaptığın işlem puanına eklendi.",
-    parentRoute: "/performance-score",
+    subtitle: "",
     trailingActions: [],
   },
   "/performance-improve": {
     title: "Daha Fazla İş Al",
-    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
+    subtitle: "",
     trailingActions: [],
   },
   "/customer-management": {
