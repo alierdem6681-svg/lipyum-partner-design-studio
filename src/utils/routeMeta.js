@@ -163,7 +163,7 @@ const titleOverrides = {
     title: "Cüzdan",
     compactTitle: "Cüzdan",
     subtitle: "",
-    trailingActions: ["wallet-info"],
+    trailingActions: ["account-transactions"],
   },
   "/job-referral": {
     title: "İş Yönlendirme Programı",

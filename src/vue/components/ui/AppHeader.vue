@@ -18,6 +18,7 @@ const iconForAction = {
   info: "help-circle",
   "profile-preview": "eye",
   "wallet-info": "help-circle",
+  "account-transactions": "receipt",
   "notification-settings": "settings",
   "partner-share": "share",
 };
@@ -28,6 +29,7 @@ const labelForAction = {
   info: "Sayfa bilgisi",
   "profile-preview": "Önizle",
   "wallet-info": "Cüzdan bilgisi",
+  "account-transactions": "Hesap hareketleri",
   "notification-settings": "Bildirim ayarları",
   "partner-share": "Partner kartını paylaş",
 };
@@ -38,6 +40,7 @@ const testIdForAction = {
   info: "header-info-button",
   "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
+  "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",
   "partner-share": "partner-preview-header-share",
 };

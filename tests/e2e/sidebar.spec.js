@@ -64,6 +64,25 @@ test("sidebar routes kazanc ortakligi items and closes after navigation", async 
   expect(errors).toEqual([]);
 });
 
+test("account transactions moved from sidebar to wallet header", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/home");
+  await waitForApp(page);
+
+  await openSidebar(page);
+  await expect(page.getByTestId("sidebar-drawer").getByText("Hesap Hareketleri")).toHaveCount(0);
+  await page.getByTestId("sidebar-close").click();
+
+  await page.goto("/#/wallet");
+  await waitForApp(page);
+  await expect(page.getByTestId("account-transactions-header-button")).toBeVisible();
+  await page.getByTestId("account-transactions-header-button").click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/account-transactions");
+  await expect(page.getByTestId("account-transactions-page")).toBeVisible();
+
+  expect(errors).toEqual([]);
+});
+
 test("sidebar has V10 support entries without duplicate sticky support card", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
