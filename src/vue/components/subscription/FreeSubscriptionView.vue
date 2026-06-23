@@ -1,65 +1,84 @@
 <script setup>
+import { BILLING_PERIODS } from "../../data/subscriptionPlans.js";
 import AppButton from "../ui/AppButton.vue";
 import AppIcon from "../ui/AppIcon.vue";
-import PlanComparisonSheet from "./PlanComparisonSheet.vue";
 import RecommendedPlanCard from "./RecommendedPlanCard.vue";
+import SubscriptionPlanSelector from "./SubscriptionPlanSelector.vue";
+import SubscriptionStickyCTA from "./SubscriptionStickyCTA.vue";
 import SubscriptionTrustFooter from "./SubscriptionTrustFooter.vue";
 import TrialTimeline from "./TrialTimeline.vue";
 
 defineProps({
   store: { type: Object, required: true },
-  showComparison: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["compare", "close-compare", "select-plan", "billing-period", "purchase", "restore"]);
+const emit = defineEmits(["compare", "select-plan", "billing-period", "purchase", "restore"]);
 </script>
 
 <template>
   <div class="subscription-state subscription-state--free" data-testid="subscription-state-free">
-    <section class="subscription-intro-card">
-      <span class="subscription-intro-card__pill">Şu an Free</span>
-      <span class="subscription-intro-card__icon" aria-hidden="true">
-        <AppIcon name="crown" :size="28" />
-      </span>
-      <h2>İş alma gücünü büyüt</h2>
-      <p>Sana en uygun planı seçtik: <strong>Lipyum Plus</strong></p>
+    <section class="subscription-current-plan-card">
+      <span>Mevcut plan</span>
+      <div>
+        <strong>Free</strong>
+        <small>Temel kullanım aktif</small>
+      </div>
+      <em aria-hidden="true"><AppIcon name="user" :size="24" /></em>
     </section>
 
-    <section class="subscription-section-label">Sana önerilen</section>
+    <section class="subscription-plan-section" aria-label="Plan seçimi">
+      <div class="subscription-section-row">
+        <h3>Planı seç</h3>
+        <span>{{ store.selectedBillingPeriod === BILLING_PERIODS.MONTHLY ? 'Aylık ödeme' : 'Yıllık ödeme' }}</span>
+      </div>
+
+      <div class="subscription-billing-toggle" role="tablist" aria-label="Faturalama dönemi">
+        <button
+          type="button"
+          :class="store.selectedBillingPeriod === BILLING_PERIODS.MONTHLY ? 'is-active' : ''"
+          data-testid="subscription-billing-monthly"
+          @click="emit('billing-period', BILLING_PERIODS.MONTHLY)"
+        >
+          Aylık
+        </button>
+        <button
+          type="button"
+          :class="store.selectedBillingPeriod === BILLING_PERIODS.ANNUAL ? 'is-active' : ''"
+          data-testid="subscription-billing-annual"
+          @click="emit('billing-period', BILLING_PERIODS.ANNUAL)"
+        >
+          Yıllık · %20 avantaj
+        </button>
+      </div>
+
+      <SubscriptionPlanSelector
+        :plans="store.plans"
+        :selected-plan-id="store.selectedPlanId"
+        :recommended-plan-id="store.recommendedPlan.id"
+        @select="emit('select-plan', $event)"
+      />
+    </section>
+
     <RecommendedPlanCard
-      :plan="store.plans"
       :selected-plan="store.selectedPlan"
       :billing-period="store.selectedBillingPeriod"
-      @select-plan="emit('select-plan', $event)"
+      :trial-eligible="store.canStartTrial"
       @cta="emit('purchase', $event)"
     />
 
-    <TrialTimeline :monthly-price="store.recommendedPlan.monthlyPrice" />
-
-    <section class="subscription-simple-card">
-      <h3>Neden Plus?</h3>
-      <ul>
-        <li>Müşteriye daha profesyonel görün.</li>
-        <li>Yardıma ihtiyaç duyduğunda hızlı destek al.</li>
-        <li>Profil kartını daha güçlü paylaş.</li>
-      </ul>
-    </section>
+    <TrialTimeline :plan-title="store.selectedPlan.title" :monthly-price="store.selectedPlan.monthlyPrice" />
 
     <AppButton variant="secondary" full-width data-testid="subscription-compare-open" @click="emit('compare')">
-      DİĞER PLANLARI KARŞILAŞTIR
+      TÜM PLANLARI KARŞILAŞTIR
     </AppButton>
 
     <SubscriptionTrustFooter @restore="emit('restore')" />
 
-    <PlanComparisonSheet
-      :open="showComparison"
-      :plans="store.plans"
-      :selected-plan-id="store.selectedPlanId"
+    <SubscriptionStickyCTA
+      :plan="store.selectedPlan"
       :billing-period="store.selectedBillingPeriod"
-      @close="emit('close-compare')"
-      @select-plan="emit('select-plan', $event)"
-      @billing-period="emit('billing-period', $event)"
-      @purchase="emit('purchase', $event)"
+      :trial-eligible="store.canStartTrial"
+      @cta="emit('purchase', $event)"
     />
   </div>
 </template>

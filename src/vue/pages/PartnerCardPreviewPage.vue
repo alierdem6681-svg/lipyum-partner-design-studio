@@ -29,7 +29,7 @@ onBeforeUnmount(() => {
 
 <template>
   <AppPage title="Partner Kartı Önizleme" data-testid="partner-card-preview-page">
-    <div class="v-stack v-partner-preview-page">
+    <div class="v-stack v-partner-preview-page" data-testid="partner-card-preview">
       <PartnerProfileCard variant="public" :show-actions="false" expand-badges />
     </div>
 

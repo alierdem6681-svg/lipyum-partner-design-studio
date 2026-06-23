@@ -1,0 +1,17 @@
+{
+  "sha": "b61495020be25446a5848e2a43f31734ed5785b7",
+  "branch": "main",
+  "tag": "v12-k3-before-subscription-redesign",
+  "archiveBranch": "archive/v12-k3-before-subscription-redesign",
+  "route": "/subscription",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5173/",
+  "runtimePolicy": "Vue production runtime on main",
+  "productScope": {
+    "packagesFeature": "retired",
+    "retiredPackageRoutesRedirectTo": "/subscription",
+    "subscriptionRouteRetained": true
+  },
+  "rollback": "git switch main && git reset --hard v12-k3-before-subscription-redesign",
+  "notes": "Immutable backup before subscription conversion redesign."
+}

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, criticalRoutes, ctaHiddenRoutes, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, criticalRoutes, ctaHiddenRoutes, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
 const geometryRoutes = criticalRoutes;
 
@@ -81,6 +81,14 @@ for (const viewport of viewports) {
       await waitForApp(page);
 
       await expectVisibleHeader(page);
+      if (bottomBarHiddenRoutes.has(route)) {
+        await expect(page.locator("#bottomNav")).toHaveCount(0);
+        await expectNoAppHorizontalOverflow(page);
+        await expectSingleLineButtons(page);
+        await expectRootGeometry(page);
+        expect(errors).toEqual([]);
+        return;
+      }
       await expectVisibleBottomBar(page);
       await expectNoAppHorizontalOverflow(page);
       await expectSingleLineButtons(page);

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectConsoleErrors, criticalRoutes, waitForApp } from "./helpers.js";
+import { bottomBarHiddenRoutes, collectConsoleErrors, criticalRoutes, waitForApp } from "./helpers.js";
 
 test("V10 sampled interaction on every critical route does not break routing", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
@@ -12,10 +12,15 @@ test("V10 sampled interaction on every critical route does not break routing", a
     const infoButton = page.getByTestId("header-info-button");
     if (await infoButton.count()) {
       await infoButton.first().click();
-      await expect(page.locator("#toast")).toBeVisible();
+      const feedback = page.locator("#toast, [data-testid='app-sheet']");
+      await expect(feedback.first()).toBeVisible();
     }
 
-    await expect(page.getByTestId("bottom-tab-home")).toBeVisible();
+    if (bottomBarHiddenRoutes.has(route)) {
+      await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+    } else {
+      await expect(page.getByTestId("bottom-tab-home")).toBeVisible();
+    }
   }
 
   expect(errors).toEqual([]);

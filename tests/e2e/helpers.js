@@ -66,6 +66,17 @@ export const criticalRoutes = [
 
 export const ctaHiddenRoutes = new Set();
 
+export const bottomBarHiddenRoutes = new Set([
+  "/subscription",
+]);
+
+export const blankBottomRoutes = new Set([
+  "/jobs",
+  "/my-jobs",
+  "/calendar",
+  "/wallet",
+]);
+
 export async function collectConsoleErrors(page) {
   const errors = [];
   page.on("console", (message) => {

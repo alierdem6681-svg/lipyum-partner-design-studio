@@ -32,7 +32,7 @@ const tabs = BOTTOM_TABS;
       @click="tab.featured ? emit('cta', tab.route) : emit('navigate', tab.route)"
     >
       <span v-if="tab.featured && showCta" class="cta-lightning-wrap">
-        <AppIcon :name="tab.icon" :size="ctaVariant === 'home' ? 30 : 23" class-name="icon" />
+        <AppIcon :name="tab.icon" :size="30" class-name="icon" />
       </span>
       <AppIcon v-else-if="!tab.featured" :name="tab.icon" :size="24" class-name="icon" />
       <span class="v-bottom__label" data-fit-text>{{ tab.label }}</span>

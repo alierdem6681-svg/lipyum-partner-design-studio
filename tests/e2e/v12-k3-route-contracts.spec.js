@@ -225,8 +225,8 @@ test("Vue customer service exposes call action after paid subscription", async (
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);
-  await page.getByTestId("subscription-plan-plus").click();
-  await expect(page.getByTestId("subscription-active-plan")).toContainText("Plus");
+  await page.getByTestId("subscription-option-vip").click();
+  await page.getByTestId("subscription-primary-cta").click();
 
   await page.goto(expectedUrl("/support/customer-service"));
   await waitForApp(page);

@@ -1,0 +1,16 @@
+﻿{
+    "name":  "pre-subscription-redesign-20260623-171608",
+    "commitSha":  "b61495020be25446a5848e2a43f31734ed5785b7",
+    "source":  "origin/main",
+    "createdAt":  "2026-06-23T17:16:08.5308007+03:00",
+    "productionUrl":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+    "backupTag":  "pre-subscription-redesign-20260623-171608",
+    "backupArchiveBranch":  "archive/pre-subscription-redesign-20260623-171608",
+    "purpose":  "Production backup before subscription conversion redesign merge",
+    "rollbackCommands":  [
+                             "git switch main",
+                             "git revert \u003cmerge-commit\u003e",
+                             "git push origin main",
+                             "or inspect backup with: git switch archive/pre-subscription-redesign-20260623-171608"
+                         ]
+}

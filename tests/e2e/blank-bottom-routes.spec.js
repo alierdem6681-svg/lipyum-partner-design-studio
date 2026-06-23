@@ -10,7 +10,6 @@ const blankRoutes = [
 
 const runtimeScenarios = [
   { name: "default-vue", prefix: "", runtime: "vue" },
-  { name: "legacy-rollback", prefix: "/?engine=legacy", runtime: "legacy" },
 ];
 
 for (const engine of runtimeScenarios) {

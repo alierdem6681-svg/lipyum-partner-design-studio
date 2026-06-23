@@ -181,7 +181,9 @@ const steps = [
 
 function runStep(step) {
   return new Promise((resolve, reject) => {
-    const child = spawn("bash", ["-lc", step.command], {
+    const command = normalizeCommand(step.command);
+    const child = spawn(command, [], {
+      shell: true,
       stdio: "inherit",
       env: process.env,
     });
@@ -195,6 +197,20 @@ function runStep(step) {
       reject(new Error(`${step.name} failed with exit code ${code}`));
     });
   });
+}
+
+function quote(value) {
+  return `"${value.replaceAll('"', '\\"')}"`;
+}
+
+function normalizeCommand(command) {
+  if (command.startsWith("find src tests -name '*.js'")) {
+    return `${quote(process.execPath)} scripts/check-js-syntax.mjs src tests scripts`;
+  }
+
+  return command
+    .replaceAll("node_modules/node/bin/node", quote(process.execPath))
+    .replaceAll("--test tests/unit/*.test.js", "--test tests/unit");
 }
 
 for (const step of steps) {

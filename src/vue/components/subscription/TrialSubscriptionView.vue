@@ -23,10 +23,10 @@ const emit = defineEmits(["manage", "restore"]);
 
     <section class="subscription-focus-card">
       <span aria-hidden="true"><AppIcon name="clock" :size="22" /></span>
-      <h2>Plus denemenin {{ store.daysRemaining }} günü kaldı</h2>
-      <p>Deneme bitmeden önce Plus avantajlarını deneyebilirsin.</p>
+      <h2>{{ store.currentPlan.title }} denemenin {{ store.daysRemaining }} günü kaldı</h2>
+      <p>Deneme bitmeden önce avantajlarını deneyebilirsin.</p>
       <div class="subscription-next-list">
-        <button type="button">Plus profil kartını önizle</button>
+        <button type="button">{{ store.currentPlan.title }} profil kartını önizle</button>
         <button type="button">Müşteri hizmetlerini kullan</button>
         <button type="button">Performans önerilerini incele</button>
       </div>

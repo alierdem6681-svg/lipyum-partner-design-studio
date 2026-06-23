@@ -1,4 +1,6 @@
 <script setup>
+import AppIcon from "../ui/AppIcon.vue";
+
 defineProps({
   showRestore: { type: Boolean, default: true },
 });
@@ -8,13 +10,14 @@ const emit = defineEmits(["restore"]);
 
 <template>
   <footer class="subscription-trust-footer" data-testid="subscription-trust-footer">
-    <p>İstediğin zaman iptal et. Satın alma öncesi fiyat ve yenileme bilgisi açıkça gösterilir.</p>
-    <div>
+    <h3>Güvenli ve şeffaf</h3>
+    <div class="subscription-trust-footer__items">
+      <span><AppIcon name="check" :size="18" /> Gizli ücret yok</span>
       <button v-if="showRestore" type="button" data-testid="subscription-restore" @click="emit('restore')">
-        Satın alımları geri yükle
+        <AppIcon name="refresh" :size="18" /> Satın alımları geri yükle
       </button>
-      <button type="button">Koşullar</button>
-      <button type="button">Gizlilik</button>
+      <span><AppIcon name="lock" :size="18" /> Koşullar ve Gizlilik</span>
     </div>
+    <p>Satın alma öncesi fiyat, deneme süresi ve yenileme bilgisi açıkça gösterilir.</p>
   </footer>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
-  monthlyPrice: { type: Number, default: 249 },
+  planTitle: { type: String, default: "Plus" },
+  monthlyPrice: { type: Number, default: 499 },
 });
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
       <li>
         <span class="subscription-timeline__dot"></span>
         <strong>Bugün</strong>
-        <p>Plus özellikleri hemen açılır.</p>
+        <p>{{ planTitle }} özellikleri hemen açılır.</p>
       </li>
       <li>
         <span class="subscription-timeline__dot"></span>

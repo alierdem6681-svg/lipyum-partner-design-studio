@@ -18,8 +18,8 @@ describe("subscription conversion model", () => {
     assert.deepEqual(
       subscriptionPlans.map((plan) => [plan.id, plan.monthlyPrice]),
       [
-        ["plus", 249],
-        ["pro", 499],
+        ["gold", 249],
+        ["plus", 499],
         ["vip", 899],
       ],
     );
@@ -35,8 +35,8 @@ describe("subscription conversion model", () => {
 
   test("calculates yearly total and monthly equivalent from single source plan data", () => {
     const plus = subscriptionPlans.find((plan) => plan.id === "plus");
-    assert.equal(plus.annualPrice, 2388);
-    assert.equal(plus.monthlyEquivalent, 199);
+    assert.equal(plus.annualPrice, 4788);
+    assert.equal(plus.monthlyEquivalent, 399);
   });
 
   test("supports state transitions for trial, active, canceled and payment issue", async () => {
@@ -71,9 +71,9 @@ describe("subscription conversion model", () => {
     store.selectBillingPeriod(BILLING_PERIODS.ANNUAL);
     assert.equal(store.selectedBillingPeriod, BILLING_PERIODS.ANNUAL);
 
-    const result = await subscriptionService.purchase({ planId: "pro", billingPeriod: BILLING_PERIODS.ANNUAL });
+    const result = await subscriptionService.purchase({ planId: "gold", billingPeriod: BILLING_PERIODS.ANNUAL });
     assert.equal(result.ok, true);
-    assert.equal(result.planId, "pro");
+    assert.equal(result.planId, "gold");
     assert.equal(result.billingPeriod, BILLING_PERIODS.ANNUAL);
   });
 });
