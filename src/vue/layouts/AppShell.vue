@@ -1,5 +1,5 @@
 ﻿<script setup>
-import { computed, onMounted, onUnmounted, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { DRAWER_SECTIONS } from "../../utils/constants.js";
 import { getRouteMeta } from "../../utils/routeMeta.js";
@@ -26,7 +26,13 @@ const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
 const showBack = computed(() => meta.value.leadingAction === "back");
 const rightActions = computed(() => meta.value.trailingActions || []);
+const contentRef = ref(null);
+const pullDistance = ref(0);
+const isPulling = ref(false);
+const isRefreshing = ref(false);
 let navigationSource = "init";
+let pullStartY = 0;
+let pullLocked = false;
 
 watch(
   () => route.path,
@@ -40,9 +46,16 @@ watch(
     shell.closeSheet();
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
+    isPulling.value = false;
+    isRefreshing.value = false;
+    pullDistance.value = 0;
   },
   { immediate: true },
 );
+
+watch(pullDistance, (value) => {
+  contentRef.value?.style.setProperty("--pull-refresh-height", `${value}px`);
+});
 
 function navigateTo(target) {
   shell.closeDrawer();
@@ -99,6 +112,54 @@ function handlePopState() {
   navigationSource = "history";
 }
 
+function canStartPullRefresh() {
+  return !shell.drawerOpen && !shell.activeSheet && !isRefreshing.value && (contentRef.value?.scrollTop || 0) <= 0;
+}
+
+function handlePullStart(event) {
+  if (!event.touches?.length || !canStartPullRefresh()) {
+    pullLocked = false;
+    return;
+  }
+  pullStartY = event.touches[0].clientY;
+  pullLocked = true;
+}
+
+function handlePullMove(event) {
+  if (!pullLocked || !event.touches?.length) return;
+  const distance = event.touches[0].clientY - pullStartY;
+  if (distance <= 0 || (contentRef.value?.scrollTop || 0) > 0) {
+    pullDistance.value = 0;
+    isPulling.value = false;
+    return;
+  }
+  event.preventDefault();
+  isPulling.value = true;
+  pullDistance.value = Math.min(92, Math.round(distance * 0.48));
+}
+
+function finishPullRefresh() {
+  window.setTimeout(() => {
+    isRefreshing.value = false;
+    isPulling.value = false;
+    pullDistance.value = 0;
+  }, 620);
+}
+
+function handlePullEnd() {
+  if (!pullLocked) return;
+  pullLocked = false;
+  if (pullDistance.value >= 58) {
+    isRefreshing.value = true;
+    isPulling.value = false;
+    pullDistance.value = 64;
+    finishPullRefresh();
+    return;
+  }
+  isPulling.value = false;
+  pullDistance.value = 0;
+}
+
 onMounted(() => {
   window.addEventListener("popstate", handlePopState);
   window.navigateToPage = navigateTo;
@@ -128,7 +189,26 @@ onUnmounted(() => {
         @action="onHeaderAction"
       />
 
-      <div id="appRoot" class="v-shell__content">
+      <div
+        id="appRoot"
+        ref="contentRef"
+        class="v-shell__content"
+        :class="{ 'is-pulling': isPulling, 'is-refreshing': isRefreshing }"
+        @touchstart="handlePullStart"
+        @touchmove="handlePullMove"
+        @touchend="handlePullEnd"
+        @touchcancel="handlePullEnd"
+      >
+        <div
+          class="v-pull-refresh"
+          :class="{ 'is-visible': pullDistance > 0, 'is-refreshing': isRefreshing }"
+          data-testid="pull-refresh-indicator"
+          aria-hidden="true"
+        >
+          <span class="v-pull-refresh__spinner">
+            <AppIcon name="refresh" :size="20" />
+          </span>
+        </div>
         <RouterView />
       </div>
 
