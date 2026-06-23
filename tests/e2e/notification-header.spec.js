@@ -24,7 +24,7 @@ test("notifications use wide filter pills and header settings navigation", async
   await expect(labels.nth(0)).toHaveText("Tümü");
   await expect(labels.nth(1)).toHaveText("Okunanlar");
   await expect(labels.nth(2)).toHaveText("Okunmamış");
-  await expect(pills.locator(".filter-chip-dot")).toHaveCount(3);
+  await expect(pills.locator(".filter-chip-dot")).toHaveCount(0);
   await expect(counts).toHaveCount(3);
   await expect(counts.nth(0)).toHaveText("15");
   await expect(counts.nth(2)).toHaveText("5");
