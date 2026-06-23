@@ -94,6 +94,8 @@ test.describe("subscription direct purchase flow", () => {
   test("customer service reads centralized plan entitlement", async ({ page }) => {
     await page.goto("#/subscription?subscriptionState=active&plan=vip");
     await waitForApp(page);
+    await expect(page.getByTestId("subscription-active-state")).toBeVisible();
+    await expect(page.getByTestId("active-subscription-card")).toContainText("Lipyum VIP");
     await page.goto("#/support/customer-service");
     await expect(page.getByText("Mevcut destek seviyen: telefon ve öncelikli destek.")).toBeVisible();
     await expect(page.getByText("Telefon ve öncelikli destek hakkın aktif.")).toBeVisible();
