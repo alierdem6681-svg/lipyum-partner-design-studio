@@ -2919,8 +2919,7 @@
 
 .v-content-hero h2,
 .v-profile-summary-card h3,
-.v-live-support h3,
-.v-subscription-access h3 {
+.v-live-support h3 {
   margin: 0;
   color: var(--text-primary);
   font-size: var(--font-size-card-title);
@@ -2929,8 +2928,7 @@
 }
 
 .v-content-hero p,
-.v-live-support p,
-.v-subscription-access p {
+.v-live-support p {
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--font-size-small);
@@ -3085,13 +3083,6 @@
   font-weight: var(--weight-semibold);
 }
 
-.v-subscription-access {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-}
-
 .v-live-support {
   display: grid;
   gap: 12px;
@@ -3193,8 +3184,7 @@
 
 .v-route-hero p,
 .v-profile-strength-card p,
-.v-embed-panel p,
-.v-plan-card p {
+.v-embed-panel p {
   margin: 6px 0 0;
   color: #475569;
   font-size: 12px;
@@ -3343,37 +3333,13 @@
 }
 
 .v-share-options,
-.v-plan-grid,
 .v-select-row {
   display: grid;
   gap: 10px;
 }
 
-.v-share-options,
-.v-plan-grid {
+.v-share-options {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.v-plan-card {
-  display: grid;
-  gap: 10px;
-}
-
-.v-plan-card h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 17px;
-  font-weight: 900;
-}
-
-.v-plan-card ul {
-  display: grid;
-  gap: 6px;
-  margin: 0;
-  padding-left: 18px;
-  color: #334155;
-  font-size: 12px;
-  font-weight: 800;
 }
 
 .v-form-grid,
@@ -3451,24 +3417,6 @@
   background: #10b981;
 }
 
-.v-subscription-access {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-}
-
-.v-subscription-access h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.v-subscription-access p {
-  margin: 4px 0;
-}
-
 .v-referral-rail {
   display: flex;
   gap: 10px;
@@ -3507,9 +3455,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .v-plan-grid,
   .v-share-options,
-  .v-subscription-access,
   .v-route-hero {
     display: grid;
     grid-template-columns: 1fr;

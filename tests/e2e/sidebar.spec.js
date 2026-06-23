@@ -65,7 +65,7 @@ test("sidebar has V10 support entries without duplicate sticky support card", as
   expect(errors).toEqual([]);
 });
 
-test("customer service sidebar item opens sales page", async ({ page }) => {
+test("customer service sidebar item opens support page", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -76,7 +76,8 @@ test("customer service sidebar item opens sales page", async ({ page }) => {
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
-  await expect(page.getByTestId("customer-service-upgrade")).toBeVisible();
+  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });

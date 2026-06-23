@@ -14,7 +14,7 @@ async function expectSubscriptionHeader(page) {
   ).toBeVisible();
 }
 
-test("subscription route is retained and sidebar has no package item", async ({ page }) => {
+test("Aboneliğim menu is retained with an empty content area", async ({ page }) => {
   await page.goto("#/home");
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
@@ -26,4 +26,8 @@ test("subscription route is retained and sidebar has no package item", async ({ 
   await page.getByRole("button", { name: "Aboneliğim" }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
   await expectSubscriptionHeader(page);
+  await expect(page.getByTestId("subscription-page")).toBeVisible();
+  await expect(page.getByTestId("subscription-empty-state")).toBeVisible();
+  await expect(page.getByText("Bu alan şu anda boş.")).toBeVisible();
+  await expect(page.getByText(/Gold|Plus|VIP|plan|paket|ücretsiz|satın|ödeme/i)).toHaveCount(0);
 });

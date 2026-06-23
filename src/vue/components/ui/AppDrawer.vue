@@ -6,7 +6,7 @@ defineProps({
   title: { type: String, default: "Partner menüsü" },
 });
 
-const emit = defineEmits(["close", "upgrade"]);
+const emit = defineEmits(["close"]);
 </script>
 
 <template>
@@ -20,19 +20,6 @@ const emit = defineEmits(["close", "upgrade"]);
   >
     <section class="sheet partner-menu" role="dialog" data-testid="sidebar-drawer" :aria-label="title">
       <div class="drawer-menu-head">
-        <button
-          class="drawer-upgrade-banner"
-          type="button"
-          data-route="/subscription"
-          aria-label="Plus avantajlarını keşfet"
-          @click="emit('upgrade')"
-        >
-          <span class="drawer-upgrade-copy">
-            <strong>Müşterilere Plus olarak görün</strong>
-            <small>Plus ile %18 daha fazla iş al</small>
-          </span>
-          <span class="drawer-upgrade-cta">Yükselt</span>
-        </button>
         <button
           class="drawer-close-btn"
           type="button"

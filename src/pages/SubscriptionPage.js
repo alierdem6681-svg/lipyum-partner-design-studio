@@ -1,5 +1,5 @@
-import { PlaceholderPage } from "./PageScaffold.js";
+import { PlaceholderPage } from "../components/PlaceholderPage.js";
 
 export function SubscriptionPage() {
-  return PlaceholderPage({ title: "Aboneliğim", subtitle: "Gold, Pro ve VIP abonelik geçişleri.", route: "/subscription" });
+  return PlaceholderPage({ title: "Aboneliğim", subtitle: "Bu alan şu anda boş.", route: "/subscription" });
 }
