@@ -11,6 +11,7 @@ import AppHeader from "../components/ui/AppHeader.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import AppToast from "../components/ui/AppToast.vue";
+import QuickTopUpSheet from "../components/wallet/QuickTopUpSheet.vue";
 import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useNavigationStore } from "../stores/navigationStore.js";
@@ -30,6 +31,7 @@ const contentRef = ref(null);
 const pullDistance = ref(0);
 const isPulling = ref(false);
 const isRefreshing = ref(false);
+const quickTopUpOpen = ref(false);
 let navigationSource = "init";
 let pullStartY = 0;
 let pullLocked = false;
@@ -44,6 +46,7 @@ watch(
     else navigation.push(path, navigationSource);
     navigationSource = "router";
     shell.closeSheet();
+    quickTopUpOpen.value = false;
     shell.ctaVariant = meta.value.ctaVariant || "subpage";
     profile.resetBadges();
     isPulling.value = false;
@@ -59,8 +62,24 @@ watch(pullDistance, (value) => {
 
 function navigateTo(target) {
   shell.closeDrawer();
+  quickTopUpOpen.value = false;
   navigationSource = "app";
   router.push(target);
+}
+
+function openQuickTopUp() {
+  shell.closeDrawer();
+  shell.closeSheet();
+  quickTopUpOpen.value = true;
+}
+
+function closeQuickTopUp() {
+  quickTopUpOpen.value = false;
+}
+
+function completeQuickTopUp(packageInfo) {
+  shell.showToast(`${new Intl.NumberFormat("tr-TR").format(packageInfo.credit)} kredi hesabına eklendi.`);
+  if (route.path !== "/home") navigateTo("/home");
 }
 
 function goBack() {
@@ -102,7 +121,7 @@ function onHeaderAction(action) {
       body: "Hesabın aktif. Uygun bölgelerde iş almaya devam edebilirsin.",
     });
   }
-  if (action === "credit") navigateTo("/wallet");
+  if (action === "credit") openQuickTopUp();
   if (action === "workPlan") navigateTo("/working-hours");
   if (action === "support") navigateTo("/support");
   if (action === "activate-dispatch") shell.showToast("İş alımı tekrar aktif hale getirildi.");
@@ -162,6 +181,7 @@ function handlePullEnd() {
 
 onMounted(() => {
   window.addEventListener("popstate", handlePopState);
+  window.addEventListener("lipyum:quick-topup", openQuickTopUp);
   window.navigateToPage = navigateTo;
   window.goBack = goBack;
   window.lipyumRouter = { navigateTo, goBack };
@@ -169,6 +189,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("popstate", handlePopState);
+  window.removeEventListener("lipyum:quick-topup", openQuickTopUp);
   if (window.navigateToPage === navigateTo) delete window.navigateToPage;
   if (window.goBack === goBack) delete window.goBack;
   if (window.lipyumRouter?.navigateTo === navigateTo) delete window.lipyumRouter;
@@ -266,6 +287,12 @@ onUnmounted(() => {
           <p v-if="shell.activeSheet?.note" class="v-info-sheet-note">{{ shell.activeSheet.note }}</p>
         </div>
       </AppSheet>
+
+      <QuickTopUpSheet
+        :open="quickTopUpOpen"
+        @close="closeQuickTopUp"
+        @complete="completeQuickTopUp"
+      />
 
       <AppToast :message="shell.toast" />
     </div>

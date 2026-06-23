@@ -61,6 +61,10 @@ function openConvertSheet() {
     body: "240 bonusun hazır. Mock akışta bonuslarını krediye çevirme onayı burada gösterilir.",
   });
 }
+
+function openTopUpSheet() {
+  window.dispatchEvent(new CustomEvent("lipyum:quick-topup"));
+}
 </script>
 
 <template>
@@ -151,7 +155,7 @@ function openConvertSheet() {
             <span class="wallet-amount"><strong>675</strong><small>kredi</small></span>
             <span class="wallet-subline">≈ 2-3 iş alabilirsin</span>
             <div class="wallet-actions">
-              <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="$router.push('/wallet')">
+              <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="openTopUpSheet">
                 <AppIcon name="plus" :size="16" class-name="icon" />
                 Bakiye Yükle
               </button>
