@@ -26,13 +26,14 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   await page.getByTestId("sidebar-close").click();
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
 
-  await page.goto("/#/profile");
+  await page.goto("/#/partner-card-preview");
   await waitForApp(page);
-  await page.getByTestId("partner-share-button").click();
-  await expect(page.getByTestId("partner-public-badge").first()).toBeVisible();
-  await expect(page.getByTestId("partner-copy-link")).toBeVisible();
+  await page.getByTestId("partner-preview-header-share").click();
+  await expect(page.getByTestId("partner-share-options")).toBeVisible();
+  await expect(page.getByTestId("partner-share-option-whatsapp")).toBeVisible();
+  await expect(page.getByTestId("partner-share-short-link")).toBeVisible();
   await page.getByTestId("sheet-close-button").click();
-  await expect(page.getByTestId("partner-copy-link")).toHaveCount(0);
+  await expect(page.getByTestId("partner-share-short-link")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });

@@ -17,7 +17,17 @@ test("partner referral rail, invite and partner detail interactions work", async
   await page.mouse.move(120, 0);
   await page.mouse.up();
 
-  await page.getByRole("button", { name: /Tümünü gör/ }).click();
+  await page.getByRole("button", { name: /Görevlerim/ }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/referral/tasks");
+  await expect(page.getByTestId("referral-tasks-page")).toBeVisible();
+  await expect(page.getByTestId("referral-task-card")).toBeVisible();
+  await page.getByTestId("referral-result-button").click();
+  await expect(page.getByTestId("app-modal")).toBeVisible();
+  await expect(page.getByTestId("app-modal")).toContainText("Sonuç");
+  await page.getByRole("button", { name: "Aradım, ulaşamadım" }).click();
+
+  await page.goto("/#/referral/partners");
+  await waitForApp(page);
   await expect(page.getByTestId("referral-partner-card").first()).toBeVisible();
   await page.getByTestId("referral-partner-card").first().click();
   await expect(page.getByTestId("referral-partner-detail")).toBeVisible();

@@ -18,11 +18,11 @@ test("sidebar support group opens create ticket flow", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/new");
 
   await expect(page.getByTestId("support-ticket-form")).toBeVisible();
-  await page.getByTestId("support-ticket-category").selectOption("Teknik Sorun");
-  await page.getByTestId("support-ticket-subject").fill("Bildirim testi");
+  await page.getByTestId("support-ticket-category").selectOption("Sistem ile ilgili konular");
   await page.getByTestId("support-ticket-description").fill("Mock talep oluşturma akışı kontrol ediliyor.");
-  await page.getByTestId("support-ticket-priority").selectOption("Öncelikli");
-  await page.getByTestId("support-ticket-upload").click();
+  await page.getByTestId("support-ticket-priority").selectOption("Acil");
+  await expect(page.getByTestId("support-ticket-image-upload")).toBeVisible();
+  await expect(page.getByTestId("support-ticket-file-upload")).toBeVisible();
   await page.getByTestId("support-ticket-submit").click();
   await expect(page.getByTestId("support-ticket-success")).toBeVisible();
   await expect(page.getByTestId("support-ticket-success").getByText("LP-000123")).toBeVisible();
@@ -46,7 +46,8 @@ test("sidebar support group opens live support flow", async ({ page }) => {
   await page.getByTestId("live-support-title").fill("Canlı destek testi");
   await page.getByTestId("live-support-description").fill("Temsilci bağlantı durumunu kontrol etmek istiyorum.");
   await page.getByTestId("live-support-start").click();
-  await expect(page.getByRole("heading", { name: "Temsilci bağlanıyor" })).toBeVisible();
+  await expect(page.getByTestId("live-support-waiting")).toBeVisible();
+  await expect(page.getByTestId("live-support-waiting")).toContainText("Bağlanıyor");
 
   expect(errors).toEqual([]);
 });

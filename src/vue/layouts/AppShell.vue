@@ -62,6 +62,7 @@ function onHeaderAction(action) {
   if (action === "hamburger") shell.openDrawer();
   if (action === "notifications") navigateTo("/notifications");
   if (action === "profile") navigateTo("/profile");
+  if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "wallet-info") {
     shell.openSheet({
@@ -71,12 +72,17 @@ function onHeaderAction(action) {
     });
   }
   if (action === "info") {
+    const infoSheet = meta.value.infoSheet;
     shell.openSheet({
-      title: meta.value.title || "Bilgi",
-      description: meta.value.subtitle || "Sayfa bilgisi",
-      body: "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      type: infoSheet ? "info-sheet" : "default",
+      title: infoSheet?.title || meta.value.title || "Bilgi",
+      description: infoSheet?.description || meta.value.subtitle || "Sayfa bilgisi",
+      body: infoSheet?.body || "Bu ekran Lipyum Partner çalışma akışındaki ilgili bilgileri ve aksiyonları gösterir.",
+      scoreItems: infoSheet?.scoreItems || [],
+      note: infoSheet?.note || "",
     });
   }
+  if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "status") {
     shell.openSheet({
       title: "Çalışma durumu",
@@ -176,6 +182,17 @@ onUnmounted(() => {
           v-if="shell.activeSheet?.type === 'bonus-convert'"
           @complete="completeBonusConvert"
         />
+        <div v-else-if="shell.activeSheet?.type === 'info-sheet'" class="v-info-sheet">
+          <p class="v-sheet-copy">{{ shell.activeSheet?.body }}</p>
+          <div v-if="shell.activeSheet?.scoreItems?.length" class="v-info-score-list" data-testid="info-score-list">
+            <article v-for="item in shell.activeSheet.scoreItems" :key="item.label" class="v-info-score-item">
+              <strong>{{ item.label }}</strong>
+              <span>{{ item.value }}</span>
+              <small>{{ item.description }}</small>
+            </article>
+          </div>
+          <p v-if="shell.activeSheet?.note" class="v-sheet-copy is-muted">{{ shell.activeSheet.note }}</p>
+        </div>
         <p v-else class="v-sheet-copy">{{ shell.activeSheet?.body }}</p>
       </AppSheet>
 

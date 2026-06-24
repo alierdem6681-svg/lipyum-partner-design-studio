@@ -10,7 +10,7 @@ const shell = useAppShellStore();
 const selectedFilter = ref("all");
 const activeIndex = ref(0);
 const dragStartX = ref(0);
-const dragX = ref(0);
+const dragDeltaX = ref(0);
 const isDragging = ref(false);
 const resultTask = ref(null);
 
@@ -81,35 +81,31 @@ const filteredTasks = computed(() =>
   selectedFilter.value === "all" ? tasks : tasks.filter((task) => task.category === selectedFilter.value),
 );
 const activeTask = computed(() => filteredTasks.value[activeIndex.value] || null);
-const cardStyle = computed(() => ({
-  transform: `translateX(${dragX.value}px) rotate(${dragX.value / 28}deg)`,
-  opacity: `${Math.max(0.74, 1 - Math.abs(dragX.value) / 320)}`,
-}));
 
 watch(selectedFilter, () => {
   activeIndex.value = 0;
-  dragX.value = 0;
+  dragDeltaX.value = 0;
 });
 
 function beginDrag(event) {
   if (!activeTask.value) return;
   isDragging.value = true;
   dragStartX.value = event.clientX;
-  dragX.value = 0;
+  dragDeltaX.value = 0;
   event.currentTarget?.setPointerCapture?.(event.pointerId);
 }
 
 function updateDrag(event) {
   if (!isDragging.value) return;
-  dragX.value = event.clientX - dragStartX.value;
+  dragDeltaX.value = event.clientX - dragStartX.value;
 }
 
 function finishDrag() {
   if (!isDragging.value) return;
-  const shouldSkip = dragX.value <= -72;
+  const shouldSkip = dragDeltaX.value <= -72;
   isDragging.value = false;
   dragStartX.value = 0;
-  dragX.value = 0;
+  dragDeltaX.value = 0;
   if (shouldSkip) skipTask();
 }
 
@@ -146,7 +142,6 @@ function saveResult(option) {
           v-if="activeTask"
           :key="activeTask.id"
           :class="['v-referral-swipe-card', `v-referral-swipe-card--${activeTask.tone}`, isDragging ? 'is-dragging' : '']"
-          :style="cardStyle"
           data-testid="referral-task-card"
           @pointerdown="beginDrag"
           @pointermove="updateDrag"
@@ -170,8 +165,8 @@ function saveResult(option) {
           </div>
 
           <div class="v-referral-swipe-card__actions">
-            <button type="button" @click.stop="skipTask">Atla</button>
-            <button type="button" class="is-primary" data-testid="referral-result-button" @click.stop="openResult(activeTask)">Sonuç</button>
+            <button type="button" @pointerdown.stop @click.stop="skipTask">Atla</button>
+            <button type="button" class="is-primary" data-testid="referral-result-button" @pointerdown.stop @click.stop="openResult(activeTask)">Sonuç</button>
           </div>
         </article>
 

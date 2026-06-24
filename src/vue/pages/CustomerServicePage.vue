@@ -1,6 +1,12 @@
 <script setup>
+import { computed } from "vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import { useSubscriptionStore } from "../stores/subscriptionStore.js";
+
+const subscription = useSubscriptionStore();
+const supportLevel = computed(() => subscription.currentPlan?.entitlements?.customerService || "Plus, Gold ve VIP müşteri hizmetleri");
+const hasPremiumSupport = computed(() => subscription.currentPlanId !== "free");
 </script>
 
 <template>
@@ -29,6 +35,10 @@ import AppPage from "../components/ui/AppPage.vue";
         <div class="v-customer-service-copy">
           <h2 id="customer-service-title">Üyeliğinin ayrıcalığı burada.</h2>
           <p>Lipyum Plus, Gold ve VIP üyeleri müşteri hizmetlerine tek dokunuşla ulaşabilir.</p>
+          <p v-if="hasPremiumSupport" class="v-customer-service-entitlement">
+            Mevcut destek seviyen: {{ supportLevel }}.
+            <strong>{{ supportLevel.charAt(0).toUpperCase() + supportLevel.slice(1) }} hakkın aktif.</strong>
+          </p>
         </div>
 
         <div class="v-customer-service-contact">

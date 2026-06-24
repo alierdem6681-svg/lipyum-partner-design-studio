@@ -21,6 +21,8 @@ const iconForAction = {
   "wallet-info": "help-circle",
   "notification-settings": "settings",
   premium: "crown",
+  "partner-share": "share-2",
+  "profile-preview": "eye",
 };
 
 const labelForAction = {
@@ -30,6 +32,8 @@ const labelForAction = {
   "wallet-info": "Cüzdan bilgisi",
   "notification-settings": "Bildirim ayarları",
   premium: "Üyelik ayrıcalığı",
+  "partner-share": "Partner kartını paylaş",
+  "profile-preview": "Müşteri profilini önizle",
 };
 
 const testIdForAction = {
@@ -39,6 +43,8 @@ const testIdForAction = {
   "wallet-info": "wallet-info-button",
   "notification-settings": "notification-settings-button",
   premium: "premium-member-icon",
+  "partner-share": "partner-preview-header-share",
+  "profile-preview": "profile-preview-header-button",
 };
 
 const homeStatuses = [
