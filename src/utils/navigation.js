@@ -47,6 +47,7 @@ export function createNavigationController({
     state.drawerBadgesExpanded = false;
     if (nextScreen !== "supportNew") state.supportTicketCreated = false;
     if (nextScreen !== "supportLive") state.liveSupportStarted = false;
+    if (nextScreen !== "supportCustomerService") state.customerServiceCallStarted = false;
     if (nextScreen !== "satisfaction") {
       state.satisfactionRating = 0;
       state.satisfactionSubmitted = false;

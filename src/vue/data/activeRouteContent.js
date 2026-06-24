@@ -263,7 +263,7 @@ const content = {
         items: [
           { title: "Talep Oluştur", body: "Konu seçip yazılı talep bırak.", icon: "file-text", route: "/support/new" },
           { title: "Canlı Destek", body: "Müsait temsilciyle görüş.", icon: "message", route: "/support/live" },
-          { title: "Müşteri Hizmetleri", body: "Abonelik planına bağlı erişim.", icon: "phone", route: "/support/customer-service" },
+          { title: "Müşteri Hizmetleri", body: "Telefon ve destek kanalları.", icon: "phone", route: "/support/customer-service" },
         ],
       },
     ],
@@ -276,7 +276,7 @@ const content = {
       {
         title: "Talep türleri",
         items: [
-          { title: "Ödeme ve abonelik", body: "Fatura, ödeme ve plan desteği.", icon: "credit-card", action: "create-ticket" },
+          { title: "Ödeme ve fatura", body: "Fatura ve ödeme desteği.", icon: "credit-card", action: "create-ticket" },
           { title: "İş akışı", body: "Teklif, randevu ve saha süreci.", icon: "briefcase", action: "create-ticket" },
         ],
       },
@@ -291,8 +291,16 @@ const content = {
   "/support/customer-service": {
     group: "support",
     title: "Müşteri Hizmetleri",
-    lead: "",
-    sections: [],
+    lead: "Telefon ve destek kanallarını tek yerden yönet.",
+    sections: [
+      {
+        title: "Destek seçenekleri",
+        items: [
+          { title: "Telefon desteği", body: "Müşteri hizmetleri numarasını kullan.", icon: "phone" },
+          { title: "Çağrı planlama", body: "Uygun zaman için destek talebi oluştur.", icon: "phone", action: "schedule-call" },
+        ],
+      },
+    ],
   },
   "/messages": {
     group: "support",
@@ -358,25 +366,6 @@ const content = {
         items: [
           { title: "Ahmet Kaya", body: "81 skor, Gold Partner.", icon: "trophy" },
           { title: "Mehmet U.", body: "78 skor, hızlı yanıt.", icon: "award" },
-        ],
-      },
-    ],
-  },
-  "/subscription": {
-    group: "growth",
-    title: "Aboneliğim",
-    lead: "Plus, Pro ve VIP abonelik avantajları.",
-    metrics: [
-      { label: "Plan", value: "Free", icon: "crown" },
-      { label: "Hak", value: "Temel", icon: "shield" },
-    ],
-    sections: [
-      {
-        title: "Planlar",
-        items: [
-          { title: "Plus", body: "Daha fazla görünürlük ve destek hakkı.", icon: "crown", action: "select-plan" },
-          { title: "Pro", body: "Öncelikli destek ve gelişmiş raporlar.", icon: "sparkles", action: "select-plan" },
-          { title: "VIP", body: "Maksimum görünürlük ve özel destek.", icon: "award", action: "select-plan" },
         ],
       },
     ],
@@ -459,24 +448,6 @@ const content = {
         items: [
           { title: "Referral bonusu", body: "120 bonus eklendi.", icon: "gift" },
           { title: "Yorum bonusu", body: "40 bonus eklendi.", icon: "star" },
-        ],
-      },
-    ],
-  },
-  "/performance-score": {
-    group: "finance",
-    title: "Performans Skoru",
-    lead: "Skorunu etkileyen güçlü ve gelişime açık alanlar.",
-    metrics: [
-      { label: "Skor", value: "81", icon: "trend-up" },
-      { label: "Hedef", value: "85", icon: "target" },
-    ],
-    sections: [
-      {
-        title: "Skor kırılımı",
-        items: [
-          { title: "Yanıt hızı", body: "Tekliflere hızlı dönüş puanı artırır.", icon: "timer" },
-          { title: "Profil kalitesi", body: "Güncel fotoğraf ve hizmet bilgisi etkili.", icon: "user" },
         ],
       },
     ],

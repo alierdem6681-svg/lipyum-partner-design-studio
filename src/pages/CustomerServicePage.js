@@ -1,57 +1,44 @@
 import { Header } from "../components/Header.js";
 import { PageContainer } from "../components/PageContainer.js";
 
-export function CustomerServicePage({
-  icon = () => "",
-} = {}) {
+const supportPhoneNumber = "4442368";
+const supportPhoneLabel = "444 23 68";
+
+export function CustomerServicePage({ icon = () => "" } = {}) {
   return PageContainer({
     className: "customer-service-page",
     children: `
       ${Header({
         title: "Müşteri Hizmetleri",
-        subtitle: "Plus, Gold ve VIP üyelerine özel",
+        subtitle: "Telefon ve destek kanalları",
         showBack: true,
         backIcon: icon("chevron-left"),
-        rightAction: `
-          <span class="premium-header-icon page-header-action" data-testid="premium-member-icon" aria-hidden="true">
-            ${icon("crown")}
-          </span>
-        `,
       })}
-      <section class="customer-service-hero" data-testid="customer-service-page" aria-labelledby="customer-service-title">
-        <span class="customer-service-kicker">
-          ${icon("star")}
-          ÜYE AYRICALIĞI
-        </span>
-        <p class="customer-service-tier" aria-label="Plus, Gold ve VIP üyelerine özel">
-          <span>PLUS</span>
-          <span aria-hidden="true">•</span>
-          <span>GOLD</span>
-          <span aria-hidden="true">•</span>
-          <strong>VIP</strong>
-        </p>
-        <div class="customer-service-divider" aria-hidden="true">
-          <span></span>
-          ${icon("crown")}
-          <span></span>
+      <section class="customer-service-hero ui-card" data-testid="customer-service-page">
+        <div class="customer-service-hero-copy">
+          <span class="customer-service-eyebrow">${icon("headphones")} Destek hattı</span>
+          <h2>İş, müşteri ve ödeme konularında destek al.</h2>
+          <p>Ekibimizle telefon, yazılı talep veya canlı destek üzerinden iletişime geçebilirsin.</p>
         </div>
-        <div class="customer-service-copy">
-          <h2 id="customer-service-title">Üyeliğinin ayrıcalığı burada.</h2>
-          <p>Lipyum Plus, Gold ve VIP üyeleri müşteri hizmetlerine tek dokunuşla ulaşabilir.</p>
+        <div class="customer-service-hero-art" aria-hidden="true">
+          <span>${icon("phone")}</span>
+          <strong>444</strong>
+          <small>destek hattı</small>
         </div>
-        <div class="customer-service-contact">
-          <span class="customer-service-contact-icon" aria-hidden="true">${icon("headphones")}</span>
-          <p>Lipyum Müşteri Hizmetleri</p>
-          <strong data-testid="customer-service-phone-number">444 23 68</strong>
+      </section>
+
+      <section class="customer-service-phone-card ui-card has-access" aria-label="Müşteri hizmetleri telefonu">
+        <div class="customer-service-phone-copy">
+          <span class="customer-service-phone-icon">${icon("phone")}</span>
+          <div>
+            <small>Müşteri hizmetleri numarası</small>
+            <strong data-testid="customer-service-phone-number">${supportPhoneLabel}</strong>
+          </div>
         </div>
-        <a class="customer-service-call" data-testid="customer-service-call" href="tel:4442368" aria-label="444 23 68 numarasını ara">
-          ${icon("phone")}
-          <span>444 23 68’i Ara</span>
+        <p>Bu numaradan müşteri hizmetlerine doğrudan ulaşabilirsin.</p>
+        <a class="primary-btn" href="tel:${supportPhoneNumber}" data-action="start-customer-service-call" data-testid="customer-service-call">
+          ${icon("phone")} Telefonla ara
         </a>
-        <p class="customer-service-note">
-          ${icon("shield")}
-          Arama telefon uygulamanda başlatılır.
-        </p>
       </section>
     `,
   });

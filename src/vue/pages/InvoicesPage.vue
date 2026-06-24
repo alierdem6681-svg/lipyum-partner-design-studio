@@ -13,20 +13,20 @@ const invoiceType = ref("individual");
 const saved = ref(false);
 
 const viewTabs = [
-  { label: "Faturalar", value: "invoices" },
-  { label: "Fatura Bilgileri", value: "settings" },
+  { label: "Faturalar", value: "invoices", dot: false },
+  { label: "Fatura Bilgileri", value: "settings", dot: false },
 ];
 
 const invoiceTypeTabs = [
-  { label: "Bireysel", value: "individual" },
-  { label: "Kurumsal", value: "corporate" },
+  { label: "Bireysel", value: "individual", dot: false },
+  { label: "Kurumsal", value: "corporate", dot: false },
 ];
 
 const invoices = [
-  { id: "LP-2026-006", title: "Haziran hizmet faturası", date: "22.06.2026", amount: "249 ₺", status: "Ödendi", balance: "1.426 ₺" },
-  { id: "LP-2026-005", title: "Mayıs hizmet faturası", date: "22.05.2026", amount: "249 ₺", status: "Ödendi", balance: "1.177 ₺" },
-  { id: "LP-2026-004", title: "Nisan hizmet faturası", date: "22.04.2026", amount: "199 ₺", status: "Ödendi", balance: "928 ₺" },
-  { id: "LP-2026-003", title: "Mart hizmet faturası", date: "22.03.2026", amount: "199 ₺", status: "Ödendi", balance: "729 ₺" },
+  { id: "LP-2026-006", title: "Haziran hizmet faturası", date: "22.06.2026", amount: "249 ₺", status: "Ödendi" },
+  { id: "LP-2026-005", title: "Mayıs hizmet faturası", date: "22.05.2026", amount: "249 ₺", status: "Ödendi" },
+  { id: "LP-2026-004", title: "Nisan hizmet faturası", date: "22.04.2026", amount: "199 ₺", status: "Ödendi" },
+  { id: "LP-2026-003", title: "Mart hizmet faturası", date: "22.03.2026", amount: "199 ₺", status: "Ödendi" },
 ];
 
 const invoiceInfo = ref({
@@ -135,7 +135,7 @@ function saveInvoiceInfo() {
               <AppButton size="sm" variant="secondary" icon="eye" @click="openInvoice(invoice, 'view')">
                 Görüntüle
               </AppButton>
-              <AppButton size="sm" variant="ghost" icon="download" @click="openInvoice(invoice, 'download')">
+              <AppButton size="sm" variant="ghost" icon="file-text" @click="openInvoice(invoice, 'download')">
                 İndir
               </AppButton>
             </div>
@@ -165,11 +165,7 @@ function saveInvoiceInfo() {
           <form class="invoice-form" @submit.prevent="saveInvoiceInfo">
             <label v-for="field in visibleFields" :key="field.key" class="invoice-field">
               <span>{{ field.label }}</span>
-              <textarea
-                v-if="field.multiline"
-                v-model="invoiceInfo[field.key]"
-                rows="3"
-              ></textarea>
+              <textarea v-if="field.multiline" v-model="invoiceInfo[field.key]" rows="3"></textarea>
               <input v-else v-model="invoiceInfo[field.key]" type="text" />
             </label>
 
@@ -206,9 +202,9 @@ function saveInvoiceInfo() {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border);
-  background: var(--green-soft);
-  color: var(--green-dark);
+  border: 1px solid var(--color-border);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
 }
 
 .invoice-hero__icon {
@@ -227,7 +223,7 @@ function saveInvoiceInfo() {
 
 .invoice-hero__copy strong,
 .invoice-section-head strong {
-  color: var(--ink);
+  color: var(--text-primary);
   font-size: 16px;
   line-height: 1.15;
 }
@@ -236,9 +232,9 @@ function saveInvoiceInfo() {
 .invoice-section-head small,
 .invoice-row__copy small,
 .invoice-row__amount small {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.35;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-normal);
 }
 
 .invoice-section {
@@ -259,13 +255,13 @@ function saveInvoiceInfo() {
 }
 
 .invoice-summary__item span {
-  color: var(--muted);
+  color: var(--text-secondary);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: var(--weight-extra-bold);
 }
 
 .invoice-summary__item strong {
-  color: var(--ink);
+  color: var(--text-primary);
   font-size: 15px;
 }
 
@@ -295,7 +291,7 @@ function saveInvoiceInfo() {
 }
 
 .invoice-row__copy strong {
-  color: var(--ink);
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.2;
 }
@@ -305,12 +301,12 @@ function saveInvoiceInfo() {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--color-border);
   padding-top: 10px;
 }
 
 .invoice-row__amount strong {
-  color: var(--ink);
+  color: var(--text-primary);
   font-size: 18px;
 }
 
@@ -339,40 +335,40 @@ function saveInvoiceInfo() {
 }
 
 .invoice-field span {
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 900;
+  color: var(--text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
 }
 
 .invoice-field input,
 .invoice-field textarea {
   width: 100%;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
-  background: var(--card);
-  color: var(--ink);
+  background: var(--lp-card);
+  color: var(--text-primary);
   font: inherit;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   padding: 12px;
   outline: none;
 }
 
 .invoice-field input:focus,
 .invoice-field textarea:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px var(--green-soft);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 .invoice-save-note {
   margin: 0;
-  border: 1px solid var(--green);
+  border: 1px solid var(--color-primary);
   border-radius: 14px;
-  background: var(--green-soft);
-  color: var(--green-dark);
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.35;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-bold);
+  line-height: var(--line-normal);
   padding: 10px 12px;
 }
 

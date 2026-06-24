@@ -146,7 +146,6 @@ function centerPhoto() {
 
 function startPhotoDrag(event) {
   if (!draftImage.value) return;
-  event.preventDefault();
   isDraggingPhoto.value = true;
   dragOrigin.value = {
     x: event.clientX,
@@ -159,7 +158,6 @@ function startPhotoDrag(event) {
 
 function dragPhoto(event) {
   if (!isDraggingPhoto.value) return;
-  event.preventDefault();
   const deltaX = event.clientX - dragOrigin.value.x;
   const deltaY = event.clientY - dragOrigin.value.y;
   xLevel.value = clamp(Math.round(dragOrigin.value.xLevel - deltaX / 34), 0, 4);
@@ -168,7 +166,6 @@ function dragPhoto(event) {
 
 function stopPhotoDrag(event) {
   if (!isDraggingPhoto.value) return;
-  event.preventDefault();
   isDraggingPhoto.value = false;
   event.currentTarget?.releasePointerCapture?.(event.pointerId);
 }
