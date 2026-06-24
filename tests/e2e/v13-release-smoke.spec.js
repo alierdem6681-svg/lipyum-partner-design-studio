@@ -156,13 +156,13 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-preview-edit-details")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-detail-services")).toContainText("Hizmetler");
   await expect(page.getByTestId("partner-preview-detail-services")).toContainText("Klima bakım");
-  await expect(page.getByTestId("partner-preview-detail-services")).toContainText("3 aktif hizmet");
-  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Bölgeler");
-  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Ana ve yakın servis alanı");
-  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("3 bölge");
-  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Saatler");
-  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Cumartesi");
-  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("09:00 - 19:00");
+  await expect(page.getByTestId("partner-preview-detail-services")).toContainText("+7 Hizmet");
+  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Hizmet Bölgeleri");
+  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Beşiktaş");
+  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("+18 Bölge");
+  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Çalışma Saatleri");
+  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Hafta içi ve cumartesi");
+  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("08:00 - 21:00");
 
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
