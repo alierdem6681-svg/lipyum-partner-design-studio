@@ -117,7 +117,8 @@ const titleOverrides = {
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
-    subtitle: "Telefon ve destek kanalları",
+    subtitle: "Plus, Gold ve VIP üyelerine özel",
+    trailingActions: ["premium"],
   },
   "/reviews": {
     title: "Müşteri Yorumları",
@@ -238,34 +239,42 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Daha Fazla İş Al",
-    subtitle: "Görevleri tamamla, skorunu artır.",
+    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
+    trailingActions: [],
+  },
+  "/performance-score/task/job-result": {
+    title: "İş Bilgilerini Gir",
+    subtitle: "Tamamlayınca puanın hemen güncellenir.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/tasks": {
+    title: "Tüm Görevler",
+    subtitle: "En kolay ve yüksek puanlı işler üstte.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/details": {
+    title: "Puanın Nasıl Hesaplanır?",
+    subtitle: "Toplam 100 puan üzerinden hesaplanır.",
+    parentRoute: "/performance-score",
+    trailingActions: [],
+  },
+  "/performance-score/success": {
+    title: "Görev Tamamlandı",
+    subtitle: "Yaptığın işlem puanına eklendi.",
+    parentRoute: "/performance-score",
     trailingActions: [],
   },
   "/performance-improve": {
     title: "Daha Fazla İş Al",
-    subtitle: "Görevleri tamamla, skorunu artır.",
+    subtitle: "Puanını yükselt, daha fazla iş fırsatı gör.",
     trailingActions: [],
   },
-  "/customer-management": {
-    title: "Müşteri Yönetimi",
-    subtitle: "",
-    trailingActions: [],
-  },
-  "/account-transactions": {
-    title: "Hesap Hareketleri",
-    subtitle: "",
-    trailingActions: [],
-  },
-  "/digital-service-form": {
-    title: "Dijital Servis Formu",
-    subtitle: "",
-    trailingActions: [],
-  },
-  "/create-offer": {
-    title: "Teklif Oluştur",
-    subtitle: "",
-    trailingActions: [],
-  },
+  "/customer-management": { title: "Müşteri Yönetimi", subtitle: "", trailingActions: [] },
+  "/account-transactions": { title: "Hesap Hareketleri", subtitle: "", trailingActions: [] },
+  "/digital-service-form": { title: "Dijital Servis Formu", subtitle: "", trailingActions: [] },
+  "/create-offer": { title: "Teklif Oluştur", subtitle: "", trailingActions: [] },
   "/partner-card-preview": {
     title: "Partner Kartı",
     subtitle: "Public rozet ve paylaşım önizlemesi",
@@ -297,7 +306,7 @@ export const routeMeta = Object.fromEntries(
         infoSheet: override.infoSheet || null,
         showBottomBar: override.showBottomBar ?? true,
         activeBottomTab: override.activeBottomTab || bottomTabByRoute.get(route) || null,
-        ctaVariant: override.ctaVariant || (isHome ? "home" : "subpage"),
+        ctaVariant: override.ctaVariant || (isHome || isBottomRoute ? "home" : "subpage"),
         parentRoute: override.parentRoute || (route === "/home" ? null : "/home"),
         showProfile: isHome || isBottomRoute,
         showNotification: isHome || isBottomRoute,

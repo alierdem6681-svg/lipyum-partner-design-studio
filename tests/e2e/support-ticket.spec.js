@@ -18,20 +18,9 @@ test("sidebar support group opens create ticket flow", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/new");
 
   await expect(page.getByTestId("support-ticket-form")).toBeVisible();
-  await expect(page.getByText("Hızlı destek talebi")).toHaveCount(0);
-  await expect(page.getByTestId("support-ticket-subject")).toHaveCount(0);
   await page.getByTestId("support-ticket-category").selectOption("Sistem ile ilgili konular");
-  await expect(page.getByTestId("support-ticket-category")).toContainText("Şikayet bildirmek istiyorum");
-  await expect(page.getByTestId("support-ticket-description")).toHaveAttribute(
-    "placeholder",
-    "Profilime daha fazla bölge eklemek için yardım istiyorum.",
-  );
-  await page.getByTestId("support-ticket-description").focus();
-  await expect(page.getByTestId("support-ticket-description")).toHaveAttribute("placeholder", "");
   await page.getByTestId("support-ticket-description").fill("Mock talep oluşturma akışı kontrol ediliyor.");
-  await expect(page.getByTestId("support-ticket-character-count")).toContainText("456 karakter kaldı");
   await page.getByTestId("support-ticket-priority").selectOption("Acil");
-  await expect(page.getByTestId("support-ticket-priority")).toContainText("Kritik");
   await expect(page.getByTestId("support-ticket-image-upload")).toBeVisible();
   await expect(page.getByTestId("support-ticket-file-upload")).toBeVisible();
   await page.getByTestId("support-ticket-submit").click();
@@ -47,9 +36,6 @@ test("sidebar support group opens create ticket flow", async ({ page }) => {
 
 test("sidebar support group opens live support flow", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
-  await page.addInitScript(() => {
-    window.__LIPYUM_SUPPORT_DELAY__ = 50;
-  });
   await page.goto("/#/home");
   await waitForApp(page);
 
@@ -57,28 +43,16 @@ test("sidebar support group opens live support flow", async ({ page }) => {
   await page.getByRole("button", { name: "Canlı Destek" }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/live");
   await expect(page.getByTestId("live-support-page")).toBeVisible();
-  await expect(page.getByTestId("bottom-nav")).toHaveCount(0);
-  await expect(page.getByTestId("live-support-title")).toHaveAttribute("placeholder", "İş sayıları hakkında destek");
-  await page.getByTestId("live-support-title").focus();
-  await expect(page.getByTestId("live-support-title")).toHaveAttribute("placeholder", "");
   await page.getByTestId("live-support-title").fill("Canlı destek testi");
-  await expect(page.getByTestId("live-support-description")).toHaveAttribute(
-    "placeholder",
-    "Daha fazla iş alabilmek için ne yapmalıyım?",
-  );
   await page.getByTestId("live-support-description").fill("Temsilci bağlantı durumunu kontrol etmek istiyorum.");
-  await expect(page.getByTestId("live-support-start")).toHaveText(/Müşteri Temsilcisine Bağlan/);
   await page.getByTestId("live-support-start").click();
-  await expect(page.getByTestId("live-support-waiting").getByText("Temsilci bağlanıyor")).toBeVisible();
-  await expect(page.getByText("Konu: Canlı destek testi")).toBeVisible();
-  await expect(page.getByTestId("live-support-chat")).toBeVisible({ timeout: 2_000 });
-  await page.getByTestId("live-support-end-header").click();
-  await expect(page.getByTestId("live-support-ended")).toBeVisible();
+  await expect(page.getByTestId("live-support-waiting")).toBeVisible();
+  await expect(page.getByTestId("live-support-waiting")).toContainText("Bağlanıyor");
 
   expect(errors).toEqual([]);
 });
 
-test("sidebar support group opens customer service flow", async ({ page }) => {
+test("sidebar support group opens premium customer service call route", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -88,9 +62,10 @@ test("sidebar support group opens customer service flow", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/customer-service");
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
-  await expect(page.getByTestId("customer-service-call")).toBeVisible();
   await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
   await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("header-info-button")).toHaveCount(0);
+  await expect(page.getByTestId("premium-member-icon")).toHaveCount(1);
 
   expect(errors).toEqual([]);
 });

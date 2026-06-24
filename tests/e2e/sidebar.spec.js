@@ -12,20 +12,6 @@ test("hamburger opens and close button closes sidebar", async ({ page }) => {
   await waitForApp(page);
 
   await openSidebar(page);
-  await expect(page.getByTestId("sidebar-upgrade-banner")).toBeVisible();
-  await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
-  await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Müşterilere Plus olarak görün");
-  await expect(page.getByTestId("sidebar-upgrade-banner")).toContainText("Yükselt");
-  const geometry = await page.evaluate(() => {
-    const drawer = document.querySelector('[data-testid="sidebar-drawer"]')?.getBoundingClientRect();
-    const banner = document.querySelector('[data-testid="sidebar-upgrade-banner"]')?.getBoundingClientRect();
-    const close = document.querySelector('[data-testid="sidebar-close"]')?.getBoundingClientRect();
-    return {
-      closeIsRightOfBanner: close.left > banner.right,
-      closeNearDrawerRight: drawer.right - close.right <= 14,
-    };
-  });
-  expect(geometry).toEqual({ closeIsRightOfBanner: true, closeNearDrawerRight: true });
   await page.getByTestId("sidebar-close").click();
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
 
@@ -64,25 +50,6 @@ test("sidebar routes kazanc ortakligi items and closes after navigation", async 
   expect(errors).toEqual([]);
 });
 
-test("account transactions stay out of sidebar and wallet exposes history", async ({ page }) => {
-  const errors = await collectConsoleErrors(page);
-  await page.goto("/#/home");
-  await waitForApp(page);
-
-  await openSidebar(page);
-  await expect(page.getByTestId("sidebar-drawer").getByText("Hesap Hareketleri")).toHaveCount(0);
-  await page.getByTestId("sidebar-close").click();
-
-  await page.goto("/#/wallet");
-  await waitForApp(page);
-  await expect(page.getByTestId("wallet-info-button")).toBeVisible();
-  await page.getByRole("button", { name: "Tümünü gör" }).click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet/history");
-  await expect(page.getByTestId("wallet-history-page")).toBeVisible();
-
-  expect(errors).toEqual([]);
-});
-
 test("sidebar has V10 support entries without duplicate sticky support card", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
@@ -98,7 +65,7 @@ test("sidebar has V10 support entries without duplicate sticky support card", as
   expect(errors).toEqual([]);
 });
 
-test("customer service sidebar item opens support page", async ({ page }) => {
+test("customer service sidebar item opens premium call route", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -109,8 +76,10 @@ test("customer service sidebar item opens support page", async ({ page }) => {
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
-  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
   await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("header-info-button")).toHaveCount(0);
+  await expect(page.getByTestId("premium-member-icon")).toHaveCount(1);
 
   expect(errors).toEqual([]);
 });

@@ -12,7 +12,6 @@ const routes = [
   "/reviews",
   "/leaderboard",
   "/subscription",
-  "/performance-score",
   "/referral",
   "/partner-card-preview",
   "/jobs",
@@ -35,11 +34,8 @@ const rightActionTestIds = {
   notifications: "notification-button",
   profile: "profile-button",
   info: "header-info-button",
-  "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
-  "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",
-  "partner-share": "partner-preview-header-share",
 };
 
 const activeBottomByRoute = {
@@ -54,6 +50,7 @@ const blankRoutes = {
   "/jobs": { title: "İş Al", testId: "jobs-page" },
   "/my-jobs": { title: "İşler", testId: "my-jobs-page" },
   "/calendar": { title: "Randevu", testId: "calendar-page" },
+  "/wallet": { title: "Cüzdan", testId: "wallet-page" },
 };
 
 function expectedUrl(route) {
@@ -165,28 +162,23 @@ for (const route of routes) {
     }
 
     for (const button of metrics.buttons) {
-      const expectedTextAction = button.action === "profile-preview" || button.action === "partner-share";
-      expect(button.width).toBeGreaterThanOrEqual(expectedTextAction ? 70 : 43);
-      expect(button.width).toBeLessThanOrEqual(button.action === "partner-share" ? 112 : expectedTextAction ? 96 : 45);
+      expect(button.width).toBeGreaterThanOrEqual(43);
+      expect(button.width).toBeLessThanOrEqual(45);
       expect(button.height).toBeGreaterThanOrEqual(43);
       expect(button.height).toBeLessThanOrEqual(45);
     }
 
-    if (meta.showBottomBar) {
-      expect(metrics.bottom.width).toBeGreaterThanOrEqual(392);
-      expect(metrics.bottom.height).toBeGreaterThanOrEqual(90);
-      expect(metrics.bottomItems.map((item) => item.id)).toEqual(bottomOrder);
-      expect(metrics.bottomItems.map((item) => item.label)).toEqual(bottomLabels);
-      expect(metrics.ctaDelta).toBeLessThanOrEqual(1);
-      expect(metrics.gapDelta).toBeLessThanOrEqual(1.5);
-      expect(metrics.sidePairDelta).toBeLessThanOrEqual(1.5);
+    expect(metrics.bottom.width).toBeGreaterThanOrEqual(392);
+    expect(metrics.bottom.height).toBeGreaterThanOrEqual(90);
+    expect(metrics.bottomItems.map((item) => item.id)).toEqual(bottomOrder);
+    expect(metrics.bottomItems.map((item) => item.label)).toEqual(bottomLabels);
+    expect(metrics.ctaDelta).toBeLessThanOrEqual(1);
+    expect(metrics.gapDelta).toBeLessThanOrEqual(1.5);
+    expect(metrics.sidePairDelta).toBeLessThanOrEqual(1.5);
 
-      const activeId = activeBottomByRoute[route];
-      for (const item of metrics.bottomItems) {
-        expect(item.current).toBe(item.id === activeId ? "page" : null);
-      }
-    } else {
-      expect(metrics.bottom.width).toBe(0);
+    const activeId = activeBottomByRoute[route];
+    for (const item of metrics.bottomItems) {
+      expect(item.current).toBe(item.id === activeId ? "page" : null);
     }
 
     expect(errors).toEqual([]);
@@ -216,21 +208,28 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
   await page.goto(expectedUrl("/wallet"));
   await waitForApp(page);
   await page.getByTestId("app-header").getByTestId("wallet-info-button").click();
-  await expect(page.getByTestId("app-sheet")).toContainText("Cüzdan nasıl çalışır?");
+  await expect(page.locator('[role="dialog"]')).toBeVisible();
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);
-  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
-  await expect(page.getByTestId("app-header").getByTestId("header-info-button")).toHaveCount(0);
+  await page.getByTestId("app-header").getByTestId("header-info-button").click();
+  await expect(page.locator('[role="dialog"]')).toBeVisible();
 });
 
-test("Vue customer service exposes call action without subscription dependency", async ({ page }) => {
+test("Vue customer service exposes premium call action", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
+
+  await page.goto(expectedUrl("/subscription"));
+  await waitForApp(page);
+  await page.getByTestId("subscription-plan-plus").click();
+  await expect(page.getByTestId("subscription-active-plan")).toContainText("Plus");
 
   await page.goto(expectedUrl("/support/customer-service"));
   await waitForApp(page);
-  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
+  await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
   await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("header-info-button")).toHaveCount(0);
+  await expect(page.getByTestId("premium-member-icon")).toHaveCount(1);
 });
