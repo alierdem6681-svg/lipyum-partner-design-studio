@@ -193,18 +193,14 @@ test("partner card preview uses share button and channel options", async ({ page
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
   await expect(page.getByTestId("app-sheet")).toContainText("Profilini paylaş");
-  await expect(page.getByTestId("partner-share-hero")).toContainText("Mükemmel Profilinle İnsanlara Güven Ver");
-  await expect(page.getByTestId("partner-share-free-contact")).toContainText("hiçbir ücret ödemezsin");
-  await expect(page.getByTestId("partner-share-growth")).toContainText("x4");
+  await expect(page.getByTestId("app-sheet")).toContainText("Daha fazla görünürlük kazan, ücretsiz iletişim al.");
+  await expect(page.getByTestId("partner-share-hero")).toContainText("Profilinle güven ver, daha fazla iş al");
+  await expect(page.getByTestId("partner-share-benefit-free-contact")).toContainText("Ücretsiz iletişim");
+  await expect(page.getByTestId("partner-share-benefit-visibility")).toContainText("Daha fazla görünürlük");
   await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("WhatsApp");
   await expect(page.getByTestId("partner-share-option-copy")).toContainText("Link Kopyala");
-  await expect(page.getByTestId("partner-share-option-message")).toContainText("Mesaj");
-  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web sitemde göster");
-  await expect(page.getByTestId("partner-share-option-instagram")).toContainText("Instagram");
-  await expect(page.getByTestId("partner-share-option-facebook")).toContainText("Facebook");
-  await expect(page.getByTestId("partner-share-option-tiktok")).toContainText("TikTok");
-  await expect(page.getByTestId("partner-share-option-x")).toContainText("X");
-  await expect(page.getByTestId("partner-share-option-story")).toContainText("Hikaye");
+  await expect(page.getByTestId("partner-share-option-social")).toContainText("Sosyal Medya");
+  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web sitende göster");
   await expect(page.getByTestId("partner-share-start")).toContainText("Ücretsiz Paylaşmaya Başla");
 
   await page.getByTestId("partner-share-option-whatsapp").click();
@@ -222,11 +218,41 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(profileCard).toBeVisible();
   const profileName = await profileCard.locator("h3").textContent();
   const profileTier = await profileCard.locator(".partner-profile-tier").textContent();
+  const initialAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
   await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
   await expect(page.getByTestId("profile-work-status-toggle")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
   await expect(page.getByTestId("profile-settings-header-button")).toBeVisible();
   await expect(page.getByTestId("profile-sticky-preview-button")).toBeVisible();
+  const promoCard = page.getByTestId("profile-share-promo-card");
+  await expect(promoCard).toBeVisible();
+  await expect(promoCard).toContainText("ÜCRETSİZ");
+  await expect(promoCard).toContainText("Profilini Paylaş,");
+  await expect(promoCard).toContainText("Daha Fazla İş Al");
+  await expect(promoCard).toContainText("Randevu Al");
+  await expect(promoCard).toContainText("Mesaj Gönder");
+  await expect(promoCard).toContainText("Teklif İste");
+  await expect(promoCard).toContainText("1. Ön izleme yap");
+  await expect(promoCard).toContainText("2. Paylaş");
+  await expect(promoCard).toContainText("3. Müşteri kazan");
+  await expect(promoCard.locator("img")).toHaveAttribute("src", initialAvatar);
+  const promoGeometry = await page.evaluate(() => {
+    const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
+    const summary = document.querySelector('[data-testid="profile-menu-strength-summary"]')?.getBoundingClientRect();
+    const promo = document.querySelector('[data-testid="profile-share-promo-card"]')?.getBoundingClientRect();
+    const sticky = document.querySelector('[data-testid="profile-sticky-preview-button"]')?.getBoundingClientRect();
+    return {
+      widthDelta: profile && promo ? Math.abs(profile.width - promo.width) : 999,
+      topGap: summary && promo ? Math.round(promo.top - summary.bottom) : 999,
+      stickyOverlap: sticky && promo ? Math.max(0, Math.round(promo.bottom - sticky.top)) : 999,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    };
+  });
+  expect(promoGeometry.widthDelta).toBeLessThanOrEqual(2);
+  expect(promoGeometry.topGap).toBeGreaterThanOrEqual(8);
+  expect(promoGeometry.topGap).toBeLessThanOrEqual(14);
+  expect(promoGeometry.stickyOverlap).toBeLessThanOrEqual(2);
+  expect(promoGeometry.overflow).toBeLessThanOrEqual(1);
   await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
@@ -294,7 +320,6 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
-  const initialAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
   await profileCard.getByTestId("partner-profile-avatar-button").click();
   await expect(page.getByTestId("profile-photo-editor")).toBeVisible();
   await page.getByTestId("profile-photo-file-input").setInputFiles({

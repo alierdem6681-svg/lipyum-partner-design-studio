@@ -264,31 +264,20 @@ async function savePhoto() {
       </div>
     </div>
 
-    <div v-if="variant === 'public'" class="partner-profile-public-metrics" data-testid="partner-public-metrics" aria-label="Profil öne çıkan bilgileri">
+    <div v-if="variant !== 'drawer'" class="partner-profile-public-metrics" data-testid="partner-public-metrics" aria-label="Profil öne çıkan bilgileri">
       <span
         v-for="metric in publicMetrics"
         :key="metric.id"
         class="partner-profile-public-metric"
         :data-testid="`partner-public-metric-${metric.id}`"
       >
-        <AppIcon :name="metric.icon" :size="17" class-name="icon" />
-        <span>
+        <span class="partner-profile-public-metric__label">
+          <AppIcon :name="metric.icon" :size="13" class-name="icon" />
           <small>{{ metric.label }}</small>
-          <strong>{{ metric.value }}</strong>
         </span>
+        <strong>{{ metric.value }}</strong>
       </span>
     </div>
-
-    <button
-      v-if="variant === 'public'"
-      class="partner-profile-favorite-button"
-      type="button"
-      data-testid="partner-profile-favorite-button"
-      @click="addToFavorites"
-    >
-      <AppIcon name="star" :size="15" class-name="icon" />
-      Favorilerime Ekle
-    </button>
 
     <div :class="badgesClasses" aria-label="Profil rozetleri">
       <span
@@ -313,6 +302,17 @@ async function savePhoto() {
         <span>+{{ hiddenBadgeCount }}</span>
       </button>
     </div>
+
+    <button
+      v-if="variant === 'public'"
+      class="partner-profile-favorite-button"
+      type="button"
+      data-testid="partner-profile-favorite-button"
+      @click="addToFavorites"
+    >
+      <AppIcon name="star" :size="15" class-name="icon" />
+      Favorilerime Ekle
+    </button>
 
     <div v-if="showActions" class="partner-profile-actions">
       <button

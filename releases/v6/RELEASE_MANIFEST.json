@@ -1,0 +1,12 @@
+{
+  "name": "v6 backup before all local developments deploy",
+  "tag": "v6",
+  "archiveBranch": "archive/v6",
+  "mainSha": "f14a5c1ad2c83dcee97de194a55edf929cc7f760",
+  "createdAt": "2026-06-24T17:05:23+03:00",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "localUrl": "http://127.0.0.1:5174/",
+  "buildStatusAtBackup": "pending-current-release-validation",
+  "scope": "Immutable backup before deploying all approved local developments.",
+  "rollbackCommand": "git revert <merge-commit-sha>"
+}

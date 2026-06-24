@@ -12067,6 +12067,373 @@
         transform: rotate(180deg);
       }
 
+      .profile-share-promo-card {
+        --profile-share-green: #10a35a;
+        --profile-share-green-dark: #079552;
+        --profile-share-green-soft: #eaf8f0;
+        --profile-share-green-faint: #f7fdf9;
+        --profile-share-border: #cdefd9;
+        --profile-share-text: #101828;
+        --profile-share-muted: #52627a;
+        --profile-share-connector: #9ddeb8;
+        width: 100%;
+        min-width: 0;
+        min-height: 284px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+        padding: 14px;
+        box-sizing: border-box;
+        border: 1px solid var(--profile-share-border);
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 88% 12%, rgba(16, 163, 90, 0.075), transparent 28%),
+          linear-gradient(135deg, #ffffff 0%, var(--profile-share-green-faint) 100%);
+        box-shadow: 0 12px 28px rgba(16, 24, 40, 0.07);
+        color: var(--profile-share-text);
+        overflow: hidden;
+      }
+
+      .profile-share-promo-card__top {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 108px;
+        align-items: start;
+        gap: 6px;
+      }
+
+      .profile-share-promo-card__copy {
+        min-width: 0;
+        display: grid;
+        justify-items: start;
+        gap: 6px;
+      }
+
+      .profile-share-promo-card__badge {
+        min-height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px 12px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--profile-share-green) 0%, var(--profile-share-green-dark) 100%);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 0.01em;
+        box-shadow: 0 7px 14px rgba(16, 163, 90, 0.16);
+      }
+
+      .profile-share-promo-card h2,
+      .profile-share-promo-card p {
+        margin: 0;
+      }
+
+      .profile-share-promo-card h2 {
+        display: grid;
+        gap: 1px;
+        color: var(--profile-share-text);
+        font-size: 22px;
+        font-weight: 950;
+        letter-spacing: -0.026em;
+        line-height: 1.2;
+      }
+
+      .profile-share-promo-card h2 span {
+        display: block;
+      }
+
+      .profile-share-promo-card h2 span:last-child {
+        color: var(--profile-share-green);
+      }
+
+      .profile-share-promo-card p {
+        color: var(--profile-share-muted);
+        font-size: 12px;
+        font-weight: 620;
+        line-height: 1.25;
+      }
+
+      .profile-share-promo-illustration {
+        position: relative;
+        width: 108px;
+        height: 116px;
+        justify-self: end;
+      }
+
+      .profile-share-promo-illustration__accent,
+      .profile-share-promo-illustration__connector,
+      .profile-share-promo-illustration__card,
+      .profile-share-promo-illustration__link,
+      .profile-share-promo-illustration__bubble {
+        position: absolute;
+        display: block;
+      }
+
+      .profile-share-promo-illustration__accent {
+        width: 20px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--profile-share-green);
+        opacity: 0.54;
+      }
+
+      .profile-share-promo-illustration__accent.is-one {
+        top: 32px;
+        left: 3px;
+        transform: rotate(42deg);
+      }
+
+      .profile-share-promo-illustration__accent.is-two {
+        top: 46px;
+        left: 0;
+      }
+
+      .profile-share-promo-illustration__accent.is-three {
+        top: 60px;
+        left: 6px;
+        transform: rotate(-40deg);
+      }
+
+      .profile-share-promo-illustration__connector {
+        border-top: 2px dashed var(--profile-share-connector);
+        transform-origin: left center;
+        opacity: 0.95;
+      }
+
+      .profile-share-promo-illustration__connector.is-instagram {
+        width: 32px;
+        top: 28px;
+        left: 73px;
+        transform: rotate(-26deg);
+      }
+
+      .profile-share-promo-illustration__connector.is-web {
+        width: 34px;
+        top: 55px;
+        left: 73px;
+      }
+
+      .profile-share-promo-illustration__connector.is-message {
+        width: 30px;
+        top: 80px;
+        left: 73px;
+        transform: rotate(30deg);
+      }
+
+      .profile-share-promo-illustration__card {
+        left: 10px;
+        top: 12px;
+        width: 70px;
+        height: 92px;
+        padding: 8px 7px;
+        box-sizing: border-box;
+        border: 2px solid rgba(16, 163, 90, 0.47);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 10px 22px rgba(16, 24, 40, 0.06);
+      }
+
+      .profile-share-promo-illustration__card img {
+        width: 34px;
+        height: 34px;
+        display: block;
+        object-fit: cover;
+        border-radius: 9px;
+        box-shadow: 0 4px 10px rgba(16, 24, 40, 0.11);
+      }
+
+      .profile-share-promo-illustration__card i {
+        display: block;
+        height: 6px;
+        margin-top: 7px;
+        border-radius: 999px;
+        background: #d9e1e8;
+      }
+
+      .profile-share-promo-illustration__card i:nth-of-type(1) {
+        width: 42px;
+        background: #aeb9c6;
+      }
+
+      .profile-share-promo-illustration__card i:nth-of-type(2) {
+        width: 62px;
+      }
+
+      .profile-share-promo-illustration__card i:nth-of-type(3) {
+        width: 54px;
+        background: #e3efe7;
+      }
+
+      .profile-share-promo-illustration__link {
+        top: 42px;
+        left: 58px;
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #52ce82 0%, var(--profile-share-green) 100%);
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(16, 163, 90, 0.2);
+      }
+
+      .profile-share-promo-illustration__bubble {
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        color: #ffffff;
+        box-shadow: 0 6px 14px rgba(16, 24, 40, 0.1);
+      }
+
+      .profile-share-promo-illustration__bubble.is-instagram {
+        top: 4px;
+        right: 4px;
+        width: 27px;
+        height: 27px;
+        background: radial-gradient(circle at 32% 28%, #facc15 0 14%, #f97316 24%, #ec4899 54%, #7c3aed 100%);
+      }
+
+      .profile-share-promo-illustration__bubble.is-web {
+        top: 45px;
+        right: 0;
+        width: 27px;
+        height: 27px;
+        background: #38bdf8;
+      }
+
+      .profile-share-promo-illustration__bubble.is-message {
+        top: 72px;
+        right: 8px;
+        width: 27px;
+        height: 27px;
+        background: #22c55e;
+      }
+
+      .profile-share-promo-illustration__bubble.is-users {
+        right: 22px;
+        bottom: -1px;
+        width: 48px;
+        height: 48px;
+        border: 2px solid #d5f3df;
+        background: #ffffff;
+        color: var(--profile-share-green);
+        box-shadow: 0 10px 22px rgba(16, 163, 90, 0.11);
+      }
+
+      .profile-share-promo-benefits {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .profile-share-promo-benefit {
+        min-width: 0;
+        min-height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 6px 5px;
+        box-sizing: border-box;
+        border: 1px solid var(--profile-share-border);
+        border-radius: 11px;
+        background: #ffffff;
+        color: var(--profile-share-green);
+        box-shadow: 0 7px 15px rgba(16, 24, 40, 0.045);
+      }
+
+      .profile-share-promo-benefit .v-icon {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+      }
+
+      .profile-share-promo-benefit strong {
+        min-width: 0;
+        overflow: hidden;
+        color: var(--profile-share-text);
+        font-size: 10.2px;
+        font-weight: 880;
+        line-height: 1.05;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .profile-share-promo-steps {
+        min-width: 0;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: start;
+        gap: 9px;
+      }
+
+      .profile-share-promo-steps::before,
+      .profile-share-promo-steps::after {
+        content: "";
+        position: absolute;
+        top: 20px;
+        width: calc(33.333% - 42px);
+        height: 2px;
+        background-image: linear-gradient(to right, var(--profile-share-connector) 45%, transparent 45%);
+        background-repeat: repeat-x;
+        background-size: 10px 2px;
+        pointer-events: none;
+      }
+
+      .profile-share-promo-steps::before {
+        left: calc(16.666% + 23px);
+      }
+
+      .profile-share-promo-steps::after {
+        left: calc(50% + 23px);
+      }
+
+      .profile-share-promo-step {
+        min-width: 0;
+        display: grid;
+        justify-items: center;
+        gap: 4px;
+        color: var(--profile-share-text);
+      }
+
+      .profile-share-promo-step__icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--profile-share-border);
+        border-radius: 999px;
+        background: var(--profile-share-green-soft);
+        color: var(--profile-share-green);
+        box-shadow: 0 8px 16px rgba(16, 163, 90, 0.08);
+      }
+
+      .profile-share-promo-step.is-emphasized .profile-share-promo-step__icon {
+        background: #ffffff;
+        color: var(--profile-share-green);
+        box-shadow:
+          0 8px 16px rgba(16, 163, 90, 0.11),
+          inset 0 0 0 8px rgba(16, 163, 90, 0.045);
+      }
+
+      .profile-share-promo-step strong {
+        width: max-content;
+        max-width: 100%;
+        overflow: hidden;
+        color: var(--profile-share-text);
+        font-size: 10.5px;
+        font-weight: 850;
+        line-height: 1.1;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
       @media (max-width: 360px) {
         .profile-menu-section {
           --profile-menu-status-width: 58px;
@@ -12132,6 +12499,89 @@
           width: 46px;
           height: 46px;
         }
+
+        .profile-share-promo-card {
+          min-height: 0;
+          gap: 6px;
+          padding: 10px 10px 9px;
+        }
+
+        .profile-share-promo-card__top {
+          grid-template-columns: minmax(0, 1fr) 92px;
+          gap: 6px;
+        }
+
+        .profile-share-promo-card__copy {
+          gap: 5px;
+        }
+
+        .profile-share-promo-card__badge {
+          min-height: 18px;
+          padding: 2px 9px;
+          font-size: 10px;
+        }
+
+        .profile-share-promo-card h2 {
+          font-size: 18.6px;
+          line-height: 1.08;
+        }
+
+        .profile-share-promo-card p {
+          font-size: 10.25px;
+          line-height: 1.18;
+        }
+
+        .profile-share-promo-illustration {
+          width: 92px;
+          height: 98px;
+          transform: scale(0.84) translateX(8px);
+          transform-origin: top right;
+        }
+
+        .profile-share-promo-benefits {
+          gap: 5px;
+        }
+
+        .profile-share-promo-benefit {
+          min-height: 30px;
+          gap: 3px;
+          padding: 5px 3px;
+          border-radius: 9px;
+        }
+
+        .profile-share-promo-benefit strong {
+          font-size: 8.8px;
+        }
+
+        .profile-share-promo-benefit .v-icon {
+          width: 14px;
+          height: 14px;
+          flex-basis: 14px;
+        }
+
+        .profile-share-promo-step__icon {
+          width: 32px;
+          height: 32px;
+        }
+
+        .profile-share-promo-steps::before,
+        .profile-share-promo-steps::after {
+          top: 16px;
+          width: calc(33.333% - 30px);
+          background-size: 7px 2px;
+        }
+
+        .profile-share-promo-steps::before {
+          left: calc(16.666% + 18px);
+        }
+
+        .profile-share-promo-steps::after {
+          left: calc(50% + 18px);
+        }
+
+        .profile-share-promo-step strong {
+          font-size: 8.8px;
+        }
       }
 
       @media (min-width: 430px) {
@@ -12152,6 +12602,20 @@
         .profile-menu-row__title,
         .profile-menu-strength-summary__copy strong {
           font-size: 13.4px;
+        }
+
+        .profile-share-promo-card {
+          gap: 14px;
+          padding: 17px;
+        }
+
+        .profile-share-promo-card__top {
+          grid-template-columns: minmax(0, 1fr) 144px;
+          gap: 12px;
+        }
+
+        .profile-share-promo-illustration {
+          width: 144px;
         }
       }
 
