@@ -5353,30 +5353,27 @@
 
 .partner-preview-details {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   border-color: color-mix(in srgb, var(--color-primary) 18%, var(--color-border));
-  background:
-    radial-gradient(circle at 96% 0%, var(--color-premium-gold-soft) 0 18%, transparent 38%),
-    linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-primary-soft) 42%, var(--color-surface)));
+  background: var(--color-surface);
 }
 
 .partner-preview-details__header {
   display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  gap: 9px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
   align-items: center;
 }
 
 .partner-preview-details__mark {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--color-premium-gold-border);
+  border: 1px solid var(--color-primary-border);
   border-radius: 14px;
-  background: var(--color-premium-gold-soft);
-  color: var(--color-premium-gold);
-  box-shadow: 0 10px 18px color-mix(in srgb, var(--color-premium-gold) 18%, transparent);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
 }
 
 .partner-preview-details__header p,
@@ -5385,36 +5382,58 @@
   margin: 0;
 }
 
-.partner-preview-details__header p {
-  color: var(--color-primary-dark);
-  font-size: var(--font-size-caption);
-  font-weight: var(--weight-extra-bold);
-}
-
 .partner-preview-details__header strong {
   display: block;
   min-width: 0;
   color: var(--text-primary);
-  font-size: var(--font-size-body);
+  font-size: var(--font-size-small);
   font-weight: var(--weight-extra-bold);
   line-height: var(--line-tight);
 }
 
+.partner-preview-details__header p {
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-tight);
+}
+
+.partner-preview-details__edit {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--color-primary-border);
+  border-radius: 13px;
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  padding: 0 10px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  white-space: nowrap;
+}
+
 .partner-preview-details__grid {
   display: grid;
-  gap: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card-compact);
+  background: var(--color-surface);
 }
 
 .partner-preview-detail {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  gap: 9px;
+  grid-template-columns: 38px minmax(0, 1fr) 18px;
+  gap: 10px;
   align-items: center;
-  min-height: 54px;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 14%, var(--color-border));
-  border-radius: var(--radius-card-compact);
-  background: color-mix(in srgb, var(--color-surface) 86%, var(--color-primary-soft));
-  padding: 8px;
+  min-height: 72px;
+  padding: 10px 11px;
+}
+
+.partner-preview-detail + .partner-preview-detail {
+  border-top: 1px solid var(--color-border);
 }
 
 .partner-preview-detail__icon {
@@ -5431,12 +5450,15 @@
   min-width: 0;
 }
 
-.partner-preview-detail__copy h3 {
-  margin: 0 0 3px;
-  color: var(--text-primary);
-  font-size: var(--font-size-small);
+.partner-preview-detail__copy span {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--text-muted);
+  font-size: 10px;
   font-weight: var(--weight-extra-bold);
-  line-height: var(--line-tight);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .partner-preview-detail__copy p {
@@ -5447,12 +5469,34 @@
 }
 
 .partner-preview-detail__copy small {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   margin-top: 3px;
-  color: var(--text-secondary);
+  color: var(--color-primary-dark);
   font-size: var(--font-size-caption);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-bold);
   line-height: var(--line-tight);
+}
+
+.partner-preview-detail__copy small::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+.partner-preview-detail__copy small.is-pill {
+  min-height: 20px;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  padding: 0 8px;
+}
+
+.partner-preview-detail__arrow {
+  color: var(--text-secondary);
 }
 
 .partner-profile-name-row {

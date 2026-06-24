@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
@@ -8,51 +9,61 @@ import PartnerProfileCard from "../components/profile/PartnerProfileCard.vue";
 import PartnerShareSheet from "../components/profile/PartnerShareSheet.vue";
 import { getActiveRouteContent } from "../data/activeRouteContent.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
+import { useProfileStore } from "../stores/profileStore.js";
 
 const shell = useAppShellStore();
+const router = useRouter();
+const profile = useProfileStore();
 const shareSheetOpen = ref(false);
 
-function itemTitles(route, limit = 3) {
+function itemsFor(route, limit = 3) {
   return (
     getActiveRouteContent(route)
       ?.sections?.flatMap((section) => section.items || [])
-      .slice(0, limit)
-      .map((item) => item.title) || []
+      .slice(0, limit) || []
   );
 }
 
-function itemTitlesWithBody(route, limit = 2) {
-  return (
-    getActiveRouteContent(route)
-      ?.sections?.flatMap((section) => section.items || [])
-      .slice(0, limit)
-      .map((item) => `${item.title} ${item.body}`) || []
-  );
+function compactList(items, limit = 2) {
+  const labels = items.slice(0, limit).map((item) => item.title);
+  const extraCount = Math.max(0, items.length - limit);
+  return `${labels.join(", ")}${extraCount ? ` +${extraCount}` : ""}`;
 }
+
+const serviceItems = itemsFor("/services");
+const regionItems = itemsFor("/regions");
+const hourItems = itemsFor("/working-hours", 2);
 
 const previewDetails = [
   {
     id: "services",
     icon: "briefcase",
-    title: "Verilen hizmetler",
-    value: itemTitles("/services").join(", "),
-    meta: "Öne çıkan aktif hizmetler",
+    eyebrow: "Hizmetler",
+    value: compactList(serviceItems),
+    meta: `${serviceItems.length} aktif hizmet`,
+    metaTone: "dot",
   },
   {
     id: "regions",
     icon: "map-pin",
-    title: "Hizmet bölgeleri",
-    value: itemTitles("/regions").join(", "),
-    meta: "Ana ve yakın çalışma bölgeleri",
+    eyebrow: "Bölgeler",
+    value: compactList(regionItems),
+    meta: `${regionItems.length} hizmet bölgesi`,
+    metaTone: "dot",
   },
   {
     id: "hours",
     icon: "clock",
-    title: "Çalışma saatleri",
-    value: itemTitlesWithBody("/working-hours").join(" · "),
-    meta: "Acil işler uygunluğa göre alınır",
+    eyebrow: "Çalışma saatleri",
+    value: `${hourItems[0]?.title || "Hafta içi"} ${hourItems[0]?.body || "09:00 - 19:00"}`,
+    meta: "Bugün 19:00’a kadar açık",
+    metaTone: "pill",
   },
 ];
+
+function editProfileDetails() {
+  router.push("/profile");
+}
 
 function openShareOptions() {
   shareSheetOpen.value = true;
@@ -88,9 +99,18 @@ onBeforeUnmount(() => {
             <AppIcon name="sparkles" :size="16" />
           </span>
           <div>
-            <p>Profilde görünen kapsam</p>
-            <strong>Hizmet, bölge ve saat özeti</strong>
+            <strong>{{ profile.partner.name }}’nın hizmet bilgileri</strong>
+            <p>Hizmet verdiği alanlar, bölgeler ve çalışma saatleri.</p>
           </div>
+          <button
+            class="partner-preview-details__edit"
+            type="button"
+            data-testid="partner-preview-edit-details"
+            @click="editProfileDetails"
+          >
+            <AppIcon name="edit" :size="14" />
+            Düzenle
+          </button>
         </div>
 
         <div class="partner-preview-details__grid" aria-label="Partner profil kapsamı">
@@ -104,10 +124,13 @@ onBeforeUnmount(() => {
               <AppIcon :name="detail.icon" :size="17" />
             </span>
             <div class="partner-preview-detail__copy">
-              <h3>{{ detail.title }}</h3>
+              <span>{{ detail.eyebrow }}</span>
               <p>{{ detail.value }}</p>
-              <small>{{ detail.meta }}</small>
+              <small :class="detail.metaTone === 'pill' ? 'is-pill' : ''">{{ detail.meta }}</small>
             </div>
+            <span class="partner-preview-detail__arrow" aria-hidden="true">
+              <AppIcon name="chevron-right" :size="18" />
+            </span>
           </article>
         </div>
       </AppCard>
