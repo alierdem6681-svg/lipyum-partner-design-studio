@@ -6,10 +6,46 @@ import AppPage from "../components/ui/AppPage.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import PartnerProfileCard from "../components/profile/PartnerProfileCard.vue";
 import PartnerShareSheet from "../components/profile/PartnerShareSheet.vue";
+import appointmentCalendarUrl from "../../assets/partner-share/appointment_calendar.webp";
+import arrowCircleUrl from "../../assets/partner-share/arrow_circle.webp";
+import copyLinkUrl from "../../assets/partner-share/copy_link.webp";
+import ctaSparklesUrl from "../../assets/partner-share/cta_sparkles.webp";
+import facebookUrl from "../../assets/partner-share/facebook.webp";
+import freeCheckBadgeUrl from "../../assets/partner-share/free_check_badge.webp";
+import growthChartUrl from "../../assets/partner-share/growth_chart_premium.webp";
+import heroShieldUrl from "../../assets/partner-share/hero_shield_verified.webp";
+import instagramUrl from "../../assets/partner-share/instagram.webp";
+import messageUrl from "../../assets/partner-share/message.webp";
+import offerDocumentUrl from "../../assets/partner-share/offer_document.webp";
+import storyPlusUrl from "../../assets/partner-share/story_plus.webp";
+import tiktokUrl from "../../assets/partner-share/tiktok.webp";
+import trustShieldUrl from "../../assets/partner-share/trust_shield.webp";
+import websitePreviewUrl from "../../assets/partner-share/website_profile_preview.webp";
+import whatsappUrl from "../../assets/partner-share/whatsapp.webp";
+import xLogoUrl from "../../assets/partner-share/x_logo.webp";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
 const shareSheetOpen = ref(false);
+const partnerSharePreloadUrls = [
+  appointmentCalendarUrl,
+  arrowCircleUrl,
+  copyLinkUrl,
+  ctaSparklesUrl,
+  facebookUrl,
+  freeCheckBadgeUrl,
+  growthChartUrl,
+  heroShieldUrl,
+  instagramUrl,
+  messageUrl,
+  offerDocumentUrl,
+  storyPlusUrl,
+  tiktokUrl,
+  trustShieldUrl,
+  websitePreviewUrl,
+  whatsappUrl,
+  xLogoUrl,
+];
 
 const previewDetails = [
   {
@@ -85,7 +121,17 @@ function showPreviewAction(action) {
   shell.showToast(`${action} seçeneği hazır.`);
 }
 
+function preloadPartnerShareAssets() {
+  if (typeof window === "undefined") return;
+  partnerSharePreloadUrls.forEach((url) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.src = url;
+  });
+}
+
 onMounted(() => {
+  preloadPartnerShareAssets();
   window.addEventListener("lipyum:partner-share", openShareOptions);
 });
 
