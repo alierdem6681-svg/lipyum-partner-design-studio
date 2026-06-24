@@ -3,6 +3,14 @@ import { resolveDeepLinkRoute } from "./utils/deepLinks.js";
 const resolvedDeepLinkRoute = resolveDeepLinkRoute();
 const currentHash = window.location.hash;
 
+if (!currentHash && !resolvedDeepLinkRoute) {
+  window.history.replaceState(
+    {},
+    "",
+    `${window.location.pathname}${window.location.search}#/home`,
+  );
+}
+
 if (resolvedDeepLinkRoute && (!currentHash || currentHash === "#/home")) {
   window.history.replaceState(
     {},

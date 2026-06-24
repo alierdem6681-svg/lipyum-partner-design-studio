@@ -38,6 +38,10 @@ async function expectVueShell(page, route = "/home") {
 
 test("boots Vue on normal URLs and does not expose legacy rollback", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
+  await page.goto("/");
+  await expectVueShell(page, "/home");
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/home");
+
   await page.goto("/#/home");
   await expectVueShell(page, "/home");
 
