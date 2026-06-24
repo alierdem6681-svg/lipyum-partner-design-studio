@@ -1,0 +1,12 @@
+{
+  "name": "pre-profile-badges-expand-20260624-130045",
+  "commitSha": "1d825e7c63782b495291039e88b48138de741918",
+  "branch": "main",
+  "backupTag": "pre-profile-badges-expand-20260624-130045",
+  "archiveBranch": "archive/pre-profile-badges-expand-20260624-130045",
+  "route": "/partner-card-preview",
+  "runtime": "vue",
+  "liveUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "backupReason": "Before splitting Planli/Duzenli badges and adding new partner profile badges.",
+  "rollback": "git revert <merge-sha> or git switch archive/pre-profile-badges-expand-20260624-130045"
+}
