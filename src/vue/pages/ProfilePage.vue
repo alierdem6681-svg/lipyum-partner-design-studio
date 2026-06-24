@@ -20,8 +20,8 @@ const settingsActions = [
   { id: "email", label: "E-posta değiştirme", description: "Bildirim ve giriş e-postanı güncelle.", icon: "message" },
   { id: "phone", label: "Telefon no güncelleme", description: "Doğrulama telefonunu değiştir.", icon: "phone" },
   { id: "freeze", label: "Hesap dondurma", description: "Hesabını geçici olarak pasife al.", icon: "pause" },
-  { id: "delete", label: "Hesap silme", description: "Kalıcı silme talebini başlat.", icon: "x" },
 ];
+const deleteAccountAction = { id: "delete", label: "Hesap silme", description: "Kalıcı silme talebini başlat.", icon: "x" };
 
 function openSettings() {
   settingsOpen.value = true;
@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <AppPage title="Profilim" data-testid="profile-page">
+  <AppPage title="Profilim" class="profile-page" data-testid="profile-page">
     <div class="v-stack v-profile-page profile-page-with-sticky-preview">
       <PartnerProfileCard :show-actions="false" />
       <ProfileMenuGrid />
@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
       </span>
       <span class="profile-sticky-preview__copy">
         <strong>Önizleme Yap</strong>
-        <small>Profil kartını müşteri gözüyle gör</small>
+        <small>Profilini müşteri gözüyle gör</small>
       </span>
       <span class="profile-sticky-preview__arrow" aria-hidden="true">
         <AppIcon name="chevron-right" :size="20" />
@@ -91,6 +91,15 @@ onBeforeUnmount(() => {
             <small>{{ action.description }}</small>
           </span>
           <AppIcon name="chevron-right" :size="18" />
+        </button>
+
+        <button
+          type="button"
+          class="profile-settings-sheet__delete-link"
+          data-testid="profile-settings-delete"
+          @click="showSettingsAction(deleteAccountAction)"
+        >
+          Hesap silme
         </button>
       </div>
     </AppSheet>

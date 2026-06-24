@@ -31,7 +31,7 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
   await expect(page.getByTestId("partner-share-option-whatsapp")).toBeVisible();
-  await expect(page.getByTestId("partner-share-hero")).toContainText("Mükemmel Profilinle");
+  await expect(page.getByTestId("partner-share-hero")).toContainText("Profilinle güven ver");
   await expect(page.getByTestId("partner-share-start")).toContainText("Ücretsiz Paylaşmaya Başla");
   await page.getByTestId("sheet-close-button").click();
   await expect(page.getByTestId("partner-share-options")).toHaveCount(0);

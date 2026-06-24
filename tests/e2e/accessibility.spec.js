@@ -5,6 +5,8 @@ test("core navigation controls expose accessible names", async ({ page }) => {
   await page.goto("/#/profile");
   await waitForApp(page);
   await expect(page.locator('[data-action="go-back"][aria-label="Geri dön"]').first()).toBeVisible();
+  await page.goto("/#/home");
+  await waitForApp(page);
   await expect(page.locator('[aria-label="İş Al"]').first()).toBeVisible();
 });
 

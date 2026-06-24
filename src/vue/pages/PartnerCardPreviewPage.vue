@@ -1,51 +1,21 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import PartnerProfileCard from "../components/profile/PartnerProfileCard.vue";
 import PartnerShareSheet from "../components/profile/PartnerShareSheet.vue";
-import appointmentCalendarUrl from "../../assets/partner-share/appointment_calendar.webp";
-import arrowCircleUrl from "../../assets/partner-share/arrow_circle.webp";
-import copyLinkUrl from "../../assets/partner-share/copy_link.webp";
-import ctaSparklesUrl from "../../assets/partner-share/cta_sparkles.webp";
-import facebookUrl from "../../assets/partner-share/facebook.webp";
-import freeCheckBadgeUrl from "../../assets/partner-share/free_check_badge.webp";
-import growthChartUrl from "../../assets/partner-share/growth_chart_premium.webp";
-import heroShieldUrl from "../../assets/partner-share/hero_shield_verified.webp";
-import instagramUrl from "../../assets/partner-share/instagram.webp";
-import messageUrl from "../../assets/partner-share/message.webp";
-import offerDocumentUrl from "../../assets/partner-share/offer_document.webp";
-import storyPlusUrl from "../../assets/partner-share/story_plus.webp";
-import tiktokUrl from "../../assets/partner-share/tiktok.webp";
-import trustShieldUrl from "../../assets/partner-share/trust_shield.webp";
-import websitePreviewUrl from "../../assets/partner-share/website_profile_preview.webp";
-import whatsappUrl from "../../assets/partner-share/whatsapp.webp";
-import xLogoUrl from "../../assets/partner-share/x_logo.webp";
 import { useAppShellStore } from "../stores/appShellStore.js";
+import { useProfileStore } from "../stores/profileStore.js";
 
 const shell = useAppShellStore();
+const profile = useProfileStore();
 const shareSheetOpen = ref(false);
-const partnerSharePreloadUrls = [
-  appointmentCalendarUrl,
-  arrowCircleUrl,
-  copyLinkUrl,
-  ctaSparklesUrl,
-  facebookUrl,
-  freeCheckBadgeUrl,
-  growthChartUrl,
-  heroShieldUrl,
-  instagramUrl,
-  messageUrl,
-  offerDocumentUrl,
-  storyPlusUrl,
-  tiktokUrl,
-  trustShieldUrl,
-  websitePreviewUrl,
-  whatsappUrl,
-  xLogoUrl,
-];
+const profileShareUrl = computed(() => {
+  if (typeof window === "undefined") return "https://lipyum.com/profil";
+  return `${window.location.origin}${window.location.pathname}#/partner-card-preview`;
+});
 
 const previewDetails = [
   {
@@ -69,6 +39,14 @@ const previewDetails = [
     subtitle: "Hafta içi ve cumartesi",
     value: "08:00 - 21:00",
   },
+];
+
+const verifiedItems = [
+  { id: "tax", icon: "file-text", label: "Vergi Levhası", value: "Doğrulandı" },
+  { id: "identity", icon: "shield", label: "TC Kimlik No", value: "Doğrulandı" },
+  { id: "phone", icon: "phone", label: "Cep Telefonu", value: "Doğrulandı" },
+  { id: "email", icon: "message", label: "Mail Adresi", value: "Doğrulandı" },
+  { id: "certificate", icon: "crown", label: "Ustalık Belgesi", value: "Onaylı" },
 ];
 
 const reviewCards = [
@@ -112,26 +90,22 @@ function openShareOptions() {
   shareSheetOpen.value = true;
 }
 
-function handleShare(option) {
-  shareSheetOpen.value = false;
-  shell.showToast(`${option} hazırlandı.`);
+function handleShare(payload) {
+  const channel = typeof payload === "string" ? "" : payload?.channel;
+  const message = typeof payload === "string" ? `${payload} hazırlandı.` : payload?.message || "Paylaşım hazırlandı.";
+  if (channel !== "copy") shareSheetOpen.value = false;
+  shell.showToast(message);
+}
+
+function handleShareError() {
+  shell.showToast("Paylaşım başlatılamadı.");
 }
 
 function showPreviewAction(action) {
   shell.showToast(`${action} seçeneği hazır.`);
 }
 
-function preloadPartnerShareAssets() {
-  if (typeof window === "undefined") return;
-  partnerSharePreloadUrls.forEach((url) => {
-    const image = new Image();
-    image.decoding = "async";
-    image.src = url;
-  });
-}
-
 onMounted(() => {
-  preloadPartnerShareAssets();
   window.addEventListener("lipyum:partner-share", openShareOptions);
 });
 
@@ -144,6 +118,37 @@ onBeforeUnmount(() => {
   <AppPage title="Profil Kartı" class="partner-card-preview-page" data-testid="partner-card-preview-page">
     <div class="v-stack v-partner-preview-page" data-testid="partner-card-preview">
       <PartnerProfileCard variant="public" :show-actions="false" expand-badges />
+
+      <AppCard
+        class="partner-preview-verified"
+        variant="elevated"
+        padding="md"
+        data-testid="partner-preview-verified"
+      >
+        <div class="partner-preview-verified__header">
+          <span class="partner-preview-verified__seal" aria-hidden="true">
+            <AppIcon name="shield" :size="18" />
+          </span>
+          <div>
+            <h2>Doğrulanmış Bilgi ve Belgeler</h2>
+            <p>Kimlik, iletişim ve mesleki belgeler kontrol edildi.</p>
+          </div>
+        </div>
+        <div class="partner-preview-verified__grid" aria-label="Doğrulanmış bilgi ve belgeler">
+          <span
+            v-for="item in verifiedItems"
+            :key="item.id"
+            class="partner-preview-verified__item"
+            :data-testid="`partner-preview-verified-${item.id}`"
+          >
+            <AppIcon :name="item.icon" :size="15" />
+            <span>
+              <strong>{{ item.label }}</strong>
+              <small>{{ item.value }}</small>
+            </span>
+          </span>
+        </div>
+      </AppCard>
 
       <AppCard
         class="partner-preview-details"
@@ -229,10 +234,15 @@ onBeforeUnmount(() => {
     <AppSheet
       :open="shareSheetOpen"
       title="Profilini paylaş"
-      description="Güven veren profilini ücretsiz olarak yayına al."
+      description="Daha fazla görünürlük kazan, ücretsiz iletişim al."
       @close="shareSheetOpen = false"
     >
-      <PartnerShareSheet @share="handleShare" />
+      <PartnerShareSheet
+        :partner-name="profile.partner.name"
+        :profile-url="profileShareUrl"
+        @share="handleShare"
+        @error="handleShareError"
+      />
     </AppSheet>
   </AppPage>
 </template>

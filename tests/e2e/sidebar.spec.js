@@ -64,7 +64,7 @@ test("sidebar routes kazanc ortakligi items and closes after navigation", async 
   expect(errors).toEqual([]);
 });
 
-test("account transactions stay out of sidebar and wallet exposes history", async ({ page }) => {
+test("account transactions stay out of sidebar and wallet route stays clean", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
@@ -75,10 +75,9 @@ test("account transactions stay out of sidebar and wallet exposes history", asyn
 
   await page.goto("/#/wallet");
   await waitForApp(page);
-  await expect(page.getByTestId("wallet-info-button")).toBeVisible();
-  await page.getByRole("button", { name: "Tümünü gör" }).click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet/history");
-  await expect(page.getByTestId("wallet-history-page")).toBeVisible();
+  await expect(page.getByTestId("wallet-info-button")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Tümünü gör" })).toHaveCount(0);
+  await expect(page.locator("#bottomNav")).toBeVisible();
 
   expect(errors).toEqual([]);
 });
@@ -108,8 +107,8 @@ test("customer service sidebar item opens support page", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/customer-service");
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
-  await expect(page.getByTestId("customer-service-phone-number")).toHaveText("444 23 68");
-  await expect(page.getByTestId("customer-service-call")).toBeVisible();
+  await expect(page.getByTestId("customer-service-phone-number")).toHaveCount(0);
+  await expect(page.getByTestId("customer-service-call")).toHaveCount(0);
   await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
 
   expect(errors).toEqual([]);

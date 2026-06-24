@@ -80,6 +80,11 @@ export const blankBottomRoutes = new Set([
   "/jobs",
   "/my-jobs",
   "/calendar",
+  "/wallet",
+  "/support/new",
+  "/support/live",
+  "/support/customer-service",
+  "/invoices",
 ]);
 
 export async function collectConsoleErrors(page) {

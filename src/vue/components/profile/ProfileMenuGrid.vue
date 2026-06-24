@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { PROFILE_MENU_ITEMS } from "../../../utils/constants.js";
 import ProfileWorkStatusCard from "./ProfileWorkStatusCard.vue";
+import ProfileSharePromoCard from "./ProfileSharePromoCard.vue";
 import AppIcon from "../ui/AppIcon.vue";
 import { useAppShellStore } from "../../stores/appShellStore.js";
 
@@ -131,5 +132,7 @@ function openMenuItem(item) {
         </span>
       </button>
     </div>
+
+    <ProfileSharePromoCard />
   </section>
 </template>
