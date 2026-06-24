@@ -258,9 +258,11 @@ const titleOverrides = {
     trailingActions: [],
   },
   "/partner-card-preview": {
-    title: "Partner Kartı",
-    subtitle: "Public rozet ve paylaşım önizlemesi",
+    title: "Profil Kartı",
+    subtitle: "Bilgiler, rozetler ve daha fazlası",
     trailingActions: ["partner-share"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
 };
 

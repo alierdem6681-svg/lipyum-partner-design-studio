@@ -5351,6 +5351,59 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
+.partner-profile-public-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.partner-profile-public-metric {
+  min-width: 0;
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--text-primary);
+}
+
+.partner-profile-public-metric > .icon {
+  color: var(--color-primary-dark);
+}
+
+.partner-profile-public-metric small,
+.partner-profile-public-metric strong {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-profile-public-metric small {
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+  line-height: 1.15;
+}
+
+.partner-profile-public-metric strong {
+  margin-top: 2px;
+  color: var(--text-primary);
+  font-size: 11.5px;
+  font-weight: var(--weight-extra-bold);
+  line-height: 1.15;
+}
+
+.v-partner-preview-page {
+  padding-bottom: 8px;
+}
+
 .partner-preview-details {
   display: block;
   border-color: var(--color-border);
@@ -5419,6 +5472,201 @@
 
 .partner-preview-detail__arrow {
   color: var(--text-secondary);
+}
+
+.partner-preview-reviews {
+  display: grid;
+  gap: 10px;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.partner-preview-reviews__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.partner-preview-reviews__header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+}
+
+.partner-preview-reviews__header button {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-dark);
+  font-family: var(--font-family-base);
+  font-size: 11px;
+  font-weight: var(--weight-extra-bold);
+  cursor: pointer;
+}
+
+.partner-preview-reviews__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.partner-preview-reviews__track::-webkit-scrollbar {
+  display: none;
+}
+
+.partner-preview-review-card {
+  display: grid;
+  gap: 0;
+  scroll-snap-align: start;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.partner-preview-review-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+
+.partner-preview-review-row + .partner-preview-review-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.partner-preview-review-row img {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: var(--color-neutral-100);
+}
+
+.partner-preview-review-row__copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.partner-preview-review-row__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.partner-preview-review-row__top strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+}
+
+.partner-preview-review-row__top span {
+  flex: 0 0 auto;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+}
+
+.partner-preview-review-row__stars {
+  display: block;
+  color: var(--color-warning);
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.partner-preview-review-row p {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  line-height: 1.25;
+}
+
+.partner-preview-review-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.partner-preview-review-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-neutral-300);
+}
+
+.partner-preview-review-dots span.is-active {
+  width: 8px;
+  background: var(--color-primary);
+}
+
+.partner-preview-sticky-actions {
+  position: sticky;
+  z-index: 16;
+  bottom: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.partner-preview-sticky-actions__item {
+  min-width: 0;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--text-primary);
+  font-family: var(--font-family-base);
+  font-size: 11.5px;
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.partner-preview-sticky-actions__item.is-primary {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: var(--color-surface);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-primary) 24%, transparent);
 }
 
 .partner-profile-name-row {
@@ -5773,8 +6021,11 @@
 
 .v-header__action.is-partner-share-action {
   min-width: 88px;
+  border-radius: 12px;
   border-color: color-mix(in srgb, var(--color-primary) 36%, transparent);
-  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.2), transparent 32%),
+    linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
   color: var(--lp-card);
   box-shadow: 0 10px 20px color-mix(in srgb, var(--color-primary) 26%, transparent);
   animation: partner-share-pulse 1.8s ease-in-out infinite;

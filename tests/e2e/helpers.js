@@ -72,6 +72,7 @@ export const bottomBarHiddenRoutes = new Set([
   "/subscription/checkout",
   "/wallet/top-up",
   "/wallet/top-up/success",
+  "/partner-card-preview",
 ]);
 
 export const blankBottomRoutes = new Set([

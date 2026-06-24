@@ -25,6 +25,10 @@ const xLevel = ref(2);
 const yLevel = ref(2);
 const isDraggingPhoto = ref(false);
 const dragOrigin = ref({ x: 0, y: 0, xLevel: 2, yLevel: 2 });
+const publicMetrics = [
+  { id: "response", icon: "clock", label: "Yanıt Süresi", value: "Genelde <2 dk" },
+  { id: "jobs", icon: "briefcase", label: "İş Sayısı", value: "428" },
+];
 
 const isDrawer = computed(() => props.variant === "drawer");
 const badgeExpanded = computed(() => props.expandBadges || (isDrawer.value ? profile.drawerBadgesExpanded : profile.expandedBadges));
@@ -253,6 +257,21 @@ async function savePhoto() {
           {{ profile.partner.rating }} Puan <span aria-hidden="true">·</span> {{ profile.partner.reviewCount }} Değerlendirme
         </span>
       </div>
+    </div>
+
+    <div v-if="variant === 'public'" class="partner-profile-public-metrics" data-testid="partner-public-metrics" aria-label="Profil öne çıkan bilgileri">
+      <span
+        v-for="metric in publicMetrics"
+        :key="metric.id"
+        class="partner-profile-public-metric"
+        :data-testid="`partner-public-metric-${metric.id}`"
+      >
+        <AppIcon :name="metric.icon" :size="17" class-name="icon" />
+        <span>
+          <small>{{ metric.label }}</small>
+          <strong>{{ metric.value }}</strong>
+        </span>
+      </span>
     </div>
 
     <div :class="badgesClasses" aria-label="Profil rozetleri">

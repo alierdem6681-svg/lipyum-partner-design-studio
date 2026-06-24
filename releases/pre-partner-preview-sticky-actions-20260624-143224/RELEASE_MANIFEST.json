@@ -1,0 +1,18 @@
+{
+  "name": "pre-partner-preview-sticky-actions-20260624-143224",
+  "createdAt": "2026-06-24T14:32:24+03:00",
+  "sha": "44545c532cddd5040a804e2fe725ed2cbbea0958",
+  "tag": "pre-partner-preview-sticky-actions-20260624-143224",
+  "archiveBranch": "archive/pre-partner-preview-sticky-actions-20260624-143224",
+  "scope": "Backup before partner card preview reviews and sticky action bar",
+  "runtime": "Vue final runtime",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "testedBeforeChange": {
+    "releaseGate": "PASS before merge on feature branch after implementation",
+    "build": "PASS"
+  },
+  "rollback": {
+    "command": "git revert <merge-sha>",
+    "restoreRef": "pre-partner-preview-sticky-actions-20260624-143224"
+  }
+}
