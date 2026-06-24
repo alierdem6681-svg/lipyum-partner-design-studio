@@ -230,13 +230,13 @@ const titleOverrides = {
     subtitle: "Bonus kazanç geçmişi ve detayları",
   },
   "/performance-score": {
-    title: "Daha Fazla İş Al",
-    subtitle: "Görevleri tamamla, skorunu artır.",
+    title: "Performansımı Artır",
+    subtitle: "Daha güçlü görünmek için gelişim alanlarını takip et.",
     trailingActions: [],
   },
   "/performance-improve": {
-    title: "Daha Fazla İş Al",
-    subtitle: "Görevleri tamamla, skorunu artır.",
+    title: "Performansımı Artır",
+    subtitle: "Daha güçlü görünmek için gelişim alanlarını takip et.",
     trailingActions: [],
   },
   "/customer-management": {

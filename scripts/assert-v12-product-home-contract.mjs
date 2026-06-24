@@ -62,7 +62,7 @@ const state = await page.evaluate(() => {
     requiredText: {
       performance: text.includes("Performans Skoru"),
       score: text.includes("81"),
-      scoreCta: text.includes("Skorumu Art"),
+      scoreCta: text.includes("Performansımı Artır") || text.includes("Performansimi Artir"),
       wallet: text.includes("Cüzdan") || text.includes("Cüzdan"),
       bonus: text.includes("Bonus"),
       credit: text.includes("675"),
@@ -89,9 +89,9 @@ const bottomAsciiExpected = ["Ana Sayfa", "İşler", "İş Al", "Randevu", "Cüz
 const bottomPass = JSON.stringify(state.bottomLabels) === JSON.stringify(bottomExpected)
   || JSON.stringify(state.bottomLabels) === JSON.stringify(bottomAsciiExpected);
 
-await page.getByText(/Nedir/i).first().click();
-const performanceSheetOpen = await page.locator('[role="dialog"]').count().catch(() => 0);
-await page.keyboard.press("Escape").catch(() => {});
+await page.getByTestId("home-performance-improve-button").click();
+await page.waitForURL(/#\/performance-improve/, { timeout: 10_000 }).catch(() => {});
+const performanceImproveOpen = page.url().includes("#/performance-improve");
 
 const failures = [];
 for (const [name, pass] of Object.entries(state.requiredText)) {
@@ -105,7 +105,7 @@ if (state.horizontalOverflow) failures.push("horizontal overflow");
 if (state.runtime !== "vue") failures.push(`runtime marker mismatch: ${state.runtime}`);
 if (consoleErrors.length) failures.push("console errors");
 if (pageErrors.length) failures.push("page errors");
-if (!performanceSheetOpen) failures.push("performance info sheet did not open");
+if (!performanceImproveOpen) failures.push("performance improve route did not open");
 
 await browser.close();
 
@@ -114,7 +114,7 @@ const report = {
   featureUrl,
   state,
   bottomExpected,
-  performanceSheetOpen: Boolean(performanceSheetOpen),
+  performanceImproveOpen,
   consoleErrors,
   pageErrors,
   failures,
