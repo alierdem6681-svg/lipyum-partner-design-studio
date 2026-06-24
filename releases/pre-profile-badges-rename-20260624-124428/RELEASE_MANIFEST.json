@@ -1,0 +1,12 @@
+{
+  "name": "pre-profile-badges-rename-20260624-124428",
+  "commitSha": "7d34182e7c96c48d81cefddd84b0a5267c12ef8e",
+  "branch": "main",
+  "backupTag": "pre-profile-badges-rename-20260624-124428",
+  "archiveBranch": "archive/pre-profile-badges-rename-20260624-124428",
+  "route": "/partner-card-preview",
+  "runtime": "vue",
+  "liveUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "backupReason": "Before renaming visible partner profile badges.",
+  "rollback": "git revert <merge-sha> or git switch archive/pre-profile-badges-rename-20260624-124428"
+}

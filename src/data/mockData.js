@@ -14,9 +14,9 @@ export const partnerProfile = {
   badges: [
     { label: "Güvenilir", icon: "shield" },
     { label: "Hızlı", icon: "zap" },
-    { label: "Bölge Aktif", icon: "map-pin" },
-    { label: "Sonuç Bildiren", icon: "check" },
-    { label: "Randevu Düzenli", icon: "calendar" },
+    { label: "Titiz", icon: "sparkles" },
+    { label: "Çalışkan", icon: "briefcase" },
+    { label: "Planlı Düzenli", icon: "calendar" },
   ],
 };
 
