@@ -189,18 +189,23 @@ test("partner card preview uses share button and channel options", async ({ page
 
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
-  await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("Whatsapp");
-  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web Sitesi");
+  await expect(page.getByTestId("app-sheet")).toContainText("Profilini paylaş");
+  await expect(page.getByTestId("partner-share-hero")).toContainText("Mükemmel Profilinle İnsanlara Güven Ver");
+  await expect(page.getByTestId("partner-share-free-contact")).toContainText("hiçbir ücret ödemezsin");
+  await expect(page.getByTestId("partner-share-growth")).toContainText("x4");
+  await expect(page.getByTestId("partner-share-option-whatsapp")).toContainText("WhatsApp");
+  await expect(page.getByTestId("partner-share-option-copy")).toContainText("Link Kopyala");
+  await expect(page.getByTestId("partner-share-option-message")).toContainText("Mesaj");
+  await expect(page.getByTestId("partner-share-option-website")).toContainText("Web sitemde göster");
   await expect(page.getByTestId("partner-share-option-instagram")).toContainText("Instagram");
   await expect(page.getByTestId("partner-share-option-facebook")).toContainText("Facebook");
-  await expect(page.getByTestId("partner-share-option-tiktok")).toContainText("Tik Tok");
+  await expect(page.getByTestId("partner-share-option-tiktok")).toContainText("TikTok");
   await expect(page.getByTestId("partner-share-option-x")).toContainText("X");
-  await expect(page.getByTestId("partner-share-option-thread")).toContainText("Thread");
-  await expect(page.getByTestId("partner-share-short-link")).toContainText("lipyum.com/f54s3f2");
-  await expect(page.getByTestId("partner-share-qr")).toBeVisible();
+  await expect(page.getByTestId("partner-share-option-story")).toContainText("Hikaye");
+  await expect(page.getByTestId("partner-share-start")).toContainText("Ücretsiz Paylaşmaya Başla");
 
-  await page.getByTestId("partner-share-suboption-whatsapp-birine-gonder").click();
-  await expect(page.locator("#toast")).toContainText("Whatsapp - Birine gönder hazırlandı.");
+  await page.getByTestId("partner-share-option-whatsapp").click();
+  await expect(page.locator("#toast")).toContainText("WhatsApp paylaşımı hazırlandı.");
   expect(errors).toEqual([]);
 });
 
