@@ -1,0 +1,12 @@
+{
+  "name": "pre-partner-preview-summary-copy-20260624-135654",
+  "commitSha": "eb37f79c65f0b418d0f2ba049778bf2aaa4c6120",
+  "branch": "main",
+  "backupTag": "pre-partner-preview-summary-copy-20260624-135654",
+  "archiveBranch": "archive/pre-partner-preview-summary-copy-20260624-135654",
+  "route": "/partner-card-preview",
+  "runtime": "vue",
+  "liveUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "backupReason": "Before updating partner preview service, region, and working hour summary copy.",
+  "rollback": "git revert <merge-sha> or git switch archive/pre-partner-preview-summary-copy-20260624-135654"
+}

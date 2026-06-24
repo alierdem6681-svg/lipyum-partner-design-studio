@@ -6,51 +6,32 @@ import AppPage from "../components/ui/AppPage.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
 import PartnerProfileCard from "../components/profile/PartnerProfileCard.vue";
 import PartnerShareSheet from "../components/profile/PartnerShareSheet.vue";
-import { getActiveRouteContent } from "../data/activeRouteContent.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
 const shareSheetOpen = ref(false);
-
-function itemsFor(route, limit = 3) {
-  return (
-    getActiveRouteContent(route)
-      ?.sections?.flatMap((section) => section.items || [])
-      .slice(0, limit) || []
-  );
-}
-
-function compactList(items, limit = 3) {
-  const labels = items.slice(0, limit).map((item) => item.title);
-  const extraCount = Math.max(0, items.length - limit);
-  return `${labels.join(", ")}${extraCount ? ` +${extraCount}` : ""}`;
-}
-
-const serviceItems = itemsFor("/services");
-const regionItems = itemsFor("/regions");
-const hourItems = itemsFor("/working-hours", 2);
 
 const previewDetails = [
   {
     id: "services",
     icon: "briefcase",
     title: "Hizmetler",
-    subtitle: compactList(serviceItems),
-    value: `${serviceItems.length} aktif hizmet`,
+    subtitle: "Klima bakım, Buzdolabı tamiri, Çamaşır makinesi",
+    value: "+7 Hizmet",
   },
   {
     id: "regions",
     icon: "map-pin",
-    title: "Bölgeler",
-    subtitle: "Ana ve yakın servis alanı",
-    value: `${regionItems.length} bölge`,
+    title: "Hizmet Bölgeleri",
+    subtitle: "Beşiktaş, Şişli, Beyoğlu",
+    value: "+18 Bölge",
   },
   {
     id: "hours",
     icon: "clock",
-    title: "Saatler",
-    subtitle: `${hourItems[1]?.title || "Cumartesi"} ${hourItems[1]?.body || "10:00 - 16:00"}`,
-    value: hourItems[0]?.body || "09:00 - 19:00",
+    title: "Çalışma Saatleri",
+    subtitle: "Hafta içi ve cumartesi",
+    value: "08:00 - 21:00",
   },
 ];
 
