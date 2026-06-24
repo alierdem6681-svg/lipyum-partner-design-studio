@@ -1,0 +1,18 @@
+{
+  "name": "pre-partner-preview-compact-cta-20260624-145843",
+  "createdAt": "2026-06-24T14:58:43+03:00",
+  "source": "origin/main",
+  "sha": "449e4b89c05e6b7340cb87f456eabf4f53b00c7d",
+  "tag": "pre-partner-preview-compact-cta-20260624-145843",
+  "archiveBranch": "archive/pre-partner-preview-compact-cta-20260624-145843",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "scope": "Backup before compact partner card preview CTA and badge updates.",
+  "validationBeforeMerge": [
+    "npm run check",
+    "targeted Playwright partner preview/profile badge tests",
+    "npm run test:quality-gate:release"
+  ],
+  "rollback": {
+    "command": "git checkout -b rollback/partner-preview-compact-cta pre-partner-preview-compact-cta-20260624-145843"
+  }
+}

@@ -16,14 +16,14 @@ const previewDetails = [
     id: "services",
     icon: "briefcase",
     title: "Hizmetler",
-    subtitle: "Klima bakım, Buzdolabı tamiri, Çamaşır makinesi",
+    subtitle: "Klima bakım, buzdolabı tamiri...",
     value: "+7 Hizmet",
   },
   {
     id: "regions",
     icon: "map-pin",
     title: "Hizmet Bölgeleri",
-    subtitle: "Beşiktaş, Şişli, Beyoğlu",
+    subtitle: "Beşiktaş, Şişli, Beyoğlu...",
     value: "+18 Bölge",
   },
   {
@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <AppPage title="Profil Kartı" data-testid="partner-card-preview-page">
+  <AppPage title="Profil Kartı" class="partner-card-preview-page" data-testid="partner-card-preview-page">
     <div class="v-stack v-partner-preview-page" data-testid="partner-card-preview">
       <PartnerProfileCard variant="public" :show-actions="false" expand-badges />
 

@@ -96,8 +96,8 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   const badgeLabels = await page.locator(".partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
-  expect(new Set(badgeLabels).size).toBe(5);
-  expect(badgeLabels).toHaveLength(5);
+  expect(new Set(badgeLabels).size).toBe(6);
+  expect(badgeLabels).toHaveLength(6);
   const order = await page.evaluate(() => {
     const profile = document.querySelector(".partner-profile-card").getBoundingClientRect();
     const menu = document.querySelector(".profile-menu-section").getBoundingClientRect();
@@ -124,14 +124,14 @@ test("Vue preview drawer uses stable Lipyum sidebar contract", async ({ page }) 
   await expect(page.locator(".drawer-profile-card")).toBeVisible();
   await expect(page.locator(".drawer-work-status-card")).toHaveCount(0);
   await expect(page.locator(".drawer-menu-card")).toHaveCount(4);
-  await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(13);
+  await expect(page.getByTestId("sidebar-menu-item")).toHaveCount(12);
   await page.getByTestId("drawer-profile-badge-more").click();
   await expect(page.getByTestId("drawer-profile-badge-more")).toHaveCount(0);
   const drawerBadgeLabels = await page.locator(".drawer-profile-card .partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
-  expect(new Set(drawerBadgeLabels).size).toBe(5);
-  expect(drawerBadgeLabels).toHaveLength(5);
+  expect(new Set(drawerBadgeLabels).size).toBe(6);
+  expect(drawerBadgeLabels).toHaveLength(6);
   await expect(page.locator(".v-drawer-menu__item")).toHaveCount(0);
   expect(errors).toEqual([]);
 });

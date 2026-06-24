@@ -15,12 +15,9 @@ export const partnerProfile = {
     { label: "Güvenilir", icon: "shield" },
     { label: "Hızlı", icon: "zap" },
     { label: "Titiz", icon: "sparkles" },
-    { label: "Çalışkan", icon: "briefcase" },
     { label: "Planlı", icon: "calendar" },
     { label: "Düzenli", icon: "check" },
     { label: "İlgili", icon: "message" },
-    { label: "Samimi", icon: "star" },
-    { label: "Enerjik", icon: "trend-up" },
   ],
 };
 
