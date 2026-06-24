@@ -172,6 +172,7 @@ export const DRAWER_SECTIONS = [
 
 export const PROFILE_MENU_ITEMS = [
   { label: "Hakkımda", shortLabel: "Hakkımda", route: "/about", screen: "about", icon: "user" },
+  { label: "Doğrulamalar", shortLabel: "Doğrulama", route: "/verifications", screen: "verifications", icon: "shield" },
   { label: "Fotoğraflarım", shortLabel: "Fotoğraf", route: "/photo-gallery", screen: "photoGallery", icon: "eye" },
   { label: "Hizmetlerim", shortLabel: "Hizmet", route: "/services", screen: "services", icon: "briefcase" },
   { label: "Bölgelerim", shortLabel: "Bölge", route: "/regions", screen: "regions", icon: "map-pin" },

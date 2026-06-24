@@ -36,6 +36,7 @@ const rightActionTestIds = {
   profile: "profile-button",
   info: "header-info-button",
   "profile-preview": "profile-preview-header-button",
+  "profile-settings": "profile-settings-header-button",
   "wallet-info": "wallet-info-button",
   "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",

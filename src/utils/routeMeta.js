@@ -4,7 +4,9 @@ const titleOverrides = {
   "/profile": {
     title: "Profilim",
     subtitle: "Profil ve hesap ayarların",
-    trailingActions: ["profile-preview"],
+    trailingActions: ["profile-settings"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/about": {
     title: "Hakkımda",
