@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AppBadge from "../components/ui/AppBadge.vue";
 import AppButton from "../components/ui/AppButton.vue";
@@ -20,12 +20,6 @@ const profile = useProfileStore();
 
 const selectedFilter = ref("Tümü");
 const modal = ref(null);
-const liveState = ref("idle");
-const liveMessages = ref([]);
-const liveDraft = ref("");
-const typing = ref(false);
-let liveTimer = 0;
-let typingTimer = 0;
 
 const page = computed(() => getActiveRouteContent(route.path));
 const routeTestIds = {
@@ -51,21 +45,9 @@ watch(
   () => {
     selectedFilter.value = "Tümü";
     profile.resetBadges();
-    clearLiveTimers();
-    liveState.value = "idle";
-    liveMessages.value = [];
-    liveDraft.value = "";
-    typing.value = false;
   },
   { immediate: true },
 );
-
-onBeforeUnmount(() => clearLiveTimers());
-
-function clearLiveTimers() {
-  window.clearTimeout(liveTimer);
-  window.clearTimeout(typingTimer);
-}
 
 function openSheet(title, body, description = "İşlem") {
   shell.openSheet({ title, body, description });
@@ -94,42 +76,6 @@ function handleAction(action) {
 
 function isInteractive(item) {
   return Boolean(item?.route || item?.type || item?.action);
-}
-
-function startLiveSupport() {
-  clearLiveTimers();
-  liveState.value = "waiting";
-  liveMessages.value = [
-    { from: "system", text: "Talep başlığı alındı. Tahmini süre 2 dakika." },
-  ];
-  liveTimer = window.setTimeout(() => {
-    liveState.value = "connected";
-    liveMessages.value.push({ from: "agent", text: "Merhaba, Lipyum canlı destek hattına hoş geldiniz. Size nasıl yardımcı olabiliriz?" });
-  }, 5000);
-}
-
-function createTicketWhileWaiting() {
-  openSheet("Talep Oluştur", "Canlı destek beklerken yazılı talep oluşturma akışı açıldı.");
-}
-
-function sendLiveMessage() {
-  const text = liveDraft.value.trim();
-  if (!text) return;
-  liveMessages.value.push({ from: "user", text });
-  liveDraft.value = "";
-  typing.value = true;
-  window.clearTimeout(typingTimer);
-  typingTimer = window.setTimeout(() => {
-    typing.value = false;
-    liveMessages.value.push({ from: "agent", text: "Mesajınızı aldık. İlgili kayıtları kontrol edip kısa sürede dönüş yapıyoruz." });
-  }, 1200);
-}
-
-function endLiveSupport() {
-  clearLiveTimers();
-  liveState.value = "ended";
-  typing.value = false;
-  liveMessages.value.push({ from: "system", text: "Konuşma bitirildi." });
 }
 </script>
 
@@ -194,36 +140,6 @@ function endLiveSupport() {
         aria-label="Route filtreleri"
         data-testid="content-filter-chips"
       />
-
-      <template v-if="page.kind === 'live-support'">
-        <AppCard padding="lg" data-testid="live-support-card">
-          <div class="v-live-support">
-            <h3>Canlı destek talebi</h3>
-            <p>Talep başlığı ve kısa açıklama ile görüşmeyi başlatın.</p>
-            <AppButton v-if="liveState === 'idle'" icon="message" @click="startLiveSupport">Canlı sohbete başla</AppButton>
-            <div v-if="liveState === 'waiting'" class="v-live-waiting">
-              <AppChip tone="warning">Tahmini süre 2 dakika</AppChip>
-              <p>Temsilci bağlanırken bekliyorsunuz.</p>
-              <AppButton variant="secondary" icon="file-text" @click="createTicketWhileWaiting">Talep Oluştur</AppButton>
-            </div>
-            <div v-if="liveMessages.length" class="v-chat-thread">
-              <div
-                v-for="(message, index) in liveMessages"
-                :key="`${message.from}-${index}`"
-                :class="['v-chat-bubble', `is-${message.from}`]"
-              >
-                {{ message.text }}
-              </div>
-              <div v-if="typing" class="v-chat-bubble is-agent">Yazıyor...</div>
-            </div>
-            <div v-if="liveState === 'connected'" class="v-chat-input">
-              <input v-model="liveDraft" type="text" aria-label="Canlı destek mesajı" placeholder="Mesaj yaz" @keyup.enter="sendLiveMessage" />
-              <AppButton icon="send" size="sm" @click="sendLiveMessage">Gönder</AppButton>
-              <AppButton variant="ghost" size="sm" @click="endLiveSupport">Konuşmayı bitir</AppButton>
-            </div>
-          </div>
-        </AppCard>
-      </template>
 
       <section v-for="section in page.sections" :key="section.title" class="v-content-section">
         <div class="v-section-title">

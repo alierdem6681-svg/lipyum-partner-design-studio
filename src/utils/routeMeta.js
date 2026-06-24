@@ -92,15 +92,18 @@ const titleOverrides = {
   },
   "/support/new": {
     title: "Talep Oluştur",
-    subtitle: "Sorununu seç, hızlıca takip edelim",
+    subtitle: "",
+    trailingActions: [],
   },
   "/support/live": {
     title: "Canlı Destek",
-    subtitle: "Temsilciyle hızlıca görüş",
+    subtitle: "",
+    trailingActions: [],
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
-    subtitle: "Telefon ve destek kanalları",
+    subtitle: "",
+    trailingActions: [],
   },
   "/reviews": {
     title: "Müşteri Yorumları",
@@ -159,11 +162,16 @@ const titleOverrides = {
     ctaVariant: "hidden",
     showBottomBar: false,
   },
+  "/invoices": {
+    title: "Faturalarım",
+    subtitle: "",
+    trailingActions: [],
+  },
   "/wallet": {
     title: "Cüzdanım",
     compactTitle: "Cüzdan",
-    subtitle: "İş bakiyeni ve bonuslarını yönet.",
-    trailingActions: ["wallet-info"],
+    subtitle: "",
+    trailingActions: [],
   },
   "/wallet/top-up": {
     title: "Bakiye Yükle",

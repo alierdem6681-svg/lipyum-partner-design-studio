@@ -291,7 +291,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("navigation and live support remain functional", async ({ page }) => {
+test("navigation and cleared support routes remain functional", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await expectVueShell(page, "/home");
@@ -304,7 +304,7 @@ test("navigation and live support remain functional", async ({ page }) => {
 
   await page.goto("/#/support/live");
   await expectVueShell(page, "/support/live");
-  await page.getByRole("button", { name: /Canl/i }).first().click();
-  await expect(page.getByTestId("live-support-waiting").getByText(/Tahmini süre 2 dakika/i)).toBeVisible();
+  await expect(page.getByTestId("live-support-page")).toBeVisible();
+  await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   expect(errors).toEqual([]);
 });

@@ -91,7 +91,7 @@ test.describe("subscription direct purchase flow", () => {
     await expect(page.getByTestId("return-to-plus")).toBeVisible();
   });
 
-  test("customer service reads centralized plan entitlement", async ({ page }) => {
+  test("customer service route stays available after content reset", async ({ page }) => {
     await page.goto("#/subscription?subscriptionState=active&plan=vip");
     await waitForApp(page);
     await expect(page.getByTestId("subscription-active-state")).toBeVisible();
@@ -100,8 +100,9 @@ test.describe("subscription direct purchase flow", () => {
       window.location.hash = "/support/customer-service";
     });
     await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/support/customer-service");
-    await expect(page.getByText("Mevcut destek seviyen: telefon ve öncelikli destek.")).toBeVisible();
-    await expect(page.getByText("Telefon ve öncelikli destek hakkın aktif.")).toBeVisible();
+    await expect(page.getByTestId("customer-service-page")).toBeVisible();
+    await expect(page.getByText("Mevcut destek seviyen: telefon ve öncelikli destek.")).toHaveCount(0);
+    await expect(page.getByText("Telefon ve öncelikli destek hakkın aktif.")).toHaveCount(0);
   });
 
   for (const viewport of [

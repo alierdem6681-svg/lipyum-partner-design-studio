@@ -271,36 +271,20 @@ const content = {
   "/support/new": {
     group: "support",
     title: "Talep Oluştur",
-    lead: "Destek ekibine yazılı talep gönder.",
-    sections: [
-      {
-        title: "Talep türleri",
-        items: [
-          { title: "Ödeme ve fatura", body: "Fatura ve ödeme desteği.", icon: "credit-card", action: "create-ticket" },
-          { title: "İş akışı", body: "Teklif, randevu ve saha süreci.", icon: "briefcase", action: "create-ticket" },
-        ],
-      },
-    ],
+    lead: "",
+    sections: [],
   },
   "/support/live": {
     group: "support",
-    kind: "live-support",
     title: "Canlı Destek",
-    lead: "Talep başlığı ve kısa açıklama ile canlı destek başlatılır.",
+    lead: "",
+    sections: [],
   },
   "/support/customer-service": {
     group: "support",
     title: "Müşteri Hizmetleri",
-    lead: "Telefon ve destek kanallarını tek yerden yönet.",
-    sections: [
-      {
-        title: "Destek seçenekleri",
-        items: [
-          { title: "Telefon desteği", body: "Müşteri hizmetleri numarasını kullan.", icon: "phone" },
-          { title: "Çağrı planlama", body: "Uygun zaman için destek talebi oluştur.", icon: "phone", action: "schedule-call" },
-        ],
-      },
-    ],
+    lead: "",
+    sections: [],
   },
   "/messages": {
     group: "support",
@@ -470,16 +454,8 @@ const content = {
   "/invoices": {
     group: "finance",
     title: "Faturalarım",
-    lead: "Fatura ve ödeme kayıtları.",
-    sections: [
-      {
-        title: "Son faturalar",
-        items: [
-          { title: "Haziran hizmet bedeli", body: "Ödendi.", icon: "receipt" },
-          { title: "Mayıs hizmet bedeli", body: "Ödendi.", icon: "receipt" },
-        ],
-      },
-    ],
+    lead: "",
+    sections: [],
   },
   "/income-expense": {
     group: "finance",
