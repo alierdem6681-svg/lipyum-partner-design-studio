@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
@@ -8,30 +8,16 @@ import AppPage from "../components/ui/AppPage.vue";
 
 const router = useRouter();
 const submitted = ref(false);
-const description = ref("");
-const descriptionFocused = ref(false);
-const category = ref("Sistem ile ilgili konular");
+const uploadTouched = ref(false);
+const category = ref("İş İtirazı");
 const priority = ref("Normal");
-const imageFiles = ref([]);
-const documentFiles = ref([]);
-const descriptionRef = ref(null);
-const imageInputRef = ref(null);
-const fileInputRef = ref(null);
-const maxDescriptionLength = 500;
-const descriptionPlaceholder = "Profilime daha fazla bölge eklemek için yardım istiyorum.";
-const ticketCategories = [
-  "Sistem ile ilgili konular",
-  "Şikayet bildirmek istiyorum",
-  "Bir istekte bulunacağım",
-  "Diğer",
-];
+const ticketCategories = ["İş İtirazı", "Ödeme Sorunu", "Bonus Sorunu", "Müşteri Sorunu", "Teknik Sorun"];
 const priorityOptions = [
-  { label: "Düşük", value: "Düşük" },
   { label: "Normal", value: "Normal" },
+  { label: "Öncelikli", value: "Oncelikli" },
+  { label: "Öncelikli", value: "Öncelikli" },
   { label: "Acil", value: "Acil" },
-  { label: "Kritik", value: "Kritik" },
 ];
-const remainingCharacters = computed(() => maxDescriptionLength - description.value.length);
 
 function submitTicket() {
   submitted.value = true;
@@ -39,45 +25,24 @@ function submitTicket() {
 
 function resetTicket() {
   submitted.value = false;
-  description.value = "";
-  category.value = "Sistem ile ilgili konular";
-  priority.value = "Normal";
-  imageFiles.value = [];
-  documentFiles.value = [];
-  nextTick(resizeDescription);
-}
-
-function resizeDescription() {
-  const textarea = descriptionRef.value;
-  if (!textarea) return;
-  textarea.style.height = "auto";
-  textarea.style.height = `${textarea.scrollHeight}px`;
-}
-
-function updateDescription(event) {
-  description.value = event.target.value.slice(0, maxDescriptionLength);
-  nextTick(resizeDescription);
-}
-
-function openImagePicker() {
-  imageInputRef.value?.click();
-}
-
-function openFilePicker() {
-  fileInputRef.value?.click();
-}
-
-function onImageSelected(event) {
-  imageFiles.value = Array.from(event.target.files || []);
-}
-
-function onFileSelected(event) {
-  documentFiles.value = Array.from(event.target.files || []);
+  uploadTouched.value = false;
 }
 </script>
 
 <template>
   <AppPage title="Talep Oluştur" class="support-new-page" data-testid="support-ticket-page">
+    <AppCard class="ticket-hero-card">
+      <span class="ticket-hero-icon" aria-hidden="true">
+        <AppIcon :name="submitted ? 'check' : 'file-text'" :size="22" />
+      </span>
+      <span>
+        <strong>{{ submitted ? "Talep takipte" : "Hızlı destek talebi" }}</strong>
+        <small>
+          {{ submitted ? "Talebin oluşturuldu; ekibimiz konuya dönecek." : "Kategori, kısa konu ve öncelik seçerek destek kaydı aç." }}
+        </small>
+      </span>
+    </AppCard>
+
     <AppCard v-if="submitted" class="ticket-success-card" data-testid="support-ticket-success">
       <span class="ticket-success-icon"><AppIcon name="check" :size="22" /></span>
       <h2>Talebin oluşturuldu</h2>
@@ -98,24 +63,13 @@ function onFileSelected(event) {
           <option v-for="item in ticketCategories" :key="item" :value="item">{{ item }}</option>
         </select>
       </label>
-      <label class="ticket-description-field">
+      <label>
+        <span>Konu</span>
+        <input data-testid="support-ticket-subject" name="subject" type="text" value="Bakiye kullanım kontrolü" placeholder="Kısaca konuyu yaz" />
+      </label>
+      <label>
         <span>Açıklama</span>
-        <textarea
-          ref="descriptionRef"
-          :value="description"
-          class="ticket-description-textarea"
-          data-testid="support-ticket-description"
-          name="description"
-          rows="3"
-          :maxlength="maxDescriptionLength"
-          :placeholder="descriptionFocused ? '' : descriptionPlaceholder"
-          @input="updateDescription"
-          @focus="descriptionFocused = true; resizeDescription()"
-          @blur="descriptionFocused = false"
-        ></textarea>
-        <small class="ticket-character-count" data-testid="support-ticket-character-count">
-          {{ remainingCharacters }} karakter kaldı
-        </small>
+        <textarea data-testid="support-ticket-description" name="description" rows="4" placeholder="Detayı yaz">Kredi kullanım hareketimde kontrol edilmesi gereken bir konu var.</textarea>
       </label>
       <label>
         <span>Öncelik</span>
@@ -123,32 +77,10 @@ function onFileSelected(event) {
           <option v-for="item in priorityOptions" :key="item.value" :value="item.value">{{ item.label }}</option>
         </select>
       </label>
-      <div class="ticket-attachment-grid" aria-label="Talep ekleri">
-        <button class="ticket-upload-placeholder" type="button" data-testid="support-ticket-image-upload" @click="openImagePicker">
-          <AppIcon name="plus" :size="18" />
-          <span>{{ imageFiles.length ? `${imageFiles.length} resim seçildi` : "Resim ekle" }}</span>
-        </button>
-        <button class="ticket-upload-placeholder" type="button" data-testid="support-ticket-file-upload" @click="openFilePicker">
-          <AppIcon name="file-text" :size="18" />
-          <span>{{ documentFiles.length ? `${documentFiles.length} dosya seçildi` : "Dosya ekle" }}</span>
-        </button>
-      </div>
-      <input
-        ref="imageInputRef"
-        class="sr-only"
-        type="file"
-        accept="image/*"
-        multiple
-        data-testid="support-ticket-image-input"
-        @change="onImageSelected"
-      />
-      <input
-        ref="fileInputRef"
-        class="sr-only"
-        type="file"
-        data-testid="support-ticket-file-input"
-        @change="onFileSelected"
-      />
+      <button class="ticket-upload-placeholder" type="button" data-action="mock-upload" data-testid="support-ticket-upload" @click="uploadTouched = true">
+        <AppIcon name="plus" :size="18" />
+        <span>{{ uploadTouched ? "Dosya placeholder eklendi" : "Dosya veya ekran görüntüsü ekle" }}</span>
+      </button>
       <AppButton class="primary-btn" type="submit" data-testid="support-ticket-submit">Talep Oluştur</AppButton>
     </AppCard>
   </AppPage>

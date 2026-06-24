@@ -12,13 +12,11 @@ import AppPage from "../components/ui/AppPage.vue";
 import { getActiveRouteContent } from "../data/activeRouteContent.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useProfileStore } from "../stores/profileStore.js";
-import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const route = useRoute();
 const router = useRouter();
 const shell = useAppShellStore();
 const profile = useProfileStore();
-const subscription = useSubscriptionStore();
 
 const selectedFilter = ref("Tümü");
 const modal = ref(null);
@@ -88,12 +86,8 @@ function handleAction(action) {
   if (action.type === "route") routeTo(action.route);
   if (action.type === "sheet") openSheet(action.title || action.label, action.body || "İşlem hazırlandı.");
   if (action.type === "modal") openModal(action.title || action.label, action.body || "İşlem hazırlandı.");
-  if (action.action === "select-plan") {
-    subscription.selectPlan(action.title);
-    openSheet("Abonelik planı", `${action.title} planı seçildi. Müşteri Hizmetleri erişimi abonelik planına bağlandı.`);
-  }
   if (action.action === "partner-detail") openSheet(action.title, "Partner detay sheet açıldı. Filtre, durum ve kazanç bilgileri burada yönetilir.");
-  if (action.action && !action.route && !action.type && action.action !== "select-plan" && action.action !== "partner-detail") {
+  if (action.action && !action.route && !action.type && action.action !== "partner-detail") {
     openSheet(action.title || "İşlem", `${action.title || "Seçilen işlem"} için mock akış hazırlandı.`);
   }
 }
@@ -230,20 +224,6 @@ function endLiveSupport() {
           </div>
         </AppCard>
       </template>
-
-      <AppCard v-if="page.requiresSubscription" padding="lg" class="v-subscription-access">
-        <div>
-          <h3>Abonelik erişimi</h3>
-          <p>{{ subscription.hasPaidSubscription ? `${subscription.activeSubscriptionPlan} planı aktif.` : "Ücretli plan seçilmedi." }}</p>
-        </div>
-        <AppButton
-          size="sm"
-          icon="crown"
-          @click="routeTo('/subscription')"
-        >
-          Aboneliğim
-        </AppButton>
-      </AppCard>
 
       <section v-for="section in page.sections" :key="section.title" class="v-content-section">
         <div class="v-section-title">

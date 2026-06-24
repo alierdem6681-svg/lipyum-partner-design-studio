@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
@@ -9,88 +9,41 @@ import AppPage from "../components/ui/AppPage.vue";
 
 const router = useRouter();
 const state = ref("idle");
-const title = ref("");
-const description = ref("");
+const title = ref("Kredi kullanımı hakkında destek");
+const description = ref("Kredi ve bonus kullanımıyla ilgili canlı destek almak istiyorum.");
 const draft = ref("");
 const typing = ref(false);
 const messages = ref([]);
-const threadRef = ref(null);
 let connectTimer = 0;
 let typingTimer = 0;
 
-const defaultTitle = "İş sayıları hakkında destek";
-const defaultDescription = "Daha fazla iş alabilmek için ne yapmalıyım?";
-
-const hasDraft = computed(() => draft.value.trim().length > 0);
-const chatTitle = computed(() => title.value.trim() || defaultTitle);
-const chatDescription = computed(() => description.value.trim() || defaultDescription);
-
 onBeforeUnmount(clearTimers);
-
-watch(
-  messages,
-  () => {
-    scrollToBottom(true);
-  },
-  { deep: true },
-);
-
-watch(state, () => {
-  scrollToBottom(false);
-});
 
 function clearTimers() {
   window.clearTimeout(connectTimer);
   window.clearTimeout(typingTimer);
 }
 
-function scrollToBottom(smooth = false) {
-  nextTick(() => {
-    const thread = threadRef.value;
-    if (!thread) return;
-    thread.scrollTo({
-      top: thread.scrollHeight,
-      behavior: smooth ? "smooth" : "auto",
-    });
-  });
-}
-
 function startChat() {
   clearTimers();
   state.value = "waiting";
-  messages.value = [
-    {
-      from: "user",
-      text: `${chatTitle.value}\n${chatDescription.value}`,
-      time: "09:41",
-      status: "read",
-    },
-    { from: "system", text: "Müşteri temsilcisine bağlanıyorsun.", time: "09:41" },
-  ];
+  messages.value = [{ from: "system", text: "Talep başlığı alındı. Tahmini süre 2 dakika." }];
   connectTimer = window.setTimeout(() => {
     state.value = "connected";
-    messages.value.push({
-      from: "agent",
-      text: "Merhaba, ben Elif Yılmaz. Size nasıl yardımcı olabilirim?",
-      time: "09:42",
-    });
+    messages.value.push({ from: "agent", text: "Lipyum destekten Elif bağlandı. Size nasıl yardımcı olabiliriz?" });
   }, 5000);
 }
 
 function sendMessage() {
   const text = draft.value.trim();
-  if (!text || state.value !== "connected") return;
-  messages.value.push({ from: "user", text, time: "09:43", status: "read" });
+  if (!text) return;
+  messages.value.push({ from: "user", text });
   draft.value = "";
   typing.value = true;
   window.clearTimeout(typingTimer);
   typingTimer = window.setTimeout(() => {
     typing.value = false;
-    messages.value.push({
-      from: "agent",
-      text: "Mesajınızı aldım, ilgili kaydı kontrol ediyorum.",
-      time: "09:44",
-    });
+    messages.value.push({ from: "agent", text: "Mesajınızı aldım, ilgili kaydı kontrol ediyorum." });
   }, 1200);
 }
 
@@ -98,100 +51,70 @@ function endChat() {
   clearTimers();
   state.value = "ended";
   typing.value = false;
-  messages.value.push({ from: "system", text: "Konuşma bitirildi.", time: "09:45" });
+  messages.value.push({ from: "system", text: "Konuşma bitirildi." });
 }
 </script>
 
 <template>
-  <AppPage title="Canlı Destek" class="v-live-support-page" data-testid="live-support-page">
-    <AppCard v-if="state === 'idle'" padding="lg" class="v-live-start-card">
-      <div class="v-stack v-live-support">
-        <h3>Canlı destek talebi</h3>
-        <p>Konunu yaz, temsilci bağlanınca ilk mesaj olarak gönderelim.</p>
+  <AppPage title="Canlı Destek" class="support-live-page" data-testid="live-support-page">
+    <AppCard class="live-support-card">
+      <span class="live-support-icon" aria-hidden="true">
+        <AppIcon :name="state === 'idle' ? 'message' : 'headphones'" :size="24" />
+      </span>
+
+      <template v-if="state === 'idle'">
+        <h2>Canlı sohbeti başlat</h2>
+        <p>Kısa bir başlık ve not bırak, doğru temsilciye hızlıca yönlendirelim.</p>
         <label>
-          <span>Konu</span>
-          <input
-            v-model="title"
-            data-testid="live-support-title"
-            type="text"
-            :placeholder="defaultTitle"
-          />
+          <span>Konu başlığı</span>
+          <input v-model="title" data-testid="live-support-title" type="text" />
         </label>
         <label>
           <span>Kısa açıklama</span>
-          <textarea
-            v-model="description"
-            data-testid="live-support-description"
-            rows="3"
-            :placeholder="defaultDescription"
-          />
+          <textarea v-model="description" data-testid="live-support-description" rows="3" />
         </label>
-        <AppButton icon="headphones" data-testid="live-support-start" @click="startChat">
-          Müşteri Temsilcisine Bağlan
+        <AppButton class="primary-btn" icon="message" data-testid="live-support-start" @click="startChat">
+          Canlı sohbete başla
         </AppButton>
-      </div>
-    </AppCard>
+      </template>
 
-    <section v-else class="v-live-chat-shell" aria-label="Canlı destek konuşması">
-      <div
-        class="v-live-chat-status"
-        :data-testid="state === 'waiting' ? 'live-support-waiting' : state === 'ended' ? 'live-support-ended' : undefined"
-      >
-        <div>
-          <strong>{{ state === "waiting" ? "Bağlanıyor" : state === "connected" ? "Görüşme açık" : "Görüşme tamamlandı" }}</strong>
-          <span>{{ state === "waiting" ? "Temsilci birkaç saniye içinde sohbete katılacak." : "Mesajların güvenli şekilde kaydedildi." }}</span>
-        </div>
-        <AppChip v-if="state === 'waiting'" tone="warning">Kısa süre</AppChip>
-        <AppButton
-          v-if="state === 'waiting'"
-          size="sm"
-          variant="secondary"
-          icon="file-text"
-          data-testid="live-support-create-ticket"
-          @click="router.push('/support/new')"
-        >
-          Talep Oluştur
-        </AppButton>
-        <button v-if="state === 'connected'" class="v-live-end-action" type="button" data-testid="live-support-end" @click="endChat">
-          Konuşmayı bitir
-        </button>
-      </div>
-
-      <div ref="threadRef" class="v-chat-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
+      <template v-else>
         <div
-          v-for="(message, index) in messages"
-          :key="`${message.from}-${index}`"
-          :class="['v-chat-bubble', `is-${message.from}`]"
+          class="v-live-waiting"
+          :data-testid="state === 'waiting' ? 'live-support-waiting' : state === 'ended' ? 'live-support-ended' : undefined"
         >
-          <span class="v-chat-bubble__text">{{ message.text }}</span>
-          <span v-if="message.from !== 'system'" class="v-chat-bubble__meta">
-            {{ message.time }}
-            <span v-if="message.from === 'user'" class="v-chat-checks" aria-label="Okundu">✓✓</span>
-          </span>
+          <h2>{{ state === "waiting" ? "Temsilci bağlanıyor" : state === "connected" ? "Lipyum canlı destek" : "Konuşma tamamlandı" }}</h2>
+          <p>{{ state === "waiting" ? "Talebin canlı destek kuyruğuna alındı." : "Temsilci konuşma akışı hazır." }}</p>
+          <AppChip tone="warning">Tahmini süre 2 dakika</AppChip>
+          <div v-if="state === 'waiting'" class="live-support-queue" role="status" aria-live="polite">
+            <span></span><span></span><span></span>
+          </div>
+          <AppButton
+            v-if="state === 'waiting'"
+            class="secondary-btn"
+            variant="secondary"
+            icon="file-text"
+            data-testid="live-support-create-ticket"
+            @click="router.push('/support/new')"
+          >
+            Beklerken Talep Oluştur
+          </AppButton>
         </div>
-        <div v-if="typing" class="v-chat-bubble is-agent is-typing" data-testid="live-support-typing">
-          <span aria-label="Yazıyor">•••</span>
-        </div>
-      </div>
 
-      <form v-if="state === 'connected'" class="v-chat-input" @submit.prevent="sendMessage">
-        <input
-          v-model="draft"
-          data-testid="live-support-input"
-          type="text"
-          placeholder="Mesaj yaz"
-          autocomplete="off"
-        />
-        <button
-          v-if="hasDraft"
-          class="v-chat-send"
-          type="submit"
-          data-testid="live-support-send"
-          aria-label="Mesaj gönder"
-        >
-          <AppIcon name="send" :size="20" class-name="icon" />
-        </button>
-      </form>
-    </section>
+        <div class="v-chat-thread" :data-testid="state === 'connected' ? 'live-support-chat' : 'live-support-thread'">
+          <span v-if="state === 'connected'" class="v-agent-chip" data-testid="live-support-agent">Elif · Lipyum Destek</span>
+          <div v-for="(message, index) in messages" :key="`${message.from}-${index}`" :class="['v-chat-bubble', `is-${message.from}`]">
+            {{ message.text }}
+          </div>
+          <div v-if="typing" class="v-chat-bubble is-agent" data-testid="live-support-typing">Yazıyor...</div>
+        </div>
+
+        <div v-if="state === 'connected'" class="v-chat-input">
+          <input v-model="draft" data-testid="live-support-input" type="text" placeholder="Mesaj yaz" @keyup.enter="sendMessage" />
+          <AppButton size="sm" icon="send" data-testid="live-support-send" @click="sendMessage">Gönder</AppButton>
+          <AppButton size="sm" variant="ghost" data-testid="live-support-end" @click="endChat">Konuşmayı bitir</AppButton>
+        </div>
+      </template>
+    </AppCard>
   </AppPage>
 </template>

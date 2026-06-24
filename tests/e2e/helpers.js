@@ -26,10 +26,6 @@ export const routes = [
   "/bonus",
   "/performance-score",
   "/performance-improve",
-  "/performance-score/task/job-result",
-  "/performance-score/tasks",
-  "/performance-score/details",
-  "/performance-score/success",
   "/invoices",
   "/income-expense",
   "/appointment-link",
@@ -71,8 +67,6 @@ export const criticalRoutes = [
 export const ctaHiddenRoutes = new Set();
 
 export const bottomBarHiddenRoutes = new Set([
-  "/support/live",
-  "/referral",
   "/subscription",
   "/subscription/compare",
   "/subscription/checkout",
