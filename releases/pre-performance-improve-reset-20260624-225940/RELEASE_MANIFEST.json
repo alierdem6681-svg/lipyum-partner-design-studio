@@ -1,0 +1,9 @@
+﻿{
+    "backup":  "pre-performance-improve-reset-20260624-225940",
+    "archiveBranch":  "archive/pre-performance-improve-reset-20260624-225940",
+    "startSha":  "7d74e7302abad1eff204cb55ea6eeee5cf009b6c",
+    "date":  "2026-06-24T22:59:40.8081551+03:00",
+    "routeStatus":  "/performance-improve currently contains performance improvement redesign content",
+    "requestedChange":  "Reset performance improve page to blank starting point and discard current page-specific UI/content/logic",
+    "rollbackCommand":  "git revert \u003cmerge-sha\u003e or create rollback branch from 7d74e7302abad1eff204cb55ea6eeee5cf009b6c"
+}

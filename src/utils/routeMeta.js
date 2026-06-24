@@ -231,12 +231,12 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Performansımı Artır",
-    subtitle: "Daha güçlü görünmek için gelişim alanlarını takip et.",
+    subtitle: "",
     trailingActions: [],
   },
   "/performance-improve": {
     title: "Performansımı Artır",
-    subtitle: "Daha güçlü görünmek için gelişim alanlarını takip et.",
+    subtitle: "",
     trailingActions: [],
   },
   "/customer-management": {
