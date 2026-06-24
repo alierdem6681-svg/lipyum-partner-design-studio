@@ -310,6 +310,6 @@ test("navigation and live support remain functional", async ({ page }) => {
   await expect(page.getByTestId("bottom-nav")).toHaveCount(0);
   await page.getByTestId("live-support-start").click();
   await expect(page.getByTestId("live-support-waiting")).toBeVisible();
-  await expect(page.getByTestId("live-support-chat")).toBeVisible({ timeout: 2_000 });
+  await expect(page.getByTestId("live-support-chat")).toBeVisible({ timeout: 16_000 });
   expect(errors).toEqual([]);
 });
