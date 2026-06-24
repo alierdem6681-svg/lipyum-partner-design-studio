@@ -1,0 +1,12 @@
+{
+  "name": "pre-profile-avatar-refresh-20260624-140726",
+  "commitSha": "fb15132a507f41c3f0eecf8bdfca9e09c4e45730",
+  "branch": "main",
+  "backupTag": "pre-profile-avatar-refresh-20260624-140726",
+  "archiveBranch": "archive/pre-profile-avatar-refresh-20260624-140726",
+  "route": "/partner-card-preview",
+  "runtime": "vue",
+  "liveUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "backupReason": "Before changing the default partner profile avatar image.",
+  "rollback": "git revert <merge-sha> or git switch archive/pre-profile-avatar-refresh-20260624-140726"
+}

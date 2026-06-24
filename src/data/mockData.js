@@ -10,7 +10,7 @@ export const partnerProfile = {
   tier: "Gold Partner",
   rating: "4.8",
   reviewCount: 126,
-  avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=220&q=80",
+  avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=220&q=80",
   badges: [
     { label: "Güvenilir", icon: "shield" },
     { label: "Hızlı", icon: "zap" },
