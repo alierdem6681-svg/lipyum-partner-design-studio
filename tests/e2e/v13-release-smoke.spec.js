@@ -302,7 +302,7 @@ test("navigation and live support remain functional", async ({ page }) => {
   await page.goBack();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
 
-  await page.addInitScript(() => {
+  await page.evaluate(() => {
     window.__LIPYUM_SUPPORT_DELAY__ = 50;
   });
   await page.goto("/#/support/live");
