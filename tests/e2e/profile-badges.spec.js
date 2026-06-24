@@ -7,11 +7,11 @@ test("profile +N badge expansion is one-way and route-local", async ({ page }) =
   await waitForApp(page);
 
   await expect(page.getByRole("button", { name: "Ek rozetleri göster" })).toBeVisible();
-  await expect(page.getByText("Sonuç Bildiren")).toHaveCount(0);
+  await expect(page.getByText("Çalışkan")).toHaveCount(0);
 
   await page.getByRole("button", { name: "Ek rozetleri göster" }).click();
-  await expect(page.getByText("Sonuç Bildiren")).toBeVisible();
-  await expect(page.getByText("Randevu Düzenli")).toBeVisible();
+  await expect(page.getByText("Çalışkan")).toBeVisible();
+  await expect(page.getByText("Planlı Düzenli")).toBeVisible();
   await expect(page.getByRole("button", { name: "Ek rozetleri göster" })).toHaveCount(0);
 
   await page.evaluate(() => window.navigateToPage("/wallet"));
