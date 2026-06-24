@@ -67,6 +67,8 @@ export const criticalRoutes = [
 export const ctaHiddenRoutes = new Set();
 
 export const bottomBarHiddenRoutes = new Set([
+  "/support/live",
+  "/referral",
   "/subscription",
   "/subscription/compare",
   "/subscription/checkout",
