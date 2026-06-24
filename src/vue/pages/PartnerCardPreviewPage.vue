@@ -35,6 +35,43 @@ const previewDetails = [
   },
 ];
 
+const reviewCards = [
+  {
+    id: "quick-clean",
+    reviews: [
+      {
+        name: "Emre T.",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+        date: "2 hafta önce",
+        text: "Çok hızlı geldi, işimi temiz çözdü.",
+      },
+      {
+        name: "Seda K.",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80",
+        date: "1 ay önce",
+        text: "Randevu saatine uydu, güven verdi.",
+      },
+    ],
+  },
+  {
+    id: "trusted-service",
+    reviews: [
+      {
+        name: "Murat Y.",
+        avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&q=80",
+        date: "3 hafta önce",
+        text: "Fiyatı net anlattı, işi sorunsuz tamamladı.",
+      },
+      {
+        name: "Elif A.",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+        date: "1 ay önce",
+        text: "Kısa sürede geldi ve temiz çalıştı.",
+      },
+    ],
+  },
+];
+
 function openShareOptions() {
   shareSheetOpen.value = true;
 }
@@ -42,6 +79,10 @@ function openShareOptions() {
 function handleShare(option) {
   shareSheetOpen.value = false;
   shell.showToast(`${option} hazırlandı.`);
+}
+
+function showPreviewAction(action) {
+  shell.showToast(`${action} seçeneği hazır.`);
 }
 
 onMounted(() => {
@@ -54,7 +95,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <AppPage title="Partner Kartı Önizleme" data-testid="partner-card-preview-page">
+  <AppPage title="Profil Kartı" data-testid="partner-card-preview-page">
     <div class="v-stack v-partner-preview-page" data-testid="partner-card-preview">
       <PartnerProfileCard variant="public" :show-actions="false" expand-badges />
 
@@ -64,7 +105,7 @@ onBeforeUnmount(() => {
         padding="md"
         data-testid="partner-preview-service-summary"
       >
-        <div class="partner-preview-details__grid" aria-label="Partner profil kapsamı">
+        <div class="partner-preview-details__grid" aria-label="Profil kartı kapsamı">
           <article
             v-for="detail in previewDetails"
             :key="detail.id"
@@ -85,7 +126,63 @@ onBeforeUnmount(() => {
           </article>
         </div>
       </AppCard>
+
+      <AppCard class="partner-preview-reviews" variant="elevated" padding="md" data-testid="partner-preview-reviews">
+        <div class="partner-preview-reviews__header">
+          <h2>Müşteri Yorumları</h2>
+          <button type="button" data-testid="partner-preview-all-reviews" @click="showPreviewAction('Tüm yorumlar')">
+            Tümünü Gör
+            <AppIcon name="chevron-right" :size="14" />
+          </button>
+        </div>
+
+        <div class="partner-preview-reviews__track" aria-label="Müşteri yorumları">
+          <article
+            v-for="card in reviewCards"
+            :key="card.id"
+            class="partner-preview-review-card"
+            data-testid="partner-preview-review-card"
+          >
+            <div
+              v-for="review in card.reviews"
+              :key="review.name"
+              class="partner-preview-review-row"
+              data-testid="partner-preview-review-row"
+            >
+              <img :src="review.avatar" :alt="`${review.name} profil fotoğrafı`" />
+              <div class="partner-preview-review-row__copy">
+                <div class="partner-preview-review-row__top">
+                  <strong>{{ review.name }}</strong>
+                  <span>{{ review.date }}</span>
+                </div>
+                <span class="partner-preview-review-row__stars" aria-label="5 yıldız">★★★★★</span>
+                <p>{{ review.text }}</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="partner-preview-review-dots" aria-hidden="true">
+          <span class="is-active"></span>
+          <span></span>
+        </div>
+      </AppCard>
     </div>
+
+    <nav class="partner-preview-sticky-actions" data-testid="partner-preview-sticky-actions" aria-label="Profil kartı aksiyonları">
+      <button type="button" class="partner-preview-sticky-actions__item is-primary" data-testid="partner-preview-action-offer" @click="showPreviewAction('Teklif')">
+        <AppIcon name="file-text" :size="16" />
+        Teklif Al
+      </button>
+      <button type="button" class="partner-preview-sticky-actions__item" data-testid="partner-preview-action-appointment" @click="showPreviewAction('Randevu')">
+        <AppIcon name="calendar" :size="16" />
+        Randevu Al
+      </button>
+      <button type="button" class="partner-preview-sticky-actions__item" data-testid="partner-preview-action-message" @click="showPreviewAction('Mesaj')">
+        <AppIcon name="message" :size="16" />
+        Mesaj Yaz
+      </button>
+    </nav>
 
     <AppSheet
       :open="shareSheetOpen"

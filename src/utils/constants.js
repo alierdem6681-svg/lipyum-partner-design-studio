@@ -105,7 +105,7 @@ export const ROUTE_TITLES = {
   "/appointment-link": "Randevu Linki",
   "/performance-score": "Daha Fazla İş Al",
   "/performance-improve": "Performansımı Artır",
-  "/partner-card-preview": "Partner Kartı Önizleme",
+  "/partner-card-preview": "Profil Kartı",
 };
 
 export const BOTTOM_TABS = [

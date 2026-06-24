@@ -143,6 +143,9 @@ test("partner card preview uses share button and channel options", async ({ page
   await expectVueShell(page, "/partner-card-preview");
 
   await expect(page.getByTestId("partner-card-preview-page")).toBeVisible();
+  await expect(page.getByTestId("app-header")).toContainText("Profil Kartı");
+  await expect(page.getByTestId("app-header")).toContainText("Bilgiler, rozetler ve daha fazlası");
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
   await expect(page.getByTestId("partner-embed-panel")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-options")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-share-button")).toHaveCount(0);
@@ -150,6 +153,11 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
   await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
+  await expect(page.getByTestId("partner-public-metrics")).toBeVisible();
+  await expect(page.getByTestId("partner-public-metric-response")).toContainText("Yanıt Süresi");
+  await expect(page.getByTestId("partner-public-metric-response")).toContainText("Genelde <2 dk");
+  await expect(page.getByTestId("partner-public-metric-jobs")).toContainText("İş Sayısı");
+  await expect(page.getByTestId("partner-public-metric-jobs")).toContainText("428");
   await expect(page.getByTestId("partner-preview-service-summary")).toBeVisible();
   await expect(page.getByTestId("partner-preview-service-summary")).not.toContainText("Ahmet Kaya");
   await expect(page.getByTestId("partner-preview-service-summary")).not.toContainText("hizmet bilgileri");
@@ -163,6 +171,15 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Çalışma Saatleri");
   await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Hafta içi ve cumartesi");
   await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("08:00 - 21:00");
+  await expect(page.getByTestId("partner-preview-reviews")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-review-row")).toHaveCount(4);
+  await expect(page.getByTestId("partner-preview-reviews")).toContainText("Müşteri Yorumları");
+  await expect(page.getByTestId("partner-preview-reviews")).toContainText("Emre T.");
+  await expect(page.getByTestId("partner-preview-reviews")).toContainText("Seda K.");
+  await expect(page.getByTestId("partner-preview-sticky-actions")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-action-offer")).toContainText("Teklif Al");
+  await expect(page.getByTestId("partner-preview-action-appointment")).toContainText("Randevu Al");
+  await expect(page.getByTestId("partner-preview-action-message")).toContainText("Mesaj Yaz");
 
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
