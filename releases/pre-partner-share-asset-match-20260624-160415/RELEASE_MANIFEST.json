@@ -1,0 +1,9 @@
+{
+  "id": "pre-partner-share-asset-match-20260624-160415",
+  "createdAt": "2026-06-24T16:04:15+03:00",
+  "mainSha": "89986b494356093774279518525592ec0aa5973f",
+  "tag": "pre-partner-share-asset-match-20260624-160415",
+  "archiveBranch": "archive/pre-partner-share-asset-match-20260624-160415",
+  "scope": "Backup before rebuilding the partner profile share modal with the premium asset set.",
+  "rollback": "git switch main && git reset --hard pre-partner-share-asset-match-20260624-160415"
+}

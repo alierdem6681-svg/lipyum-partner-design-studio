@@ -1,26 +1,42 @@
 <script setup>
-import AppIcon from "../ui/AppIcon.vue";
+import appointmentCalendarUrl from "../../../assets/partner-share/appointment_calendar.webp";
+import arrowCircleUrl from "../../../assets/partner-share/arrow_circle.webp";
+import copyLinkUrl from "../../../assets/partner-share/copy_link.webp";
+import ctaSparklesUrl from "../../../assets/partner-share/cta_sparkles.webp";
+import facebookUrl from "../../../assets/partner-share/facebook.webp";
+import freeCheckBadgeUrl from "../../../assets/partner-share/free_check_badge.webp";
+import growthChartUrl from "../../../assets/partner-share/growth_chart_premium.webp";
+import heroShieldUrl from "../../../assets/partner-share/hero_shield_verified.webp";
+import instagramUrl from "../../../assets/partner-share/instagram.webp";
+import messageUrl from "../../../assets/partner-share/message.webp";
+import offerDocumentUrl from "../../../assets/partner-share/offer_document.webp";
+import storyPlusUrl from "../../../assets/partner-share/story_plus.webp";
+import tiktokUrl from "../../../assets/partner-share/tiktok.webp";
+import trustShieldUrl from "../../../assets/partner-share/trust_shield.webp";
+import websitePreviewUrl from "../../../assets/partner-share/website_profile_preview.webp";
+import whatsappUrl from "../../../assets/partner-share/whatsapp.webp";
+import xLogoUrl from "../../../assets/partner-share/x_logo.webp";
 
 const emit = defineEmits(["share"]);
 
 const trustChips = [
-  { label: "Güven", icon: "shield" },
-  { label: "Teklif", icon: "file-text" },
-  { label: "Randevu", icon: "calendar" },
+  { label: "Güven", iconUrl: trustShieldUrl },
+  { label: "Teklif", iconUrl: offerDocumentUrl },
+  { label: "Randevu", iconUrl: appointmentCalendarUrl },
 ];
 
 const primaryChannels = [
-  { id: "whatsapp", label: "WhatsApp", icon: "message", action: "WhatsApp paylaşımı" },
-  { id: "copy", label: "Link Kopyala", icon: "copy", action: "Kısa link kopyalandı" },
-  { id: "message", label: "Mesaj", icon: "message", action: "Mesaj paylaşımı" },
+  { id: "whatsapp", label: "WhatsApp", iconUrl: whatsappUrl, action: "WhatsApp paylaşımı" },
+  { id: "copy", label: "Link Kopyala", iconUrl: copyLinkUrl, action: "Kısa link kopyalandı" },
+  { id: "message", label: "Mesaj", iconUrl: messageUrl, action: "Mesaj paylaşımı" },
 ];
 
 const socialChannels = [
-  { id: "instagram", label: "Instagram", icon: "image", action: "Instagram paylaşımı" },
-  { id: "facebook", label: "Facebook", icon: "share", action: "Facebook paylaşımı" },
-  { id: "tiktok", label: "TikTok", icon: "video", action: "TikTok paylaşımı" },
-  { id: "x", label: "X", icon: "x", action: "X paylaşımı" },
-  { id: "story", label: "Hikaye", icon: "plus", action: "Hikaye paylaşımı" },
+  { id: "instagram", label: "Instagram", iconUrl: instagramUrl, action: "Instagram paylaşımı" },
+  { id: "facebook", label: "Facebook", iconUrl: facebookUrl, action: "Facebook paylaşımı" },
+  { id: "tiktok", label: "TikTok", iconUrl: tiktokUrl, action: "TikTok paylaşımı" },
+  { id: "x", label: "X", iconUrl: xLogoUrl, action: "X paylaşımı" },
+  { id: "story", label: "Hikaye", iconUrl: storyPlusUrl, action: "Hikaye paylaşımı" },
 ];
 
 function handleShare(action) {
@@ -32,17 +48,14 @@ function handleShare(action) {
   <section class="v-share-options partner-share-sheet" data-testid="partner-share-options">
     <article class="partner-share-hero" data-testid="partner-share-hero">
       <div class="partner-share-hero__visual" aria-hidden="true">
-        <span class="partner-share-shield">
-          <AppIcon name="shield" :size="70" />
-          <AppIcon name="check" :size="34" class-name="partner-share-shield__check" />
-        </span>
+        <img :src="heroShieldUrl" alt="" loading="lazy" />
       </div>
       <div class="partner-share-hero__copy">
         <h3>Mükemmel Profilinle İnsanlara Güven Ver</h3>
-        <p>Profilini sosyal medya ve diğer platformlarda paylaş, insanlar seninle iletişime geçebilsin.</p>
+        <p>Profilini sosyal medya ve diğer platformlarda paylaş, insanlar seninle iletişime geçebilsin, teklif ve randevu alabilsin.</p>
         <div class="partner-share-trust-chips" aria-label="Profil güven rozetleri">
           <span v-for="chip in trustChips" :key="chip.label">
-            <AppIcon :name="chip.icon" :size="13" />
+            <img :src="chip.iconUrl" alt="" loading="lazy" />
             {{ chip.label }}
           </span>
         </div>
@@ -51,16 +64,16 @@ function handleShare(action) {
 
     <article class="partner-share-proof-card" data-testid="partner-share-free-contact">
       <span class="partner-share-proof-card__icon" aria-hidden="true">
-        <AppIcon name="check" :size="22" />
+        <img :src="freeCheckBadgeUrl" alt="" loading="lazy" />
       </span>
       <p>Seninle doğrudan iletişime geçen, teklif ve randevu isteyen kişiler için <strong>hiçbir ücret ödemezsin.</strong></p>
     </article>
 
     <article class="partner-share-growth-card" data-testid="partner-share-growth">
       <span class="partner-share-growth-card__chart" aria-hidden="true">
-        <AppIcon name="bar-chart" :size="38" />
+        <img :src="growthChartUrl" alt="" loading="lazy" />
       </span>
-      <p>Profil linkini paylaşan firmalar sosyal medya üzerinden daha fazla ilgi alabilir.</p>
+      <p>Profil linkini paylaşan firmalar sosyal medya üzerinden x4 kat daha fazla iş alıyor.</p>
       <strong>x4</strong>
     </article>
 
@@ -76,7 +89,7 @@ function handleShare(action) {
         @click="handleShare(channel.action)"
       >
         <span :class="['partner-share-social-icon', `is-${channel.id}`]" aria-hidden="true">
-          <AppIcon :name="channel.icon" :size="22" />
+          <img :src="channel.iconUrl" alt="" loading="lazy" />
         </span>
         <small>{{ channel.label }}</small>
       </button>
@@ -92,7 +105,7 @@ function handleShare(action) {
         @click="handleShare(channel.action)"
       >
         <span :class="['partner-share-social-icon', `is-${channel.id}`]" aria-hidden="true">
-          <AppIcon :name="channel.icon" :size="18" />
+          <img :src="channel.iconUrl" alt="" loading="lazy" />
         </span>
         <small>{{ channel.label }}</small>
       </button>
@@ -100,9 +113,7 @@ function handleShare(action) {
 
     <article class="partner-share-website-card" data-testid="partner-share-option-website">
       <span class="partner-share-website-card__preview" aria-hidden="true">
-        <i></i>
-        <b></b>
-        <em></em>
+        <img :src="websitePreviewUrl" alt="" loading="lazy" />
       </span>
       <span class="partner-share-website-card__copy">
         <strong>Web sitemde göster</strong>
@@ -113,10 +124,10 @@ function handleShare(action) {
 
     <button class="partner-share-start" type="button" data-testid="partner-share-start" @click="handleShare('Ücretsiz paylaşım başlatıldı')">
       <span>
-        <AppIcon name="sparkles" :size="18" />
+        <img :src="ctaSparklesUrl" alt="" loading="lazy" />
         Ücretsiz Paylaşmaya Başla
       </span>
-      <AppIcon name="chevron-right" :size="22" />
+      <img class="partner-share-start__arrow" :src="arrowCircleUrl" alt="" loading="lazy" />
     </button>
   </section>
 </template>
