@@ -1,0 +1,21 @@
+{
+  "version": "v7",
+  "createdAt": "2026-06-25T02:05:13.2319859+03:00",
+  "backupSource": {
+    "branch": "origin/main",
+    "sha": "1876658bc826f1039c71900fddc86e8f7ce336df",
+    "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/"
+  },
+  "backupRefs": {
+    "tag": "v7",
+    "archiveBranch": "archive/v7"
+  },
+  "releaseScope": [
+    "Update Playwright test dependency to 1.55.1 to clear high severity audit advisory.",
+    "Update Vite to 8.1.0 to clear esbuild/Vite audit advisory."
+  ],
+  "rollback": {
+    "safeRef": "archive/v7",
+    "safeTag": "v7"
+  }
+}
