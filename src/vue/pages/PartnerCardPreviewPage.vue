@@ -186,8 +186,8 @@ onBeforeUnmount(() => {
 
     <AppSheet
       :open="shareSheetOpen"
-      title="Partner kartını paylaş"
-      description="Kanalı seç, ardından paylaşım biçimini belirle."
+      title="Profilini paylaş"
+      description="Güven veren profilini ücretsiz olarak yayına al."
       @close="shareSheetOpen = false"
     >
       <PartnerShareSheet @share="handleShare" />

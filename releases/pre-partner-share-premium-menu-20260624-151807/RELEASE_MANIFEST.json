@@ -1,0 +1,19 @@
+{
+  "name": "pre-partner-share-premium-menu-20260624-151807",
+  "createdAt": "2026-06-24T15:18:07+03:00",
+  "source": "origin/main",
+  "sha": "807d349ce1ab906af47ed4c87f7dfb08ff40f6e5",
+  "tag": "pre-partner-share-premium-menu-20260624-151807",
+  "archiveBranch": "archive/pre-partner-share-premium-menu-20260624-151807",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "scope": "Backup before rebuilding the partner profile premium share menu.",
+  "validationBeforeMerge": [
+    "npm run check",
+    "targeted Playwright partner share tests",
+    "390x844 visual smoke",
+    "npm run test:quality-gate:release"
+  ],
+  "rollback": {
+    "command": "git checkout -b rollback/partner-share-premium-menu pre-partner-share-premium-menu-20260624-151807"
+  }
+}
