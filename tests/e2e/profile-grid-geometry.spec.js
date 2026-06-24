@@ -18,7 +18,7 @@ for (const viewport of [
     await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
     await page.getByTestId("profile-menu-strength-summary").click();
     await expect(page.getByTestId("profile-menu-list")).toBeVisible();
-    await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
+    await expect(page.getByTestId("profile-menu-card")).toHaveCount(9);
 
     const geometry = await page.evaluate(() => {
       const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
@@ -83,9 +83,9 @@ for (const viewport of [
       };
     });
 
-    expect(geometry.rowCount).toBe(8);
-    expect(geometry.statusCount).toBe(8);
-    expect(geometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
+    expect(geometry.rowCount).toBe(9);
+    expect(geometry.statusCount).toBe(9);
+    expect(geometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+50 puan", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
     expect(geometry.statusWidthSpread).toBeLessThanOrEqual(1);
     expect(geometry.leftDelta).toBeLessThanOrEqual(2);
     expect(geometry.rightDelta).toBeLessThanOrEqual(2);

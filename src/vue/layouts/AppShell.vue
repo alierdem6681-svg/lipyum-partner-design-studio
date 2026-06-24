@@ -121,6 +121,7 @@ function onHeaderAction(action) {
   if (action === "notifications") navigateTo("/notifications");
   if (action === "profile") navigateTo("/profile");
   if (action === "profile-preview") navigateTo("/partner-card-preview");
+  if (action === "profile-settings") window.dispatchEvent(new CustomEvent("lipyum:profile-settings"));
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");

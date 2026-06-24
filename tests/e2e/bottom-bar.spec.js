@@ -12,7 +12,7 @@ const tabCases = [
 for (const [testId, expectedRoute] of tabCases) {
   test(`bottom bar ${testId} navigates to ${expectedRoute}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
-    await page.goto("/#/profile");
+    await page.goto("/#/home");
     await waitForApp(page);
 
     await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();

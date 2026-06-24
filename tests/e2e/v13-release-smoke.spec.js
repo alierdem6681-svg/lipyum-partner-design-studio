@@ -225,10 +225,13 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(page.getByTestId("profile-work-status-card")).toBeVisible();
   await expect(page.getByTestId("profile-work-status-toggle")).toBeVisible();
   await expect(page.getByTestId("profile-menu-strength-summary")).toBeVisible();
+  await expect(page.getByTestId("profile-settings-header-button")).toBeVisible();
+  await expect(page.getByTestId("profile-sticky-preview-button")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
   await expect(page.getByTestId("profile-menu-list")).toBeVisible();
-  await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(9);
   const profileGridGeometry = await page.evaluate(() => {
     const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
     const list = document.querySelector('[data-testid="profile-menu-list"]')?.getBoundingClientRect();
@@ -264,9 +267,9 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
-  expect(profileGridGeometry.cardCount).toBe(8);
-  expect(profileGridGeometry.statusCount).toBe(8);
-  expect(profileGridGeometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
+  expect(profileGridGeometry.cardCount).toBe(9);
+  expect(profileGridGeometry.statusCount).toBe(9);
+  expect(profileGridGeometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+50 puan", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
   expect(profileGridGeometry.listLeftDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.listRightDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.firstCardLeftDelta).toBeLessThanOrEqual(2);
@@ -284,6 +287,9 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(profileGridGeometry.summaryText).toContain("Profil Gücünüz");
   expect(profileGridGeometry.summaryText).toContain("+28");
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
+  await page.getByTestId("profile-menu-card").filter({ hasText: "Doğrulamalar" }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
+  await expect(page.locator("#toast")).toContainText("Hakkımda");
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
@@ -316,8 +322,11 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   const updatedAvatar = await profileCard.locator(".partner-profile-avatar-btn img").getAttribute("src");
   expect(updatedAvatar).not.toBe(initialAvatar);
   expect(updatedAvatar).toContain("data:image/jpeg");
-  await expect(page.getByTestId("profile-preview-header-button")).toBeVisible();
-  await page.getByTestId("profile-preview-header-button").click();
+  await page.getByTestId("profile-settings-header-button").click();
+  await expect(page.getByTestId("profile-settings-sheet")).toBeVisible();
+  await expect(page.getByTestId("profile-settings-password")).toBeVisible();
+  await page.getByTestId("sheet-close-button").click();
+  await page.getByTestId("profile-sticky-preview-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/partner-card-preview");
 
   await page.goto("/#/home");

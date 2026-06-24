@@ -4,8 +4,10 @@ import { useRouter } from "vue-router";
 import { PROFILE_MENU_ITEMS } from "../../../utils/constants.js";
 import ProfileWorkStatusCard from "./ProfileWorkStatusCard.vue";
 import AppIcon from "../ui/AppIcon.vue";
+import { useAppShellStore } from "../../stores/appShellStore.js";
 
 const router = useRouter();
+const shell = useAppShellStore();
 const menuOpen = ref(false);
 
 const menuDetails = {
@@ -13,6 +15,12 @@ const menuDetails = {
     description: "Profil bilgilerinizi tamamlayın",
     status: "Tamam",
     tone: "success",
+  },
+  "/verifications": {
+    description: "Kimlik ve hesap doğrulamalarını tamamla",
+    status: "+50 puan",
+    tone: "success",
+    lockedUntilAboutComplete: true,
   },
   "/photo-gallery": {
     description: "Daha fazla görsel ekleyin",
@@ -57,6 +65,14 @@ const menuItems = computed(() =>
     ...menuDetails[item.route],
   })),
 );
+
+function openMenuItem(item) {
+  if (item.lockedUntilAboutComplete) {
+    shell.showToast("Hakkımda tam doldurulmadan doğrulamalar açılamaz.");
+    return;
+  }
+  router.push(item.route);
+}
 </script>
 
 <template>
@@ -98,7 +114,7 @@ const menuItems = computed(() =>
         data-action="profile-shortcut"
         :data-route="item.route"
         :aria-label="item.label"
-        @click="router.push(item.route)"
+        @click="openMenuItem(item)"
       >
         <span class="profile-menu-row__icon" aria-hidden="true">
           <AppIcon :name="item.icon" :size="23" />
