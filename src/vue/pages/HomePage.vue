@@ -72,7 +72,7 @@ function openTopUpSheet() {
         data-testid="home-performance-card"
         data-action="performance-detail"
         aria-label="Performans Skoru"
-        @click="$router.push('/performance-score')"
+        @click="$router.push('/performance-improve')"
       >
         <div class="performance-card-head">
           <span class="performance-title">Performans Skoru</span>
@@ -114,7 +114,7 @@ function openTopUpSheet() {
             data-screen="performanceScore"
             data-action="performanceScore"
             data-testid="home-performance-improve-button"
-            @click.stop="$router.push('/performance-score')"
+            @click.stop="$router.push('/performance-improve')"
           >
             <AppIcon name="trend-up" :size="14" class-name="icon" />
             Performansımı Artır

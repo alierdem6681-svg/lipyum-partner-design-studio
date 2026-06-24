@@ -1,218 +1,168 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppChip from "../components/ui/AppChip.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import {
-  PERFORMANCE_STORAGE_KEY,
-  calculatePerformanceScore,
-  formatPerformanceScore,
-  nextPerformanceTask,
+  calculateCriteriaMax,
+  calculateCriteriaTotal,
+  calculateProgressPercent,
+  calculateRemainingToTarget,
   performanceBenefits,
+  performanceCriteria,
   performanceScoreConfig,
-  performanceTasks,
+  priorityPerformanceActions,
 } from "../data/performanceScoreTasks.js";
 
-const completedTaskIds = ref([]);
-const selectedTaskId = ref(performanceTasks[0]?.id || "");
-const lastCompletedTaskId = ref("");
+const router = useRouter();
 
-const completedSet = computed(() => new Set(completedTaskIds.value));
-const score = computed(() => calculatePerformanceScore(completedTaskIds.value));
-const remainingToTarget = computed(() => Math.max(0, performanceScoreConfig.targetScore - score.value));
-const progressValue = computed(() => Math.min(100, Math.round((score.value / performanceScoreConfig.targetScore) * 100)));
-const completedCount = computed(() => completedTaskIds.value.length);
-const nextTask = computed(() => nextPerformanceTask(completedTaskIds.value));
-const selectedTask = computed(() => performanceTasks.find((task) => task.id === selectedTaskId.value) || nextTask.value || performanceTasks[0]);
+const score = computed(() => calculateCriteriaTotal());
+const maxScore = computed(() => calculateCriteriaMax());
+const remainingToTarget = computed(() => calculateRemainingToTarget(score.value));
+const progressPercent = computed(() => calculateProgressPercent(score.value, maxScore.value));
 
-onMounted(() => {
-  const saved = window.localStorage.getItem(PERFORMANCE_STORAGE_KEY);
-  if (!saved) return;
-  try {
-    const parsed = JSON.parse(saved);
-    if (Array.isArray(parsed.completedTaskIds)) {
-      const validIds = new Set(performanceTasks.map((task) => task.id));
-      completedTaskIds.value = parsed.completedTaskIds.filter((id) => validIds.has(id));
-      selectedTaskId.value = nextTask.value?.id || performanceTasks[0]?.id || "";
-    }
-  } catch {
-    window.localStorage.removeItem(PERFORMANCE_STORAGE_KEY);
-  }
-});
+const summaryStats = computed(() => [
+  { label: "Seviye", value: performanceScoreConfig.level },
+  { label: "Hedef", value: performanceScoreConfig.targetScore },
+  { label: "Kalan", value: `${remainingToTarget.value} puan` },
+]);
 
-function persist() {
-  window.localStorage.setItem(
-    PERFORMANCE_STORAGE_KEY,
-    JSON.stringify({ completedTaskIds: completedTaskIds.value }),
-  );
-}
-
-function selectTask(taskId) {
-  selectedTaskId.value = taskId;
-}
-
-function completeTask(taskId) {
-  if (completedSet.value.has(taskId)) return;
-  completedTaskIds.value = [...completedTaskIds.value, taskId];
-  lastCompletedTaskId.value = taskId;
-  persist();
-  selectedTaskId.value = nextTask.value?.id || taskId;
-}
-
-function resetDemo() {
-  completedTaskIds.value = [];
-  lastCompletedTaskId.value = "";
-  selectedTaskId.value = performanceTasks[0]?.id || "";
-  window.localStorage.removeItem(PERFORMANCE_STORAGE_KEY);
+function goTo(route) {
+  if (!route) return;
+  router.push(route);
 }
 </script>
 
 <template>
-  <AppPage title="Daha Fazla İş Al">
-    <div class="performance-score-page" data-testid="performance-score-flow-page">
-      <AppCard class="performance-score-hero" padding="lg" data-testid="performance-score-card">
-        <div class="performance-score-hero__top">
+  <AppPage title="Performansımı Artır">
+    <div class="performance-improve-page" data-testid="performance-score-flow-page">
+      <AppCard class="performance-improve-summary" padding="lg" data-testid="performance-score-card">
+        <div class="performance-improve-summary__top">
           <div>
-            <AppChip tone="success">Gelişim yolu</AppChip>
-            <h2>Skorunu görevlerle yükselt</h2>
-            <p>Ne yapacağını seç, görevi tamamla, puanın anında artsın.</p>
+            <AppChip tone="success" icon="trend-up">Gelişim merkezi</AppChip>
+            <h2>Performansımı Artır</h2>
+            <p>Daha güçlü görünmek için gelişim alanlarını takip et.</p>
           </div>
-          <span class="performance-score-hero__score" aria-label="Performans skoru">
-            <strong>{{ formatPerformanceScore(score) }}</strong>
-            <small>/ 100</small>
+          <span class="performance-improve-score" aria-label="Mevcut skor 81 / 100">
+            <strong>{{ score }}</strong>
+            <small>/ {{ maxScore }}</small>
           </span>
         </div>
 
-        <div class="performance-score-hero__progress">
+        <div class="performance-improve-progress" aria-label="Performans skoru ilerlemesi">
           <div>
             <strong>{{ performanceScoreConfig.level }}</strong>
-            <span>Hedef {{ performanceScoreConfig.targetScore }}</span>
+            <span>{{ performanceScoreConfig.targetScore }} hedefi için {{ remainingToTarget }} puan kaldı</span>
           </div>
-          <progress :value="score" :max="performanceScoreConfig.targetScore"></progress>
-          <small v-if="remainingToTarget > 0">{{ formatPerformanceScore(remainingToTarget) }} puan kaldı</small>
-          <small v-else>Hedefe ulaştın</small>
+          <progress :value="score" :max="maxScore"></progress>
         </div>
 
-        <div class="performance-score-steps" aria-label="Puan artırma adımları">
-          <span><AppIcon name="target" :size="16" /> Görevi seç</span>
-          <span><AppIcon name="check" :size="16" /> Tamamla</span>
-          <span><AppIcon name="trend-up" :size="16" /> Puanı gör</span>
+        <div class="performance-improve-stats">
+          <span v-for="item in summaryStats" :key="item.label">
+            <small>{{ item.label }}</small>
+            <strong>{{ item.value }}</strong>
+          </span>
         </div>
+
+        <p class="performance-improve-note">
+          Skorun; profil kaliten, müşteri deneyimi, aktiflik, bakiye ve abonelik durumuna göre hesaplanır.
+        </p>
       </AppCard>
 
-      <AppCard v-if="nextTask" class="performance-now-mission" padding="lg" data-testid="performance-now-card">
-        <div class="performance-card-heading">
-          <span>Şimdi yap</span>
-          <strong>+{{ formatPerformanceScore(nextTask.points) }} puan</strong>
-        </div>
-        <div class="performance-now-mission__body">
-          <span class="performance-task-icon is-primary"><AppIcon :name="nextTask.icon" :size="24" /></span>
-          <div>
-            <h3>{{ nextTask.title }}</h3>
-            <p>{{ nextTask.shortText }}</p>
-            <small>Yaklaşık {{ nextTask.minutes }} dakika</small>
-          </div>
-        </div>
-        <AppButton
-          class="performance-main-action"
-          full-width
-          icon="check"
-          data-testid="performance-main-task-button"
-          @click="completeTask(nextTask.id)"
-        >
-          {{ nextTask.actionLabel }}
-        </AppButton>
-        <div class="performance-explain-box">
-          <span><strong>Nasıl?</strong> {{ nextTask.how }}</span>
-          <span><strong>Ne olur?</strong> {{ nextTask.outcome }}</span>
-        </div>
-      </AppCard>
-
-      <AppCard v-else class="performance-complete-card" padding="lg" data-testid="performance-all-complete">
-        <AppIcon name="badge-check" :size="34" />
-        <h3>Bugünkü görevler tamamlandı</h3>
-        <p>Skorun için en önemli adımları bitirdin. Yeni görevler eklendiğinde burada görünecek.</p>
-        <AppButton variant="secondary" size="sm" @click="resetDemo">Demo görevleri sıfırla</AppButton>
-      </AppCard>
-
-      <section class="performance-task-section" aria-label="Puan görevleri">
-        <div class="performance-section-head">
-          <div>
-            <span>Görev kartları</span>
-            <strong>{{ completedCount }} / {{ performanceTasks.length }} tamamlandı</strong>
-          </div>
-          <span>{{ progressValue }}%</span>
+      <section class="performance-improve-section" aria-label="Öncelikli hamleler" data-testid="performance-priority-actions">
+        <div class="performance-improve-section__head">
+          <span>Öncelikli 3 hamle</span>
+          <strong>En hızlı etki</strong>
         </div>
 
-        <div class="performance-task-list">
+        <div class="performance-action-list">
           <AppCard
-            v-for="task in performanceTasks"
-            :key="task.id"
-            :class="['performance-task-card', completedSet.has(task.id) ? 'is-complete' : '', selectedTask?.id === task.id ? 'is-selected' : '']"
+            v-for="(action, index) in priorityPerformanceActions"
+            :key="action.id"
+            class="performance-action-card"
             padding="md"
-            data-testid="performance-task-card"
+            data-testid="performance-priority-card"
           >
-            <button type="button" class="performance-task-card__main" @click="selectTask(task.id)">
-              <span class="performance-task-icon"><AppIcon :name="task.icon" :size="20" /></span>
-              <span class="performance-task-card__copy">
-                <strong>{{ task.title }}</strong>
-                <small>{{ task.shortText }}</small>
-              </span>
-              <span class="performance-task-card__reward">+{{ formatPerformanceScore(task.points) }}</span>
-            </button>
-
-            <div v-if="selectedTask?.id === task.id" class="performance-task-card__detail" data-testid="performance-task-detail">
-              <span><strong>Nasıl yapılır?</strong> {{ task.how }}</span>
-              <span><strong>Sonuç:</strong> {{ task.outcome }}</span>
+            <span class="performance-action-rank">{{ index + 1 }}</span>
+            <span class="performance-soft-icon"><AppIcon :name="action.icon" :size="19" /></span>
+            <div class="performance-action-copy">
+              <strong>{{ action.title }}</strong>
+              <span>Mevcut: {{ action.currentValue }}</span>
+              <span>Hedef: {{ action.targetValue }}</span>
             </div>
-
-            <div class="performance-task-card__footer">
-              <span>{{ task.priority }} · {{ task.minutes }} dk</span>
-              <AppButton
-                v-if="!completedSet.has(task.id)"
-                size="sm"
-                variant="secondary"
-                data-testid="performance-task-complete"
-                @click="completeTask(task.id)"
-              >
-                Tamamla
+            <div class="performance-action-side">
+              <strong>+{{ action.impact }} puan</strong>
+              <AppButton size="sm" variant="secondary" :data-testid="`performance-action-${action.id}`" @click="goTo(action.actionRoute)">
+                {{ action.actionLabel }}
               </AppButton>
-              <span v-else class="performance-done-pill" data-testid="performance-task-done">
-                <AppIcon name="check" :size="14" />
-                Tamamlandı
-              </span>
             </div>
           </AppCard>
         </div>
       </section>
 
-      <AppCard v-if="lastCompletedTaskId" class="performance-feedback-card" padding="md" data-testid="performance-score-feedback">
-        <AppIcon name="trend-up" :size="20" />
-        <span>
-          Görev tamamlandı. Yeni skorun
-          <strong>{{ formatPerformanceScore(score) }}</strong>
-        </span>
+      <section class="performance-improve-section" aria-label="Performans alanları" data-testid="performance-criteria-section">
+        <div class="performance-improve-section__head">
+          <span>Performans alanları</span>
+          <strong>{{ performanceCriteria.length }} kriter</strong>
+        </div>
+
+        <div class="performance-criteria-list">
+          <AppCard
+            v-for="criterion in performanceCriteria"
+            :key="criterion.id"
+            class="performance-criterion-row"
+            padding="md"
+            data-testid="performance-criterion-row"
+          >
+            <span class="performance-soft-icon"><AppIcon :name="criterion.icon" :size="19" /></span>
+            <div class="performance-criterion-copy">
+              <div class="performance-criterion-title">
+                <strong>{{ criterion.title }}</strong>
+                <AppChip :tone="criterion.status === 'Güçlü' ? 'success' : criterion.status === 'Eksik' ? 'warning' : 'neutral'">
+                  {{ criterion.status }}
+                </AppChip>
+              </div>
+              <p>{{ criterion.description }}</p>
+              <div class="performance-criterion-values">
+                <span><small>Mevcut</small><strong>{{ criterion.currentValue }}</strong></span>
+                <span><small>Hedef</small><strong>{{ criterion.targetValue }}</strong></span>
+              </div>
+            </div>
+            <div class="performance-criterion-score">
+              <strong>{{ criterion.currentPoints }} / {{ criterion.maxPoints }}</strong>
+              <small>puan</small>
+              <AppButton
+                v-if="criterion.actionLabel"
+                size="sm"
+                variant="ghost"
+                :data-testid="`performance-criterion-action-${criterion.id}`"
+                @click="goTo(criterion.actionRoute)"
+              >
+                {{ criterion.actionLabel }}
+              </AppButton>
+            </div>
+          </AppCard>
+        </div>
+      </section>
+
+      <AppCard class="performance-benefits-card" padding="lg" data-testid="performance-benefits-card">
+        <div class="performance-improve-section__head">
+          <span>Yüksek skor ne sağlar?</span>
+          <strong>Güvenli avantaj</strong>
+        </div>
+        <ul>
+          <li v-for="benefit in performanceBenefits" :key="benefit">
+            <AppIcon name="check" :size="16" />
+            <span>{{ benefit }}</span>
+          </li>
+        </ul>
+        <p>
+          Yüksek performans skoru, uygun işlerde daha güçlü değerlendirilmeni destekler. İş sayısı bölge, sektör ve talebe göre değişebilir.
+        </p>
       </AppCard>
-
-      <section class="performance-benefit-section" aria-label="Skor artınca ne olur">
-        <div class="performance-section-head">
-          <div>
-            <span>Skor artınca</span>
-            <strong>Neyi güçlendirir?</strong>
-          </div>
-        </div>
-        <div class="performance-benefit-list">
-          <AppCard v-for="benefit in performanceBenefits" :key="benefit.title" class="performance-benefit-card" padding="md">
-            <span class="performance-task-icon"><AppIcon :name="benefit.icon" :size="20" /></span>
-            <div>
-              <strong>{{ benefit.title }}</strong>
-              <small>{{ benefit.text }}</small>
-            </div>
-          </AppCard>
-        </div>
-      </section>
     </div>
   </AppPage>
 </template>

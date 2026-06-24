@@ -35,9 +35,9 @@ test("home critical actions open their mock destinations", async ({ page }) => {
   await expect(performanceCard.getByText("Nedir?")).toHaveCount(0);
   await expect(page.getByTestId("home-performance-improve-button")).toContainText("Performansımı Artır");
   await page.getByTestId("home-performance-improve-button").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-score");
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-improve");
   await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
-  await expect(page.getByTestId("performance-now-card")).toBeVisible();
+  await expect(page.getByTestId("performance-priority-card")).toHaveCount(3);
 
   expect(errors).toEqual([]);
 });

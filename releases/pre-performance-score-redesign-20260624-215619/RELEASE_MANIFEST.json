@@ -1,0 +1,12 @@
+﻿{
+    "backup":  "pre-performance-score-redesign-20260624-215619",
+    "archiveBranch":  "archive/pre-performance-score-redesign-20260624-215619",
+    "startSha":  "71efbe787e7a714bb9e89571c86ee48a1a1ae645",
+    "date":  "2026-06-24T21:56:19.6526696+03:00",
+    "routeStatus":  {
+                        "performanceScore":  "/performance-score route exists as current score flow",
+                        "performanceImprove":  "/performance-improve route exists and will be redesigned"
+                    },
+    "currentPerformanceCard":  "Home performance card shows Performans Skoru, score 81, target 85 and CTA currently routes to /performance-score.",
+    "rollbackCommand":  "git switch main \u0026\u0026 git revert \u003cmerge-sha\u003e || git switch -c rollback-performance-score-redesign 71efbe787e7a714bb9e89571c86ee48a1a1ae645"
+}

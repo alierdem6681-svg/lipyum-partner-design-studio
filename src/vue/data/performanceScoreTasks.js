@@ -1,95 +1,189 @@
-export const PERFORMANCE_STORAGE_KEY = "lipyum.performanceScore.tasks.v1";
-
 export const performanceScoreConfig = {
-  baseScore: 81,
   targetScore: 85,
   maxScore: 100,
   level: "İyi",
 };
 
-export const performanceTasks = [
+export const performanceCriteria = [
   {
-    id: "job-result",
-    title: "Son işin bilgilerini gir",
-    shortText: "Ücret, gider ve iş sonucunu tamamla.",
-    icon: "receipt",
-    points: 1.2,
-    minutes: 3,
-    priority: "Şimdi yap",
-    how: "Son tamamlanan işin ücretini, giderini ve kısa sonucunu ekle.",
-    outcome: "Sistem iş sonucunu net gördüğü için skorun hızlı yükselir.",
-    actionLabel: "Görevi Tamamla",
+    id: "profile_completion",
+    title: "Profil eksiksizliği",
+    icon: "user",
+    maxPoints: 15,
+    currentPoints: 13,
+    status: "İyi",
+    currentValue: "Fotoğraf, hizmet ve bölgeler aktif",
+    targetValue: "Açıklama ve saat bilgisi tamamen güncel",
+    description: "Eksiksiz profil, müşterinin seni daha hızlı tanımasını destekler.",
+    actionLabel: "Profili Tamamla",
+    actionRoute: "/profile",
+    measures: ["Profil fotoğrafı", "Hizmet kategorileri", "Çalışma bölgeleri", "Çalışma saatleri", "Partner açıklaması"],
   },
   {
-    id: "review-reply",
-    title: "Yoruma cevap ver",
-    shortText: "Son müşteri yorumuna kısa ve nazik yanıt yaz.",
+    id: "reviews",
+    title: "Müşteri yorumları",
     icon: "message",
-    points: 0.8,
-    minutes: 2,
-    priority: "Kolay puan",
-    how: "Müşteriye teşekkür eden kısa bir cevap yaz. Uzun metin gerekmez.",
-    outcome: "Cevaplanan yorumlar müşteriye güven verir ve profilini güçlendirir.",
-    actionLabel: "Cevapladım",
+    maxPoints: 15,
+    currentPoints: 12,
+    status: "İyi",
+    currentValue: "Son 10 işte 2 yorum",
+    targetValue: "En az 5 yorum",
+    description: "Daha fazla olumlu yorum, müşterilerin sana güvenmesini kolaylaştırır.",
+    actionLabel: "Yorum İste",
+    actionRoute: "/reviews",
+    measures: ["Yorum sayısı", "Ortalama puan", "Son işlerden yorum alma oranı"],
   },
   {
-    id: "work-hours",
-    title: "Çalışma saatlerini güncelle",
-    shortText: "Bugün hangi saatlerde iş alacağını netleştir.",
+    id: "complaints",
+    title: "Müşteri şikayetleri",
+    icon: "shield",
+    maxPoints: 15,
+    currentPoints: 14,
+    status: "Güçlü",
+    currentValue: "Açık şikayet yok",
+    targetValue: "Çözüm oranını koru",
+    description: "Çözülmüş kayıtlar ve düşük şikayet sayısı güven sinyalini güçlendirir.",
+    actionLabel: "",
+    actionRoute: "",
+    measures: ["Açık şikayet sayısı", "Son 30 gün şikayet sayısı", "Çözülmüş şikayet oranı"],
+  },
+  {
+    id: "response_speed",
+    title: "Müşteriye hızlı dönüş",
+    icon: "zap",
+    maxPoints: 15,
+    currentPoints: 10,
+    status: "Geliştirilebilir",
+    currentValue: "Ortalama 18 dakika",
+    targetValue: "5 dakika altı",
+    description: "Hızlı dönüş yapan partnerler müşteri kaybını azaltır.",
+    actionLabel: "Bildirimleri Aç",
+    actionRoute: "/notification-settings",
+    measures: ["Ortalama dönüş süresi", "Hedef: 5 dakika altı"],
+  },
+  {
+    id: "cancellation_rate",
+    title: "İptal oranı",
+    icon: "calendar-check",
+    maxPoints: 15,
+    currentPoints: 11,
+    status: "İyi",
+    currentValue: "Son 30 gün iptal oranı %12",
+    targetValue: "%10 altı",
+    description: "Düşük iptal oranı, sistemin seni daha güvenilir partner olarak değerlendirmesine yardımcı olur.",
+    actionLabel: "İşleri İncele",
+    actionRoute: "/my-jobs",
+    measures: ["Son 30 gün iptal oranı", "Müşteri kaynaklı iptal", "Partner kaynaklı iptal"],
+  },
+  {
+    id: "active_usage",
+    title: "Uygulamayı aktif kullanım",
     icon: "clock",
-    points: 0.7,
-    minutes: 2,
-    priority: "Hızlı görev",
-    how: "Uygun olduğun saatleri kontrol et ve güncel değilse düzelt.",
-    outcome: "Uygun işlerle daha doğru eşleşirsin.",
-    actionLabel: "Güncelledim",
+    maxPoints: 10,
+    currentPoints: 9,
+    status: "Güçlü",
+    currentValue: "Son 7 günde 6 aktif gün",
+    targetValue: "Her gün fırsatları kontrol et",
+    description: "Aktif partnerler, yeni iş fırsatlarını kaçırmadan değerlendirebilir.",
+    actionLabel: "Bildirimlere Bak",
+    actionRoute: "/notifications",
+    measures: ["Son giriş tarihi", "Son 7 gün aktif gün sayısı", "Gelen işleri görüntüleme"],
   },
   {
-    id: "profile-photo",
-    title: "İş fotoğrafı ekle",
-    shortText: "Tamamlanan bir işten net bir fotoğraf ekle.",
-    icon: "image",
-    points: 0.6,
-    minutes: 4,
-    priority: "Profil gücü",
-    how: "İş öncesi veya sonrası net bir görsel seç. Bulanık fotoğraf ekleme.",
-    outcome: "Görseli güçlü profiller müşteride daha hızlı güven oluşturur.",
-    actionLabel: "Fotoğraf Ekledim",
-  },
-  {
-    id: "balance-ready",
-    title: "Bakiye hazır olsun",
-    shortText: "İş kaçırmamak için bakiyeni güvenli seviyede tut.",
+    id: "balance",
+    title: "Bakiye durumu",
     icon: "wallet",
-    points: 0.5,
-    minutes: 1,
-    priority: "Kesinti önle",
-    how: "Bakiyen düşükse yükleme yap veya düşük bakiye uyarısını aç.",
-    outcome: "Bakiye bitince uygun işleri kaçırma riskin azalır.",
-    actionLabel: "Kontrol Ettim",
+    maxPoints: 10,
+    currentPoints: 7,
+    status: "Geliştirilebilir",
+    currentValue: "Bakiye düşük",
+    targetValue: "İş alabilecek seviyede bakiye",
+    description: "Bakiyenin bitmesi, sana uygun işleri kaçırmana neden olabilir. İş fırsatlarında kesinti yaşamamak için bakiyeni bitmeden yenile.",
+    actionLabel: "Bakiye Yükle",
+    actionRoute: "/wallet",
+    measures: ["Mevcut bakiye", "Önerilen minimum bakiye", "Bakiye bitmeden yükleme davranışı"],
+  },
+  {
+    id: "subscription",
+    title: "Abonelik durumu",
+    icon: "crown",
+    maxPoints: 5,
+    currentPoints: 5,
+    status: "Güçlü",
+    currentValue: "Ücretli abonelik 3. seviye",
+    targetValue: "En fazla 5 puan",
+    description: "Ücretli abonelikler ek avantaj sağlar; performans skorunun yalnız küçük bir bölümünü etkiler.",
+    actionLabel: "Aboneliği İncele",
+    actionRoute: "/subscription",
+    measures: ["Ücretsiz: 0 puan", "1. seviye: +2 puan", "2. seviye: +3 puan", "3. seviye: +5 puan"],
+  },
+];
+
+export const priorityPerformanceActions = [
+  {
+    id: "more_reviews",
+    title: "Müşteri yorumlarını artır",
+    icon: "star",
+    currentValue: "Son 10 işte 2 yorum",
+    targetValue: "En az 5 yorum",
+    impact: 3,
+    actionLabel: "Yorum İste",
+    actionRoute: "/reviews",
+  },
+  {
+    id: "faster_response",
+    title: "Daha hızlı dönüş yap",
+    icon: "zap",
+    currentValue: "Ortalama 18 dakika",
+    targetValue: "5 dakika altı",
+    impact: 2,
+    actionLabel: "Bildirimleri Aç",
+    actionRoute: "/notification-settings",
+  },
+  {
+    id: "ready_balance",
+    title: "Bakiyeni kesintisiz tut",
+    icon: "wallet",
+    currentValue: "Bakiye düşük",
+    targetValue: "İş alabilecek seviyede bakiye",
+    impact: 1,
+    actionLabel: "Bakiye Yükle",
+    actionRoute: "/wallet",
   },
 ];
 
 export const performanceBenefits = [
-  { icon: "eye", title: "Daha güçlü görünüm", text: "Profilin uygun işlerde daha güven veren sinyaller taşır." },
-  { icon: "badge-check", title: "Güven etkisi", text: "Yorum, hız ve düzenli kullanım müşterinin kararını kolaylaştırır." },
-  { icon: "target", title: "Net yol haritası", text: "Hangi görevin ne kazandırdığını açıkça görürsün." },
+  "Sana uygun işlerde daha güçlü görünürsün.",
+  "Müşteri güvenini artıran bilgiler öne çıkar.",
+  "İş fırsatlarını kaçırma ihtimalin azalır.",
+  "Profilin benzer partnerlere göre daha iyi değerlendirilir.",
+  "Kampanya ve fırsatlardan daha avantajlı yararlanabilirsin.",
 ];
 
-export function formatPerformanceScore(value) {
-  return new Intl.NumberFormat("tr-TR", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  }).format(value);
+export function clampScore(value, max = performanceScoreConfig.maxScore) {
+  return Math.max(0, Math.min(max, Number(value) || 0));
 }
 
-export function calculatePerformanceScore(completedTaskIds = []) {
-  const completed = new Set(completedTaskIds);
-  const earned = performanceTasks.reduce((total, task) => total + (completed.has(task.id) ? task.points : 0), 0);
-  return Math.min(performanceScoreConfig.maxScore, performanceScoreConfig.baseScore + earned);
+export function calculateCriteriaTotal(criteria = performanceCriteria) {
+  return criteria.reduce((total, item) => total + clampScore(item.currentPoints, item.maxPoints), 0);
 }
 
-export function nextPerformanceTask(completedTaskIds = []) {
-  const completed = new Set(completedTaskIds);
-  return performanceTasks.find((task) => !completed.has(task.id)) || null;
+export function calculateCriteriaMax(criteria = performanceCriteria) {
+  return criteria.reduce((total, item) => total + item.maxPoints, 0);
+}
+
+export function calculateRemainingToTarget(score, target = performanceScoreConfig.targetScore) {
+  return Math.max(0, target - clampScore(score));
+}
+
+export function calculateProgressPercent(score, max = performanceScoreConfig.maxScore) {
+  return Math.round((clampScore(score, max) / max) * 100);
+}
+
+export function getCriterionStatus(currentPoints, maxPoints) {
+  const ratio = maxPoints > 0 ? currentPoints / maxPoints : 0;
+  if (ratio >= 0.85) return "Güçlü";
+  if (ratio >= 0.7) return "İyi";
+  if (ratio >= 0.45) return "Geliştirilebilir";
+  return "Eksik";
 }

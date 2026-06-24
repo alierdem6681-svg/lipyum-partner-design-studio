@@ -28,7 +28,6 @@ const simpleRoutes = [
   "/notification-settings",
   "/contact-settings",
   "/bonus",
-  "/performance-score",
   "/customers",
   "/invoices",
   "/income-expense",
@@ -56,6 +55,8 @@ const richRoutes = [
   { route: "/referral/partner/:id", component: "ReferralPartnerDetailPage", file: "ReferralPartnerDetailPage.vue" },
   { route: "/referral-earnings", component: "ReferralEarningsPage", file: "ReferralEarningsPage.vue" },
   { route: "/job-referral", component: "JobReferralPage", file: "JobReferralPage.vue" },
+  { route: "/performance-score", component: "PerformanceScorePage", file: "PerformanceScorePage.vue" },
+  { route: "/performance-improve", component: "PerformanceScorePage", file: "PerformanceScorePage.vue" },
 ];
 
 function escapeRegex(value) {
