@@ -28,6 +28,7 @@ const dragOrigin = ref({ x: 0, y: 0, xLevel: 2, yLevel: 2 });
 const publicMetrics = [
   { id: "response", icon: "clock", label: "Yanıt Süresi", value: "Genelde <2 dk" },
   { id: "jobs", icon: "briefcase", label: "İş Sayısı", value: "428" },
+  { id: "favorites", icon: "star", label: "Favoriye Alanlar", value: "69" },
 ];
 
 const isDrawer = computed(() => props.variant === "drawer");
@@ -79,6 +80,10 @@ function openShareSheet() {
 function openPreview() {
   shell.closeDrawer();
   router.push("/partner-card-preview");
+}
+
+function addToFavorites() {
+  shell.showToast("Favorilerine eklendi.");
 }
 
 function openPhotoEditor() {
@@ -273,6 +278,17 @@ async function savePhoto() {
         </span>
       </span>
     </div>
+
+    <button
+      v-if="variant === 'public'"
+      class="partner-profile-favorite-button"
+      type="button"
+      data-testid="partner-profile-favorite-button"
+      @click="addToFavorites"
+    >
+      <AppIcon name="star" :size="15" class-name="icon" />
+      Favorilerime Ekle
+    </button>
 
     <div :class="badgesClasses" aria-label="Profil rozetleri">
       <span
