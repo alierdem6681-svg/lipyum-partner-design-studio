@@ -4,7 +4,7 @@ import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from 
 test("invoices page lists invoices and manages invoice info", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
 
-  await page.goto("/#/invoices");
+  await page.goto("/?engine=vue#/invoices");
   await waitForApp(page);
 
   await expect(page.getByTestId("invoices-page")).toBeVisible();
@@ -29,7 +29,7 @@ test("invoices page lists invoices and manages invoice info", async ({ page }) =
 });
 
 test("sidebar includes Faturalarım and opens invoices route", async ({ page }) => {
-  await page.goto("/#/home");
+  await page.goto("/?engine=vue#/home");
   await waitForApp(page);
 
   await page.getByTestId("hamburger-button").click();

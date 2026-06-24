@@ -5,48 +5,40 @@ const emit = defineEmits(["back", "right", "menu", "action"]);
 defineProps({
   title: { type: String, required: true },
   subtitle: { type: String, default: "" },
-  subtitleIcon: { type: String, default: "" },
+  headerProfile: { type: Object, default: null },
   showBack: { type: Boolean, default: true },
   variant: { type: String, default: "subpage" },
   rightIcon: { type: String, default: "" },
   rightLabel: { type: String, default: "" },
   rightActions: { type: Array, default: () => [] },
+  showDefaultRightAction: { type: Boolean, default: true },
 });
 
 const iconForAction = {
   notifications: "bell",
   profile: "user",
   info: "help-circle",
-  "profile-preview": "eye",
   "wallet-info": "help-circle",
-  "account-transactions": "receipt",
   "notification-settings": "settings",
-  "partner-share": "share",
-  "end-live-chat": "x",
+  premium: "crown",
 };
 
 const labelForAction = {
   notifications: "Bildirimler",
   profile: "Profil",
   info: "Sayfa bilgisi",
-  "profile-preview": "Önizle",
   "wallet-info": "Cüzdan bilgisi",
-  "account-transactions": "Hesap hareketleri",
   "notification-settings": "Bildirim ayarları",
-  "partner-share": "Partner kartını paylaş",
-  "end-live-chat": "Konuşmayı bitir",
+  premium: "Üyelik ayrıcalığı",
 };
 
 const testIdForAction = {
   notifications: "notification-button",
   profile: "profile-button",
   info: "header-info-button",
-  "profile-preview": "profile-preview-header-button",
   "wallet-info": "wallet-info-button",
-  "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",
-  "partner-share": "partner-preview-header-share",
-  "end-live-chat": "live-support-end-header",
+  premium: "premium-member-icon",
 };
 
 const homeStatuses = [
@@ -65,10 +57,7 @@ function statusAriaLabel(status) {
 <template>
   <header
     class="v-header v-app-header top-nav app-header"
-    :class="[
-      `${variant || 'subpage'}-header`,
-      rightActions.includes('profile-preview') || rightActions.includes('partner-share') || rightActions.includes('end-live-chat') ? 'has-text-action' : '',
-    ]"
+    :class="`${variant || 'subpage'}-header`"
     :data-header-variant="variant"
     data-testid="app-header"
   >
@@ -127,36 +116,49 @@ function statusAriaLabel(status) {
         </div>
       </span>
     </div>
-    <div v-else class="v-header__copy page-header-copy">
-      <h1>{{ title }}</h1>
-      <p v-if="subtitle" :class="{ 'has-subtitle-icon': subtitleIcon }">
-        <AppIcon v-if="subtitleIcon" :name="subtitleIcon" :size="13" class-name="v-header__subtitle-icon" />
-        <span>{{ subtitle }}</span>
-      </p>
+    <div v-else class="v-header__copy page-header-copy" :class="{ 'v-header__copy--profile': headerProfile }">
+      <div v-if="headerProfile" class="v-header-profile" :data-testid="headerProfile.testId || undefined">
+        <span class="v-header-profile__avatar" aria-hidden="true">
+          <img v-if="headerProfile.photo" :src="headerProfile.photo" :alt="headerProfile.name" />
+          <span v-else>{{ headerProfile.initials || "LP" }}</span>
+        </span>
+        <span class="v-header-profile__copy">
+          <h1>{{ headerProfile.name || title }}</h1>
+          <p>{{ headerProfile.role || subtitle }}</p>
+        </span>
+      </div>
+      <template v-else>
+        <h1>{{ title }}</h1>
+        <p v-if="subtitle">{{ subtitle }}</p>
+      </template>
     </div>
 
     <div class="v-header__actions header-actions">
-      <button
-        v-for="action in (rightIcon ? [rightIcon] : rightActions)"
+      <template
+        v-for="action in (rightIcon ? [rightIcon] : rightActions.length ? rightActions : showDefaultRightAction ? ['info'] : [])"
         :key="action"
-        class="v-header__action icon-btn page-header-action"
-        :class="[
-          action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
-          action === 'end-live-chat' ? 'is-text-action is-danger-action' : '',
-          action === 'partner-share' ? 'is-partner-share-action' : '',
-        ]"
-        type="button"
-        :data-testid="testIdForAction[action] || 'header-right-action'"
-        :data-action="action"
-        :aria-label="rightLabel || labelForAction[action] || action"
-        @click="rightIcon ? emit('right') : emit('action', action)"
       >
-        <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
-        <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
-        <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
-        <span v-if="action === 'end-live-chat'" class="v-header__action-label">Bitir</span>
-        <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
-      </button>
+        <span
+          v-if="action === 'premium'"
+          class="v-header__action v-header__action--premium icon-btn page-header-action"
+          :data-testid="testIdForAction[action]"
+          aria-hidden="true"
+        >
+          <AppIcon :name="iconForAction[action]" :size="24" class-name="icon" />
+        </span>
+        <button
+          v-else
+          class="v-header__action icon-btn page-header-action"
+          type="button"
+          :data-testid="testIdForAction[action] || 'header-right-action'"
+          :data-action="action"
+          :aria-label="rightLabel || labelForAction[action] || action"
+          @click="rightIcon ? emit('right') : emit('action', action)"
+        >
+          <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
+          <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
+        </button>
+      </template>
     </div>
   </header>
 </template>

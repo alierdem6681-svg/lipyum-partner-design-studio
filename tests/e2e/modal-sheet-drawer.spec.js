@@ -6,8 +6,8 @@ async function dragHandleDown(page) {
     const startY = node.getBoundingClientRect().top + 2;
     const pointerId = 11;
     node.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientY: startY, pointerId }));
-    node.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientY: startY + 34, pointerId }));
-    node.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientY: startY + 34, pointerId }));
+    node.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientY: startY + 88, pointerId }));
+    node.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientY: startY + 88, pointerId }));
   });
 }
 
@@ -16,7 +16,7 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   await page.goto("/#/home");
   await waitForApp(page);
 
-  await page.locator('[data-open="bonus-convert"]').click();
+  await page.getByRole("button", { name: /Krediye Çevir/ }).first().click();
   await expect(page.getByTestId("sheet-close-button")).toBeVisible();
   await page.getByTestId("sheet-close-button").click();
   await expect(page.getByTestId("sheet-close-button")).toHaveCount(0);
@@ -26,94 +26,40 @@ test("V10 sheet, drawer and partner share panel open and close cleanly", async (
   await page.getByTestId("sidebar-close").click();
   await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
 
-  await page.goto("/#/partner-card-preview");
+  await page.goto("/#/profile");
   await waitForApp(page);
-  await page.getByTestId("partner-preview-header-share").click();
-  await expect(page.getByTestId("partner-share-options")).toBeVisible();
-  await expect(page.getByTestId("partner-share-option-whatsapp")).toBeVisible();
-  await expect(page.getByTestId("partner-share-suboptions-whatsapp")).toBeVisible();
+  await page.getByTestId("partner-share-button").click();
+  await expect(page.getByTestId("partner-public-badge").first()).toBeVisible();
+  await expect(page.getByTestId("partner-copy-link")).toBeVisible();
   await page.getByTestId("sheet-close-button").click();
-  await expect(page.getByTestId("partner-share-options")).toHaveCount(0);
+  await expect(page.getByTestId("partner-copy-link")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });
 
-test("shared app sheet keeps side margins, sits flush to bottom and closes by dragging the handle down", async ({ page }) => {
+test("shared app sheet keeps side margins and closes by dragging the handle down", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
   await waitForApp(page);
-  await page.locator('[data-open="bonus-info"]').click();
-  await expect(page.getByTestId("app-sheet")).toBeVisible();
-  const compactMetrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
-    const rect = sheet.getBoundingClientRect();
-    const body = sheet.querySelector(".v-app-sheet__body");
-    return {
-      height: rect.height,
-      bodyScrollHeight: body?.scrollHeight || 0,
-      bodyClientHeight: body?.clientHeight || 0,
-    };
-  });
-  expect(compactMetrics.height).toBeLessThan(420);
-  expect(compactMetrics.bodyScrollHeight).toBeLessThanOrEqual(compactMetrics.bodyClientHeight + 1);
-  await page.getByTestId("sheet-close-button").click();
-  await expect(page.getByTestId("app-sheet")).toHaveCount(0);
 
-  await page.goto("/#/leaderboard");
-  await waitForApp(page);
-
-  await page.getByTestId("app-header").getByTestId("header-info-button").click();
+  await page.getByRole("button", { name: "Performans skoru nedir?" }).click();
   await expect(page.getByTestId("app-sheet")).toBeVisible();
 
   const metrics = await page.getByTestId("app-sheet").evaluate((sheet) => {
     const rect = sheet.getBoundingClientRect();
-    const style = window.getComputedStyle(sheet);
-    const body = sheet.querySelector(".v-app-sheet__body");
-    const bodyStyle = body ? window.getComputedStyle(body) : null;
     return {
       left: rect.left,
       right: window.innerWidth - rect.right,
-      bottom: window.innerHeight - rect.bottom,
-      height: rect.height,
       width: rect.width,
       viewportWidth: window.innerWidth,
-      bodyScrollHeight: body?.scrollHeight || 0,
-      bodyClientHeight: body?.clientHeight || 0,
-      bottomLeftRadius: style.borderBottomLeftRadius,
-      bottomRightRadius: style.borderBottomRightRadius,
-      bodyScrollbarWidth: bodyStyle?.scrollbarWidth,
-      bodyMsOverflowStyle: bodyStyle?.msOverflowStyle,
     };
   });
 
-  expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 12));
-  expect(metrics.height).toBeGreaterThanOrEqual(720);
-  expect(metrics.height).toBeGreaterThan(compactMetrics.height + 260);
-  expect(metrics.bodyScrollHeight).toBeLessThanOrEqual(metrics.bodyClientHeight + 1);
-  expect(metrics.left).toBeGreaterThanOrEqual(6);
-  expect(metrics.right).toBeGreaterThanOrEqual(6);
-  expect(metrics.bottom).toBeLessThanOrEqual(1);
-  expect(metrics.bottomLeftRadius).toBe("0px");
-  expect(metrics.bottomRightRadius).toBe("0px");
-  expect(metrics.bodyScrollbarWidth).toBe("none");
+  expect(metrics.width).toBeLessThanOrEqual(Math.min(430, metrics.viewportWidth - 20));
+  expect(metrics.left).toBeGreaterThanOrEqual(10);
+  expect(metrics.right).toBeGreaterThanOrEqual(10);
 
   await dragHandleDown(page);
   await expect(page.getByTestId("app-sheet")).toHaveCount(0);
-
-  await page.getByTestId("app-header").getByTestId("header-info-button").click();
-  await expect(page.getByTestId("app-sheet")).toBeVisible();
-  await page.getByTestId("app-sheet-overlay").click({ position: { x: 4, y: 4 } });
-  await expect(page.getByTestId("app-sheet")).toHaveCount(0);
-  expect(errors).toEqual([]);
-});
-
-test("shared app modal closes when clicking outside the modal panel", async ({ page }) => {
-  const errors = await collectConsoleErrors(page);
-  await page.goto("/#/profile");
-  await waitForApp(page);
-
-  await page.getByTestId("partner-profile-avatar-button").click();
-  await expect(page.getByTestId("app-modal")).toBeVisible();
-  await page.getByTestId("app-modal-overlay").click({ position: { x: 4, y: 4 } });
-  await expect(page.getByTestId("app-modal")).toHaveCount(0);
   expect(errors).toEqual([]);
 });

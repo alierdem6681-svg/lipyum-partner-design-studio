@@ -20,7 +20,6 @@ import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
 import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
 import PerformanceDetailsPage from "../pages/PerformanceDetailsPage.vue";
-import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
 import PerformanceSuccessPage from "../pages/PerformanceSuccessPage.vue";
 import PerformanceTaskPage from "../pages/PerformanceTaskPage.vue";
 import PerformanceTasksPage from "../pages/PerformanceTasksPage.vue";

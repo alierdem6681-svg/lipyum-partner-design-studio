@@ -1,50 +1,40 @@
 ﻿<script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import AppCard from "../components/ui/AppCard.vue";
-import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import WalletSummaryPanel from "../components/wallet/WalletSummaryPanel.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
 
 const score = 81;
 
-const performanceMilestones = [
-  { score: 85, label: "İyi", tone: "good" },
-  { score: 90, label: "Çok iyi", tone: "strong" },
-  { score: 95, label: "Mükemmel", tone: "excellent" },
+const metrics = [
+  { label: "Partnerler", value: "34", icon: "users" },
+  { label: "Tamamlanan İş", value: "18", icon: "briefcase" },
+  { label: "Teklifler", value: "128", icon: "file-text" },
 ];
 
-const activeRegionPeriod = ref("today");
-
-const regionPeriodOptions = [
-  { label: "Bugün", value: "today", testId: "home-region-filter-today", attrs: { "data-region-filter": "Bugün" } },
-  { label: "Dün", value: "yesterday", testId: "home-region-filter-yesterday", attrs: { "data-region-filter": "Dün" } },
+const regionActivities = [
+  "Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.",
+  "Elif Yılmaz bugün Mezitli’de klima bakım talebini tamamladı.",
+  "Ahmet Kaya son 10 dakikada Toroslar’da kombi arızasına teklif verdi.",
 ];
 
-const regionPeriodData = {
-  today: {
-    metrics: [
-      { label: "Partnerler", value: "34", icon: "users" },
-      { label: "Tamamlanan İş", value: "18", icon: "briefcase" },
-      { label: "Teklifler", value: "128", icon: "file-text" },
-    ],
-    activity: "Mehmet Ali A. az önce Yenişehir ilçesinde bir buzdolabı tamir işi aldı.",
-  },
-  yesterday: {
-    metrics: [
-      { label: "Partnerler", value: "31", icon: "users" },
-      { label: "Tamamlanan İş", value: "22", icon: "briefcase" },
-      { label: "Teklifler", value: "104", icon: "file-text" },
-    ],
-    activity: "Aydın Ç. dün Şişli ilçesinde bir fırın tamiri işi için teklif verdi.",
-  },
-};
+const activeRegionActivity = ref(0);
+const currentRegionActivity = computed(() => regionActivities[activeRegionActivity.value]);
+let regionActivityTimer = 0;
 
-const activeRegionData = computed(() => regionPeriodData[activeRegionPeriod.value] || regionPeriodData.today);
-const metrics = computed(() => activeRegionData.value.metrics);
-const regionActivityText = computed(() => activeRegionData.value.activity);
+onMounted(() => {
+  regionActivityTimer = window.setInterval(() => {
+    activeRegionActivity.value = (activeRegionActivity.value + 1) % regionActivities.length;
+  }, 3600);
+});
+
+onUnmounted(() => {
+  window.clearInterval(regionActivityTimer);
+});
 
 function openInfoSheet(title, body) {
   shell.openSheet({
@@ -55,11 +45,11 @@ function openInfoSheet(title, body) {
 }
 
 function openConvertSheet() {
-  window.dispatchEvent(new CustomEvent("lipyum:bonus-convert"));
-}
-
-function openTopUpSheet() {
-  window.dispatchEvent(new CustomEvent("lipyum:quick-topup"));
+  shell.openSheet({
+    type: "bonus-convert",
+    title: "Krediye Çevir",
+    description: "Bonusunu en avantajlı şekilde kullan.",
+  });
 }
 </script>
 
@@ -76,26 +66,15 @@ function openTopUpSheet() {
       >
         <div class="performance-card-head">
           <span class="performance-title">Performans Skoru</span>
-          <div
-            class="performance-milestones"
-            data-testid="home-performance-milestones"
-            aria-label="Performans eşikleri: 85 iyi, 90 çok iyi, 95 mükemmel"
+          <button
+            class="performance-info-btn text"
+            type="button"
+            data-open="performance-info"
+            aria-label="Performans skoru nedir?"
+            @click.stop="openInfoSheet('Performans Skoru', 'Profil kaliten, hızlı dönüşlerin ve iş sonuçların performans skorunu belirler.')"
           >
-            <div class="performance-milestones__track" aria-hidden="true">
-              <span
-                v-for="milestone in performanceMilestones"
-                :key="milestone.score"
-                :class="['performance-milestones__dot', `is-${milestone.tone}`]"
-              >
-                {{ milestone.score }}
-              </span>
-            </div>
-            <div class="performance-milestones__labels" aria-hidden="true">
-              <span v-for="milestone in performanceMilestones" :key="milestone.label">
-                {{ milestone.label }}
-              </span>
-            </div>
-          </div>
+            Nedir?
+          </button>
         </div>
 
         <div class="performance-home-layout">
@@ -113,11 +92,10 @@ function openTopUpSheet() {
             type="button"
             data-screen="performanceScore"
             data-action="performanceScore"
-            data-testid="home-performance-improve-button"
             @click.stop="$router.push('/performance-score')"
           >
             <AppIcon name="trend-up" :size="14" class-name="icon" />
-            Performansımı Artır
+            Skorumu Artır
           </button>
         </div>
 
@@ -132,67 +110,22 @@ function openTopUpSheet() {
         </div>
       </AppCard>
 
-      <AppCard padding="none" class="wallet-summary-card" data-testid="home-wallet-card">
-        <div class="wallet-summary">
-          <div class="wallet-tile credit">
-            <div class="wallet-tile-head">
-              <span>Cüzdan</span>
-            </div>
-            <button
-              class="wallet-tile-icon"
-              type="button"
-              data-open="wallet-info"
-              data-action="wallet-info"
-              aria-label="Cüzdan bilgisi"
-              @click="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')"
-            >
-              <AppIcon name="help-circle" :size="17" class-name="icon" />
-            </button>
-            <span class="wallet-amount"><strong>675</strong><small>kredi</small></span>
-            <span class="wallet-subline">≈ 2-3 iş alabilirsin</span>
-            <div class="wallet-actions">
-              <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="openTopUpSheet">
-                <AppIcon name="plus" :size="16" class-name="icon" />
-                Bakiye Yükle
-              </button>
-            </div>
-          </div>
-
-          <div class="wallet-tile bonus" data-testid="home-bonus-card">
-            <div class="wallet-tile-head">
-              <span>Bonus</span>
-            </div>
-            <button
-              class="wallet-tile-icon"
-              type="button"
-              data-open="bonus-info"
-              data-action="bonus-info"
-              aria-label="Bonus bilgisi"
-              @click="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')"
-            >
-              <AppIcon name="help-circle" :size="17" class-name="icon" />
-            </button>
-            <span class="wallet-amount"><strong>240</strong><small>bonus</small></span>
-            <span class="wallet-subline">Kredi yüklerken kullanılır.</span>
-            <div class="wallet-actions split">
-              <button class="wallet-action-pill convert" type="button" data-open="bonus-convert" @click="openConvertSheet">
-                <AppIcon name="refresh" :size="16" class-name="icon" />
-                Krediye Çevir
-              </button>
-            </div>
-          </div>
-        </div>
-      </AppCard>
+      <WalletSummaryPanel
+        test-id="home-wallet-card"
+        bonus-test-id="home-bonus-card"
+        @wallet-info="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')"
+        @bonus-info="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')"
+        @credit="$router.push('/wallet')"
+        @convert="openConvertSheet"
+      />
 
       <AppCard padding="none" class="region-home-card" data-testid="home-region-card">
         <div class="region-card-head">
           <h3>Bölgendeki İşler</h3>
-          <AppFilterChips
-            v-model="activeRegionPeriod"
-            :items="regionPeriodOptions"
-            aria-label="Bölge iş tarihi filtreleri"
-            data-testid="home-region-filter"
-          />
+          <div class="region-filter-row" aria-label="Bölge iş tarihi filtreleri">
+            <button class="chip-btn active" type="button" data-region-filter="Bugün">Bugün</button>
+            <button class="chip-btn" type="button" data-region-filter="Dün">Dün</button>
+          </div>
         </div>
         <div class="kpi-row">
           <div v-for="item in metrics" :key="item.label" class="kpi-tile">
@@ -212,7 +145,9 @@ function openTopUpSheet() {
         >
           <div class="region-activity-message">
             <span class="region-activity-dot" aria-hidden="true"></span>
-            <span data-region-activity-text>{{ regionActivityText }}</span>
+            <Transition name="region-activity-slide" mode="out-in">
+              <span :key="currentRegionActivity" data-region-activity-text>{{ currentRegionActivity }}</span>
+            </Transition>
           </div>
         </div>
       </AppCard>
