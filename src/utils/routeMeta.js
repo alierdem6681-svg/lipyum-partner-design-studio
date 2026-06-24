@@ -221,12 +221,12 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Daha Fazla İş Al",
-    subtitle: "",
+    subtitle: "Görevleri tamamla, skorunu artır.",
     trailingActions: [],
   },
   "/performance-improve": {
     title: "Daha Fazla İş Al",
-    subtitle: "",
+    subtitle: "Görevleri tamamla, skorunu artır.",
     trailingActions: [],
   },
   "/customer-management": {

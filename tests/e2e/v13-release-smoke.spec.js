@@ -10,7 +10,7 @@ const criticalRoutes = [
   ["/reviews", "reviews-page"],
   ["/leaderboard", "leaderboard-page"],
   ["/subscription", "subscription-page"],
-  ["/performance-score", "performance-score-empty-page"],
+  ["/performance-score", "performance-score-flow-page"],
   ["/referral", "referral-page"],
   ["/partner-card-preview", "partner-card-preview-page"],
   ["/wallet", "wallet-page"],
