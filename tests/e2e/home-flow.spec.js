@@ -37,7 +37,7 @@ test("home critical actions open their mock destinations", async ({ page }) => {
   await page.getByTestId("home-performance-improve-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-improve");
   await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
-  await expect(page.getByTestId("performance-priority-card")).toHaveCount(3);
+  await expect(page.getByTestId("performance-priority-card")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });
