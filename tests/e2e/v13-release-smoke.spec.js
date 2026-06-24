@@ -150,6 +150,13 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-button")).toHaveCount(0);
   await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
+  await expect(page.getByTestId("partner-preview-service-summary")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-detail-services")).toContainText("Verilen hizmetler");
+  await expect(page.getByTestId("partner-preview-detail-services")).toContainText("Klima bakım");
+  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Hizmet bölgeleri");
+  await expect(page.getByTestId("partner-preview-detail-regions")).toContainText("Ümraniye");
+  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Çalışma saatleri");
+  await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("09:00 - 19:00");
 
   await page.getByTestId("partner-preview-header-share").click();
   await expect(page.getByTestId("partner-share-options")).toBeVisible();
