@@ -16,8 +16,6 @@ export const partnerProfile = {
     { label: "Hızlı", icon: "zap" },
     { label: "Titiz", icon: "sparkles" },
     { label: "Planlı", icon: "calendar" },
-    { label: "Düzenli", icon: "check" },
-    { label: "İlgili", icon: "message" },
   ],
 };
 

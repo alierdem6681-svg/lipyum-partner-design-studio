@@ -130,10 +130,6 @@ onBeforeUnmount(() => {
       <AppCard class="partner-preview-reviews" variant="elevated" padding="md" data-testid="partner-preview-reviews">
         <div class="partner-preview-reviews__header">
           <h2>Müşteri Yorumları</h2>
-          <button type="button" data-testid="partner-preview-all-reviews" @click="showPreviewAction('Tüm yorumlar')">
-            Tümünü Gör
-            <AppIcon name="chevron-right" :size="14" />
-          </button>
         </div>
 
         <div class="partner-preview-reviews__track" aria-label="Müşteri yorumları">

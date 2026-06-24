@@ -1,0 +1,9 @@
+{
+  "id": "pre-partner-preview-metrics-cleanup-20260624-154426",
+  "createdAt": "2026-06-24T15:44:26+03:00",
+  "mainSha": "a2bfcb38b7d0e3fe6579c0e5df13f9d2fb84bfcf",
+  "tag": "pre-partner-preview-metrics-cleanup-20260624-154426",
+  "archiveBranch": "archive/pre-partner-preview-metrics-cleanup-20260624-154426",
+  "scope": "Backup before partner preview badge, metrics, and reviews header cleanup.",
+  "rollback": "git switch main && git reset --hard pre-partner-preview-metrics-cleanup-20260624-154426"
+}

@@ -164,6 +164,8 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-card-preview")).not.toContainText("Çalışkan");
   await expect(page.getByTestId("partner-card-preview")).not.toContainText("Samimi");
   await expect(page.getByTestId("partner-card-preview")).not.toContainText("Enerjik");
+  await expect(page.getByTestId("partner-card-preview")).not.toContainText("Düzenli");
+  await expect(page.getByTestId("partner-card-preview")).not.toContainText("İlgili");
   await expect(page.getByTestId("partner-preview-service-summary")).toBeVisible();
   await expect(page.getByTestId("partner-preview-service-summary")).not.toContainText("Ahmet Kaya");
   await expect(page.getByTestId("partner-preview-service-summary")).not.toContainText("hizmet bilgileri");
@@ -178,6 +180,7 @@ test("partner card preview uses share button and channel options", async ({ page
   await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("Hafta içi ve cumartesi");
   await expect(page.getByTestId("partner-preview-detail-hours")).toContainText("08:00 - 21:00");
   await expect(page.getByTestId("partner-preview-reviews")).toBeVisible();
+  await expect(page.getByTestId("partner-preview-all-reviews")).toHaveCount(0);
   await expect(page.getByTestId("partner-preview-review-row")).toHaveCount(4);
   await expect(page.getByTestId("partner-preview-reviews")).toContainText("Müşteri Yorumları");
   await expect(page.getByTestId("partner-preview-reviews")).toContainText("Emre T.");
