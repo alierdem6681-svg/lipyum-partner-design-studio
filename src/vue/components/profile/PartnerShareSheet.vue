@@ -48,14 +48,14 @@ function handleShare(action) {
   <section class="v-share-options partner-share-sheet" data-testid="partner-share-options">
     <article class="partner-share-hero" data-testid="partner-share-hero">
       <div class="partner-share-hero__visual" aria-hidden="true">
-        <img :src="heroShieldUrl" alt="" loading="lazy" />
+        <img :src="heroShieldUrl" alt="" loading="eager" decoding="async" />
       </div>
       <div class="partner-share-hero__copy">
         <h3>Mükemmel Profilinle İnsanlara Güven Ver</h3>
         <p>Profilini sosyal medya ve diğer platformlarda paylaş, insanlar seninle iletişime geçebilsin, teklif ve randevu alabilsin.</p>
         <div class="partner-share-trust-chips" aria-label="Profil güven rozetleri">
           <span v-for="chip in trustChips" :key="chip.label">
-            <img :src="chip.iconUrl" alt="" loading="lazy" />
+            <img :src="chip.iconUrl" alt="" loading="eager" decoding="async" />
             {{ chip.label }}
           </span>
         </div>
@@ -64,14 +64,14 @@ function handleShare(action) {
 
     <article class="partner-share-proof-card" data-testid="partner-share-free-contact">
       <span class="partner-share-proof-card__icon" aria-hidden="true">
-        <img :src="freeCheckBadgeUrl" alt="" loading="lazy" />
+        <img :src="freeCheckBadgeUrl" alt="" loading="eager" decoding="async" />
       </span>
       <p>Seninle doğrudan iletişime geçen, teklif ve randevu isteyen kişiler için <strong>hiçbir ücret ödemezsin.</strong></p>
     </article>
 
     <article class="partner-share-growth-card" data-testid="partner-share-growth">
       <span class="partner-share-growth-card__chart" aria-hidden="true">
-        <img :src="growthChartUrl" alt="" loading="lazy" />
+        <img :src="growthChartUrl" alt="" loading="eager" decoding="async" />
       </span>
       <p>Profil linkini paylaşan firmalar sosyal medya üzerinden x4 kat daha fazla iş alıyor.</p>
       <strong>x4</strong>
@@ -89,7 +89,7 @@ function handleShare(action) {
         @click="handleShare(channel.action)"
       >
         <span :class="['partner-share-social-icon', `is-${channel.id}`]" aria-hidden="true">
-          <img :src="channel.iconUrl" alt="" loading="lazy" />
+          <img :src="channel.iconUrl" alt="" loading="eager" decoding="async" />
         </span>
         <small>{{ channel.label }}</small>
       </button>
@@ -105,7 +105,7 @@ function handleShare(action) {
         @click="handleShare(channel.action)"
       >
         <span :class="['partner-share-social-icon', `is-${channel.id}`]" aria-hidden="true">
-          <img :src="channel.iconUrl" alt="" loading="lazy" />
+          <img :src="channel.iconUrl" alt="" loading="eager" decoding="async" />
         </span>
         <small>{{ channel.label }}</small>
       </button>
@@ -113,7 +113,7 @@ function handleShare(action) {
 
     <article class="partner-share-website-card" data-testid="partner-share-option-website">
       <span class="partner-share-website-card__preview" aria-hidden="true">
-        <img :src="websitePreviewUrl" alt="" loading="lazy" />
+        <img :src="websitePreviewUrl" alt="" loading="eager" decoding="async" />
       </span>
       <span class="partner-share-website-card__copy">
         <strong>Web sitemde göster</strong>
@@ -124,10 +124,10 @@ function handleShare(action) {
 
     <button class="partner-share-start" type="button" data-testid="partner-share-start" @click="handleShare('Ücretsiz paylaşım başlatıldı')">
       <span>
-        <img :src="ctaSparklesUrl" alt="" loading="lazy" />
+        <img :src="ctaSparklesUrl" alt="" loading="eager" decoding="async" />
         Ücretsiz Paylaşmaya Başla
       </span>
-      <img class="partner-share-start__arrow" :src="arrowCircleUrl" alt="" loading="lazy" />
+      <img class="partner-share-start__arrow" :src="arrowCircleUrl" alt="" loading="eager" decoding="async" />
     </button>
   </section>
 </template>
