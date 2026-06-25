@@ -57,17 +57,22 @@ test("performance improve page supports compact task flow and score badges", asy
   await expect(page.getByAltText(/Performans Rozeti/)).toHaveCount(0);
 
   await page.getByTestId("performance-rewards-button").click();
-  const sheet = page.getByTestId("performance-reward-sheet");
+  const appSheet = page.getByTestId("app-sheet");
+  const sheet = page.getByTestId("score-badge-advantages-sheet");
+  await expect(appSheet).toBeVisible();
+  await expect(appSheet).toContainText("Skor rozet avantajları");
+  await expect(appSheet).toContainText("Skor yükseldikçe maliyetin düşer.");
   await expect(sheet).toBeVisible();
-  await expect(page.getByText("Skorun yükseldikçe iş alma maliyetin düşer.")).toBeVisible();
+  await expect(page.getByTestId("score-badge-tier-card")).toHaveCount(3);
   await expect(sheet).toContainText("95+");
-  await expect(sheet).toContainText("%50'ye kadar daha düşük fiyatla iş alabilirsin");
-  await expect(sheet).toContainText("x3'e kadar daha fazla iş");
   await expect(sheet).toContainText("90+");
-  await expect(sheet).toContainText("%30'a kadar daha düşük fiyatla iş alabilirsin");
   await expect(sheet).toContainText("85+");
-  await expect(sheet).toContainText("%20'ye kadar daha düşük fiyatla iş alabilirsin");
-  await expect(page.getByTestId("performance-reward-badge-card")).toHaveCount(3);
+  await expect(sheet).toContainText("%50'ye kadar");
+  await expect(sheet).toContainText("%30'a kadar");
+  await expect(sheet).toContainText("%20'ye kadar");
+  await expect(sheet).toContainText("x3'e kadar daha fazla iş");
+  await expect(sheet).toContainText("x2'ye kadar daha fazla iş");
+  await expect(page.getByTestId("score-badge-advantages-note")).toBeVisible();
   expect(errors).toEqual([]);
 });
 

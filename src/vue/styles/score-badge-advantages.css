@@ -1,0 +1,168 @@
+.score-badge-advantages-sheet {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.score-badge-advantages-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.score-badge-tier-card {
+  position: relative;
+  min-width: 0;
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card-compact);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.score-badge-tier-card.is-primary {
+  min-height: 88px;
+  border-color: color-mix(in srgb, var(--color-premium-gold) 42%, var(--color-border));
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-surface),
+      color-mix(in srgb, var(--color-warning-soft) 54%, var(--color-surface))
+    );
+}
+
+.score-badge-tier-card__emblem {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.score-badge-tier-card__emblem .score-tier-emblem {
+  width: 54px;
+  height: 54px;
+}
+
+.score-badge-tier-card.is-primary .score-badge-tier-card__emblem .score-tier-emblem {
+  width: 58px;
+  height: 58px;
+}
+
+.score-badge-tier-card__content {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.score-badge-tier-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--weight-extra-bold);
+  line-height: var(--line-tight);
+  letter-spacing: 0;
+}
+
+.score-badge-tier-card h3 span {
+  color: var(--color-primary-dark);
+}
+
+.score-badge-tier-card p {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-bold);
+  line-height: var(--line-tight);
+}
+
+.score-badge-tier-card p .v-icon {
+  flex: 0 0 auto;
+  color: var(--color-primary-dark);
+}
+
+.score-badge-tier-card p strong {
+  min-width: 0;
+  font-weight: var(--weight-bold);
+}
+
+.score-badge-tier-card__score {
+  align-self: start;
+  min-width: 42px;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  padding: 0 9px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-extra-bold);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.score-badge-tier-card.is-primary .score-badge-tier-card__score {
+  border-color: color-mix(in srgb, var(--color-premium-gold) 54%, var(--color-warning-border));
+  background: var(--color-premium-gold-soft);
+  color: var(--color-premium-gold);
+}
+
+.score-badge-advantages-note {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px;
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-card-compact);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.score-badge-advantages-note__icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.score-badge-advantages-note p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--weight-bold);
+  line-height: var(--line-normal);
+}
+
+@media (max-width: 374px) {
+  .score-badge-tier-card {
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+    gap: 7px;
+    padding: 9px;
+  }
+
+  .score-badge-tier-card__emblem .score-tier-emblem,
+  .score-badge-tier-card.is-primary .score-badge-tier-card__emblem .score-tier-emblem {
+    width: 48px;
+    height: 48px;
+  }
+
+  .score-badge-tier-card h3 {
+    font-size: var(--font-size-body);
+  }
+
+  .score-badge-tier-card p,
+  .score-badge-advantages-note p {
+    font-size: var(--font-size-caption);
+  }
+}
