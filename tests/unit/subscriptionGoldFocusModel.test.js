@@ -32,6 +32,17 @@ test("gold focus price and CTA copy are centralized", () => {
   assert.equal(getPlanCtaCopy(vip), "VIP'E GEÇ");
 });
 
+test("selected plan support copy follows the selected plan", () => {
+  const plus = getDisplayPlan(getPlanById("plus"));
+  const gold = getDisplayPlan(getPlanById("gold"));
+  const vip = getDisplayPlan(getPlanById("vip"));
+
+  assert.match(plus.decisionSupport, /Plus/);
+  assert.match(gold.decisionSupport, /Gold/);
+  assert.match(vip.decisionSupport, /VIP/);
+  assert.doesNotMatch(vip.decisionSupport, /Gold/);
+});
+
 test("gold focus checkout query follows selected plan and billing", () => {
   assert.deepEqual(buildCheckoutQuery(getPlanById("gold"), "annual"), {
     plan: "gold",
