@@ -1,11 +1,12 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import AppButton from "../components/ui/AppButton.vue";
 import AppCard from "../components/ui/AppCard.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import AppSheet from "../components/ui/AppSheet.vue";
+import ScoreBadgeAdvantagesSheet from "../components/performance/ScoreBadgeAdvantagesSheet.vue";
 import {
   calculateCriteriaMax,
   calculateCriteriaTotal,
@@ -17,6 +18,7 @@ const INITIAL_VISIBLE_ACTIONS = performanceActionQueue.length;
 const LOAD_INCREMENT = 3;
 
 const router = useRouter();
+const route = useRoute();
 const visibleCount = ref(INITIAL_VISIBLE_ACTIONS);
 const listSentinel = ref(null);
 const selectedAction = ref(null);
@@ -25,38 +27,8 @@ const hasUserScrolled = ref(false);
 let listObserver;
 let scrollRoot;
 
-const badgeAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-badges/`;
 const taskAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-task/`;
 const completeIconSrc = `${taskAssetBase}lipyum-task-complete-64.webp`;
-const rewardBadges = [
-  {
-    id: "legend",
-    score: "95+",
-    image: `${badgeAssetBase}lipyum-badge-efsane-256.png`,
-    alt: "Efsane performans rozeti",
-    discount: "%50'ye kadar daha düşük fiyatla iş alabilirsin",
-    jobs: "x3'e kadar daha fazla iş",
-    tone: "legend",
-  },
-  {
-    id: "strong",
-    score: "90+",
-    image: `${badgeAssetBase}lipyum-badge-guclu-256.png`,
-    alt: "Güçlü performans rozeti",
-    discount: "%30'a kadar daha düşük fiyatla iş alabilirsin",
-    jobs: "x2'ye kadar daha fazla iş",
-    tone: "strong",
-  },
-  {
-    id: "high",
-    score: "85+",
-    image: `${badgeAssetBase}lipyum-badge-yuksek-256.png`,
-    alt: "Yüksek performans rozeti",
-    discount: "%20'ye kadar daha düşük fiyatla iş alabilirsin",
-    jobs: "Daha çok iş fırsatında güçlü görünüm",
-    tone: "high",
-  },
-];
 
 const score = computed(() => calculateCriteriaTotal());
 const maxScore = computed(() => calculateCriteriaMax());
@@ -145,6 +117,14 @@ watch(listSentinel, (node, oldNode) => {
   if (oldNode) listObserver.unobserve(oldNode);
   observeSentinel(node);
 });
+
+watch(
+  () => route.query.scoreBadgeAdvantages,
+  (value) => {
+    if (value === "1") openRewards();
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
   window.addEventListener("lipyum:performance-rewards", openRewards);
@@ -273,37 +253,6 @@ onBeforeUnmount(() => {
       </div>
     </AppSheet>
 
-    <AppSheet
-      :open="rewardsOpen"
-      title="Skor rozet avantajları"
-      description="Skorun yükseldikçe iş alma maliyetin düşer."
-      @close="closeRewards"
-    >
-      <div class="performance-reward-sheet" data-testid="performance-reward-sheet">
-        <div class="performance-reward-grid">
-          <article
-            v-for="badge in rewardBadges"
-            :key="badge.id"
-            class="performance-reward-card"
-            :class="`is-${badge.tone}`"
-            data-testid="performance-reward-badge-card"
-          >
-            <figure class="performance-reward-card__media">
-              <img class="performance-reward-card__badge" :src="badge.image" :alt="badge.alt" loading="eager" decoding="async" />
-            </figure>
-            <span class="performance-reward-card__score">{{ badge.score }}</span>
-            <div class="performance-reward-card__copy">
-              <strong>{{ badge.discount }}</strong>
-              <em>{{ badge.jobs }}</em>
-            </div>
-          </article>
-        </div>
-
-        <div class="performance-reward-note">
-          <AppIcon name="shield" :size="17" />
-          <span>İndirim ve iş fırsatı etkisi bölge, sektör, talep yoğunluğu ve aktif çalışma davranışına göre değişebilir.</span>
-        </div>
-      </div>
-    </AppSheet>
+    <ScoreBadgeAdvantagesSheet :open="rewardsOpen" @close="closeRewards" />
   </AppPage>
 </template>

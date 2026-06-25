@@ -1,0 +1,27 @@
+﻿{
+    "tag":  "v10",
+    "archiveBranch":  "archive/v10",
+    "createdAt":  "2026-06-26T00:57:13.3724461+03:00",
+    "startingMainSha":  "fbb93ab505a75f9cf08eed59adfbe34c54d77310",
+    "sourceBranch":  "codex/clean-start-after-v9",
+    "productionUrl":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+    "changedArea":  "/performance-improve score badge advantages modal",
+    "currentRouteStatus":  "Performance improve route remains active; trophy opens shared AppSheet score badge advantages modal.",
+    "detectedThemeIssues":  [
+                                "Custom modal width and overlay were outside shared AppSheet behavior.",
+                                "Raw SVG and hard-coded colors bypassed AppIcon and theme tokens.",
+                                "Typography scale and spacing were too large for Lipyum mobile sheet character.",
+                                "Narrow viewport subtitle clipped before copy was shortened."
+                            ],
+    "validation":  {
+                       "releaseGate":  "PASS with PLAYWRIGHT_PORT=5323 after default port 5174 was occupied by local dev server",
+                       "audit":  "PASS: npm audit --audit-level=high found 0 vulnerabilities",
+                       "browserLocal":  "PASS: 393x852 and 320x568 modal checks; no console errors; no horizontal overflow",
+                       "gitDiffCheck":  "PASS"
+                   },
+    "rollback":  {
+                     "tag":  "git checkout v10",
+                     "archiveBranch":  "git checkout archive/v10",
+                     "restoreMain":  "git checkout main \u0026\u0026 git reset --hard v10 \u0026\u0026 git push origin main"
+                 }
+}
