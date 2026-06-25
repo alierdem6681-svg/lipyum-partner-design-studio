@@ -9,8 +9,6 @@ const copy = {
   badge: "ÜCRETSİZ",
   headlineLead: "Profilini Paylaş,",
   headlineStrong: "Daha Fazla İş Al",
-  description:
-    "Profil linkini Instagram, web siten veya sosyal medyada paylaş. Müşteriler sana ulaşsın, randevu alsın, mesaj göndersin veya teklif istesin.",
 };
 
 const benefits = [
@@ -41,7 +39,6 @@ const avatarAlt = computed(() => `${profile.partner.name} profil fotoğrafı`);
           <span>{{ copy.headlineLead }}</span>
           <span>{{ copy.headlineStrong }}</span>
         </h2>
-        <p>{{ copy.description }}</p>
       </div>
 
       <div class="profile-share-promo-illustration" aria-hidden="true">

@@ -4,6 +4,7 @@ import AppCard from "../components/ui/AppCard.vue";
 import AppFilterChips from "../components/ui/AppFilterChips.vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
+import BonusBalanceTile from "../components/wallet/BonusBalanceTile.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
@@ -42,15 +43,48 @@ const regionPeriodData = {
   },
 };
 
+const accountTransactionSheetItems = [
+  {
+    label: "İş Gönderimi",
+    value: "-TL 850",
+    description: "22.06.2026 14:42 · Kalan TL 3.650",
+    tone: "negative",
+    icon: "send",
+  },
+  {
+    label: "Bakiye Yükleme",
+    value: "+TL 2.500",
+    description: "22.06.2026 12:18 · Kalan TL 4.500",
+    tone: "positive",
+    icon: "wallet",
+  },
+  {
+    label: "Nakde Çevrilen Bonus",
+    value: "-TL 600",
+    description: "21.06.2026 18:05 · Kalan TL 2.000",
+    tone: "negative",
+    icon: "gift",
+  },
+  {
+    label: "İş İptali",
+    value: "+TL 300",
+    description: "21.06.2026 10:31 · Kalan TL 2.600",
+    tone: "positive",
+    icon: "x",
+  },
+];
+
 const activeRegionData = computed(() => regionPeriodData[activeRegionPeriod.value] || regionPeriodData.today);
 const metrics = computed(() => activeRegionData.value.metrics);
 const regionActivityText = computed(() => activeRegionData.value.activity);
 
-function openInfoSheet(title, body) {
+function openAccountTransactionsSheet() {
   shell.openSheet({
-    title,
-    description: "Bilgi",
-    body,
+    title: "Hesap Hareketleri",
+    description: "Son işlemler",
+    body: "Cüzdan ve bonus hareketlerini tek yerden takip edebilirsin.",
+    scoreItems: accountTransactionSheetItems,
+    note: "Tüm hareketleri ayrıntılı görmek için Cüzdan menüsündeki hesap hareketleri alanını kullanabilirsin.",
   });
 }
 
@@ -76,6 +110,29 @@ function openTopUpSheet() {
       >
         <div class="performance-card-head">
           <span class="performance-title">Performans Skoru</span>
+          <button
+            class="performance-cta"
+            type="button"
+            data-screen="performanceScore"
+            data-action="performanceScore"
+            data-testid="home-performance-improve-button"
+            @click.stop="$router.push('/performance-improve')"
+          >
+            <AppIcon name="trend-up" :size="14" class-name="icon" />
+            Yükselt
+          </button>
+        </div>
+
+        <div class="performance-home-layout">
+          <span class="performance-score-ring">
+            <span><strong>{{ score }}</strong></span>
+          </span>
+          <span class="performance-home-copy">
+            <span class="score-level">
+              <AppIcon name="star" :size="12" class-name="icon" />
+              İyi
+            </span>
+          </span>
           <div
             class="performance-milestones"
             data-testid="home-performance-milestones"
@@ -96,29 +153,6 @@ function openTopUpSheet() {
               </span>
             </div>
           </div>
-        </div>
-
-        <div class="performance-home-layout">
-          <span class="performance-score-ring">
-            <span><strong>{{ score }}</strong></span>
-          </span>
-          <span class="performance-home-copy">
-            <span class="score-level">
-              <AppIcon name="star" :size="12" class-name="icon" />
-              İyi
-            </span>
-          </span>
-          <button
-            class="performance-cta"
-            type="button"
-            data-screen="performanceScore"
-            data-action="performanceScore"
-            data-testid="home-performance-improve-button"
-            @click.stop="$router.push('/performance-improve')"
-          >
-            <AppIcon name="trend-up" :size="14" class-name="icon" />
-            Performansımı Artır
-          </button>
         </div>
 
         <span class="performance-helper">85 puana ulaşmana çok az kaldı.</span>
@@ -143,12 +177,12 @@ function openTopUpSheet() {
               type="button"
               data-open="wallet-info"
               data-action="wallet-info"
-              aria-label="Cüzdan bilgisi"
-              @click="openInfoSheet('Cüzdan', 'Kredilerini iş almak ve teklif vermek için kullanırsın.')"
+              aria-label="Cüzdan hesap hareketleri"
+              @click="openAccountTransactionsSheet"
             >
-              <AppIcon name="help-circle" :size="17" class-name="icon" />
+              <AppIcon name="receipt" :size="17" class-name="icon" />
             </button>
-            <span class="wallet-amount"><strong>675</strong><small>kredi</small></span>
+            <span class="wallet-amount"><strong>₺675</strong><small>bakiye</small></span>
             <span class="wallet-subline">≈ 2-3 iş alabilirsin</span>
             <div class="wallet-actions">
               <button class="wallet-action-pill" type="button" data-open="credit" data-action="credit" @click="openTopUpSheet">
@@ -158,29 +192,13 @@ function openTopUpSheet() {
             </div>
           </div>
 
-          <div class="wallet-tile bonus" data-testid="home-bonus-card">
-            <div class="wallet-tile-head">
-              <span>Bonus</span>
-            </div>
-            <button
-              class="wallet-tile-icon"
-              type="button"
-              data-open="bonus-info"
-              data-action="bonus-info"
-              aria-label="Bonus bilgisi"
-              @click="openInfoSheet('Bonus', 'Bonuslarını kredi yüklerken kullanabilirsin.')"
-            >
-              <AppIcon name="help-circle" :size="17" class-name="icon" />
-            </button>
-            <span class="wallet-amount"><strong>240</strong><small>bonus</small></span>
-            <span class="wallet-subline">Kredi yüklerken kullanılır.</span>
-            <div class="wallet-actions split">
-              <button class="wallet-action-pill convert" type="button" data-open="bonus-convert" @click="openConvertSheet">
-                <AppIcon name="refresh" :size="16" class-name="icon" />
-                Krediye Çevir
-              </button>
-            </div>
-          </div>
+          <BonusBalanceTile
+            test-id="home-bonus-card"
+            :show-info="true"
+            :show-action="true"
+            @info="openAccountTransactionsSheet"
+            @action="openConvertSheet"
+          />
         </div>
       </AppCard>
 

@@ -104,8 +104,10 @@ const titleOverrides = {
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
-    subtitle: "",
-    trailingActions: [],
+    subtitle: "Plus, Gold ve VIP üyelerine özel",
+    trailingActions: ["customer-service-crown"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/reviews": {
     title: "Müşteri Yorumları",
@@ -231,13 +233,19 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Performansımı Artır",
-    subtitle: "Skor rehberin.",
-    trailingActions: [],
+    subtitle: "Daha çok iş al, daha az öde!",
+    subtitleIcon: "trophy",
+    trailingActions: ["performance-rewards"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/performance-improve": {
     title: "Performansımı Artır",
-    subtitle: "Skor rehberin.",
-    trailingActions: [],
+    subtitle: "Daha çok iş al, daha az öde!",
+    subtitleIcon: "trophy",
+    trailingActions: ["performance-rewards"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/customer-management": {
     title: "Müşteri Yönetimi",

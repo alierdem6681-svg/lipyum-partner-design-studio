@@ -50,9 +50,10 @@ test("sidebar support group opens customer service flow", async ({ page }) => {
   await page.getByRole("button", { name: /Müşteri Hizmetleri/ }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/support/customer-service");
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
-  await expect(page.getByTestId("customer-service-phone-number")).toHaveCount(0);
-  await expect(page.getByTestId("customer-service-call")).toHaveCount(0);
-  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("customer-service-phone-number")).toBeVisible();
+  await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
+  await expect(page.getByTestId("customer-service-upgrade")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });

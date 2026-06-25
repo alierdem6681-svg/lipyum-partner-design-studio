@@ -94,7 +94,8 @@ function closeQuickBonusConvert() {
 }
 
 function completeQuickTopUp(packageInfo) {
-  shell.showToast(`${new Intl.NumberFormat("tr-TR").format(packageInfo.credit)} kredi hesabına eklendi.`);
+  const amount = packageInfo?.balanceAmount ?? packageInfo?.credit ?? 0;
+  shell.showToast(`${new Intl.NumberFormat("tr-TR").format(amount)} bakiye hesabına eklendi.`);
   if (route.path !== "/home") navigateTo("/home");
 }
 
@@ -123,6 +124,7 @@ function onHeaderAction(action) {
   if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "profile-settings") window.dispatchEvent(new CustomEvent("lipyum:profile-settings"));
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
+  if (action === "performance-rewards") window.dispatchEvent(new CustomEvent("lipyum:performance-rewards"));
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {

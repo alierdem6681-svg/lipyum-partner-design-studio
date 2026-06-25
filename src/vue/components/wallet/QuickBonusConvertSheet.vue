@@ -14,34 +14,36 @@ const moneyFormatter = new Intl.NumberFormat("tr-TR", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
+const integerMoneyFormatter = new Intl.NumberFormat("tr-TR", {
+  maximumFractionDigits: 0,
+});
 
-const bonusAmount = 240;
+const bonusAmount = 1375;
 const performanceScore = 81;
-const cashConversionRate = 32;
-const packages = [
-  { id: "bonus-topup-3383", credit: 3383, price: 3293 },
-  { id: "bonus-topup-5074", credit: 5074, price: 4984, badge: "Daha güçlü" },
-  { id: "bonus-topup-8457", credit: 8457, price: 8367, badge: "En kazançlı" },
-];
+const scoreConversionRate = 32;
+const fullBonusPaymentMultiplier = 4.7;
 
-const mode = ref("topup");
+const mode = ref("full");
 const step = ref("select");
-const selectedPackageId = ref("bonus-topup-8457");
 const secondsLeft = ref(5);
 let successTimer = 0;
 
-const selectedPackage = computed(() => packages.find((item) => item.id === selectedPackageId.value) || packages[0]);
-const cashAmount = computed(() => (bonusAmount * cashConversionRate) / 100);
-const totalTopUpCredit = computed(() => selectedPackage.value.credit + bonusAmount);
+const requiredPayment = computed(() => Math.round(bonusAmount * fullBonusPaymentMultiplier));
+const fullCreditAmount = computed(() => requiredPayment.value + bonusAmount);
+const scoreCreditAmount = computed(() => (bonusAmount * scoreConversionRate) / 100);
+
 const sheetTitle = computed(() => {
-  if (step.value === "secure") return "3D Güvenli Doğrulama";
-  if (step.value === "success") return mode.value === "topup" ? "Bonusun Tam Değerlendi" : "Nakit Cüzdana Aktarıldı";
-  return "Krediye Çevir";
+  if (step.value === "secure") return "Güvenli Ödeme";
+  if (step.value === "score-confirm") return "Bakiyeye Ekle";
+  if (step.value === "success") return mode.value === "full" ? "Bonusun Tamamı Kullanıldı" : "Bakiye Eklendi";
+  return "Bonusu Kullan";
 });
+
 const sheetDescription = computed(() => {
-  if (step.value === "secure") return "Ödeme onaylanınca bonusun tamamı bakiyene eklenir.";
+  if (step.value === "secure") return "Ödeme sayfasında kart doğrulaması tamamlanır.";
+  if (step.value === "score-confirm") return "Performans skoruna göre bakiyeye eklenecek tutarı onayla.";
   if (step.value === "success") return "İşlem başarıyla tamamlandı.";
-  return "Bonusunu en avantajlı şekilde kullan.";
+  return "Bonusunu nasıl kullanmak istediğini seç.";
 });
 
 function formatNumber(value) {
@@ -52,10 +54,13 @@ function formatMoney(value) {
   return `₺${moneyFormatter.format(value)}`;
 }
 
+function formatIntegerMoney(value) {
+  return `₺${integerMoneyFormatter.format(value)}`;
+}
+
 function resetFlow() {
-  mode.value = "topup";
+  mode.value = "full";
   step.value = "select";
-  selectedPackageId.value = "bonus-topup-8457";
   secondsLeft.value = 5;
   clearInterval(successTimer);
 }
@@ -66,11 +71,7 @@ function closeSheet() {
 }
 
 function startFlow() {
-  if (mode.value === "topup") {
-    step.value = "secure";
-    return;
-  }
-  step.value = "cash-confirm";
+  step.value = mode.value === "full" ? "secure" : "score-confirm";
 }
 
 function startSuccessTimer() {
@@ -92,8 +93,9 @@ function finishFlow() {
   emit("complete", {
     mode: mode.value,
     bonusAmount,
-    cashAmount: cashAmount.value,
-    totalCredit: totalTopUpCredit.value,
+    requiredPayment: requiredPayment.value,
+    fullCreditAmount: fullCreditAmount.value,
+    scoreCreditAmount: scoreCreditAmount.value,
   });
   emit("close");
 }
@@ -115,101 +117,95 @@ onBeforeUnmount(() => {
   <AppSheet :open="open" :title="sheetTitle" :description="sheetDescription" @close="closeSheet">
     <div class="quick-bonus" data-testid="quick-bonus-sheet">
       <template v-if="step === 'select'">
-        <section class="quick-bonus-hero">
-          <span class="quick-bonus-hero__icon"><AppIcon name="gift" :size="24" /></span>
-          <span>
-            <small>Bonus cüzdanın</small>
-            <strong>{{ formatNumber(bonusAmount) }} bonus</strong>
-          </span>
-          <em>En yüksek değer için bakiye yükle.</em>
-        </section>
-
         <div class="quick-bonus-options" role="radiogroup" aria-label="Bonus dönüştürme seçenekleri">
           <button
-            :class="['quick-bonus-option', 'is-recommended', { 'is-selected': mode === 'topup' }]"
+            :class="['quick-bonus-option', 'is-recommended', { 'is-selected': mode === 'full' }]"
             type="button"
             role="radio"
-            :aria-checked="mode === 'topup' ? 'true' : 'false'"
+            :aria-checked="mode === 'full' ? 'true' : 'false'"
             data-testid="bonus-mode-topup"
-            @click="mode = 'topup'"
+            @click="mode = 'full'"
           >
             <span class="quick-bonus-option__badge">Önerilen</span>
-            <span class="quick-bonus-option__icon"><AppIcon name="wallet" :size="21" /></span>
-            <span class="quick-bonus-option__copy">
-              <strong>Tamamını bakiyeye ekle</strong>
-              <small>Bakiye yükle, bonusun tamamı eklensin.</small>
+            <span class="quick-bonus-option__selector" aria-hidden="true">
+              <span class="quick-bonus-radio" data-testid="bonus-radio-full"></span>
+              <span class="quick-bonus-option__icon"><AppIcon name="wallet" :size="21" /></span>
             </span>
-            <span class="quick-bonus-option__value">{{ formatNumber(bonusAmount) }} bonus = {{ formatNumber(bonusAmount) }} kredi</span>
+            <span class="quick-bonus-option__copy">
+              <strong>Bakiye yükleyerek sıfırla</strong>
+              <small>Bonusun tamamını bakiyene eklemek için bakiye yükle.</small>
+            </span>
+            <span class="quick-bonus-option__value">
+              Bonus sıfırlanır, bakiyen artar.
+            </span>
           </button>
 
           <button
-            :class="['quick-bonus-option', { 'is-selected': mode === 'cash' }]"
+            :class="['quick-bonus-option', { 'is-selected': mode === 'score' }]"
             type="button"
             role="radio"
-            :aria-checked="mode === 'cash' ? 'true' : 'false'"
+            :aria-checked="mode === 'score' ? 'true' : 'false'"
             data-testid="bonus-mode-cash"
-            @click="mode = 'cash'"
+            @click="mode = 'score'"
           >
-            <span class="quick-bonus-option__icon"><AppIcon name="refresh" :size="21" /></span>
-            <span class="quick-bonus-option__copy">
-              <strong>Nakit cüzdana aktar</strong>
-              <small>%{{ cashConversionRate }} oranla nakit cüzdana geçer.</small>
+            <span class="quick-bonus-option__selector" aria-hidden="true">
+              <span class="quick-bonus-radio" data-testid="bonus-radio-score"></span>
+              <span class="quick-bonus-option__icon"><AppIcon name="refresh" :size="21" /></span>
             </span>
-            <span class="quick-bonus-option__value">{{ formatNumber(bonusAmount) }} bonus = {{ formatMoney(cashAmount) }}</span>
+            <span class="quick-bonus-option__copy">
+              <strong>Bakiye yüklemeden sıfırla</strong>
+              <small>Performans skorun {{ performanceScore }} olduğu için %{{ scoreConversionRate }} oran uygulanır.</small>
+            </span>
+            <span class="quick-bonus-option__value">
+              {{ formatIntegerMoney(bonusAmount) }} bonus = {{ formatMoney(scoreCreditAmount) }} bakiye
+            </span>
           </button>
         </div>
 
-        <section v-if="mode === 'topup'" class="quick-bonus-topup" data-testid="bonus-topup-panel">
-          <div class="quick-bonus-section-title">
-            <span>Bakiye paketini seç</span>
-            <small>Bonusun tamamı seçtiğin pakete eklenir.</small>
+        <section v-if="mode === 'full'" class="quick-bonus-total" data-testid="bonus-topup-panel">
+          <span>Önerilen yöntem</span>
+          <div class="quick-bonus-formula" data-testid="bonus-total-credit" aria-label="Bonus bakiye özeti">
+            <strong>
+              <small>Bonus</small>
+              {{ formatNumber(bonusAmount) }} TL
+            </strong>
+            <strong>
+              <small>Yükleme</small>
+              {{ formatNumber(requiredPayment) }} TL
+            </strong>
+            <strong>
+              <small>Hesabına</small>
+              {{ formatNumber(fullCreditAmount) }} TL
+            </strong>
           </div>
-          <div class="quick-bonus-package-grid" role="radiogroup" aria-label="Bakiye paketleri">
-            <button
-              v-for="item in packages"
-              :key="item.id"
-              :class="['quick-bonus-package', { 'is-selected': selectedPackageId === item.id }]"
-              type="button"
-              role="radio"
-              :aria-checked="selectedPackageId === item.id ? 'true' : 'false'"
-              data-testid="bonus-package-option"
-              @click="selectedPackageId = item.id"
-            >
-              <span v-if="item.badge">{{ item.badge }}</span>
-              <strong>{{ formatNumber(item.credit) }}</strong>
-              <small>{{ formatMoney(item.price) }}</small>
-            </button>
-          </div>
-          <div class="quick-bonus-total">
-            <span>Hesaba geçecek toplam bakiye</span>
-            <strong data-testid="bonus-total-credit">{{ formatNumber(totalTopUpCredit) }} kredi</strong>
-            <small>{{ formatNumber(selectedPackage.credit) }} yükleme + {{ formatNumber(bonusAmount) }} bonus</small>
-          </div>
+          <p class="quick-bonus-total__copy">
+            {{ formatNumber(bonusAmount) }} TL bonusun tamamı bakiyene eklenir.
+          </p>
         </section>
 
-        <section v-else class="quick-bonus-cash" data-testid="bonus-cash-panel">
-          <div>
-            <span>Performans skorun</span>
-            <strong>{{ performanceScore }}</strong>
+        <section v-else class="quick-bonus-score" data-testid="bonus-cash-panel">
+          <span class="quick-bonus-score__label">Bakiye yüklemeden kullan</span>
+          <div class="quick-bonus-score__flow" aria-label="Bonusun bakiyeye eklenme özeti">
+            <strong>
+              <small>Bonus</small>
+              {{ formatIntegerMoney(bonusAmount) }}
+            </strong>
+            <span class="quick-bonus-score__rate">%{{ scoreConversionRate }}</span>
+            <strong>
+              <small>Hesabına</small>
+              {{ formatMoney(scoreCreditAmount) }}
+            </strong>
           </div>
-          <div>
-            <span>Dönüşüm oranı</span>
-            <strong>%{{ cashConversionRate }}</strong>
-          </div>
-          <div>
-            <span>Nakit cüzdana geçecek</span>
-            <strong>{{ formatMoney(cashAmount) }}</strong>
-          </div>
-          <p>Bu seçenekte bonus cüzdanın sıfırlanır. Bakiye yüklemede ise bonusun tamamını kullanırsın.</p>
+          <p>{{ formatIntegerMoney(bonusAmount) }} bonus sıfırlanır, hesabına {{ formatMoney(scoreCreditAmount) }} bakiye eklenir.</p>
         </section>
 
         <div class="quick-bonus-sticky">
           <button class="quick-bonus-primary" type="button" data-testid="bonus-convert-submit" @click="startFlow">
             <span>
-              <AppIcon :name="mode === 'topup' ? 'shield' : 'refresh'" :size="16" />
-              {{ mode === "topup" ? "Bakiye Yükle + Bonusu Kullan" : "Nakit Cüzdana Aktar" }}
+              <AppIcon :name="mode === 'full' ? 'lock' : 'refresh'" :size="16" />
+              {{ mode === "full" ? "Bonusu Nakde Çevir" : "Bakiyeye Ekle" }}
             </span>
-            <strong>{{ mode === "topup" ? formatNumber(totalTopUpCredit) + " kredi" : formatMoney(cashAmount) }}</strong>
+            <strong>{{ mode === "full" ? formatIntegerMoney(requiredPayment) : formatMoney(scoreCreditAmount) }}</strong>
           </button>
         </div>
       </template>
@@ -217,48 +213,47 @@ onBeforeUnmount(() => {
       <template v-else-if="step === 'secure'">
         <section class="quick-bonus-confirm" data-testid="bonus-3d-step">
           <span class="quick-bonus-confirm__icon"><AppIcon name="shield" :size="34" /></span>
-          <h3>Bonusun tamamı korunuyor</h3>
-          <p>Ödeme onaylanınca {{ formatNumber(selectedPackage.credit) }} kredi yüklenir ve {{ formatNumber(bonusAmount) }} bonusun tamamı bakiyene eklenir.</p>
+          <h3>Ödeme doğrulaması</h3>
+          <p>Kartından {{ formatIntegerMoney(requiredPayment) }} ödeme alınır. {{ formatIntegerMoney(bonusAmount) }} bonusun tamamı eklenir ve hesabına toplam {{ formatIntegerMoney(fullCreditAmount) }} bakiye geçer.</p>
           <div class="quick-bonus-confirm-card">
             <span>
               <small>Bugün ödenecek</small>
-              <strong>{{ formatMoney(selectedPackage.price) }}</strong>
+              <strong>{{ formatIntegerMoney(requiredPayment) }}</strong>
             </span>
             <span>
               <small>Hesaba geçecek</small>
-              <strong>{{ formatNumber(totalTopUpCredit) }} kredi</strong>
+              <strong>{{ formatIntegerMoney(fullCreditAmount) }} bakiye</strong>
             </span>
           </div>
           <button class="quick-bonus-primary" type="button" data-testid="bonus-3d-confirm" @click="finishPayment">
             <span><AppIcon name="check" :size="16" /> 3D Doğrulamayı Tamamla</span>
-            <strong>{{ formatMoney(selectedPackage.price) }}</strong>
+            <strong>{{ formatIntegerMoney(requiredPayment) }}</strong>
           </button>
-          <button class="quick-bonus-secondary" type="button" @click="step = 'select'">Geri dön</button>
         </section>
       </template>
 
-      <template v-else-if="step === 'cash-confirm'">
+      <template v-else-if="step === 'score-confirm'">
         <section class="quick-bonus-confirm" data-testid="bonus-cash-confirm">
           <span class="quick-bonus-confirm__icon is-amber"><AppIcon name="refresh" :size="34" /></span>
-          <h3>Nakit aktarımı onayla</h3>
-          <p>{{ formatNumber(bonusAmount) }} bonusun %{{ cashConversionRate }} oranla {{ formatMoney(cashAmount) }} olarak nakit cüzdana geçer. Bonus cüzdanın sıfırlanır.</p>
+          <h3>Bakiyeye ekle</h3>
+          <p>{{ formatIntegerMoney(bonusAmount) }} bonusun %{{ scoreConversionRate }} oranla {{ formatMoney(scoreCreditAmount) }} bakiye olarak eklenir. Bonus cüzdanın bu işlemle sıfırlanır.</p>
           <button class="quick-bonus-primary" type="button" data-testid="bonus-cash-confirm-button" @click="finishPayment">
-            <span><AppIcon name="check" :size="16" /> Nakit Cüzdana Aktar</span>
-            <strong>{{ formatMoney(cashAmount) }}</strong>
+            <span><AppIcon name="check" :size="16" /> Bakiyeye Ekle</span>
+            <strong>{{ formatMoney(scoreCreditAmount) }}</strong>
           </button>
-          <button class="quick-bonus-secondary" type="button" @click="step = 'select'">Bakiye yüklemeyi seç</button>
+          <button class="quick-bonus-secondary" type="button" @click="step = 'select'">Önerilen yönteme dön</button>
         </section>
       </template>
 
       <template v-else>
         <section class="quick-bonus-success" data-testid="bonus-convert-success">
           <span class="quick-bonus-success__icon"><AppIcon name="check" :size="42" /></span>
-          <h3>{{ mode === "topup" ? "Bonusun tam değerle kullanıldı" : "Nakit cüzdana aktarıldı" }}</h3>
-          <p v-if="mode === 'topup'">
-            {{ formatNumber(selectedPackage.credit) }} kredi yükledin. {{ formatNumber(bonusAmount) }} bonusun da eklendi ve toplam {{ formatNumber(totalTopUpCredit) }} kredi hesabına geçti.
+          <h3>{{ mode === "full" ? "Bonusun tamamı kullanıldı" : "Bakiye eklendi" }}</h3>
+          <p v-if="mode === 'full'">
+            {{ formatIntegerMoney(requiredPayment) }} ödeme yaptın. {{ formatIntegerMoney(bonusAmount) }} bonusun da eklendi ve toplam {{ formatIntegerMoney(fullCreditAmount) }} bakiye hesabına geçti.
           </p>
           <p v-else>
-            {{ formatMoney(cashAmount) }} nakit cüzdanına geçti. Bonus cüzdanı bu işlemle sıfırlandı.
+            {{ formatMoney(scoreCreditAmount) }} bakiye hesabına geçti. Bonus cüzdanın bu işlemle sıfırlandı.
           </p>
           <button class="quick-bonus-primary" type="button" data-testid="bonus-convert-home" @click="finishFlow">
             <span><AppIcon name="home" :size="16" /> Ana Sayfaya Dön</span>

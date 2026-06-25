@@ -1,13 +1,29 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
+function actionRow(page, id) {
+  return page.locator(`[data-testid="performance-growth-action-card"][data-action-id="${id}"]`);
+}
+
 async function expectPerformanceImprovePage(page) {
   await expect(page.getByTestId("performance-score-flow-page")).toBeVisible();
-  await expect(page.getByTestId("performance-growth-score")).toContainText("81");
-  await expect(page.getByTestId("performance-target-card")).toHaveCount(3);
-  await expect(page.getByTestId("performance-growth-action-card")).toHaveCount(3);
-  await expect(page.getByTestId("performance-growth-criterion-row")).toHaveCount(8);
-  await expect(page.getByTestId("performance-growth-benefits")).toContainText("İş sayısı bölge, sektör ve talebe göre değişebilir.");
+  const performanceScore = page.getByTestId("performance-growth-score");
+  await expect(performanceScore).toContainText("81");
+  await expect(performanceScore.getByText("Sıradaki hedef: 85+")).toBeVisible();
+  await expect(performanceScore.getByText("85+ seviyeye çık")).toHaveCount(0);
+  await expect(performanceScore.getByText("Daha çok iş al")).toBeVisible();
+  await expect(performanceScore.getByText("Daha ucuza iş al")).toBeVisible();
+  await expect(page.getByText("Görev listesi")).toBeVisible();
+  await expect(page.getByText("Skoru artıracak işlemler")).toHaveCount(0);
+  await expect(page.getByText("Gelişim rehberi")).toHaveCount(0);
+  await expect(page.getByText("Skor hedefleri")).toHaveCount(0);
+  await expect(page.getByText("Puan kırılımı")).toHaveCount(0);
+  await expect(page.getByTestId("performance-target-card")).toHaveCount(0);
+  await expect(page.getByTestId("performance-growth-criterion-row")).toHaveCount(0);
+  await expect(page.getByTestId("performance-growth-benefits")).toHaveCount(0);
+  await expect(page.getByTestId("performance-score-badge")).toHaveCount(0);
+  await expect(page.getByTestId("performance-rewards-button")).toBeVisible();
+  await expect(page.getByTestId("performance-growth-action-card")).toHaveCount(9);
   await expect(page.getByText("Kesin daha fazla iş alırsın")).toHaveCount(0);
   await expectNoAppHorizontalOverflow(page);
 }
@@ -20,7 +36,7 @@ test("home performance card opens performance improve page", async ({ page }) =>
   const card = page.getByTestId("home-performance-card");
   await expect(card).toBeVisible();
   await expect(card.getByText("Nedir?")).toHaveCount(0);
-  await expect(page.getByTestId("home-performance-improve-button")).toContainText("Performansımı Artır");
+  await expect(page.getByTestId("home-performance-improve-button")).toContainText("Yükselt");
 
   await page.getByTestId("home-performance-improve-button").click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/performance-improve");
@@ -28,42 +44,77 @@ test("home performance card opens performance improve page", async ({ page }) =>
   expect(errors).toEqual([]);
 });
 
-test("performance improve page explains score, targets, actions and criteria", async ({ page }) => {
+test("performance improve page shows compact task rows and completed checks", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/performance-improve");
   await waitForApp(page);
 
   await expect(page.getByTestId("app-header")).toBeVisible();
-  await expect(page.getByTestId("app-bottom-bar")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
   await expectPerformanceImprovePage(page);
-  const targets = page.getByTestId("performance-target-card");
-  await expect(targets.nth(0)).toContainText("85+");
-  await expect(targets.nth(1)).toContainText("90+");
-  await expect(targets.nth(2)).toContainText("95+");
-  await expect(page.getByText("Bakiye durumu")).toBeVisible();
-  await expect(page.getByText("Abonelik durumu", { exact: true })).toBeVisible();
-  await expect(page.getByText("5 / 5 puan")).toBeVisible();
+  await expect(page.getByText("Aboneliğini yükselt")).toBeVisible();
+  await expect(page.getByText("İş sonucunu gir")).toBeVisible();
+  await expect(page.getByText("İptal oranını düşür")).toBeVisible();
+  await expect(page.getByText("Müşteri puanlamasını yükselt")).toBeVisible();
+  await expect(page.getByText("Bakiyeni hazır tut")).toBeVisible();
+  await expect(actionRow(page, "job_result")).toContainText("+4");
+  await expect(actionRow(page, "profile_completion")).toBeDisabled();
+  await expect(actionRow(page, "active_usage")).toBeDisabled();
+  await expect(actionRow(page, "complaints")).toBeDisabled();
   expect(errors).toEqual([]);
 });
 
-test("performance improve action buttons navigate to real routes", async ({ page }) => {
+test("performance improve task row opens an action sheet before navigation", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/performance-improve");
   await waitForApp(page);
 
-  await page.getByTestId("performance-action-more_reviews").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/reviews");
+  await actionRow(page, "job_result").click();
+  await expect(page.getByTestId("performance-action-sheet")).toBeVisible();
+  await expect(page.getByTestId("performance-action-sheet")).toContainText("+4 puan");
+  await expect(page.getByTestId("performance-action-sheet")).toContainText("Ücret ve gider bilgisini gir");
+  await page.getByRole("button", { name: "İşi Aç" }).click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/my-jobs");
 
   await page.goto("/#/performance-improve");
   await waitForApp(page);
-  await page.getByTestId("performance-action-faster_response").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/notification-settings");
+  await actionRow(page, "reviews").click();
+  await expect(page.getByTestId("performance-action-sheet")).toContainText("Memnun müşteriden yorum iste");
 
+  expect(errors).toEqual([]);
+});
+
+test("performance improve rewards trophy opens badge advantage sheet", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
   await page.goto("/#/performance-improve");
   await waitForApp(page);
-  await page.getByTestId("performance-action-ready_balance").click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet");
 
+  await page.getByTestId("performance-rewards-button").click();
+  const sheet = page.getByTestId("performance-reward-sheet");
+  await expect(sheet).toBeVisible();
+  await expect(page.getByText("Skorun yükseldikçe iş alma maliyetin düşer.")).toBeVisible();
+  await expect(sheet).toContainText("95+");
+  await expect(sheet).toContainText("%50'ye kadar daha düşük fiyatla iş alabilirsin");
+  await expect(sheet).toContainText("x3'e kadar daha fazla iş");
+  await expect(sheet).toContainText("90+");
+  await expect(sheet).toContainText("%30'a kadar daha düşük fiyatla iş alabilirsin");
+  await expect(sheet).toContainText("85+");
+  await expect(sheet).toContainText("%20'ye kadar daha düşük fiyatla iş alabilirsin");
+  await expect(page.getByTestId("performance-reward-badge-card")).toHaveCount(3);
+  await page.getByTestId("sheet-close-button").click();
+  await expect(sheet).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test("performance improve renders completed score actions by default", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/performance-improve");
+  await waitForApp(page);
+
+  await expect(page.getByTestId("performance-growth-action-card")).toHaveCount(9);
+  await expect(actionRow(page, "profile_completion")).toBeDisabled();
+  await expect(actionRow(page, "active_usage")).toBeDisabled();
+  await expect(actionRow(page, "complaints")).toBeDisabled();
   expect(errors).toEqual([]);
 });
 

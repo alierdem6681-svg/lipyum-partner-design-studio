@@ -26,11 +26,11 @@ const richRoutes = [
   { route: "/job-referral", testId: "job-referral-page" },
 ];
 
-async function expectCleanVueShell(page) {
+async function expectCleanVueShell(page, route) {
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.getByTestId("app-header")).toHaveCount(1);
-  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(1);
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(route === "/support/customer-service" ? 0 : 1);
   await expect(page.getByTestId("clickable-outcome-summary")).toHaveCount(0);
   await expect(page.getByText(/compatibility bridge/i)).toHaveCount(0);
   await expect(page.getByText(/^(profile|support|growth|referral|finance)$/i)).toHaveCount(0);
@@ -41,7 +41,7 @@ for (const item of richRoutes) {
   test(`V12-G rich route renders dedicated page for ${item.route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.goto(vueRoute(item.route));
-    await expectCleanVueShell(page);
+    await expectCleanVueShell(page, item.route);
     await expect(page.getByTestId(item.testId)).toBeVisible();
     expect(errors).toEqual([]);
   });
@@ -108,12 +108,13 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
 test("V12-G customer service access is direct", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto(vueRoute("/support/customer-service"));
-  await expectCleanVueShell(page);
+  await expectCleanVueShell(page, "/support/customer-service");
 
   await expect(page.getByTestId("customer-service-page")).toBeVisible();
   await expect(page.getByTestId("customer-service-phone-number")).toBeVisible();
   await expect(page.getByTestId("customer-service-call")).toBeVisible();
-  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("customer-service-upgrade")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

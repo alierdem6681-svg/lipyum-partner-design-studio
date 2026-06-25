@@ -23,6 +23,7 @@ const iconForAction = {
   "account-transactions": "receipt",
   "notification-settings": "settings",
   "partner-share": "share",
+  "performance-rewards": "trophy",
 };
 
 const labelForAction = {
@@ -35,6 +36,7 @@ const labelForAction = {
   "account-transactions": "Hesap hareketleri",
   "notification-settings": "Bildirim ayarları",
   "partner-share": "Partner kartını paylaş",
+  "performance-rewards": "Skor rozet avantajları",
 };
 
 const testIdForAction = {
@@ -47,10 +49,13 @@ const testIdForAction = {
   "account-transactions": "account-transactions-header-button",
   "notification-settings": "notification-settings-button",
   "partner-share": "partner-preview-header-share",
+  "performance-rewards": "performance-rewards-button",
 };
 
+const customerServiceAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-customer-service/`;
+
 const homeStatuses = [
-  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "675 kredi ≈ 2-3 iş", tone: "success" },
+  { action: "status", icon: "check", eyebrow: "Durum: Aktif", label: "₺675 ≈ 2-3 iş", tone: "success" },
   { action: "credit", icon: "wallet", eyebrow: "Durum: Pasif", label: "Bakiye yok", cta: "Yükle", tone: "warning" },
   { action: "workPlan", icon: "clock", eyebrow: "Durum: Pasif", label: "Çalışma Saati Dışı", tone: "info" },
   { action: "support", icon: "shield", eyebrow: "Durum: Pasif", label: "Hesap askıda", cta: "Destek", tone: "danger" },
@@ -136,25 +141,34 @@ function statusAriaLabel(status) {
     </div>
 
     <div class="v-header__actions header-actions">
-      <button
-        v-for="action in (rightIcon ? [rightIcon] : rightActions)"
-        :key="action"
-        class="v-header__action icon-btn page-header-action"
-        :class="[
-          action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
-          action === 'partner-share' ? 'is-partner-share-action' : '',
-        ]"
-        type="button"
-        :data-testid="testIdForAction[action] || 'header-right-action'"
-        :data-action="action"
-        :aria-label="rightLabel || labelForAction[action] || action"
-        @click="rightIcon ? emit('right') : emit('action', action)"
-      >
-        <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
-        <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
-        <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
-        <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
-      </button>
+      <template v-for="action in (rightIcon ? [rightIcon] : rightActions)" :key="action">
+        <span
+          v-if="action === 'customer-service-crown'"
+          class="v-header__premium-crown"
+          data-testid="customer-service-premium-crown"
+          aria-hidden="true"
+        >
+          <img :src="`${customerServiceAssetBase}crown-premium.svg`" alt="" />
+        </span>
+        <button
+          v-else
+          class="v-header__action icon-btn page-header-action"
+          :class="[
+            action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
+            action === 'partner-share' ? 'is-partner-share-action' : '',
+          ]"
+          type="button"
+          :data-testid="testIdForAction[action] || 'header-right-action'"
+          :data-action="action"
+          :aria-label="rightLabel || labelForAction[action] || action"
+          @click="rightIcon ? emit('right') : emit('action', action)"
+        >
+          <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
+          <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
+          <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
+          <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
+        </button>
+      </template>
     </div>
   </header>
 </template>

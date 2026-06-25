@@ -8,8 +8,8 @@
         { "testid": "hamburger-button", "label": "Menü", "action": "menu", "expectedState": "drawer-open", "reset": "close-drawer" },
         { "testid": "notification-button", "label": "Bildirimler", "action": "notifications", "expectedRoute": "/notifications", "reset": "route:/home" },
         { "testid": "profile-button", "label": "Profil", "action": "profile", "expectedRoute": "/profile", "reset": "route:/home" },
-        { "label": "Performansımı Artır", "action": "performanceScore", "expectedRoute": "/performance-improve", "reset": "route:/home" },
-        { "label": "Bakiye Yükle", "action": "credit", "expectedSheet": "Kredi Yükle", "reset": "close-sheet" },
+        { "label": "Yükselt", "action": "performanceScore", "expectedRoute": "/performance-improve", "reset": "route:/home" },
+        { "label": "Bakiye Yükle", "action": "credit", "expectedSheet": "Bakiye Yükle", "reset": "close-sheet" },
         { "label": "Krediye Çevir", "action": "bonus-convert", "expectedSheet": "Krediye Çevir", "reset": "close-sheet" },
         { "testid": "bottom-cta-job", "label": "İş Al", "action": "work", "expectedRoute": "/jobs", "reset": "route:/home" }
       ]

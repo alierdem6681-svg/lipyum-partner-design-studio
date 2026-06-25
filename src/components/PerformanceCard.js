@@ -1,4 +1,4 @@
-export function renderPerformanceCard({ score = 81, level = "İyi", target = 85, icon = "", actionLabel = "Performansımı Artır" } = {}) {
+export function renderPerformanceCard({ score = 81, level = "İyi", target = 85, icon = "", actionLabel = "Yükselt" } = {}) {
   return `
     <section class="performance-card">
       <div class="performance-card-head">
