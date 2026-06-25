@@ -1,0 +1,31 @@
+﻿{
+    "release":  "v15",
+    "createdAt":  "2026-06-26T02:27:17+03:00",
+    "purpose":  "Backup before subscription Gold focus release",
+    "startingMainSha":  "556d4bee48d1dcaf71131fa4bc0540ca1f32183f",
+    "workingBranch":  "codex/subscription-gold-focus-release",
+    "currentHeadSha":  "556d4bee48d1dcaf71131fa4bc0540ca1f32183f",
+    "backupTag":  "v15",
+    "archiveBranch":  "archive/v15",
+    "productionUrl":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+    "routeScope":  [
+                       "/#/subscription",
+                       "/#/subscription/compare",
+                       "/#/subscription/checkout"
+                   ],
+    "currentRouteState":  "Subscription free state is being replaced by Gold-focused paywall using existing subscription route and store.",
+    "rollback":  {
+                     "safePrFlow":  "git switch -c rollback/v15 v15; git push origin rollback/v15; gh pr create --base main --head rollback/v15 --title \u0027Rollback to v15\u0027 --body \u0027Rollback production to v15 backup.\u0027",
+                     "directLocalRestore":  "git switch main; git reset --hard v15"
+                 },
+    "qualityPlan":  [
+                        "npm run test:subscription-conversion-no-trial",
+                        "npm run test:no-vue-style-debt",
+                        "npm run test:subscription-retained",
+                        "npm run test:quality-gate:release",
+                        "npm audit --audit-level=high",
+                        "npm run build",
+                        "git diff --check",
+                        "production smoke and health checks"
+                    ]
+}
