@@ -1,0 +1,35 @@
+{
+  "release": "v11",
+  "createdAt": "2026-06-26T02:05:27+03:00",
+  "startingMainSha": "8bb8a790a060e9246b64a3a9811cabd1f598d9c3",
+  "backupTag": "v11",
+  "backupArchiveBranch": "archive/v11",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "changedAreas": [
+    "Windows-compatible npm quality scripts via scripts/run-local-node.mjs"
+  ],
+  "validation": {
+    "status": "PASS",
+    "commands": {
+      "npm run check": "PASS",
+      "npm run lint": "PASS",
+      "npm audit --audit-level=high": "PASS: found 0 vulnerabilities",
+      "npm run test:unit": "PASS: 3 tests",
+      "npm run test:routes": "PASS: 45 routes",
+      "PLAYWRIGHT_PORT=5185 npm run test:e2e": "PASS: 128 tests",
+      "npm run build": "PASS",
+      "git diff --check": "PASS",
+      "PLAYWRIGHT_PORT=5190 npm run test:quality-gate:release": "PASS"
+    },
+    "fixedBlockers": [
+      "Windows npm scripts failed to run node_modules/node/bin/node through cmd.",
+      "/home wallet tile icon buttons were below the 34px touch target threshold."
+    ]
+  },
+  "rollback": {
+    "tag": "git checkout v11",
+    "branch": "git checkout archive/v11",
+    "restoreMain": "Create a rollback PR from tag v11 to main."
+  },
+  "notes": "Created before publishing the Windows local quality script compatibility fix."
+}
