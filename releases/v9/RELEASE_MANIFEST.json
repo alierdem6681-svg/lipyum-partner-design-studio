@@ -1,0 +1,11 @@
+﻿{
+    "backup":  "v9",
+    "archiveBranch":  "archive/v9",
+    "createdAt":  "2026-06-25T22:58:03+03:00",
+    "mainSha":  "95493ac02df779b88890de58ca3051ff1ce26189",
+    "sourceBranch":  "codex/wallet-convert-soft-green",
+    "productionPlatform":  "GitHub Pages",
+    "productionUrl":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+    "reason":  "Backup before publishing wallet convert button soft green fix.",
+    "rollbackCommand":  "Create a rollback PR from tag v9 to main."
+}

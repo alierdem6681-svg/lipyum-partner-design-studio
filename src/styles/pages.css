@@ -6245,9 +6245,9 @@
       }
 
       .wallet-action-pill.convert {
-        border-color: var(--green-dark);
-        background: var(--green-dark);
-        color: #fff;
+        border-color: color-mix(in srgb, var(--green-dark) 24%, var(--border));
+        background: var(--success-bg);
+        color: var(--green-dark);
       }
 
       .wallet-action-pill.secondary {
