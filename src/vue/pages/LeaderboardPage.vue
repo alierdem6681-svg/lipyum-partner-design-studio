@@ -70,8 +70,8 @@ function getRewardRecipientCount(title = "") {
 }
 
 function getRankerPrize(rank) {
-  if (Number(rank) === 1) return 3000;
-  if (Number(rank) === 2 || Number(rank) === 3) return 1000;
+  if (Number(rank) === 1) return 2500;
+  if (Number(rank) === 2 || Number(rank) === 3) return 1500;
   return 0;
 }
 
@@ -223,7 +223,7 @@ function selectCity(event) {
         <div class="reward-program-hero">
           <span>Toplam havuz</span>
           <strong>{{ formatBonus(rewardTotal) }}</strong>
-          <small>En iyi sıralamalar vitrinde daha görünür olur.</small>
+          <small>Her hafta 14 kişiye 14.000 TL bonus dağıtıyoruz.</small>
         </div>
         <div class="reward-path-list">
           <article
