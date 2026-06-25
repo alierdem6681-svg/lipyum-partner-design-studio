@@ -1,0 +1,11 @@
+{
+  "backup": "v8",
+  "archiveBranch": "archive/v8",
+  "createdAt": "2026-06-25T22:28:37+03:00",
+  "mainSha": "32d6c0b05c87f4018a0449d7ead4772c191fe4ab",
+  "sourceBranch": "codex/post-performance-main",
+  "productionPlatform": "GitHub Pages",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "reason": "Backup before publishing approved local developments.",
+  "rollbackCommand": "git checkout main && git reset --hard v8 && git push origin main --force-with-lease"
+}

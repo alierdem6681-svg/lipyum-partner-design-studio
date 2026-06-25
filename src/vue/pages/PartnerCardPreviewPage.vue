@@ -127,12 +127,16 @@ onBeforeUnmount(() => {
       >
         <div class="partner-preview-verified__header">
           <span class="partner-preview-verified__seal" aria-hidden="true">
-            <AppIcon name="shield" :size="18" />
+            <AppIcon name="shield" :size="21" />
           </span>
-          <div>
+          <div class="partner-preview-verified__copy">
             <h2>Doğrulanmış Bilgi ve Belgeler</h2>
             <p>Kimlik, iletişim ve mesleki belgeler kontrol edildi.</p>
           </div>
+          <span class="partner-preview-verified__status" aria-label="5 bilgi doğrulandı">
+            <AppIcon name="check" :size="12" />
+            5/5
+          </span>
         </div>
         <div class="partner-preview-verified__grid" aria-label="Doğrulanmış bilgi ve belgeler">
           <span
@@ -141,10 +145,15 @@ onBeforeUnmount(() => {
             class="partner-preview-verified__item"
             :data-testid="`partner-preview-verified-${item.id}`"
           >
-            <AppIcon :name="item.icon" :size="15" />
-            <span>
+            <span class="partner-preview-verified__item-icon" aria-hidden="true">
+              <AppIcon :name="item.icon" :size="15" />
+            </span>
+            <span class="partner-preview-verified__item-copy">
               <strong>{{ item.label }}</strong>
               <small>{{ item.value }}</small>
+            </span>
+            <span class="partner-preview-verified__check" aria-hidden="true">
+              <AppIcon name="check" :size="10" />
             </span>
           </span>
         </div>

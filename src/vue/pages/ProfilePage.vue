@@ -45,7 +45,7 @@ onBeforeUnmount(() => {
 <template>
   <AppPage title="Profilim" class="profile-page" data-testid="profile-page">
     <div class="v-stack v-profile-page profile-page-with-sticky-preview">
-      <PartnerProfileCard :show-actions="false" />
+      <PartnerProfileCard :show-actions="false" :show-metrics="false" :show-badges="false" />
       <ProfileMenuGrid />
     </div>
 

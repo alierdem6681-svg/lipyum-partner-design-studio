@@ -6,6 +6,7 @@ import {
   calculateRemainingToTarget,
   getNextTarget,
   getStatusTone,
+  performanceActionQueue,
   performanceCriteria,
   performanceTargets,
   priorityPerformanceActions,
@@ -50,4 +51,25 @@ test("priority actions are actionable routes", () => {
     assert.ok(action.actionLabel);
     assert.ok(action.impact > 0);
   }
+});
+
+test("performance action queue is ordered for compact lazy loading", () => {
+  assert.ok(performanceActionQueue.length > 5);
+  assert.deepEqual(
+    performanceActionQueue.slice(0, 5).map((action) => action.id),
+    ["job_result", "reviews", "response_speed", "cancellation_rate", "subscription"],
+  );
+  for (const action of performanceActionQueue) {
+    assert.match(action.route, /^\//);
+    assert.ok(action.actionLabel);
+    assert.ok(action.impact > 0);
+    assert.ok(Array.isArray(action.steps));
+    assert.ok(action.steps.length >= 3);
+  }
+});
+
+test("performance action queue includes completed check rows", () => {
+  const completedActions = performanceActionQueue.filter((action) => action.completed);
+  assert.ok(completedActions.length >= 1);
+  assert.ok(completedActions.some((action) => action.id === "profile_completion"));
 });

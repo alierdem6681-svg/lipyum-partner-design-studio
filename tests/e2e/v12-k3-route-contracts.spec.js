@@ -233,5 +233,8 @@ test("Vue customer service exposes call action without subscription dependency",
   await waitForApp(page);
   await expect(page.getByTestId("customer-service-call")).toBeVisible();
   await expect(page.getByTestId("customer-service-call")).toHaveAttribute("href", "tel:4442368");
-  await expect(page.getByTestId("customer-service-upgrade")).toHaveCount(0);
+  await expect(page.getByTestId("customer-service-upgrade")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+  await page.getByRole("button", { name: "Aboneliği Yükselt" }).click();
+  await expect(page).toHaveURL(/#\/subscription$/);
 });

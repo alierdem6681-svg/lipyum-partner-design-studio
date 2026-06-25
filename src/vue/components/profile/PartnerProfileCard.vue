@@ -11,6 +11,8 @@ const props = defineProps({
   variant: { type: String, default: "page" },
   compact: { type: Boolean, default: false },
   showActions: { type: Boolean, default: true },
+  showMetrics: { type: Boolean, default: true },
+  showBadges: { type: Boolean, default: true },
   expandBadges: { type: Boolean, default: false },
 });
 
@@ -264,7 +266,7 @@ async function savePhoto() {
       </div>
     </div>
 
-    <div v-if="variant !== 'drawer'" class="partner-profile-public-metrics" data-testid="partner-public-metrics" aria-label="Profil öne çıkan bilgileri">
+    <div v-if="showMetrics && variant !== 'drawer'" class="partner-profile-public-metrics" data-testid="partner-public-metrics" aria-label="Profil öne çıkan bilgileri">
       <span
         v-for="metric in publicMetrics"
         :key="metric.id"
@@ -279,7 +281,7 @@ async function savePhoto() {
       </span>
     </div>
 
-    <div :class="badgesClasses" aria-label="Profil rozetleri">
+    <div v-if="showBadges" :class="badgesClasses" aria-label="Profil rozetleri">
       <span
         v-for="(badge, index) in visibleBadges"
         :key="badge.label"

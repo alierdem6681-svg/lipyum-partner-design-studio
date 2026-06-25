@@ -74,11 +74,15 @@ const viewports = [
   { width: 768, height: 1024 },
 ];
 
-async function expectDefaultVueShell(page) {
+async function expectDefaultVueShell(page, route = "") {
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.getByTestId("app-header").first()).toBeVisible();
-  await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
+  if (route === "/support/customer-service") {
+    await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+  } else {
+    await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
+  }
   await expect(page.getByTestId("clickable-outcome-summary")).toHaveCount(0);
   await expectNoAppHorizontalOverflow(page);
 }
@@ -99,7 +103,7 @@ for (const item of dedicatedRoutes) {
   test(`default Vue dedicated route ${item.route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
     await page.goto(`/#${item.route}`);
-    await expectDefaultVueShell(page);
+    await expectDefaultVueShell(page, item.route);
     await expect(page.getByTestId(item.testId).first()).toBeVisible();
     expect(errors).toEqual([]);
   });

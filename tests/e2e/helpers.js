@@ -61,6 +61,7 @@ export const criticalRoutes = [
   "/leaderboard",
   "/subscription",
   "/performance-score",
+  "/performance-improve",
   "/partner-card-preview",
 ];
 
@@ -68,11 +69,14 @@ export const ctaHiddenRoutes = new Set();
 
 export const bottomBarHiddenRoutes = new Set([
   "/profile",
+  "/support/customer-service",
   "/subscription",
   "/subscription/compare",
   "/subscription/checkout",
   "/wallet/top-up",
   "/wallet/top-up/success",
+  "/performance-score",
+  "/performance-improve",
   "/partner-card-preview",
 ]);
 

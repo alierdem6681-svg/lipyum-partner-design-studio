@@ -1,5 +1,16 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from "vue";
+import {
+  DEFAULT_QUICK_TOPUP_OFFER_ID,
+  buildQuickTopUpSummary,
+  formatQuickTopUpBonus,
+  formatQuickTopUpMoney,
+  formatQuickTopUpTl,
+  getQuickTopUpOfferById,
+  quickTopUpAdditionalOffers,
+  quickTopUpPaymentMethods,
+  quickTopUpVisibleOffers,
+} from "../../data/quickTopUpOffers.js";
 import AppIcon from "../ui/AppIcon.vue";
 import AppSheet from "../ui/AppSheet.vue";
 
@@ -9,58 +20,63 @@ const props = defineProps({
 
 const emit = defineEmits(["close", "complete"]);
 
-const formatter = new Intl.NumberFormat("tr-TR");
-
-const packages = [
-  { id: "credit-1692", credit: 1692, price: 1692, bonus: 0 },
-  { id: "credit-3383", credit: 3383, price: 3293, oldPrice: 3383, bonus: 90 },
-  { id: "credit-5074", credit: 5074, price: 4984, oldPrice: 5074, bonus: 90, badge: "%50 daha fazla kredi", tone: "blue" },
-  { id: "credit-6765", credit: 6765, price: 6675, oldPrice: 6765, bonus: 90, badge: "En Popüler", tone: "amber" },
-  { id: "credit-8457", credit: 8457, price: 8367, oldPrice: 8457, bonus: 90, badge: "En Kazançlı", tone: "green" },
-];
-
+const selectedOfferId = ref(DEFAULT_QUICK_TOPUP_OFFER_ID);
+const selectedPaymentMethodId = ref(quickTopUpPaymentMethods[0].id);
+const moreOffersOpen = ref(false);
+const paymentSheetOpen = ref(false);
 const step = ref("select");
-const selectedPackageId = ref("credit-8457");
-const cardNoteOpen = ref(false);
+const isSubmitting = ref(false);
 const secondsLeft = ref(5);
+let submitTimer = 0;
 let successTimer = 0;
 
-const selectedPackage = computed(() => packages.find((item) => item.id === selectedPackageId.value) || packages[0]);
-const sheetTitle = computed(() => {
-  if (step.value === "secure") return "3D Güvenli Doğrulama";
-  if (step.value === "success") return "Ödeme Başarılı";
-  return "Kredi Yükle";
-});
-const sheetDescription = computed(() => {
-  if (step.value === "secure") return "Bankadan gelen doğrulamayı tamamla.";
-  if (step.value === "success") return "Kredin hesabına eklendi.";
-  return "En uygun paketi seç, ödemeyi hızlıca tamamla.";
+const selectedOffer = computed(() => getQuickTopUpOfferById(selectedOfferId.value));
+const selectedPaymentMethod = computed(
+  () => quickTopUpPaymentMethods.find((method) => method.id === selectedPaymentMethodId.value) || quickTopUpPaymentMethods[0],
+);
+const summary = computed(() => buildQuickTopUpSummary(selectedOffer.value));
+const allVisibleOffers = computed(() => (moreOffersOpen.value
+  ? [...quickTopUpVisibleOffers, ...quickTopUpAdditionalOffers]
+  : quickTopUpVisibleOffers));
+
+const primaryCtaLabel = computed(() => {
+  if (isSubmitting.value) return "Ödeme hazırlanıyor...";
+  return `${formatQuickTopUpTl(summary.value.payableAmount)} Öde`;
 });
 
-function formatNumber(value) {
-  return formatter.format(value);
-}
-
-function formatMoney(value) {
-  return `₺${formatter.format(value)}`;
-}
+const sheetTitle = computed(() => (step.value === "success" ? "Bakiye Yüklendi" : "Bakiye Yükle"));
+const sheetDescription = computed(() => (
+  step.value === "success"
+    ? "Bakiye ödeme sonrası hesabına geçti."
+    : "İş alabilmek için hesabına bakiye ekle."
+));
 
 function resetFlow() {
+  selectedOfferId.value = DEFAULT_QUICK_TOPUP_OFFER_ID;
+  selectedPaymentMethodId.value = quickTopUpPaymentMethods[0].id;
+  moreOffersOpen.value = false;
+  paymentSheetOpen.value = false;
   step.value = "select";
-  selectedPackageId.value = "credit-8457";
-  cardNoteOpen.value = false;
+  isSubmitting.value = false;
   secondsLeft.value = 5;
+  clearTimeout(submitTimer);
   clearInterval(successTimer);
 }
 
 function closeSheet() {
+  clearTimeout(submitTimer);
   clearInterval(successTimer);
+  paymentSheetOpen.value = false;
   emit("close");
 }
 
-function startSecureStep() {
-  cardNoteOpen.value = false;
-  step.value = "secure";
+function selectOffer(id) {
+  selectedOfferId.value = id;
+}
+
+function selectPaymentMethod(id) {
+  selectedPaymentMethodId.value = id;
+  paymentSheetOpen.value = false;
 }
 
 function startSuccessTimer() {
@@ -72,14 +88,21 @@ function startSuccessTimer() {
   }, 1000);
 }
 
-function confirmSecureStep() {
-  step.value = "success";
-  startSuccessTimer();
+function submitTopUp() {
+  if (isSubmitting.value) return;
+  isSubmitting.value = true;
+  clearTimeout(submitTimer);
+  submitTimer = window.setTimeout(() => {
+    isSubmitting.value = false;
+    step.value = "success";
+    startSuccessTimer();
+  }, 650);
 }
 
 function finishFlow() {
+  clearTimeout(submitTimer);
   clearInterval(successTimer);
-  emit("complete", selectedPackage.value);
+  emit("complete", summary.value);
   emit("close");
 }
 
@@ -87,11 +110,16 @@ watch(
   () => props.open,
   (isOpen) => {
     if (isOpen) resetFlow();
-    else clearInterval(successTimer);
+    else {
+      clearTimeout(submitTimer);
+      clearInterval(successTimer);
+      paymentSheetOpen.value = false;
+    }
   },
 );
 
 onBeforeUnmount(() => {
+  clearTimeout(submitTimer);
   clearInterval(successTimer);
 });
 </script>
@@ -100,110 +128,114 @@ onBeforeUnmount(() => {
   <AppSheet :open="open" :title="sheetTitle" :description="sheetDescription" @close="closeSheet">
     <div class="quick-topup" data-testid="quick-topup-sheet">
       <template v-if="step === 'select'">
-        <div class="quick-topup-alert">
-          <AppIcon name="clock" :size="16" />
-          <span>Bonus oranı sınırlı süre geçerlidir.</span>
-        </div>
+        <section class="quick-topup-hero" aria-live="polite">
+          <span class="quick-topup-hero__eyebrow">Hesabına geçecek olan bakiye</span>
+          <strong class="quick-topup-hero__amount" data-testid="quick-topup-total-balance">
+            {{ formatQuickTopUpMoney(summary.balanceAmount) }}
+          </strong>
+          <div class="quick-topup-hero__metrics">
+            <span>
+              <AppIcon name="credit-card" :size="19" />
+              <small>Ödenecek</small>
+              <strong data-testid="quick-topup-payable">{{ formatQuickTopUpMoney(summary.payableAmount) }}</strong>
+            </span>
+            <span>
+              <AppIcon name="gift" :size="19" />
+              <small>Kullanılan bonus</small>
+              <strong>{{ formatQuickTopUpMoney(summary.appliedBonus) }}</strong>
+            </span>
+            <span>
+              <AppIcon name="briefcase" :size="19" />
+              <small>Yaklaşık</small>
+              <strong>{{ summary.estimatedJobs }}</strong>
+            </span>
+          </div>
+        </section>
 
-        <div class="quick-topup-options" role="radiogroup" aria-label="Kredi paketleri">
+        <div class="quick-topup-options" role="radiogroup" aria-label="Bakiye yükleme tutarları">
           <button
-            v-for="item in packages"
-            :key="item.id"
-            :class="['quick-topup-option', { 'is-selected': selectedPackageId === item.id }, item.tone ? `is-${item.tone}` : '']"
+            v-for="offer in allVisibleOffers"
+            :key="offer.id"
+            :class="['quick-topup-option', { 'is-selected': selectedOfferId === offer.id }]"
             type="button"
             role="radio"
-            :aria-checked="selectedPackageId === item.id ? 'true' : 'false'"
-            data-testid="topup-package-option"
-            @click="selectedPackageId = item.id"
+            :aria-checked="selectedOfferId === offer.id ? 'true' : 'false'"
+            :data-testid="`topup-offer-${offer.id}`"
+            @click="selectOffer(offer.id)"
           >
-            <span v-if="item.badge" class="quick-topup-badge">
-              <AppIcon :name="item.tone === 'amber' ? 'star' : 'sparkles'" :size="12" />
-              {{ item.badge }}
-            </span>
             <span class="quick-topup-radio" aria-hidden="true"></span>
             <span class="quick-topup-package-copy">
-              <strong>{{ formatNumber(item.credit) }} Kredi</strong>
-              <small v-if="item.bonus">{{ formatNumber(item.bonus) }} bonus kredi dahil</small>
+              <strong>{{ formatQuickTopUpTl(buildQuickTopUpSummary(offer).payableAmount) }} öde</strong>
+              <small v-if="offer.badge">{{ offer.badge }}</small>
             </span>
             <span class="quick-topup-price">
-              <strong>{{ formatMoney(item.price) }}</strong>
-              <s v-if="item.oldPrice">{{ formatMoney(item.oldPrice) }} yerine</s>
+              <template v-if="buildQuickTopUpSummary(offer).appliedBonus > 0">
+                <strong>+{{ formatQuickTopUpBonus(buildQuickTopUpSummary(offer).appliedBonus) }}</strong>
+                <small>Bakiyeye dönüşecek</small>
+              </template>
             </span>
           </button>
         </div>
 
-        <section class="quick-topup-payment" aria-label="Ödeme yöntemi">
-          <div class="quick-topup-section-title">Ödeme Yöntemi</div>
-          <div class="quick-topup-card-row">
-            <span class="quick-topup-card-icon"><AppIcon name="credit-card" :size="23" /></span>
-            <span class="quick-topup-card-copy">
-              <strong>Kredi Kartı</strong>
-              <small>9792 0840 9092 ****</small>
-            </span>
-            <button class="quick-topup-change-card" type="button" @click="cardNoteOpen = !cardNoteOpen">Değiştir</button>
-          </div>
-          <p v-if="cardNoteOpen" class="quick-topup-card-note">
-            Kart değişimi ödeme sağlayıcısında açılacak. Bu prototipte kayıtlı güvenli kart kullanılır.
-          </p>
-        </section>
+        <button
+          class="quick-topup-more"
+          type="button"
+          data-testid="topup-more-toggle"
+          :aria-expanded="moreOffersOpen ? 'true' : 'false'"
+          @click="moreOffersOpen = !moreOffersOpen"
+        >
+          {{ moreOffersOpen ? "Diğer tutarları gizle" : "Diğer tutarları göster" }}
+          <AppIcon name="chevron-right" :size="17" />
+        </button>
 
-        <section class="quick-topup-total" aria-label="Hesaba geçecek kredi">
-          <span>Hesabına Geçecek Toplam Kredi</span>
-          <strong data-testid="quick-topup-total-credit">
-            <AppIcon name="wallet" :size="18" />
-            {{ formatNumber(selectedPackage.credit) }}
-          </strong>
+        <section class="quick-topup-payment" aria-label="Ödeme yöntemi">
+          <div class="quick-topup-section-title">Ödeme yöntemi</div>
+          <div class="quick-topup-card-row">
+            <span class="quick-topup-card-icon"><AppIcon name="credit-card" :size="22" /></span>
+            <span class="quick-topup-card-copy">
+              <strong>{{ selectedPaymentMethod.label }}</strong>
+              <small>{{ selectedPaymentMethod.maskedNumber }}</small>
+            </span>
+            <button
+              class="quick-topup-change-card"
+              type="button"
+              data-testid="topup-payment-change"
+              @click="paymentSheetOpen = true"
+            >
+              Değiştir
+            </button>
+          </div>
         </section>
 
         <div class="quick-topup-sticky">
-          <button class="quick-topup-primary" type="button" data-testid="quick-topup-submit" @click="startSecureStep">
-            <span>
-              <AppIcon name="shield" :size="15" />
-              {{ formatNumber(selectedPackage.credit) }} Kredi Yükle
-            </span>
-            <strong>
-              <small v-if="selectedPackage.oldPrice">{{ formatMoney(selectedPackage.oldPrice) }}</small>
-              Sadece {{ formatMoney(selectedPackage.price) }}
-            </strong>
+          <button
+            class="quick-topup-primary"
+            type="button"
+            data-testid="quick-topup-submit"
+            :disabled="isSubmitting"
+            @click="submitTopUp"
+          >
+            <span>{{ primaryCtaLabel }}</span>
           </button>
+          <span class="quick-topup-trust">
+            <AppIcon name="lock" :size="15" />
+            Güvenli ödeme · SSL korumalı
+          </span>
         </div>
-      </template>
-
-      <template v-else-if="step === 'secure'">
-        <section class="quick-topup-secure" data-testid="quick-topup-3d">
-          <span class="quick-topup-secure__icon"><AppIcon name="shield" :size="34" /></span>
-          <h3>3D doğrulama gerekli</h3>
-          <p>Bankandan gelen onayı tamamladığında kredi hemen hesabına geçer.</p>
-          <div class="quick-topup-secure-summary">
-            <span>
-              <small>Paket</small>
-              <strong>{{ formatNumber(selectedPackage.credit) }} Kredi</strong>
-            </span>
-            <span>
-              <small>Bugün ödenecek</small>
-              <strong>{{ formatMoney(selectedPackage.price) }}</strong>
-            </span>
-            <span>
-              <small>Kart</small>
-              <strong>**** 9092</strong>
-            </span>
-          </div>
-          <button class="quick-topup-primary" type="button" data-testid="quick-topup-3d-confirm" @click="confirmSecureStep">
-            <span><AppIcon name="check" :size="16" /> Doğrulamayı Tamamla</span>
-            <strong>{{ formatMoney(selectedPackage.price) }}</strong>
-          </button>
-          <button class="quick-topup-secondary" type="button" @click="step = 'select'">Geri dön</button>
-        </section>
       </template>
 
       <template v-else>
         <section class="quick-topup-success" data-testid="quick-topup-success">
           <span class="quick-topup-success__icon"><AppIcon name="check" :size="42" /></span>
           <h3>Bakiye yüklendi</h3>
-          <p>{{ formatNumber(selectedPackage.credit) }} kredi hesabına eklendi. Yeni iş fırsatlarında kesinti yaşamadan devam edebilirsin.</p>
+          <p>{{ formatQuickTopUpMoney(summary.balanceAmount) }} bakiye hesabına geçti. Yeni iş fırsatlarına kesintisiz devam edebilirsin.</p>
           <div class="quick-topup-success-summary">
-            <span>Hesabına geçen kredi</span>
-            <strong>{{ formatNumber(selectedPackage.credit) }}</strong>
+            <span>Cüzdanına eklenen</span>
+            <strong>{{ formatQuickTopUpMoney(summary.balanceAmount) }}</strong>
+            <span>Kartından çekilen</span>
+            <strong>{{ formatQuickTopUpMoney(summary.payableAmount) }}</strong>
+            <span>Kullanılan bonus</span>
+            <strong>{{ formatQuickTopUpMoney(summary.appliedBonus) }}</strong>
           </div>
           <button class="quick-topup-primary" type="button" data-testid="quick-topup-home" @click="finishFlow">
             <span><AppIcon name="home" :size="16" /> Ana Sayfaya Dön</span>
@@ -211,6 +243,31 @@ onBeforeUnmount(() => {
           </button>
         </section>
       </template>
+    </div>
+  </AppSheet>
+
+  <AppSheet
+    :open="paymentSheetOpen"
+    title="Ödeme yöntemi"
+    description="Kayıtlı kartını seç."
+    @close="paymentSheetOpen = false"
+  >
+    <div class="quick-topup-payment-sheet" data-testid="quick-topup-payment-sheet">
+      <button
+        v-for="method in quickTopUpPaymentMethods"
+        :key="method.id"
+        :class="['quick-topup-payment-option', { 'is-selected': selectedPaymentMethodId === method.id }]"
+        type="button"
+        :aria-pressed="selectedPaymentMethodId === method.id ? 'true' : 'false'"
+        @click="selectPaymentMethod(method.id)"
+      >
+        <span class="quick-topup-card-icon"><AppIcon name="credit-card" :size="22" /></span>
+        <span>
+          <strong>{{ method.label }} {{ method.maskedNumber }}</strong>
+          <small>{{ method.description }}</small>
+        </span>
+        <AppIcon v-if="selectedPaymentMethodId === method.id" name="check" :size="18" />
+      </button>
     </div>
   </AppSheet>
 </template>
