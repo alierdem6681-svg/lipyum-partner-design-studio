@@ -1,0 +1,24 @@
+﻿{
+    "release":  "v14",
+    "createdAt":  "2026-06-26T01:42:54.2782081+03:00",
+    "startingMainSha":  "fd14feb13cb732f89589dec8d73eaba18d0d2225",
+    "backupTag":  "v14",
+    "backupArchiveBranch":  "archive/v14",
+    "productionUrl":  "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+    "changedAreas":  [
+                         "Leaderboard weekly reward pool and prize copy",
+                         "Performance score badge advantages modal asset and layout polish"
+                     ],
+    "validation":  {
+                       "npmAuditHigh":  "PASS: found 0 vulnerabilities",
+                       "releaseQualityGate":  "PASS: npm run test:quality-gate:release",
+                       "build":  "PASS: npm run build via release gate",
+                       "gitDiffCheck":  "PASS: git diff --check via release gate"
+                   },
+    "rollback":  {
+                     "tag":  "git checkout v14",
+                     "branch":  "git checkout archive/v14",
+                     "restoreMain":  "git checkout main; git reset --hard v14; git push origin main --force-with-lease"
+                 },
+    "notes":  "Created before merging the leaderboard reward and score badge modal polish release."
+}

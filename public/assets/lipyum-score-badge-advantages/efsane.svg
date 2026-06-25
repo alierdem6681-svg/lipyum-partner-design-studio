@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="EFSANE performans rozeti">
+  <defs>
+    <linearGradient id="g-efsane" x1="22" y1="14" x2="104" y2="116" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#086A4D"/><stop offset="1" stop-color="#004536"/></linearGradient>
+    <linearGradient id="r-efsane" x1="24" y1="16" x2="108" y2="112" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F7D36B"/><stop offset="1" stop-color="#B7791F"/></linearGradient>
+    <filter id="s-efsane" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="rgba(16,24,40,.2)"/></filter>
+  </defs>
+  <g fill="#D9A441" opacity=".92"><path d="M38 98C22 85 18 61 31 39" fill="none" stroke="#D9A441" stroke-width="3" stroke-linecap="round"/><path d="M90 98C106 85 110 61 97 39" fill="none" stroke="#D9A441" stroke-width="3" stroke-linecap="round"/><ellipse cx="26" cy="84" rx="5" ry="12" transform="rotate(-35 26 84)"/><ellipse cx="23" cy="71" rx="5" ry="11" transform="rotate(-45 23 71)"/><ellipse cx="24" cy="58" rx="4" ry="10" transform="rotate(-56 24 58)"/><ellipse cx="102" cy="84" rx="5" ry="12" transform="rotate(35 102 84)"/><ellipse cx="105" cy="71" rx="5" ry="11" transform="rotate(45 105 71)"/><ellipse cx="104" cy="58" rx="4" ry="10" transform="rotate(56 104 58)"/></g>
+  <g><path d="M45 26L54 13L64 27L74 13L83 26L79 36H49L45 26Z" fill="#F7D36B" stroke="#B7791F" stroke-width="1.5"/><circle cx="54" cy="13" r="3" fill="#F7D36B"/><circle cx="74" cy="13" r="3" fill="#F7D36B"/></g>
+  <g filter="url(#s-efsane)"><path d="M64 25L99 43V78C99 96 84 110 64 117C44 110 29 96 29 78V43L64 25Z" fill="url(#r-efsane)"/><path d="M64 33L91 47V77C91 91 80 102 64 108C48 102 37 91 37 77V47L64 33Z" fill="url(#g-efsane)" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/></g>
+  <text x="64" y="67" text-anchor="middle" fill="#FFE8A3" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Roboto','Inter','Noto Sans','Segoe UI',sans-serif" font-size="16.5" font-weight="950" letter-spacing="0" textLength="48" lengthAdjust="spacingAndGlyphs">EFSANE</text>
+  <path d="M64 78L68 87L78 88L70 94L72 104L64 99L56 104L58 94L50 88L60 87L64 78Z" fill="#FFE8A3" stroke="#B7791F" stroke-width="1.2"/>
+</svg>

@@ -178,8 +178,8 @@ export const leaderboard = {
     { rank: 3, name: "Yusuf K.", initials: "YK", score: 8930 },
   ],
   rewards: [
-    { title: "1. Sıra", value: "3.000 Bonus", note: "+ Özel Rozet" },
-    { title: "İlk 3", value: "1.000 Bonus", note: "+ Özel Rozet" },
-    { title: "İlk 10", value: "500 Bonus", note: "+ Özel Rozet" },
+    { title: "1. Sıra", value: "2.500 Bonus", note: "+ Özel Rozet" },
+    { title: "İlk 3", value: "1.500 Bonus", note: "+ Özel Rozet" },
+    { title: "İlk 10", value: "700 Bonus", note: "+ Özel Rozet" },
   ],
 };

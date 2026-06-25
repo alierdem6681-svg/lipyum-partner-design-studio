@@ -11,27 +11,29 @@
 .score-badge-tier-card {
   position: relative;
   min-width: 0;
-  min-height: 82px;
+  min-height: 98px;
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) auto;
+  grid-template-columns: 76px minmax(0, 1fr) max-content;
   align-items: center;
-  gap: var(--space-2);
-  padding: 10px 10px;
+  column-gap: 8px;
+  padding: 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card-compact);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
-}
-
-.score-badge-tier-card.is-primary {
-  min-height: 88px;
-  border-color: color-mix(in srgb, var(--color-premium-gold) 42%, var(--color-border));
   background:
     linear-gradient(
       180deg,
       var(--color-surface),
-      color-mix(in srgb, var(--color-warning-soft) 54%, var(--color-surface))
+      color-mix(in srgb, var(--color-neutral-50) 68%, var(--color-surface))
     );
+  box-shadow: var(--shadow-soft);
+}
+
+.score-badge-tier-card.is-primary {
+  min-height: 104px;
+  border-color: color-mix(in srgb, var(--color-premium-gold) 42%, var(--color-border));
+  background:
+    radial-gradient(circle at 8% 18%, color-mix(in srgb, var(--color-premium-gold-soft) 70%, transparent), transparent 42%),
+    linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-warning-soft) 38%, var(--color-surface)));
 }
 
 .score-badge-tier-card__emblem {
@@ -40,20 +42,24 @@
   min-width: 0;
 }
 
-.score-badge-tier-card__emblem .score-tier-emblem {
-  width: 54px;
-  height: 54px;
+.score-badge-tier-card__badge {
+  width: 76px;
+  height: 76px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px color-mix(in srgb, var(--color-neutral-900) 12%, transparent));
 }
 
-.score-badge-tier-card.is-primary .score-badge-tier-card__emblem .score-tier-emblem {
-  width: 58px;
-  height: 58px;
+.score-badge-tier-card.is-primary .score-badge-tier-card__badge {
+  width: 80px;
+  height: 80px;
 }
 
 .score-badge-tier-card__content {
   min-width: 0;
   display: grid;
-  gap: 5px;
+  gap: 8px;
+  align-content: center;
 }
 
 .score-badge-tier-card h3 {
@@ -73,7 +79,7 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--font-size-small);
@@ -81,9 +87,11 @@
   line-height: var(--line-tight);
 }
 
-.score-badge-tier-card p .v-icon {
+.score-badge-tier-card__supporting-icon {
+  width: 22px;
+  height: 22px;
   flex: 0 0 auto;
-  color: var(--color-primary-dark);
+  object-fit: contain;
 }
 
 .score-badge-tier-card p strong {
@@ -92,8 +100,10 @@
 }
 
 .score-badge-tier-card__score {
+  position: static;
   align-self: start;
-  min-width: 42px;
+  justify-self: end;
+  min-width: 44px;
   min-height: 28px;
   display: inline-flex;
   align-items: center;
@@ -107,6 +117,7 @@
   font-weight: var(--weight-extra-bold);
   line-height: 1;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .score-badge-tier-card.is-primary .score-badge-tier-card__score {
@@ -117,10 +128,10 @@
 
 .score-badge-advantages-note {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-2);
-  padding: 10px;
+  gap: var(--space-3);
+  padding: 10px 12px;
   border: 1px solid var(--color-primary-border);
   border-radius: var(--radius-card-compact);
   background: var(--color-primary-soft);
@@ -128,12 +139,19 @@
 }
 
 .score-badge-advantages-note__icon {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: var(--radius-md);
   background: var(--color-surface);
+}
+
+.score-badge-advantages-note__asset {
+  width: 28px;
+  height: 28px;
+  display: block;
+  object-fit: contain;
 }
 
 .score-badge-advantages-note p {
@@ -146,23 +164,51 @@
 
 @media (max-width: 374px) {
   .score-badge-tier-card {
-    grid-template-columns: 50px minmax(0, 1fr) auto;
-    gap: 7px;
-    padding: 9px;
+    grid-template-columns: 62px minmax(0, 1fr) max-content;
+    column-gap: 8px;
+    min-height: 92px;
+    padding: 10px;
   }
 
-  .score-badge-tier-card__emblem .score-tier-emblem,
-  .score-badge-tier-card.is-primary .score-badge-tier-card__emblem .score-tier-emblem {
-    width: 48px;
-    height: 48px;
+  .score-badge-tier-card__badge,
+  .score-badge-tier-card.is-primary .score-badge-tier-card__badge {
+    width: 62px;
+    height: 62px;
   }
 
   .score-badge-tier-card h3 {
     font-size: var(--font-size-body);
   }
 
+  .score-badge-tier-card__supporting-icon {
+    width: 20px;
+    height: 20px;
+  }
+
   .score-badge-tier-card p,
   .score-badge-advantages-note p {
     font-size: var(--font-size-caption);
+  }
+
+  .score-badge-tier-card__score {
+    min-width: 40px;
+    min-height: 26px;
+    padding: 0 7px;
+  }
+
+  .score-badge-advantages-note {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: 10px;
+  }
+
+  .score-badge-advantages-note__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .score-badge-advantages-note__asset {
+    width: 24px;
+    height: 24px;
   }
 }

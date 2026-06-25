@@ -1,8 +1,6 @@
 <script setup>
 import { onBeforeUnmount, watch } from "vue";
-import AppIcon from "../ui/AppIcon.vue";
 import AppSheet from "../ui/AppSheet.vue";
-import ScoreTierEmblem from "./ScoreTierEmblem.vue";
 import {
   scoreBadgeAdvantagesCopy,
   scoreBadgeBenefitTiers,
@@ -13,6 +11,31 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close"]);
+
+const scoreBadgeAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-score-badge-advantages/`;
+
+const scoreBadgeAssetByTone = {
+  legend: "efsane.svg",
+  strong: "guclu.svg",
+  high: "yuksek.svg",
+};
+
+const supportingAssetByIcon = {
+  "trend-up": "mint_trend_up_circle.svg",
+  user: "mint_user_circle.svg",
+};
+
+function getAssetUrl(assetName) {
+  return `${scoreBadgeAssetBase}${assetName}`;
+}
+
+function getTierBadgeAsset(tier) {
+  return getAssetUrl(scoreBadgeAssetByTone[tier.tone] || "yuksek.svg");
+}
+
+function getSupportingAsset(tier) {
+  return getAssetUrl(supportingAssetByIcon[tier.secondaryIcon] || "mint_trend_up_circle.svg");
+}
 
 function closeSheet() {
   emit("close");
@@ -59,7 +82,15 @@ onBeforeUnmount(() => {
           data-testid="score-badge-tier-card"
         >
           <div class="score-badge-tier-card__emblem" aria-hidden="true">
-            <ScoreTierEmblem :tier="tier.tier" :tone="tier.tone" />
+            <img
+              class="score-badge-tier-card__badge"
+              :src="getTierBadgeAsset(tier)"
+              :alt="`${tier.tier} performans rozeti`"
+              data-testid="score-badge-tier-badge"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="sr-only">{{ tier.tier }}</span>
           </div>
 
           <div class="score-badge-tier-card__content">
@@ -68,7 +99,14 @@ onBeforeUnmount(() => {
               {{ tier.headlineRest }}
             </h3>
             <p>
-              <AppIcon :name="tier.secondaryIcon" :size="14" :stroke-width="2.4" />
+              <img
+                class="score-badge-tier-card__supporting-icon"
+                :src="getSupportingAsset(tier)"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+              />
               <strong>{{ tier.secondary }}</strong>
             </p>
           </div>
@@ -81,7 +119,13 @@ onBeforeUnmount(() => {
 
       <aside class="score-badge-advantages-note" data-testid="score-badge-advantages-note">
         <span class="score-badge-advantages-note__icon" aria-hidden="true">
-          <AppIcon name="shield" :size="18" />
+          <img
+            class="score-badge-advantages-note__asset"
+            :src="getAssetUrl('premium_note_shield.svg')"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
         </span>
         <p>{{ scoreBadgeAdvantagesCopy.note }}</p>
       </aside>
