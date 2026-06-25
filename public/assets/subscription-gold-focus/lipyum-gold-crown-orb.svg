@@ -1,0 +1,23 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gold crown orb">
+  <defs>
+    <radialGradient id="g" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(96 91) rotate(90) scale(80)">
+      <stop stop-color="#19D87C" stop-opacity="0.95"/>
+      <stop offset="0.48" stop-color="#064E3B"/>
+      <stop offset="1" stop-color="#07111F"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="40" y1="26" x2="150" y2="166" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE8A3"/>
+      <stop offset="0.48" stop-color="#D9A72F"/>
+      <stop offset="1" stop-color="#9A6A12"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="192" height="192" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#079455" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <circle cx="96" cy="96" r="67" fill="url(#g)" stroke="url(#gold)" stroke-width="7" filter="url(#shadow)"/>
+  <path d="M59 72l21 21 16-34 16 34 21-21-10 55H69L59 72z" fill="url(#gold)" stroke="#FFF2B8" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="59" cy="72" r="5" fill="#FFE8A3"/>
+  <circle cx="96" cy="59" r="5" fill="#FFE8A3"/>
+  <circle cx="133" cy="72" r="5" fill="#FFE8A3"/>
+  <path d="M74 137h44" stroke="#FFE8A3" stroke-width="5" stroke-linecap="round"/>
+</svg>
