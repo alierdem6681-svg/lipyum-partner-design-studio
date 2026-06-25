@@ -231,12 +231,12 @@ const titleOverrides = {
   },
   "/performance-score": {
     title: "Performansımı Artır",
-    subtitle: "",
+    subtitle: "Skor rehberin.",
     trailingActions: [],
   },
   "/performance-improve": {
     title: "Performansımı Artır",
-    subtitle: "",
+    subtitle: "Skor rehberin.",
     trailingActions: [],
   },
   "/customer-management": {

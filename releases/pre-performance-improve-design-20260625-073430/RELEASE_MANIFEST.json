@@ -1,0 +1,9 @@
+﻿{
+    "backup":  "pre-performance-improve-design-20260625-073430",
+    "archiveBranch":  "archive/pre-performance-improve-design-20260625-073430",
+    "startSha":  "26d8106e0a812fb396d4370f669f8c6b0b0810e3",
+    "date":  "2026-06-25T07:34:30.1991010+03:00",
+    "route":  "/performance-improve",
+    "purpose":  "Backup before rebuilding Performance Improve page from blank state",
+    "rollbackCommand":  "git revert \u003cmerge-sha\u003e or branch from 26d8106e0a812fb396d4370f669f8c6b0b0810e3"
+}
