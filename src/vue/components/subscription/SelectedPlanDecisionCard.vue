@@ -31,7 +31,7 @@ const benefits = computed(() => displayPlan.value.decisionBenefits.slice(0, 4));
           {{ subscriptionGoldFocusCopy.selectedPlanPrefix }} <strong>{{ displayPlan.title }}</strong>
         </p>
         <h2>Lipyum {{ displayPlan.title }}</h2>
-        <p>{{ subscriptionGoldFocusCopy.selectedPlanSupport }}</p>
+        <p>{{ displayPlan.decisionSupport }}</p>
       </div>
       <strong class="sgf-decision-card__price">
         {{ getPlanPriceCopy(displayPlan, billingPeriod) }}
