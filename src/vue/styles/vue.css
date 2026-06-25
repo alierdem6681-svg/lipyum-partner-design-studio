@@ -2872,9 +2872,9 @@
 }
 
 .wallet-action-pill.convert {
-  border-color: var(--color-primary-dark);
-  background: var(--color-primary-dark);
-  color: var(--color-surface);
+  border-color: color-mix(in srgb, var(--color-primary-dark) 24%, var(--color-border));
+  background: color-mix(in srgb, var(--color-primary-soft) 70%, var(--color-surface));
+  color: var(--color-primary-dark);
 }
 
 .wallet-action-pill .icon {
