@@ -5652,8 +5652,8 @@
         align-items: center;
         justify-content: space-between;
         gap: 6px;
-        min-height: 30px;
-        padding-right: 32px;
+        min-height: 34px;
+        padding-right: 38px;
         color: var(--neutral-text);
         font-size: 12px;
         font-weight: 800;
@@ -5716,10 +5716,10 @@
 
       .wallet-tile-icon {
         position: absolute;
-        top: 5px;
-        right: 6px;
-        width: 30px;
-        height: 30px;
+        top: 3px;
+        right: 4px;
+        width: 34px;
+        height: 34px;
         display: grid;
         place-items: center;
         border: 0;
