@@ -109,6 +109,7 @@ export const useSubscriptionStore = defineStore("subscription", {
       this.cancelAtPeriodEnd = normalized === "canceled_active";
       if (normalized === "free" || normalized === "expired") {
         this.currentPlanId = "free";
+        if (normalized === "free") this.selectedPlanId = recommendedPlanId;
       } else {
         this.currentPlanId = planId;
         this.selectedPlanId = planId;

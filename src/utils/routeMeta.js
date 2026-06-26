@@ -9,16 +9,22 @@ const titleOverrides = {
     ctaVariant: "hidden",
   },
   "/about": {
-    title: "Hakkımda",
-    subtitle: "Müşterilere görünen tanıtım bilgilerin",
+    title: "Hakkımızda",
+    subtitle: "",
+    trailingActions: ["about-edit"],
   },
   "/photo-gallery": {
     title: "Fotoğraflarım",
-    subtitle: "Profil fotoğrafları ve iş galerin",
+    subtitle: "Profil, iş yeri ve hizmet fotoğrafların",
+  },
+  "/verifications": {
+    title: "Doğrulamalar",
+    subtitle: "Kimlik ve iletişim bilgilerini doğrula",
   },
   "/services": {
-    title: "Hizmet Alanları",
-    subtitle: "Hangi hizmette hangi mod açık",
+    title: "Hizmetlerim",
+    subtitle: "",
+    trailingActions: ["services-edit"],
   },
   "/regions": {
     title: "Hizmet Bölgeleri",
@@ -146,7 +152,7 @@ const titleOverrides = {
   "/subscription": {
     title: "Abonelik",
     subtitle: "Daha güçlü görün, desteğe daha hızlı ulaş.",
-    trailingActions: [],
+    trailingActions: ["subscription-status"],
     ctaVariant: "hidden",
     showBottomBar: false,
   },

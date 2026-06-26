@@ -1,0 +1,43 @@
+{
+  "release": "v12",
+  "createdAt": "2026-06-27T02:04:33+03:00",
+  "startingMainSha": "d3c3bbd40968dd19c58bf577d580cbd8d281e56f",
+  "backupTag": "v12",
+  "backupArchiveBranch": "archive/v12",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "changedAreas": [
+    "Gold-focused subscription purchase flow and plan decision UI",
+    "About, services and verifications Vue route pages",
+    "Photo gallery route content and production route metadata",
+    "Header, toast and shell alignment refinements",
+    "Route, subscription and visual coverage tests"
+  ],
+  "validation": {
+    "status": "PASS",
+    "commands": {
+      "npm run check": "PASS",
+      "npm run lint": "PASS",
+      "npm audit --audit-level=high": "PASS",
+      "npm run test:unit": "PASS",
+      "npm run test:routes": "PASS",
+      "npm run test:e2e": "PASS",
+      "npm run test:e2e:mobile": "PASS",
+      "npm run test:subscription-conversion-no-trial": "PASS",
+      "npm run test:quality-gate": "PASS",
+      "npm run test:quality-gate:release": "PASS",
+      "npx playwright test tests/e2e/about-page.spec.js tests/e2e/services-page.spec.js tests/e2e/verifications-page.spec.js tests/e2e/photo-gallery-page.spec.js tests/e2e/app-toast-alignment.spec.js": "PASS",
+      "git diff --check": "PASS"
+    },
+    "fixedBlockers": [
+      "Reduced dev script payload by lazy-loading secondary route components and removing startup lucide icon imports.",
+      "Stabilized app-shell back navigation for rapid route transitions.",
+      "Reduced compact account transaction sheet content to satisfy mobile height constraints."
+    ]
+  },
+  "rollback": {
+    "tag": "git checkout v12",
+    "branch": "git checkout archive/v12",
+    "restoreMain": "Create a rollback PR from tag v12 to main."
+  },
+  "notes": "Created before publishing the local approved V12 release batch."
+}

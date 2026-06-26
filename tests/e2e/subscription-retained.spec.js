@@ -21,9 +21,9 @@ test("Aboneliğim menu opens the direct purchase subscription page", async ({ pa
   await page.getByRole("button", { name: "Aboneliğim" }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription");
   await expect(page.getByTestId("subscription-page")).toBeVisible();
-  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-gold")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-vip")).toBeVisible();
+  await expect(page.getByTestId("subscription-gold-focus-view")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-gold")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-plus")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-vip")).toBeVisible();
   await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
 });

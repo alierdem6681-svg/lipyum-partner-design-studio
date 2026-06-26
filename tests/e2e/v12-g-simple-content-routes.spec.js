@@ -2,8 +2,6 @@ import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
 const simpleRoutes = [
-  "/about",
-  "/services",
   "/regions",
   "/working-hours",
   "/team",
