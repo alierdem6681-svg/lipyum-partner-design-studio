@@ -1,0 +1,24 @@
+{
+  "backupName": "v16",
+  "createdAt": "2026-06-26T09:05:10.0599017+03:00",
+  "purpose": "Backup before subscription free paywall reset release",
+  "repository": "alierdem6681-svg/lipyum-partner-design-studio",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "startMainSha": "d097afa395e8a856b04e2d4739a4646d0e3b18e3",
+  "backupTag": "v16",
+  "archiveBranch": "archive/v16",
+  "tagPushed": true,
+  "archiveBranchPushed": true,
+  "scope": [
+    "Reset /subscription free paywall UI to a clean shell",
+    "Retire previous Gold Focus free paywall implementation",
+    "Preserve subscription route, store, plan data, checkout, and paid state flows"
+  ],
+  "preMergeValidation": [
+    {
+      "command": "PLAYWRIGHT_PORT=5237 npm run test:subscription-conversion-no-trial",
+      "result": "passed"
+    }
+  ],
+  "rollbackCommand": "git fetch origin --tags && git checkout main && git reset --hard v16 && git push origin main"
+}
