@@ -9,9 +9,11 @@ const blankRoutes = [
 
 const dedicatedRoutes = [
   { route: "/home", testId: "home-performance-card" },
+  { route: "/about", testId: "route--about" },
   { route: "/profile", testId: "profile-page" },
   { route: "/partner-card-preview", testId: "partner-card-preview-page" },
   { route: "/photo-gallery", testId: "photo-gallery-page" },
+  { route: "/services", testId: "services-page" },
   { route: "/notifications", testId: "notifications-page" },
   { route: "/support", testId: "support-page" },
   { route: "/support/new", testId: "support-ticket-page" },
@@ -35,8 +37,6 @@ const dedicatedRoutes = [
 ];
 
 const dataDrivenRoutes = [
-  "/about",
-  "/services",
   "/regions",
   "/working-hours",
   "/team",

@@ -5,10 +5,8 @@ import { PROFILE_MENU_ITEMS } from "../../../utils/constants.js";
 import ProfileWorkStatusCard from "./ProfileWorkStatusCard.vue";
 import ProfileSharePromoCard from "./ProfileSharePromoCard.vue";
 import AppIcon from "../ui/AppIcon.vue";
-import { useAppShellStore } from "../../stores/appShellStore.js";
 
 const router = useRouter();
-const shell = useAppShellStore();
 const menuOpen = ref(false);
 
 const menuDetails = {
@@ -21,7 +19,6 @@ const menuDetails = {
     description: "Kimlik ve hesap doğrulamalarını tamamla",
     status: "+50 puan",
     tone: "success",
-    lockedUntilAboutComplete: true,
   },
   "/photo-gallery": {
     description: "Daha fazla görsel ekleyin",
@@ -68,10 +65,6 @@ const menuItems = computed(() =>
 );
 
 function openMenuItem(item) {
-  if (item.lockedUntilAboutComplete) {
-    shell.showToast("Hakkımda tam doldurulmadan doğrulamalar açılamaz.");
-    return;
-  }
   router.push(item.route);
 }
 </script>

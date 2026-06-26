@@ -34,6 +34,7 @@
   "/invoices": "invoices",
   "/income-expense": "incomeExpense",
   "/photo-gallery": "photoGallery",
+  "/verifications": "verifications",
   "/about": "about",
   "/services": "services",
   "/regions": "regions",
@@ -89,7 +90,8 @@ export const ROUTE_TITLES = {
   "/invoices": "Faturalarım",
   "/income-expense": "Gelir Gider Takibi",
   "/photo-gallery": "Fotoğraflarım",
-  "/about": "Hakkımda",
+  "/verifications": "Doğrulamalar",
+  "/about": "Hakkımızda",
   "/services": "Hizmetlerim",
   "/regions": "Bölgelerim",
   "/working-hours": "Saatlerim",
@@ -171,7 +173,7 @@ export const DRAWER_SECTIONS = [
 ];
 
 export const PROFILE_MENU_ITEMS = [
-  { label: "Hakkımda", shortLabel: "Hakkımda", route: "/about", screen: "about", icon: "user" },
+  { label: "Hakkımızda", shortLabel: "Hakkımızda", route: "/about", screen: "about", icon: "user" },
   { label: "Doğrulamalar", shortLabel: "Doğrulama", route: "/verifications", screen: "verifications", icon: "shield" },
   { label: "Fotoğraflarım", shortLabel: "Fotoğraf", route: "/photo-gallery", screen: "photoGallery", icon: "eye" },
   { label: "Hizmetlerim", shortLabel: "Hizmet", route: "/services", screen: "services", icon: "briefcase" },

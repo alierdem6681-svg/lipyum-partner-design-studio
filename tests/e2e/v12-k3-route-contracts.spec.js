@@ -221,8 +221,8 @@ test("Vue route header actions produce outcomes", async ({ page }) => {
 
   await page.goto(expectedUrl("/subscription"));
   await waitForApp(page);
-  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
+  await expect(page.getByTestId("subscription-gold-focus-view")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-plus")).toBeVisible();
   await expect(page.getByTestId("app-header").getByTestId("header-info-button")).toHaveCount(0);
 });
 

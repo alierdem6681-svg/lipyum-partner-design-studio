@@ -12,18 +12,32 @@ test.describe("subscription direct purchase flow", () => {
     await resetSubscription(page);
   });
 
-  test("free state is reset and has no demo offer", async ({ page }) => {
-    await page.goto("#/subscription");
+  test("free state renders Gold Focus paywall without trial copy", async ({ page }) => {
+    await page.goto("#/subscription?subscriptionState=free");
     await waitForApp(page);
 
-    await expect(page.getByTestId("subscription-free-state")).toBeVisible();
-    await expect(page.getByTestId("subscription-reset-shell")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Abonelik ekranı temizlendi" })).toBeVisible();
-    await expect(page.getByText("Yeni mobil abonelik tasarımı temiz başlangıç üzerinden kurulacak.")).toBeVisible();
-    await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
-    await expect(page.getByTestId("subscription-plan-gold")).toHaveCount(0);
-    await expect(page.getByTestId("selected-plan-card")).toHaveCount(0);
-    await expect(page.getByTestId("subscription-sticky-cta")).toHaveCount(0);
+    await expect(page.getByTestId("subscription-gold-focus-view")).toBeVisible();
+    await expect(page.getByTestId("subscription-reset-shell")).toHaveCount(0);
+    await expect(page.getByTestId("subscription-plan-row-plus")).toBeVisible();
+    await expect(page.getByTestId("subscription-plan-row-gold")).toBeVisible();
+    await expect(page.getByTestId("subscription-plan-row-vip")).toBeVisible();
+    await expect(page.getByTestId("subscription-plan-row-gold")).toContainText("ÖNERİLEN");
+    await expect(page.getByTestId("subscription-selected-plan-card")).toContainText("Sana en uygun plan");
+    await expect(page.getByTestId("subscription-selected-plan-card")).toContainText("Gold");
+    await expect(page.getByText(/trial|free trial|ücretsiz deneme|ücretsiz dene|deneme süresi/i)).toHaveCount(0);
+
+    await page.getByTestId("subscription-plan-row-plus").click();
+    await expect(page.getByTestId("subscription-selected-plan-card")).toContainText("Plus");
+    await expect(page.getByTestId("subscription-gold-focus-submit")).toContainText("PLUS");
+
+    await page.getByTestId("subscription-plan-row-vip").click();
+    await expect(page.getByTestId("subscription-selected-plan-card")).toContainText("VIP");
+    await expect(page.getByTestId("subscription-gold-focus-submit")).toContainText("VIP");
+
+    await page.getByTestId("subscription-plan-row-gold").click();
+    await page.getByTestId("subscription-gold-focus-submit").click();
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/subscription/checkout");
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("plan=gold");
     await expectNoAppHorizontalOverflow(page);
   });
 
@@ -41,7 +55,7 @@ test.describe("subscription direct purchase flow", () => {
     await expect(page.getByTestId("subscription-checkout-page")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Lipyum VIP" })).toBeVisible();
     await expect(page.getByTestId("subscription-checkout-page").getByText("Bugün ödenecek")).toBeVisible();
-    await expect(page.getByTestId("subscription-checkout-page").getByText("3.486 TL", { exact: true })).toBeVisible();
+    await expect(page.getByTestId("subscription-checkout-page").getByText("3.600 TL", { exact: true })).toBeVisible();
     await expect(page.getByText("Ödeme sonrası hemen aktif").first()).toBeVisible();
     await expect(page.getByText("Her ay aynı tarihte otomatik yenilenir")).toBeVisible();
 
@@ -77,7 +91,7 @@ test.describe("subscription direct purchase flow", () => {
     await expect(page.getByTestId("return-to-plus")).toBeVisible();
   });
 
-  test("customer service route stays available after content reset", async ({ page }) => {
+  test("customer service route stays available after subscription purchase states", async ({ page }) => {
     await page.goto("#/subscription?subscriptionState=active&plan=vip");
     await waitForApp(page);
     await expect(page.getByTestId("subscription-active-state")).toBeVisible();
@@ -87,8 +101,6 @@ test.describe("subscription direct purchase flow", () => {
     });
     await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/support/customer-service");
     await expect(page.getByTestId("customer-service-page")).toBeVisible();
-    await expect(page.getByText("Mevcut destek seviyen: telefon ve öncelikli destek.")).toHaveCount(0);
-    await expect(page.getByText("Telefon ve öncelikli destek hakkın aktif.")).toHaveCount(0);
   });
 
   for (const viewport of [
@@ -99,9 +111,9 @@ test.describe("subscription direct purchase flow", () => {
   ]) {
     test(`subscription page has no horizontal overflow at ${viewport.width}x${viewport.height}`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto("#/subscription");
+      await page.goto("#/subscription?subscriptionState=free");
       await waitForApp(page);
-      await expect(page.getByTestId("subscription-reset-shell")).toBeVisible();
+      await expect(page.getByTestId("subscription-gold-focus-view")).toBeVisible();
       await expectNoAppHorizontalOverflow(page);
     });
   }

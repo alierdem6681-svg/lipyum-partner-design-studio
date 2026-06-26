@@ -29,7 +29,7 @@ const content = {
       {
         title: "Profil menüsü",
         items: [
-          { title: "Hakkımda", body: "Kısa tanıtım, uzmanlık ve hizmet yaklaşımı.", icon: "user", route: "/about" },
+          { title: "Hakkımızda", body: "Kısa tanıtım, uzmanlık ve hizmet yaklaşımı.", icon: "user", route: "/about" },
           { title: "Fotoğraflarım", body: "İş öncesi ve sonrası görseller.", icon: "image", route: "/photo-gallery" },
           { title: "Hizmetlerim", body: "Aktif hizmet kategorileri.", icon: "briefcase", route: "/services" },
           { title: "Bölgelerim", body: "Çalışılan ilçe ve mahalleler.", icon: "map-pin", route: "/regions" },
@@ -43,7 +43,7 @@ const content = {
   },
   "/about": {
     group: "profile",
-    title: "Hakkımda",
+    title: "Hakkımızda",
     lead: "Müşteriye gösterilen kısa tanıtım ve uzmanlık alanları.",
     metrics: [
       { label: "Deneyim", value: "8 yıl", icon: "award" },

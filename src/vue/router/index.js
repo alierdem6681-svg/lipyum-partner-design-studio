@@ -9,7 +9,6 @@ import CreateTicketPage from "../pages/CreateTicketPage.vue";
 import CustomerServicePage from "../pages/CustomerServicePage.vue";
 import HomePage from "../pages/HomePage.vue";
 import InvoicesPage from "../pages/InvoicesPage.vue";
-import JobReferralPage from "../pages/JobReferralPage.vue";
 import LeaderboardPage from "../pages/LeaderboardPage.vue";
 import LiveSupportPage from "../pages/LiveSupportPage.vue";
 import MessagesPage from "../pages/MessagesPage.vue";
@@ -19,10 +18,8 @@ import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
 import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
-import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
-import ReferralPage from "../pages/ReferralPage.vue";
 import ReferralPartnerDetailPage from "../pages/ReferralPartnerDetailPage.vue";
 import ReferralPartnersPage from "../pages/ReferralPartnersPage.vue";
 import ReferralTasksPage from "../pages/ReferralTasksPage.vue";
@@ -39,6 +36,13 @@ import WalletSettingsPage from "../pages/WalletSettingsPage.vue";
 import WalletTopUpPage from "../pages/WalletTopUpPage.vue";
 import WalletTopUpSuccessPage from "../pages/WalletTopUpSuccessPage.vue";
 import WalletTransactionDetailPage from "../pages/WalletTransactionDetailPage.vue";
+
+const AboutPage = () => import("../pages/AboutPage.vue");
+const JobReferralPage = () => import("../pages/JobReferralPage.vue");
+const PhotoGalleryPage = () => import("../pages/PhotoGalleryPage.vue");
+const ReferralPage = () => import("../pages/ReferralPage.vue");
+const ServicesPage = () => import("../pages/ServicesPage.vue");
+const VerificationsPage = () => import("../pages/VerificationsPage.vue");
 
 const blankBottomRoutes = [
   { path: "/jobs", name: "jobs", component: JobsPage },
@@ -64,8 +68,6 @@ const emptySidebarRoutes = [
 }));
 
 const simpleContentRoutes = new Set([
-  "/about",
-  "/services",
   "/regions",
   "/working-hours",
   "/team",
@@ -80,6 +82,7 @@ const simpleContentRoutes = new Set([
 ]);
 
 const dedicatedRouteComponents = {
+  "/about": AboutPage,
   "/wallet": WalletPage,
   "/wallet/top-up": WalletTopUpPage,
   "/wallet/top-up/success": WalletTopUpSuccessPage,
@@ -90,6 +93,8 @@ const dedicatedRouteComponents = {
   "/performance-score": PerformanceScorePage,
   "/performance-improve": PerformanceScorePage,
   "/photo-gallery": PhotoGalleryPage,
+  "/verifications": VerificationsPage,
+  "/services": ServicesPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
   "/support": SupportPage,

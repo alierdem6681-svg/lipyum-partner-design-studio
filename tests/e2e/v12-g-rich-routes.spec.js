@@ -7,6 +7,7 @@ const richRoutes = [
   { route: "/profile", testId: "profile-page" },
   { route: "/partner-card-preview", testId: "partner-card-preview-page" },
   { route: "/photo-gallery", testId: "photo-gallery-page" },
+  { route: "/services", testId: "services-page" },
   { route: "/notifications", testId: "notifications-page" },
   { route: "/support", testId: "support-page" },
   { route: "/support/new", testId: "support-ticket-page" },
@@ -124,10 +125,10 @@ test("V12-G Aboneliğim route opens direct subscription purchase page", async ({
   await expectCleanVueShell(page);
 
   await expect(page.getByTestId("subscription-page")).toBeVisible();
-  await expect(page.getByTestId("subscription-free-state")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-gold")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-plus")).toBeVisible();
-  await expect(page.getByTestId("subscription-plan-vip")).toBeVisible();
+  await expect(page.getByTestId("subscription-gold-focus-view")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-gold")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-plus")).toBeVisible();
+  await expect(page.getByTestId("subscription-plan-row-vip")).toBeVisible();
   await expect(page.getByText(/deneme|ücretsiz dene|30 gün/i)).toHaveCount(0);
   expect(errors).toEqual([]);
 });
