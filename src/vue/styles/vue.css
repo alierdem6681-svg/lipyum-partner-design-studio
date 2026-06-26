@@ -10,54 +10,52 @@
   padding-bottom: 136px;
 }
 
+.subscription-reset-shell {
+  min-height: 42vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-5, 20px) 0;
+}
+
+.subscription-reset-shell__inner {
+  width: 100%;
+  display: grid;
+  gap: var(--space-2, 8px);
+  padding: var(--space-5, 20px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.subscription-reset-shell__inner h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.subscription-reset-shell__inner p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
 .subscription-flow {
   display: grid;
   gap: 14px;
   padding-bottom: 20px;
 }
 
-.subscription-free-card {
-  min-height: 76px;
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) 22px;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-color: color-mix(in srgb, var(--color-primary) 18%, var(--color-border));
-  background: linear-gradient(135deg, #ffffff 0%, #f7fffb 100%);
-}
-
-.subscription-free-card h2 {
-  margin: 0 0 3px;
-  color: #111827;
-  font-size: 17px;
-  font-weight: 920;
-  line-height: 1.15;
-}
-
-.subscription-free-card h2 strong {
-  color: #039855;
-}
-
-.subscription-free-card p,
-.subscription-selected-card p,
 .subscription-current-card p,
 .subscription-checkout-hero p {
   margin: 0;
   color: #667085;
   font-size: 13px;
   font-weight: 720;
-}
-
-.subscription-free-card__icon,
-.subscription-sticky-cta__icon {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background: #ecfdf3;
-  color: #039855;
 }
 
 .subscription-muted-pill,
@@ -88,54 +86,6 @@
 .subscription-blue-pill {
   background: #2563eb;
   color: #fff;
-}
-
-.subscription-hero-direct {
-  position: relative;
-  min-height: 124px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 62px;
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  overflow: hidden;
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 82% 28%, rgba(16, 185, 129, 0.34), transparent 28%),
-    radial-gradient(circle at 72% 92%, rgba(18, 183, 106, 0.18), transparent 32%),
-    linear-gradient(135deg, #07111f 0%, #111827 46%, #020617 100%);
-  color: #fff;
-  box-shadow: 0 18px 34px rgba(2, 6, 23, 0.22);
-}
-
-.subscription-hero-direct h2 {
-  margin: 0 0 9px;
-  font-size: clamp(24px, 6.5vw, 30px);
-  font-weight: 950;
-  line-height: 1.12;
-}
-
-.subscription-hero-direct h2 strong {
-  color: #22c55e;
-}
-
-.subscription-hero-direct p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 13px;
-  font-weight: 760;
-  line-height: 1.35;
-}
-
-.subscription-hero-direct > span {
-  width: 62px;
-  height: 62px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(145deg, #33e079, #049952);
-  color: #fff;
-  box-shadow: 0 18px 28px rgba(18, 183, 106, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .subscription-section-head {
@@ -226,18 +176,15 @@
   box-shadow: 0 12px 22px rgba(16, 24, 40, 0.16);
 }
 
-.subscription-plan-option.is-green .subscription-plan-option__orb,
-.subscription-sticky-cta__icon.is-green {
+.subscription-plan-option.is-green .subscription-plan-option__orb {
   background: linear-gradient(145deg, #22c55e, #039855);
 }
 
-.subscription-plan-option.is-gold .subscription-plan-option__orb,
-.subscription-sticky-cta__icon.is-gold {
+.subscription-plan-option.is-gold .subscription-plan-option__orb {
   background: linear-gradient(145deg, #f7d36b, #b7791f);
 }
 
-.subscription-plan-option.is-purple .subscription-plan-option__orb,
-.subscription-sticky-cta__icon.is-purple {
+.subscription-plan-option.is-purple .subscription-plan-option__orb {
   background: linear-gradient(145deg, #9b5cf6, #5b21b6);
 }
 
@@ -375,7 +322,6 @@
   background: #039855;
 }
 
-.subscription-selected-card,
 .subscription-current-card,
 .subscription-checkout-hero {
   display: grid;
@@ -385,17 +331,6 @@
   background: linear-gradient(180deg, #ffffff 0%, #f7fffb 100%);
 }
 
-.subscription-selected-card.is-gold {
-  border-color: color-mix(in srgb, #b7791f 34%, #e4e7ec);
-  background: linear-gradient(180deg, #ffffff 0%, #fff9e7 100%);
-}
-
-.subscription-selected-card.is-purple {
-  border-color: color-mix(in srgb, #6d28d9 26%, #e4e7ec);
-  background: linear-gradient(180deg, #ffffff 0%, #f4f0ff 100%);
-}
-
-.subscription-selected-card__top,
 .subscription-current-card__headline,
 .subscription-checkout-hero__top {
   display: grid;
@@ -404,7 +339,6 @@
   gap: 12px;
 }
 
-.subscription-selected-card h2,
 .subscription-current-card h2,
 .subscription-checkout-hero h2 {
   margin: 8px 0 3px;
@@ -415,7 +349,6 @@
   line-height: 1;
 }
 
-.subscription-selected-card__top strong,
 .subscription-current-card__headline strong,
 .subscription-checkout-hero__top strong {
   color: #111827;
@@ -426,10 +359,7 @@
   white-space: nowrap;
 }
 
-.subscription-selected-card h3,
-.subscription-reason-card h3,
 .subscription-trust-card h3,
-.subscription-faq-card h3,
 .subscription-checkout-benefits h2,
 .subscription-summary-card h2,
 .subscription-fit-card h3 {
@@ -499,120 +429,12 @@
   text-align: center;
 }
 
-.subscription-value-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  overflow: hidden;
-  border: 1px solid #e4e7ec;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.055);
-}
-
-.subscription-value-strip span {
-  min-height: 56px;
-  display: grid;
-  place-items: center;
-  gap: 4px;
-  padding: 8px 6px;
-  color: #344054;
-  font-size: 12px;
-  font-weight: 820;
-  line-height: 1.12;
-  text-align: center;
-}
-
-.subscription-value-strip span + span {
-  border-left: 1px solid #eef2f7;
-}
-
-.subscription-value-strip .v-icon {
-  color: #039855;
-}
-
-.subscription-social-proof {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  padding: 14px;
-}
-
-.subscription-social-proof__avatars {
-  display: flex;
-  align-items: center;
-}
-
-.subscription-social-proof__avatars span {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  margin-right: -8px;
-  border: 2px solid #fff;
-  border-radius: var(--radius-pill);
-  background: #ecfdf3;
-  color: #047857;
-  font-size: 12px;
-  font-weight: 930;
-}
-
-.subscription-social-proof strong {
-  display: block;
-  color: #111827;
-  font-size: 14px;
-  font-weight: 920;
-  line-height: 1.18;
-}
-
-.subscription-social-proof p {
-  margin: 4px 0 0;
-  color: #667085;
-  font-size: 12px;
-  font-weight: 680;
-  line-height: 1.25;
-}
-
-.subscription-social-proof__stars {
-  grid-column: 2;
-  color: #f59e0b;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-
-.subscription-reason-card ul,
 .subscription-trust-card ul {
   display: grid;
   gap: 12px;
   margin: 12px 0 0;
   padding: 0;
   list-style: none;
-}
-
-.subscription-reason-card li {
-  color: #475467;
-  font-size: 14px;
-  font-weight: 720;
-  line-height: 1.35;
-}
-
-.subscription-reason-card li::before {
-  content: "â€¢";
-  margin-right: 8px;
-  color: #039855;
-  font-weight: 950;
-}
-
-.subscription-compare-link {
-  min-height: 58px;
-  border: 1px solid #e4e7ec;
-  border-radius: 16px;
-  background: #fff;
-  color: #047857;
-  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.055);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 930;
 }
 
 .subscription-trust-card li {
@@ -637,84 +459,6 @@
   font-weight: 650;
   line-height: 1.45;
   text-align: center;
-}
-
-.subscription-faq-card {
-  padding: 0;
-  overflow: hidden;
-}
-
-.subscription-faq-card button {
-  width: 100%;
-  min-height: 54px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 18px;
-  align-items: center;
-  gap: 10px;
-  padding: 0 16px;
-  border: 0;
-  border-bottom: 1px solid #eef2f7;
-  background: #fff;
-  color: #111827;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 760;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.subscription-faq-card button:last-child {
-  border-bottom: 0;
-}
-
-.subscription-sticky-cta {
-  position: sticky;
-  bottom: max(10px, env(safe-area-inset-bottom));
-  z-index: 8;
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) minmax(132px, 1fr);
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid #e4e7ec;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 20px 42px rgba(16, 24, 40, 0.18);
-  backdrop-filter: blur(16px);
-}
-
-.subscription-sticky-cta div {
-  min-width: 0;
-  display: grid;
-  gap: 2px;
-}
-
-.subscription-sticky-cta strong {
-  color: #111827;
-  font-size: 14px;
-  font-weight: 930;
-  line-height: 1.05;
-}
-
-.subscription-sticky-cta span {
-  color: #111827;
-  font-size: 13px;
-  font-weight: 820;
-}
-
-.subscription-sticky-cta small {
-  color: #667085;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.15;
-}
-
-.subscription-sticky-cta .v-btn {
-  width: 100%;
-  min-width: 0;
-  padding-inline: 12px;
 }
 
 .subscription-current-card dl,
@@ -1010,26 +754,16 @@
     font-size: 9px;
   }
 
-  .subscription-selected-card__top,
   .subscription-current-card__headline,
   .subscription-checkout-hero__top,
   .subscription-compare-card__top {
     grid-template-columns: 1fr;
   }
 
-  .subscription-selected-card__top strong,
   .subscription-current-card__headline strong,
   .subscription-checkout-hero__top strong,
   .subscription-compare-card__top strong {
     text-align: left;
-  }
-
-  .subscription-sticky-cta {
-    grid-template-columns: 42px minmax(0, 1fr);
-  }
-
-  .subscription-sticky-cta .v-btn {
-    grid-column: 1 / -1;
   }
 }
 
