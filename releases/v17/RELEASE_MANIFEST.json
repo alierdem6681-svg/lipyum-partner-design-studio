@@ -1,0 +1,27 @@
+{
+  "backupName": "v17",
+  "createdAt": "2026-06-28T00:28:50.1309153+03:00",
+  "startingMainSha": "166cd19a79d5b10eb7fb0cb86113e6ccd427c8b6",
+  "tag": "v17",
+  "archiveBranch": "archive/v17",
+  "releaseBranch": "codex/rollback-to-v12-20260627-211405",
+  "purpose": "Backup before restoring approved profile management pages and menu navigation fixes.",
+  "rollbackCommand": "git checkout main && git reset --hard v17 && git push origin main",
+  "preReleaseChecks": {
+    "lint": "passed",
+    "utf8Integrity": "passed",
+    "routes": "passed",
+    "menuClickNavigation": "passed",
+    "releaseQualityGate": "passed",
+    "build": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "productionUrls": [
+    "https://partner.eterna.net.tr/#/home",
+    "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/#/home"
+  ],
+  "notes": [
+    "This backup points to origin/main before the restored profile management release.",
+    "Force push is intentionally not used."
+  ]
+}

@@ -23,6 +23,7 @@ import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
 import ReferralPartnerDetailPage from "../pages/ReferralPartnerDetailPage.vue";
 import ReferralPartnersPage from "../pages/ReferralPartnersPage.vue";
 import ReferralTasksPage from "../pages/ReferralTasksPage.vue";
+import RegionsPage from "../pages/RegionsPage.vue";
 import ReviewsPage from "../pages/ReviewsPage.vue";
 import SatisfactionPage from "../pages/SatisfactionPage.vue";
 import PlanComparisonPage from "../pages/PlanComparisonPage.vue";
@@ -40,9 +41,13 @@ import WalletTransactionDetailPage from "../pages/WalletTransactionDetailPage.vu
 const AboutPage = () => import("../pages/AboutPage.vue");
 const JobReferralPage = () => import("../pages/JobReferralPage.vue");
 const PhotoGalleryPage = () => import("../pages/PhotoGalleryPage.vue");
+const ProfileCapacityPage = () => import("../pages/ProfileCapacityPage.vue");
+const ProfileStrategyPage = () => import("../pages/ProfileStrategyPage.vue");
+const ProfileTeamPage = () => import("../pages/ProfileTeamPage.vue");
 const ReferralPage = () => import("../pages/ReferralPage.vue");
 const ServicesPage = () => import("../pages/ServicesPage.vue");
 const VerificationsPage = () => import("../pages/VerificationsPage.vue");
+const WorkingHoursPage = () => import("../pages/WorkingHoursPage.vue");
 
 const blankBottomRoutes = [
   { path: "/jobs", name: "jobs", component: JobsPage },
@@ -68,11 +73,6 @@ const emptySidebarRoutes = [
 }));
 
 const simpleContentRoutes = new Set([
-  "/regions",
-  "/working-hours",
-  "/team",
-  "/capacity",
-  "/strategy",
   "/account-settings",
   "/contact-settings",
   "/bonus",
@@ -93,6 +93,11 @@ const dedicatedRouteComponents = {
   "/performance-score": PerformanceScorePage,
   "/performance-improve": PerformanceScorePage,
   "/photo-gallery": PhotoGalleryPage,
+  "/regions": RegionsPage,
+  "/working-hours": WorkingHoursPage,
+  "/team": ProfileTeamPage,
+  "/capacity": ProfileCapacityPage,
+  "/strategy": ProfileStrategyPage,
   "/verifications": VerificationsPage,
   "/services": ServicesPage,
   "/notifications": NotificationsPage,

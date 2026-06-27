@@ -6153,7 +6153,7 @@
   align-items: center;
   justify-content: stretch;
   gap: var(--app-header-gap, 8px);
-  width: auto;
+  width: calc(100% - (var(--page-x-padding) * 2));
   min-height: var(--app-header-height, 58px);
   margin: var(--top-safe-space) var(--page-x-padding) 12px;
   padding: 0;
@@ -6165,7 +6165,7 @@
 
 .v-header.app-header.home-header {
   grid-template-columns: var(--app-header-action-size, 44px) minmax(0, 1fr) 94px;
-  width: auto;
+  width: calc(100% - (var(--page-x-padding) * 2));
   min-height: var(--app-header-height, 58px);
   margin: var(--top-safe-space) var(--page-x-padding) 12px;
   padding: 0;

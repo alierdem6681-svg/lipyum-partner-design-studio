@@ -59,6 +59,26 @@ const content = {
       },
     ],
   },
+  "/verifications": {
+    group: "profile",
+    title: "Doğrulamalar",
+    lead: "Kimlik, iletişim ve hesap doğrulamalarını buradan takip et.",
+    metrics: [
+      { label: "Doğrulanan", value: "1", icon: "shield" },
+      { label: "Bekleyen", value: "3", icon: "clock" },
+    ],
+    sections: [
+      {
+        title: "Doğrulama seçenekleri",
+        items: [
+          { title: "Cep telefonu", body: "Telefon numaran doğrulanmış durumda.", icon: "phone" },
+          { title: "E-posta adresi", body: "E-posta adresini doğrulayarak hesabını güçlendir.", icon: "message", action: "verify-email" },
+          { title: "TC kimlik numarası", body: "Kimlik doğrulaması profil güvenini artırır.", icon: "shield", action: "verify-identity" },
+          { title: "Vergi levhası", body: "Kurumsal hesap bilgilerini doğrula.", icon: "receipt", action: "verify-tax" },
+        ],
+      },
+    ],
+  },
   "/photo-gallery": {
     group: "profile",
     title: "Fotoğraflarım",
