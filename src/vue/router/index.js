@@ -11,6 +11,7 @@ import HomePage from "../pages/HomePage.vue";
 import InvoicesPage from "../pages/InvoicesPage.vue";
 import LeaderboardPage from "../pages/LeaderboardPage.vue";
 import LiveSupportPage from "../pages/LiveSupportPage.vue";
+import ManagementPanelPage from "../pages/ManagementPanelPage.vue";
 import MessagesPage from "../pages/MessagesPage.vue";
 import JobsPage from "../pages/JobsPage.vue";
 import MyJobsPage from "../pages/MyJobsPage.vue";
@@ -110,6 +111,7 @@ const dedicatedRouteComponents = {
   "/satisfaction": SatisfactionPage,
   "/reviews": ReviewsPage,
   "/leaderboard": LeaderboardPage,
+  "/management-panel": ManagementPanelPage,
   "/subscription": SubscriptionPage,
   "/subscription/compare": PlanComparisonPage,
   "/subscription/checkout": SubscriptionCheckoutPage,

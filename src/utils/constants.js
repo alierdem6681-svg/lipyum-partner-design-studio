@@ -18,6 +18,7 @@
   "/messages": "messages",
   "/reviews": "reviews",
   "/leaderboard": "levels",
+  "/management-panel": "managementPanel",
   "/partners": "referralList",
   "/customers": "customers",
   "/referral": "referral",
@@ -74,6 +75,7 @@ export const ROUTE_TITLES = {
   "/messages": "Mesaj Kutusu",
   "/reviews": "Müşteri Yorumları",
   "/leaderboard": "Liderlik Tablosu",
+  "/management-panel": "Yönetim Paneli",
   "/partners": "Davet Ettiğin Partnerler",
   "/customers": "Müşteri Defteri",
   "/referral": "Partner Davet Programı",
@@ -156,6 +158,7 @@ export const DRAWER_SECTIONS = [
   {
     title: "Operasyon",
     items: [
+      { label: "Yönetim Paneli", icon: "bar-chart", route: "/management-panel", screen: "managementPanel", tone: "blue" },
       { label: "Müşteri Yönetimi", icon: "users", route: "/customer-management", screen: "customerManagement", tone: "green" },
       { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", tone: "gold" },
       { label: "Dijital Servis Formu", icon: "file-text", route: "/digital-service-form", screen: "digitalServiceForm", tone: "gold" },
