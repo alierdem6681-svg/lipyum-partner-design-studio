@@ -65,6 +65,7 @@ const emptySidebarRoutes = [
 
 const simpleContentRoutes = new Set([
   "/about",
+  "/verifications",
   "/services",
   "/regions",
   "/working-hours",

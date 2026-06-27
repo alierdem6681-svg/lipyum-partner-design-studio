@@ -12,6 +12,10 @@ const titleOverrides = {
     title: "Hakkımda",
     subtitle: "Müşterilere görünen tanıtım bilgilerin",
   },
+  "/verifications": {
+    title: "Doğrulamalar",
+    subtitle: "Kimlik, iletişim ve hesap kontrollerin",
+  },
   "/photo-gallery": {
     title: "Fotoğraflarım",
     subtitle: "Profil fotoğrafları ve iş galerin",

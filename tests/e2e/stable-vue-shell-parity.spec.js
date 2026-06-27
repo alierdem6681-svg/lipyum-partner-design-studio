@@ -84,20 +84,14 @@ test("Vue preview profile uses stable profile card order", async ({ page }) => {
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
   await expect(page.getByTestId("profile-menu-list")).toBeVisible();
-  await expect(page.getByTestId("profile-menu-card")).toHaveCount(8);
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(9);
   const menuLabels = await page.locator(".profile-menu-row__title").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
-  expect(menuLabels).toHaveLength(8);
+  expect(menuLabels).toHaveLength(9);
   expect(menuLabels.every((label) => label.length >= 5)).toBe(true);
-  await expect(page.getByTestId("profile-badge-more")).toBeVisible();
-  await page.getByTestId("profile-badge-more").click();
   await expect(page.getByTestId("profile-badge-more")).toHaveCount(0);
-  const badgeLabels = await page.locator(".partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
-    nodes.map((node) => node.textContent.trim()).filter(Boolean),
-  );
-  expect(new Set(badgeLabels).size).toBe(6);
-  expect(badgeLabels).toHaveLength(6);
+  await expect(page.locator(".partner-profile-card .partner-profile-chip")).toHaveCount(0);
   const order = await page.evaluate(() => {
     const profile = document.querySelector(".partner-profile-card").getBoundingClientRect();
     const menu = document.querySelector(".profile-menu-section").getBoundingClientRect();
@@ -130,8 +124,8 @@ test("Vue preview drawer uses stable Lipyum sidebar contract", async ({ page }) 
   const drawerBadgeLabels = await page.locator(".drawer-profile-card .partner-profile-chip:not(.is-more)").evaluateAll((nodes) =>
     nodes.map((node) => node.textContent.trim()).filter(Boolean),
   );
-  expect(new Set(drawerBadgeLabels).size).toBe(6);
-  expect(drawerBadgeLabels).toHaveLength(6);
+  expect(new Set(drawerBadgeLabels).size).toBe(4);
+  expect(drawerBadgeLabels).toHaveLength(4);
   await expect(page.locator(".v-drawer-menu__item")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
