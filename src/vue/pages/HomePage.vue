@@ -77,14 +77,15 @@ const accountTransactionSheetItems = [
 const activeRegionData = computed(() => regionPeriodData[activeRegionPeriod.value] || regionPeriodData.today);
 const metrics = computed(() => activeRegionData.value.metrics);
 const regionActivityText = computed(() => activeRegionData.value.activity);
+const compactAccountTransactionSheetItems = computed(() => accountTransactionSheetItems.slice(0, 2));
 
 function openAccountTransactionsSheet() {
   shell.openSheet({
     title: "Hesap Hareketleri",
     description: "Son işlemler",
     body: "Cüzdan ve bonus hareketlerini tek yerden takip edebilirsin.",
-    scoreItems: accountTransactionSheetItems,
-    note: "Tüm hareketleri ayrıntılı görmek için Cüzdan menüsündeki hesap hareketleri alanını kullanabilirsin.",
+    scoreItems: compactAccountTransactionSheetItems.value,
+    note: "Tüm hareketler Cüzdan menüsündeki hesap hareketlerinde.",
   });
 }
 

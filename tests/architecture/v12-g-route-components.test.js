@@ -17,8 +17,6 @@ const blankRoutes = [
 ];
 
 const simpleRoutes = [
-  "/about",
-  "/services",
   "/regions",
   "/working-hours",
   "/team",
@@ -35,9 +33,11 @@ const simpleRoutes = [
 ];
 
 const richRoutes = [
+  { route: "/about", component: "AboutPage", file: "AboutPage.vue" },
   { route: "/profile", component: "ProfilePage", file: "ProfilePage.vue" },
   { route: "/partner-card-preview", component: "PartnerCardPreviewPage", file: "PartnerCardPreviewPage.vue" },
   { route: "/photo-gallery", component: "PhotoGalleryPage", file: "PhotoGalleryPage.vue" },
+  { route: "/services", component: "ServicesPage", file: "ServicesPage.vue" },
   { route: "/notifications", component: "NotificationsPage", file: "NotificationsPage.vue" },
   { route: "/support", component: "SupportPage", file: "SupportPage.vue" },
   { route: "/support/new", component: "CreateTicketPage", file: "CreateTicketPage.vue" },
@@ -143,14 +143,11 @@ test("V12-G ContentRoutePage is production-clean and debug-free", () => {
   assert.doesNotMatch(contentRouteSource, /compatibility bridge/i, "legacy bridge wording must not be visible");
 });
 
-test("stable product default is legacy and Vue remains explicit preview only", () => {
+test("stable product default boots Vue runtime directly", () => {
   assert.match(appSource, /import\(["']\.\/vue\/main\.js["']\)/, "Vue root must be bootable from app.js");
-  assert.match(appSource, /import\(["']\.\/legacyApp\.js["']\)/, "legacy runtime must remain available");
-  assert.match(appSource, /params\.get\(["']engine["']\)/, "engine query must be read");
-  assert.match(appSource, /requestedEngine\s*===\s*["']vue["']/, "Vue must require ?engine=vue");
-  assert.match(appSource, /if\s*\(\s*useVueEngine\s*\)[\s\S]*import\(["']\.\/vue\/main\.js["']\)/, "Vue runtime must be explicit preview path");
-  assert.match(appSource, /else\s*\{[\s\S]*import\(["']\.\/legacyApp\.js["']\)/, "legacy stable design must be the default boot path");
-  assert.doesNotMatch(appSource, /else\s*\{[\s\S]*import\(["']\.\/vue\/main\.js["']\)/, "Vue must not be default boot path");
+  assert.match(appSource, /markRuntime\(["']vue["']\)/, "Vue runtime must be marked as active");
+  assert.doesNotMatch(appSource, /legacyApp\.js/, "legacy runtime must not be the default boot path");
+  assert.doesNotMatch(appSource, /requestedEngine\s*===\s*["']vue["']/, "Vue must not require ?engine=vue");
 });
 
 test("V12-G removes pilot route aliases from active product routing", () => {

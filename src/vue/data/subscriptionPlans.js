@@ -1,4 +1,4 @@
-export const USD_TRY_RATE = 46.4761;
+export const USD_TRY_RATE = 45;
 
 function usdToTry(usd) {
   return Math.round(usd * USD_TRY_RATE);
@@ -107,8 +107,8 @@ export const subscriptionPlans = [
   {
     id: "vip",
     title: "VIP",
-    usdPrice: 75,
-    monthlyPrice: usdToTry(75),
+    usdPrice: 80,
+    monthlyPrice: usdToTry(80),
     targetUser: "Maksimum",
     shortPromise: "En yüksek görünürlük ve ayrıcalıklı deneyim.",
     benefits: [

@@ -9,7 +9,6 @@ import CreateTicketPage from "../pages/CreateTicketPage.vue";
 import CustomerServicePage from "../pages/CustomerServicePage.vue";
 import HomePage from "../pages/HomePage.vue";
 import InvoicesPage from "../pages/InvoicesPage.vue";
-import JobReferralPage from "../pages/JobReferralPage.vue";
 import LeaderboardPage from "../pages/LeaderboardPage.vue";
 import LiveSupportPage from "../pages/LiveSupportPage.vue";
 import MessagesPage from "../pages/MessagesPage.vue";
@@ -19,10 +18,8 @@ import NotificationSettingsPage from "../pages/NotificationSettingsPage.vue";
 import NotificationsPage from "../pages/NotificationsPage.vue";
 import PartnerCardPreviewPage from "../pages/PartnerCardPreviewPage.vue";
 import PerformanceScorePage from "../pages/PerformanceScorePage.vue";
-import PhotoGalleryPage from "../pages/PhotoGalleryPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ReferralEarningsPage from "../pages/ReferralEarningsPage.vue";
-import ReferralPage from "../pages/ReferralPage.vue";
 import ReferralPartnerDetailPage from "../pages/ReferralPartnerDetailPage.vue";
 import ReferralPartnersPage from "../pages/ReferralPartnersPage.vue";
 import ReferralTasksPage from "../pages/ReferralTasksPage.vue";
@@ -41,9 +38,15 @@ import WalletTopUpPage from "../pages/WalletTopUpPage.vue";
 import WalletTopUpSuccessPage from "../pages/WalletTopUpSuccessPage.vue";
 import WalletTransactionDetailPage from "../pages/WalletTransactionDetailPage.vue";
 
+const AboutPage = () => import("../pages/AboutPage.vue");
+const JobReferralPage = () => import("../pages/JobReferralPage.vue");
+const PhotoGalleryPage = () => import("../pages/PhotoGalleryPage.vue");
 const ProfileCapacityPage = () => import("../pages/ProfileCapacityPage.vue");
 const ProfileStrategyPage = () => import("../pages/ProfileStrategyPage.vue");
 const ProfileTeamPage = () => import("../pages/ProfileTeamPage.vue");
+const ReferralPage = () => import("../pages/ReferralPage.vue");
+const ServicesPage = () => import("../pages/ServicesPage.vue");
+const VerificationsPage = () => import("../pages/VerificationsPage.vue");
 const WorkingHoursPage = () => import("../pages/WorkingHoursPage.vue");
 
 const blankBottomRoutes = [
@@ -70,9 +73,6 @@ const emptySidebarRoutes = [
 }));
 
 const simpleContentRoutes = new Set([
-  "/about",
-  "/verifications",
-  "/services",
   "/account-settings",
   "/contact-settings",
   "/bonus",
@@ -82,6 +82,7 @@ const simpleContentRoutes = new Set([
 ]);
 
 const dedicatedRouteComponents = {
+  "/about": AboutPage,
   "/wallet": WalletPage,
   "/wallet/top-up": WalletTopUpPage,
   "/wallet/top-up/success": WalletTopUpSuccessPage,
@@ -97,6 +98,8 @@ const dedicatedRouteComponents = {
   "/team": ProfileTeamPage,
   "/capacity": ProfileCapacityPage,
   "/strategy": ProfileStrategyPage,
+  "/verifications": VerificationsPage,
+  "/services": ServicesPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
   "/support": SupportPage,

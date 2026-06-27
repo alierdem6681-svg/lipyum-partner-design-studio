@@ -30,6 +30,7 @@ export const routes = [
   "/income-expense",
   "/appointment-link",
   "/about",
+  "/verifications",
   "/photo-gallery",
   "/services",
   "/regions",

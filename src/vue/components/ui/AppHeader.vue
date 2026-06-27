@@ -17,6 +17,8 @@ const iconForAction = {
   notifications: "bell",
   profile: "user",
   info: "help-circle",
+  "about-edit": "edit",
+  "services-edit": "edit",
   "profile-preview": "eye",
   "profile-settings": "settings",
   "wallet-info": "help-circle",
@@ -29,12 +31,15 @@ const iconForAction = {
   "team-add": "plus",
   "partner-share": "share",
   "performance-rewards": "trophy",
+  "subscription-status": "trophy",
 };
 
 const labelForAction = {
   notifications: "Bildirimler",
   profile: "Profil",
   info: "Sayfa bilgisi",
+  "about-edit": "Hakkımda bilgilerini düzenle",
+  "services-edit": "Hizmetlerini düzenle",
   "profile-preview": "Önizle",
   "profile-settings": "Profil ayarları",
   "wallet-info": "Cüzdan bilgisi",
@@ -47,12 +52,15 @@ const labelForAction = {
   "team-add": "Ekip ekle",
   "partner-share": "Partner kartını paylaş",
   "performance-rewards": "Skor rozet avantajları",
+  "subscription-status": "Abonelik durumunu görüntüle",
 };
 
 const testIdForAction = {
   notifications: "notification-button",
   profile: "profile-button",
   info: "header-info-button",
+  "about-edit": "about-edit-button",
+  "services-edit": "services-edit-button",
   "profile-preview": "profile-preview-header-button",
   "profile-settings": "profile-settings-header-button",
   "wallet-info": "wallet-info-button",
@@ -65,6 +73,7 @@ const testIdForAction = {
   "team-add": "team-add-button",
   "partner-share": "partner-preview-header-share",
   "performance-rewards": "performance-rewards-button",
+  "subscription-status": "subscription-status-button",
 };
 
 const customerServiceAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-customer-service/`;
@@ -87,7 +96,7 @@ function statusAriaLabel(status) {
     class="v-header v-app-header top-nav app-header"
     :class="[
       `${variant || 'subpage'}-header`,
-      rightActions.includes('profile-preview') || rightActions.includes('partner-share') ? 'has-text-action' : '',
+      rightActions.includes('profile-preview') || rightActions.includes('partner-share') || rightActions.includes('about-edit') || rightActions.includes('services-edit') ? 'has-text-action' : '',
     ]"
     :data-header-variant="variant"
     data-testid="app-header"
@@ -170,7 +179,10 @@ function statusAriaLabel(status) {
           class="v-header__action icon-btn page-header-action"
           :class="[
             action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
+            action === 'about-edit' ? 'is-text-action' : '',
+            action === 'services-edit' ? 'is-text-action' : '',
             action === 'partner-share' ? 'is-partner-share-action' : '',
+            action === 'subscription-status' ? 'is-subscription-status-action' : '',
           ]"
           type="button"
           :data-testid="testIdForAction[action] || 'header-right-action'"
@@ -181,6 +193,8 @@ function statusAriaLabel(status) {
           <AppIcon :name="iconForAction[action] || action" :size="24" class-name="icon" />
           <span v-if="action === 'profile-preview'" class="v-header__action-label">Önizle</span>
           <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
+          <span v-if="action === 'about-edit'" class="v-header__action-label">Düzenle</span>
+          <span v-if="action === 'services-edit'" class="v-header__action-label">Düzenle</span>
           <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
         </button>
       </template>

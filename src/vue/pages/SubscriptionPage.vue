@@ -20,6 +20,7 @@ function applyQuery() {
 
   if (route.query.subscriptionState) store.applyStatus(status, plan || "gold");
   if (plan) store.selectPlan(plan);
+  else if (store.status === "free") store.selectPlan("gold");
   store.selectBillingPeriod(billing);
 }
 

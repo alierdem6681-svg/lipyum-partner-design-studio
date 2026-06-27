@@ -17,12 +17,14 @@ import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useNavigationStore } from "../stores/navigationStore.js";
 import { useProfileStore } from "../stores/profileStore.js";
+import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const route = useRoute();
 const router = useRouter();
 const shell = useAppShellStore();
 const navigation = useNavigationStore();
 const profile = useProfileStore();
+const subscription = useSubscriptionStore();
 
 const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
@@ -42,6 +44,7 @@ watch(
   () => route.path,
   (path) => {
     if (navigationSource === "init") navigation.replace(path, "init");
+    else if (navigationSource === "app" && navigation.stack.includes(path)) navigation.syncFromHistory(path, "app");
     else if (navigationSource === "app") navigation.push(path, "app");
     else if (navigationSource === "ui-back") navigation.replace(path, "ui-back");
     else if (navigation.stack.includes(path)) navigation.syncFromHistory(path, "history");
@@ -67,6 +70,7 @@ function navigateTo(target) {
   shell.closeDrawer();
   quickBonusOpen.value = false;
   quickTopUpOpen.value = false;
+  navigation.push(target, "app");
   navigationSource = "app";
   router.push(target);
 }
@@ -166,6 +170,28 @@ function onHeaderAction(action) {
   if (action === "services-edit") window.dispatchEvent(new CustomEvent("lipyum:services-edit"));
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "performance-rewards") window.dispatchEvent(new CustomEvent("lipyum:performance-rewards"));
+  if (action === "subscription-status") {
+    const plan = subscription.currentPlan;
+    const isFree = subscription.status === "free" || plan?.id === "free";
+    shell.openSheet({
+      title: "Abonelik durumu",
+      description: isFree ? "Aktif aboneliğin yok." : `${plan.title} aboneliğin aktif.`,
+      body: isFree
+        ? "Şu anda Free kullanımdasın. Daha güçlü görünürlük ve hızlı destek için Gold plan önerilir."
+        : `Mevcut planın ${plan.title}. Yenileme tarihi: ${subscription.renewalDate}. İstediğin zaman mağaza abonelik ayarlarından iptal edebilirsin.`,
+      scoreItems: isFree
+        ? [
+            { label: "Önerilen paket", value: "Gold", description: "Fiyat ve destek dengesi için önerilir.", tone: "positive", icon: "crown" },
+            { label: "Durum", value: "Free", description: "Ücretli abonelik aktif değil.", tone: "neutral", icon: "trophy" },
+          ]
+        : [
+            { label: "Mevcut plan", value: plan.title, description: "Abonelik avantajların aktif görünür.", tone: "positive", icon: "crown" },
+            { label: "Yenileme", value: subscription.renewalDate, description: subscription.paymentPlatform, tone: "neutral", icon: "calendar" },
+            { label: "İptal", value: "Mümkün", description: "İptal işlemi mağaza abonelik ayarlarından yapılır.", tone: "neutral", icon: "refresh" },
+          ],
+      note: isFree ? "Gold seçili plan olarak önerilir; Plus veya VIP'i de doğrudan seçebilirsin." : "",
+    });
+  }
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {
