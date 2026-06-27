@@ -314,8 +314,9 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   expect(profileGridGeometry.summaryText).toContain("+28");
   expect(profileGridGeometry.overflow).toBeLessThanOrEqual(1);
   await page.getByTestId("profile-menu-card").filter({ hasText: "Doğrulamalar" }).click();
-  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/profile");
-  await expect(page.locator("#toast")).toContainText("Hakkımda");
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/verifications");
+  await page.goto("/#/profile");
+  await waitForApp(page);
   await expect(page.locator(".profile-strength-card")).toHaveCount(0);
   await expect(page.getByTestId("header-info-button")).toHaveCount(0);
   await expect(page.getByTestId("partner-share-button")).toHaveCount(0);

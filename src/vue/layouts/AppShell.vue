@@ -123,6 +123,47 @@ function onHeaderAction(action) {
   if (action === "profile") navigateTo("/profile");
   if (action === "profile-preview") navigateTo("/partner-card-preview");
   if (action === "profile-settings") window.dispatchEvent(new CustomEvent("lipyum:profile-settings"));
+  if (action === "regions-settings") {
+    shell.openSheet({
+      title: "Bölge ayarları",
+      description: "İş almak istediğin alanları netleştir.",
+      body: "Global, Türkiye, kendi şehrin veya sadece seçili bölgeler görünümüyle çalışma alanını hızlıca yönetebilirsin. Kaydettiğin bölgeler profil ve iş alma ayarlarında kullanılır.",
+      scoreItems: [
+        { label: "Kendi şehrim", value: "Önerilen", description: "Yakın ve hızlı ulaşabileceğin alanları öne çıkarır.", tone: "positive", icon: "map-pin" },
+        { label: "Seçilen bölgeler", value: "Kontrol", description: "Yalnız aktif seçtiğin bölgeleri gösterir.", tone: "neutral", icon: "check" },
+      ],
+    });
+  }
+  if (action === "working-hours-settings") window.dispatchEvent(new CustomEvent("lipyum:working-hours-settings"));
+  if (action === "capacity-settings") {
+    shell.openSheet({
+      title: "Kapasite nasıl çalışır?",
+      description: "Günlük iş alma sınırını ekiplerine göre yönet.",
+      body: "Kapasite dolduğunda yeni iş yönlendirmeleri yavaşlatılır. Ekip bazlı kapasite kullanırsan toplam kapasite ekiplerin günlük sınırından otomatik hesaplanır.",
+      scoreItems: [
+        { label: "Toplam kapasite", value: "Günlük", description: "Bugün alabileceğin toplam iş sayısını gösterir.", tone: "positive", icon: "briefcase" },
+        { label: "Ekip bazlı", value: "Kontrol", description: "Her ekibin günlük iş sınırını ayrı belirleyebilirsin.", tone: "positive", icon: "users" },
+        { label: "Bugün özel", value: "Esnek", description: "Yoğun günlerde geçici kapasite planı yapabilirsin.", tone: "neutral", icon: "calendar" },
+      ],
+      note: "Bu ayar mock olarak yerelde çalışır; gerçek iş yönlendirme kuralına bağlanmaya hazırdır.",
+    });
+  }
+  if (action === "strategy-settings") {
+    shell.openSheet({
+      title: "Strateji nasıl çalışır?",
+      description: "Maliyet ve iş alma önceliğini seçersin.",
+      body: "Strateji seçimin iş yönlendirme önceliği ile yaklaşık maliyet dengesini belirler. Düşük maliyet daha kontrollü ilerler, dengeli mod günlük akışı korur, yüksek iş alma modu daha fazla fırsatı hedefler.",
+      scoreItems: [
+        { label: "Düşük maliyet", value: "Kontrol", description: "Daha az ödeme hedeflenir; iş akışı daha sınırlı olabilir.", tone: "neutral", icon: "shield" },
+        { label: "Dengeli", value: "Önerilen", description: "Maliyet ve fırsat dengesi korunur.", tone: "positive", icon: "sliders" },
+        { label: "Yüksek iş alma", value: "Hız", description: "Daha çok iş fırsatı hedeflenir.", tone: "positive", icon: "trend-up" },
+      ],
+      note: "Bu tercih kapasite, bölge ve çalışma saatleriyle birlikte değerlendirilir.",
+    });
+  }
+  if (action === "team-add") window.dispatchEvent(new CustomEvent("lipyum:team-add"));
+  if (action === "about-edit") window.dispatchEvent(new CustomEvent("lipyum:about-edit"));
+  if (action === "services-edit") window.dispatchEvent(new CustomEvent("lipyum:services-edit"));
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "performance-rewards") window.dispatchEvent(new CustomEvent("lipyum:performance-rewards"));
   if (action === "notification-settings") navigateTo("/notification-settings");

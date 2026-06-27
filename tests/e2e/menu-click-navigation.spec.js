@@ -33,8 +33,15 @@ test("regions page renders route icons", async ({ page }) => {
   await page.goto("/#/regions");
   await waitForApp(page);
 
-  await expect(page.locator(".v-section-title")).toContainText("Aktif bölgeler");
-  await expect(page.locator(".v-content-list-item__icon .v-icon")).toHaveCount(3);
+  await expect(page.getByTestId("regions-page")).toHaveAttribute("aria-label", /B.lgelerim/);
+  await expect(page.getByTestId("regions-page").getByRole("heading", { name: /^B.lgeler$/ })).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".profile-regions__row-icon img")
+        .evaluateAll((nodes) => nodes.filter((node) => node.complete && node.naturalWidth > 0).length),
+    )
+    .toBeGreaterThanOrEqual(3);
 
   expect(errors).toEqual([]);
 });

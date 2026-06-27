@@ -26,6 +26,7 @@ import ReferralPage from "../pages/ReferralPage.vue";
 import ReferralPartnerDetailPage from "../pages/ReferralPartnerDetailPage.vue";
 import ReferralPartnersPage from "../pages/ReferralPartnersPage.vue";
 import ReferralTasksPage from "../pages/ReferralTasksPage.vue";
+import RegionsPage from "../pages/RegionsPage.vue";
 import ReviewsPage from "../pages/ReviewsPage.vue";
 import SatisfactionPage from "../pages/SatisfactionPage.vue";
 import PlanComparisonPage from "../pages/PlanComparisonPage.vue";
@@ -39,6 +40,11 @@ import WalletSettingsPage from "../pages/WalletSettingsPage.vue";
 import WalletTopUpPage from "../pages/WalletTopUpPage.vue";
 import WalletTopUpSuccessPage from "../pages/WalletTopUpSuccessPage.vue";
 import WalletTransactionDetailPage from "../pages/WalletTransactionDetailPage.vue";
+
+const ProfileCapacityPage = () => import("../pages/ProfileCapacityPage.vue");
+const ProfileStrategyPage = () => import("../pages/ProfileStrategyPage.vue");
+const ProfileTeamPage = () => import("../pages/ProfileTeamPage.vue");
+const WorkingHoursPage = () => import("../pages/WorkingHoursPage.vue");
 
 const blankBottomRoutes = [
   { path: "/jobs", name: "jobs", component: JobsPage },
@@ -67,11 +73,6 @@ const simpleContentRoutes = new Set([
   "/about",
   "/verifications",
   "/services",
-  "/regions",
-  "/working-hours",
-  "/team",
-  "/capacity",
-  "/strategy",
   "/account-settings",
   "/contact-settings",
   "/bonus",
@@ -91,6 +92,11 @@ const dedicatedRouteComponents = {
   "/performance-score": PerformanceScorePage,
   "/performance-improve": PerformanceScorePage,
   "/photo-gallery": PhotoGalleryPage,
+  "/regions": RegionsPage,
+  "/working-hours": WorkingHoursPage,
+  "/team": ProfileTeamPage,
+  "/capacity": ProfileCapacityPage,
+  "/strategy": ProfileStrategyPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
   "/support": SupportPage,
