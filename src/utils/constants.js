@@ -159,7 +159,6 @@ export const DRAWER_SECTIONS = [
     title: "Destek",
     items: [
       { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", tone: "green" },
-      { label: "Destek Taleplerim", icon: "list", route: "/support/tickets", screen: "supportTickets", tone: "blue" },
       { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", tone: "green" },
       { label: "Müşteri Hizmetleri", icon: "phone", route: "/support/customer-service", screen: "supportCustomerService", tone: "blue" },
     ],

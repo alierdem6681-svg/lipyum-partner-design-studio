@@ -9,13 +9,24 @@ const localDir = path.join(root, ".local", "autonomous-dev");
 const pidPath = path.join(localDir, "lipyum-autonomous-dev.pid");
 const reportPath = path.join(localDir, "latest.json");
 const logPath = path.join(localDir, "autonomous-dev.log");
-const intervalMs = Number(process.env.LIPYUM_DEV_LOOP_INTERVAL_MS || 60_000);
+const intervalMs = Number(process.env.LIPYUM_DEV_LOOP_INTERVAL_MS || 15_000);
+const settleMs = Number(process.env.LIPYUM_DEV_SETTLE_MS || 10_000);
 const nightlyReleaseHour = Number(process.env.LIPYUM_NIGHTLY_RELEASE_HOUR || 2);
 const command = process.argv[2] || "status";
 const nodeBin = process.platform === "win32"
   ? path.join(root, "node_modules", "node", "bin", "node.exe")
   : path.join(root, "node_modules", "node", "bin", "node");
 const runtimeNode = existsSync(nodeBin) ? nodeBin : process.execPath;
+const fingerprintPaths = [
+  "src",
+  "tests",
+  "scripts",
+  "public",
+  "package.json",
+  "package-lock.json",
+  "playwright.config.js",
+  "vite.config.js",
+];
 
 function ensureDir() {
   mkdirSync(localDir, { recursive: true });
@@ -86,10 +97,26 @@ function output(commandPath, args) {
   return result.status === 0 ? result.stdout.trim() : "";
 }
 
+function fileHash(relativePath) {
+  try {
+    return createHash("sha256").update(readFileSync(path.join(root, relativePath))).digest("hex");
+  } catch {
+    return "";
+  }
+}
+
 function workspaceFingerprint() {
+  const untrackedFiles = output("git", ["ls-files", "--others", "--exclude-standard", "--", ...fingerprintPaths])
+    .split(/\r?\n/)
+    .map((file) => file.trim())
+    .filter(Boolean)
+    .sort();
   const parts = [
     output("git", ["rev-parse", "HEAD"]),
     output("git", ["status", "--porcelain=v1"]),
+    output("git", ["diff", "--no-ext-diff", "--binary", "--", ...fingerprintPaths]),
+    output("git", ["diff", "--cached", "--no-ext-diff", "--binary", "--", ...fingerprintPaths]),
+    ...untrackedFiles.map((file) => `${file}\0${fileHash(file)}`),
   ];
   return createHash("sha256").update(parts.join("\n")).digest("hex");
 }
@@ -148,12 +175,26 @@ async function maybeRunNightlyRelease() {
 async function loop() {
   ensureDir();
   writeFileSync(pidPath, `${process.pid}\n`, "utf8");
-  let lastFingerprint = "";
+  let lastRunFingerprint = "";
+  let pendingFingerprint = "";
+  let pendingSince = 0;
   while (true) {
     const currentFingerprint = workspaceFingerprint();
-    if (currentFingerprint && currentFingerprint !== lastFingerprint) {
-      lastFingerprint = currentFingerprint;
-      await runOnce("workspace-change");
+    const now = Date.now();
+    if (currentFingerprint && currentFingerprint !== lastRunFingerprint) {
+      if (currentFingerprint !== pendingFingerprint) {
+        pendingFingerprint = currentFingerprint;
+        pendingSince = now;
+      }
+      if (now - pendingSince >= settleMs) {
+        lastRunFingerprint = currentFingerprint;
+        pendingFingerprint = "";
+        pendingSince = 0;
+        await runOnce("workspace-change");
+      }
+    } else {
+      pendingFingerprint = "";
+      pendingSince = 0;
     }
     await maybeRunNightlyRelease();
     await new Promise((resolve) => setTimeout(resolve, intervalMs));
@@ -200,6 +241,7 @@ function status() {
     running: Boolean(pid && isAlive(pid)),
     pid,
     intervalMs,
+    settleMs,
     nightlyReleaseHour,
     reportPath,
     logPath,

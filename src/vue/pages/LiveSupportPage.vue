@@ -5,27 +5,36 @@ import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useLiveSupportStore } from "../stores/liveSupportStore.js";
+import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const route = useRoute();
 const router = useRouter();
 const shell = useAppShellStore();
 const support = useLiveSupportStore();
+const subscription = useSubscriptionStore();
 const messageListRef = ref(null);
 
-const canStart = computed(() => support.subject.trim().length > 2 && support.description.trim().length > 4);
 const canSend = computed(() => support.messageDraft.trim().length > 0 && !support.isSending && !support.isClosed);
 const showChat = computed(() => support.isActive || support.isResolved || support.isClosed);
-const statusIcon = computed(() => (support.isResolved || support.isClosed ? "check" : support.isConnecting ? "timer" : "clock"));
-const contextIcon = computed(() => (support.isResolved || support.isClosed ? "clock" : "crown"));
 const firstAgentMessageId = computed(() => support.messages.find((message) => message.sender === "agent")?.id || "");
+const currentPlan = computed(() => subscription.currentPlan || { id: "free", title: "Free" });
+const currentPlanId = computed(() => currentPlan.value?.id || "free");
+const supportLevelRows = [
+  { id: "free", label: "Free", time: "Standart sıra", description: "Yoğunluğa göre yanıtlanır.", icon: "clock" },
+  { id: "plus", label: "Plus", time: "Ortalama 5 dk", description: "Destek taleplerin daha hızlı açılır.", icon: "headphones" },
+  { id: "gold", label: "Gold", time: "Ortalama 2 dk", description: "Öncelikli canlı destek alırsın.", icon: "crown" },
+  { id: "vip", label: "VIP", time: "Ortalama 1 dk", description: "En hızlı destek sırasına girersin.", icon: "zap" },
+];
 
 function startConversation() {
-  if (!canStart.value) {
-    shell.showToast("Konu ve kısa açıklama yazmalısın.");
-    return;
-  }
+  if (!support.subject.trim()) support.subject = "Canlı destek";
+  if (!support.description.trim()) support.description = "Canlı destek üzerinden yardım istiyorum.";
   support.startConversation();
   scrollToLatestMessage();
+}
+
+function goToSubscription() {
+  router.push("/subscription");
 }
 
 function sendMessage() {
@@ -81,62 +90,52 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppPage title="Canlı Destek" compact class="live-support-page" data-testid="live-support-page">
-    <section class="live-support-status-strip" aria-label="Canlı destek durumu">
-      <span class="live-support-status-chip" :class="{ 'is-resolved': support.isResolved || support.isClosed }">
-        <AppIcon :name="statusIcon" :size="16" />
-        {{ support.topStatusLabel }}
-      </span>
-      <span class="live-support-priority" aria-label="Gold öncelikli">
-        <AppIcon name="star" :size="18" />
-        <b>Gold</b>
-        <small>Öncelikli</small>
-      </span>
-    </section>
-
+  <AppPage title="Canlı Destek" compact :class="['live-support-page', { 'is-chat': showChat }]" data-testid="live-support-page">
     <section v-if="support.isStart" class="live-support-start-card" data-testid="live-support-start-panel">
       <span class="live-support-start-card__icon" aria-hidden="true">
         <AppIcon name="headphones" :size="40" />
       </span>
       <div>
         <h2>Nasıl yardımcı olalım?</h2>
-        <p>Sorununuzu seçin, destek ekibi gerekli bilgileri otomatik görsün.</p>
+        <p class="live-support-response-time">
+          <AppIcon name="clock" :size="16" />
+          Ortalama yanıt süresi 2 dk
+        </p>
       </div>
     </section>
 
-    <section v-if="support.isStart" class="live-support-start-grid" aria-label="Destek konu seçenekleri">
-      <button
-        v-for="card in support.startCards"
-        :key="card.id"
-        type="button"
-        :class="['live-support-start-option', { 'is-selected': support.selectedStartCardId === card.id }]"
-        :aria-pressed="support.selectedStartCardId === card.id ? 'true' : 'false'"
-        @click="support.selectStartCard(card.id)"
-      >
-        <span class="live-support-option-icon" aria-hidden="true">
-          <AppIcon :name="card.icon" :size="24" />
+    <section v-if="support.isStart" class="live-support-plan-service" data-testid="live-support-plan-service">
+      <div class="live-support-plan-service__header">
+        <span>
+          <AppIcon name="shield" :size="18" />
+          Abonelik durumuna göre hizmet süreleri
         </span>
-        <strong>{{ card.label }}</strong>
-        <AppIcon name="chevron-right" :size="18" />
-      </button>
-    </section>
-
-    <section v-if="support.isStart" class="live-support-start-form" aria-label="Canlı destek başlangıç bilgileri">
-      <label>
-        <span>Konu</span>
-        <input v-model="support.subject" type="text" maxlength="80" data-testid="live-support-title" />
-      </label>
-      <label>
-        <span>Kısa açıklama</span>
-        <textarea v-model="support.description" maxlength="240" rows="3" data-testid="live-support-description"></textarea>
-      </label>
-      <button
-        class="live-support-primary-action"
-        type="button"
-        :disabled="!canStart"
-        data-testid="live-support-start"
-        @click="startConversation"
-      >
+        <strong>{{ currentPlan.title }}</strong>
+      </div>
+      <div class="live-support-service-levels" aria-label="Paket destek süreleri">
+        <article
+          v-for="row in supportLevelRows"
+          :key="row.id"
+          :class="['live-support-service-row', { 'is-current': currentPlanId === row.id }]"
+        >
+          <span class="live-support-service-row__icon" aria-hidden="true">
+            <AppIcon :name="row.icon" :size="18" />
+          </span>
+          <div>
+            <strong>{{ row.label }}</strong>
+            <small>{{ row.description }}</small>
+          </div>
+          <b>{{ row.time }}</b>
+        </article>
+      </div>
+      <div class="live-support-upgrade-card">
+        <div>
+          <strong>Daha hızlı destek al</strong>
+          <p>Gold ve VIP paketlerde taleplerin daha öncelikli değerlendirilir.</p>
+        </div>
+        <button type="button" @click="goToSubscription">Paketi yükselt</button>
+      </div>
+      <button class="live-support-primary-action" type="button" data-testid="live-support-start" @click="startConversation">
         <AppIcon name="send" :size="18" />
         Müşteri Temsilcisine Bağlan
       </button>
@@ -149,47 +148,6 @@ onMounted(() => {
         <p>Ayşe - Lipyum Destek konuşmayı hazırlıyor.</p>
       </div>
       <button type="button" data-testid="live-support-create-ticket" @click="createTicket">Talep oluştur</button>
-    </section>
-
-    <section class="live-support-context-card" aria-label="Destek bağlamı">
-      <div class="live-support-context-row">
-        <AppIcon name="briefcase" :size="22" />
-        <span>{{ support.isStart ? "İlgili iş" : "İş seçildi:" }}</span>
-        <strong>{{ support.relatedJob.title }}<template v-if="support.isStart"> #{{ support.relatedJob.id }}</template></strong>
-      </div>
-      <div class="live-support-context-row">
-        <AppIcon name="clipboard" :size="22" />
-        <span>Talep durumu:</span>
-        <strong class="is-green">{{ support.statusLabel }}</strong>
-      </div>
-      <div class="live-support-context-row">
-        <AppIcon :name="contextIcon" :size="22" />
-        <span>{{ support.isResolved || support.isClosed ? "Çözüm süresi:" : "Öncelik:" }}</span>
-        <strong :class="support.isResolved || support.isClosed ? 'is-green' : 'is-gold'">
-          {{ support.resolutionTimeLabel }}
-        </strong>
-      </div>
-    </section>
-
-    <nav v-if="!support.isStart" class="live-support-topic-strip" aria-label="Destek konuları">
-      <button
-        v-for="topic in support.topics"
-        :key="topic.id"
-        type="button"
-        :class="['live-support-topic-chip', { 'is-active': support.selectedTopicId === topic.id }]"
-        :aria-pressed="support.selectedTopicId === topic.id ? 'true' : 'false'"
-        @click="support.selectTopic(topic.id)"
-      >
-        <AppIcon :name="topic.icon" :size="18" />
-        {{ topic.label }}
-      </button>
-    </nav>
-
-    <section v-if="support.isStart" class="live-support-open-ticket">
-      <AppIcon name="clock" :size="22" />
-      <span>Açık talep: Müşteriye ulaşılamıyor</span>
-      <strong>İşlemde</strong>
-      <AppIcon name="chevron-right" :size="18" />
     </section>
 
     <section
@@ -286,10 +244,6 @@ onMounted(() => {
     </section>
 
     <footer class="live-support-composer" :class="{ 'is-disabled': support.isClosed }">
-      <button type="button" class="live-support-shortcut" @click="attachImage">
-        <AppIcon name="image" :size="19" />
-        Fotoğraf ekle
-      </button>
       <div class="live-support-composer-row">
         <button class="live-support-icon-button" type="button" aria-label="Dosya ekle" @click="attachImage">
           <AppIcon name="paperclip" :size="24" />
@@ -311,9 +265,6 @@ onMounted(() => {
         </button>
       </div>
       <p v-if="support.lastError" class="live-support-error" role="alert">{{ support.lastError }}</p>
-      <button v-if="support.isActive" type="button" class="live-support-resolve-link" data-testid="live-support-end" @click="closeConversation">
-        Konuşmayı kapat
-      </button>
     </footer>
   </AppPage>
 </template>

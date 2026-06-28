@@ -22,6 +22,20 @@ function itemClass(item) {
     toneClasses[item.tone] || toneClasses.gray,
   ];
 }
+
+function handleItemClick(item, event) {
+  event?.stopPropagation();
+  const targetRoute = item.route;
+  if (!targetRoute) return;
+  emit("navigate", targetRoute);
+
+  window.setTimeout(() => {
+    const currentRoute = window.location.hash.replace(/^#/, "") || "/";
+    if (currentRoute !== targetRoute) {
+      window.location.hash = targetRoute;
+    }
+  }, 0);
+}
 </script>
 
 <template>
@@ -38,7 +52,7 @@ function itemClass(item) {
         :data-route="item.route"
         :aria-label="item.label"
         :aria-current="activePath === item.route ? 'page' : undefined"
-        @click="emit('navigate', item.route)"
+        @click="handleItemClick(item, $event)"
       >
         <span class="drawer-menu-icon">
           <AppIcon :name="item.icon" :size="17" class-name="icon" />
