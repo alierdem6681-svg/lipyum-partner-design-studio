@@ -180,22 +180,6 @@ const titleOverrides = {
       note: "Puanlar haftalık güncellenir; amaç aktif, güvenilir ve düzenli hizmet veren partnerleri öne çıkarmaktır.",
     },
   },
-  "/management-panel": {
-    title: "Yönetim Paneli",
-    compactTitle: "Yönetim",
-    subtitle: "Onay, fırsat, pilot ve sistem akışı",
-    trailingActions: ["info"],
-    infoSheet: {
-      title: "Yönetim paneli",
-      description: "Kritik iş akışlarını tek ekranda takip et.",
-      body: "Bu ekran onay bekleyen aksiyonları, günlük görevleri, raporları ve sistem güvenlik durumunu mobil kullanım için sıkı ve okunabilir bir yapıda toplar.",
-      scoreItems: [
-        { label: "Onaylar", value: "Kontrol", description: "Canlıya alınacak adımlar önce burada görünür.", tone: "positive", icon: "check" },
-        { label: "Fırsatlar", value: "Kâr", description: "Net kâr etkisi yüksek iş fırsatları öne çıkar.", tone: "positive", icon: "trend-up" },
-        { label: "Güvenlik", value: "Kapı", description: "Riskli aksiyonlar otomatik uygulanmaz.", tone: "neutral", icon: "shield" },
-      ],
-    },
-  },
   "/subscription": {
     title: "Abonelik",
     subtitle: "Daha güçlü görün, desteğe daha hızlı ulaş.",

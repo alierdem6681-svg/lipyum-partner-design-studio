@@ -16,7 +16,6 @@ const dedicatedStandaloneRoutes = new Set([
   "/my-jobs",
   "/wallet",
   "/support/tickets",
-  "/management-panel",
   "/subscription",
   "/subscription/compare",
   "/subscription/checkout",
