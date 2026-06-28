@@ -31,7 +31,7 @@ async function expectCleanVueShell(page, route) {
   await waitForApp(page);
   await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
   await expect(page.getByTestId("app-header")).toHaveCount(1);
-  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(route === "/support/customer-service" ? 0 : 1);
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(["/support/customer-service", "/support/live"].includes(route) ? 0 : 1);
   await expect(page.getByTestId("clickable-outcome-summary")).toHaveCount(0);
   await expect(page.getByText(/compatibility bridge/i)).toHaveCount(0);
   await expect(page.getByText(/^(profile|support|growth|referral|finance)$/i)).toHaveCount(0);
@@ -87,7 +87,7 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
   test.setTimeout(20_000);
   const errors = await collectConsoleErrors(page);
   await page.goto(vueRoute("/support/live"));
-  await expectCleanVueShell(page);
+  await expectCleanVueShell(page, "/support/live");
 
   await page.getByTestId("live-support-title").fill("V12-G canli destek");
   await page.getByTestId("live-support-description").fill("Temsilci baglanti akisi kontrol ediliyor.");
@@ -99,7 +99,7 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
 
   await page.getByTestId("live-support-input").fill("Merhaba");
   await page.getByTestId("live-support-send").click();
-  await expect(page.getByText("Merhaba")).toBeVisible();
+  await expect(page.getByText("Merhaba", { exact: true })).toBeVisible();
   await expect(page.getByTestId("live-support-typing")).toBeVisible();
   await page.getByTestId("live-support-end").click();
   await expect(page.getByTestId("live-support-ended")).toBeVisible();

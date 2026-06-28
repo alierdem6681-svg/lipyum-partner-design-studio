@@ -51,11 +51,7 @@ const activeBottomByRoute = {
   "/wallet": "bottom-tab-wallet",
 };
 
-const blankRoutes = {
-  "/jobs": { title: "İş Al", testId: "jobs-page" },
-  "/my-jobs": { title: "İşler", testId: "my-jobs-page" },
-  "/calendar": { title: "Randevu", testId: "calendar-page" },
-};
+const blankRoutes = {};
 
 function expectedUrl(route) {
   return `/?engine=vue#${route}`;

@@ -3,6 +3,7 @@ import { bottomBarHiddenRoutes, collectConsoleErrors, expectNoAppHorizontalOverf
 
 const criticalRoutes = [
   ["/home", "home-performance-card"],
+  ["/jobs", "jobs-page"],
   ["/profile", "profile-page"],
   ["/notifications", "notifications-page"],
   ["/support/new", "support-ticket-page"],
@@ -11,16 +12,14 @@ const criticalRoutes = [
   ["/leaderboard", "leaderboard-page"],
   ["/subscription", "subscription-page"],
   ["/performance-score", "performance-score-flow-page"],
+  ["/calendar", "calendar-page"],
   ["/referral", "referral-page"],
   ["/partner-card-preview", "partner-card-preview-page"],
   ["/wallet", "wallet-page"],
+  ["/my-jobs", "my-jobs-page"],
 ];
 
-const blankRoutes = [
-  ["/jobs", "jobs-page", "bottom-cta-job"],
-  ["/my-jobs", "my-jobs-page", "bottom-tab-jobs"],
-  ["/calendar", "calendar-page", "bottom-tab-calendar"],
-];
+const blankRoutes = [];
 
 const retiredRoutes = ["/packages", "/package-builder", "/package-checkout", "/partner/packages"];
 
@@ -74,6 +73,16 @@ for (const [route, testId, activeTab] of blankRoutes) {
     expect(errors).toEqual([]);
   });
 }
+
+test("jobs CTA route opens opportunity list in final Vue runtime", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/jobs");
+  await expectVueShell(page, "/jobs");
+  await expect(page.getByTestId("jobs-page")).toBeVisible();
+  await expect(page.getByTestId("bottom-cta-job")).toHaveAttribute("aria-current", "page");
+  await expect(page.getByTestId("job-opportunity-list")).toBeVisible();
+  expect(errors).toEqual([]);
+});
 
 test("home and bottom routes share the same shell geometry", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
@@ -257,7 +266,7 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
   await expect(page.getByTestId("profile-menu-card")).toHaveCount(0);
   await page.getByTestId("profile-menu-strength-summary").click();
   await expect(page.getByTestId("profile-menu-list")).toBeVisible();
-  await expect(page.getByTestId("profile-menu-card")).toHaveCount(9);
+  await expect(page.getByTestId("profile-menu-card")).toHaveCount(10);
   const profileGridGeometry = await page.evaluate(() => {
     const profile = document.querySelector('[data-testid="partner-profile-card"]')?.getBoundingClientRect();
     const list = document.querySelector('[data-testid="profile-menu-list"]')?.getBoundingClientRect();
@@ -293,8 +302,8 @@ test("profile badges and drawer actions stay usable", async ({ page }) => {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
-  expect(profileGridGeometry.cardCount).toBe(9);
-  expect(profileGridGeometry.statusCount).toBe(9);
+  expect(profileGridGeometry.cardCount).toBe(10);
+  expect(profileGridGeometry.statusCount).toBe(10);
   expect(profileGridGeometry.statuses).toEqual(expect.arrayContaining(["Tamam", "+50 puan", "+4 puan", "Eksik", "+2 puan", "Yeni"]));
   expect(profileGridGeometry.listLeftDelta).toBeLessThanOrEqual(2);
   expect(profileGridGeometry.listRightDelta).toBeLessThanOrEqual(2);

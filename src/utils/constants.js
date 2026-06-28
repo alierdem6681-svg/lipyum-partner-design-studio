@@ -12,6 +12,7 @@
   "/notifications": "notifications",
   "/support": "support",
   "/support/new": "supportNew",
+  "/support/tickets": "supportTickets",
   "/support/live": "supportLive",
   "/support/customer-service": "supportCustomerService",
   "/satisfaction": "satisfaction",
@@ -67,8 +68,9 @@ export const ROUTE_TITLES = {
   "/wallet/settings": "Cüzdan Ayarları",
   "/profile": "Profilim",
   "/notifications": "Bildirimler",
-  "/support": "Yardım ve Destek",
+  "/support": "Destek Talebi",
   "/support/new": "Talep Oluştur",
+  "/support/tickets": "Destek Taleplerim",
   "/support/live": "Canlı Destek",
   "/support/customer-service": "Müşteri Hizmetleri",
   "/satisfaction": "Memnuniyet",
@@ -156,19 +158,10 @@ export const DRAWER_SECTIONS = [
     ],
   },
   {
-    title: "Operasyon",
-    items: [
-      { label: "Yönetim Paneli", icon: "bar-chart", route: "/management-panel", screen: "managementPanel", tone: "blue" },
-      { label: "Müşteri Yönetimi", icon: "users", route: "/customer-management", screen: "customerManagement", tone: "green" },
-      { label: "Faturalarım", icon: "receipt", route: "/invoices", screen: "invoices", tone: "gold" },
-      { label: "Dijital Servis Formu", icon: "file-text", route: "/digital-service-form", screen: "digitalServiceForm", tone: "gold" },
-      { label: "Teklif Oluştur", icon: "edit", route: "/create-offer", screen: "createOffer", tone: "green" },
-    ],
-  },
-  {
     title: "Destek",
     items: [
       { label: "Talep Oluştur", icon: "file-text", route: "/support/new", screen: "supportNew", tone: "green" },
+      { label: "Destek Taleplerim", icon: "list", route: "/support/tickets", screen: "supportTickets", tone: "blue" },
       { label: "Canlı Destek", icon: "message", route: "/support/live", screen: "supportLive", tone: "green" },
       { label: "Müşteri Hizmetleri", icon: "phone", route: "/support/customer-service", screen: "supportCustomerService", tone: "blue" },
     ],
@@ -185,4 +178,5 @@ export const PROFILE_MENU_ITEMS = [
   { label: "Ekibim", shortLabel: "Ekip", route: "/team", screen: "team", icon: "users" },
   { label: "Kapasitem", shortLabel: "Kapasite", route: "/capacity", screen: "capacity", icon: "bar-chart" },
   { label: "Strateji", shortLabel: "Strateji", route: "/strategy", screen: "strategy", icon: "trend-up" },
+  { label: "Destek Talebi", shortLabel: "Destek", route: "/support", screen: "support", icon: "headphones" },
 ];

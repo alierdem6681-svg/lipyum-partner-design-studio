@@ -1,0 +1,17 @@
+﻿{
+    "backup":  "v18",
+    "archiveBranch":  "archive/v18",
+    "createdAt":  "2026-06-28T17:34:09.3575863+03:00",
+    "source":  "production release backup before local changes merge",
+    "mainSha":  "787be38f8d89411d583c7d51c71b6f45322b390d",
+    "mainSubject":  "Merge pull request #118 from alierdem6681-svg/codex/rollback-to-v12-20260627-211405",
+    "productionUrls":  [
+                           "https://partner.eterna.net.tr/#/home",
+                           "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/#/home"
+                       ],
+    "rollbackCommand":  "git fetch origin --tags; git checkout main; git reset --hard 787be38f8d89411d583c7d51c71b6f45322b390d; git push origin main",
+    "notes":  [
+                  "Created before production release requested on 2026-06-28.",
+                  "Do not force-update this tag or archive branch."
+              ]
+}

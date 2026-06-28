@@ -43,7 +43,7 @@ test("bonus can be disabled", () => {
 
 test("estimated job count uses central average cost", () => {
   assert.equal(estimateJobCount(675, 250), 2);
-  assert.equal(formatEstimatedJobRange(675, 250), "yaklaşık 2-3 iş");
+  assert.equal(formatEstimatedJobRange(675, 250), "≈ 2-3 fırsata erişebilirsin");
 });
 
 test("clampMoney rejects invalid and negative values", () => {

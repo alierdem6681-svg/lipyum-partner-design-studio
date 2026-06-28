@@ -19,7 +19,7 @@ test("deeplink alias opens support ticket page", async ({ page }) => {
   await page.goto("/?deeplink=support-new");
   await expectRoute(page, "/support/new");
   await expect(page.getByTestId("support-ticket-page")).toBeVisible();
-  await expect(page.getByTestId("support-ticket-form")).toHaveCount(0);
+  await expect(page.getByTestId("support-ticket-form")).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -28,7 +28,7 @@ test("partner path deeplink opens support ticket page", async ({ page }) => {
   await page.goto("/partner/support/new");
   await expectRoute(page, "/support/new");
   await expect(page.getByTestId("support-ticket-page")).toBeVisible();
-  await expect(page.getByTestId("support-ticket-form")).toHaveCount(0);
+  await expect(page.getByTestId("support-ticket-form")).toBeVisible();
   expect(errors).toEqual([]);
 });
 

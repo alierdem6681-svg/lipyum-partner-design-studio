@@ -57,6 +57,12 @@ const menuDetails = {
   },
 };
 
+menuDetails["/support"] = {
+  description: "Destek talebi oluşturun ve takip edin",
+  status: "Aç",
+  tone: "info",
+};
+
 const menuItems = computed(() =>
   PROFILE_MENU_ITEMS.map((item) => ({
     ...item,

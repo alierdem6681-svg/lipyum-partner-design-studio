@@ -35,9 +35,9 @@ export function estimateJobCount(workBalance, averageJobAcquisitionCost) {
 
 export function formatEstimatedJobRange(workBalance, averageJobAcquisitionCost) {
   const count = estimateJobCount(workBalance, averageJobAcquisitionCost);
-  if (count <= 0) return "0 iş";
-  if (count === 1) return "yaklaşık 1 iş";
-  return `yaklaşık ${count}-${count + 1} iş`;
+  if (count <= 0) return "≈ fırsat için bakiye yükle";
+  if (count === 1) return "≈ 1 fırsata erişebilirsin";
+  return `≈ ${count}-${count + 1} fırsata erişebilirsin`;
 }
 
 export function formatCurrency(value) {

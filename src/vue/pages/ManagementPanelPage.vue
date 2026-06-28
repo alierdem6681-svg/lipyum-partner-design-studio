@@ -31,6 +31,11 @@ function refreshPanel() {
   shell.showToast("Yönetim paneli güncellendi.");
 }
 
+function percentClass(prefix, value) {
+  const percent = Math.max(0, Math.min(100, Math.round(Number(value || 0) / 5) * 5));
+  return `${prefix}-${percent}`;
+}
+
 async function decideApproval(id, decision) {
   decisions.value = { ...decisions.value, [id]: decision };
   const label = decision === "approved" ? "onaylandı" : decision === "rejected" ? "reddedildi" : "pilot listesine alındı";
@@ -130,7 +135,7 @@ onMounted(async () => {
               <strong>{{ item.profit }}</strong>
               <small>Başarı Olasılığı</small>
               <span>{{ item.probability }}%</span>
-              <i :style="{ '--progress': `${item.probability}%` }"></i>
+              <i :class="percentClass('is-progress', item.probability)"></i>
             </div>
             <div class="management-action-card__next">
               <small>Kapasite Riski</small>
@@ -209,10 +214,10 @@ onMounted(async () => {
               <i
                 v-for="(point, index) in report.spark"
                 :key="`${report.id}-${index}`"
-                :style="{ height: `${point}%` }"
+                :class="percentClass('is-spark', point)"
               ></i>
             </div>
-            <div v-else class="management-ring" :style="{ '--ring': `${report.ring}%` }" aria-hidden="true"></div>
+            <div v-else :class="['management-ring', percentClass('is-ring', report.ring)]" aria-hidden="true"></div>
           </article>
         </div>
       </section>
