@@ -16,6 +16,8 @@ Panelin hedef sozlesmesi:
 - Runtime API key: `VITE_GOOGLEADS_MOBILE_API_KEY`
 - Env yoksa panel mock mode ile calisir.
 - Contract mismatch varsa panel sade uyari gosterir.
+- V1.9 gateway `getHealth`, `getSummary`, `getSystem` ve append-only outbox akisini destekler.
+- Snapshot freshness `health` veya `system` payloadindan izlenir.
 
 ## UI Kurallari
 
@@ -30,3 +32,13 @@ Panelin hedef sozlesmesi:
 - Onay butonlari sadece `POST /api/mobile/outbox` event gonderir.
 - Live pilot butonu sadece `APPROVE_LIVE_PILOT` event sozlesmesine hazirlanir.
 - Production deploy kullanici acikca `canliya al` demeden yapilmaz.
+
+## V1.9 Smoke Test
+
+`tests/unit/googleAdsMobileApiE2E.test.js` sahte fetch ile su akisi dogrular:
+
+- Gateway health okunur.
+- Summary snapshot ve freshness okunur.
+- Approval outbox event'i `lipyum_mobile_panel` kaynagiyla gonderilir.
+- `X-API-Key` ve `X-Lipyum-Panel-Version` headerlari korunur.
+- Panel Google Ads API veya DuckDB'ye dogrudan baglanmaz.

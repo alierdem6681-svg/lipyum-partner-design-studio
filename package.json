@@ -5,8 +5,8 @@
   "scripts": {
     "check": "node scripts/run-local-node.mjs scripts/check-js-syntax.mjs src tests scripts",
     "lint": "node scripts/run-local-node.mjs scripts/check-js-syntax.mjs src tests scripts",
-    "test": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js tests/unit/googleAdsMobileApi.test.js && node scripts/run-local-node.mjs tests/routes.smoke.js",
-    "test:unit": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js tests/unit/googleAdsMobileApi.test.js",
+    "test": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js tests/unit/googleAdsMobileApi.test.js tests/unit/googleAdsMobileApiE2E.test.js && node scripts/run-local-node.mjs tests/routes.smoke.js",
+    "test:unit": "node scripts/run-local-node.mjs --test tests/unit/defaultRuntimeContract.test.js tests/unit/lazyList.test.js tests/unit/googleAdsMobileApi.test.js tests/unit/googleAdsMobileApiE2E.test.js",
     "test:e2e": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/routes.spec.js tests/e2e/back-button.spec.js tests/e2e/accessibility.spec.js tests/e2e/geometry.spec.js",
     "test:e2e:mobile": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/mobile.spec.js",
     "test:screenshots": "node scripts/run-local-node.mjs node_modules/@playwright/test/cli.js test tests/e2e/screenshots.spec.js",

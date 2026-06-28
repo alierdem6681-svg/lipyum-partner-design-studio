@@ -55,8 +55,17 @@ export function createGoogleAdsMobileApiClient(options = {}) {
   return {
     mockMode,
     panelVersion,
+    async getHealth() {
+      if (mockMode) {
+        return { ok: true, mockMode: true, mobile_api_contract_version: GOOGLEADS_MOBILE_CONTRACT_VERSION };
+      }
+      return request("/api/mobile/health");
+    },
     async getSummary() {
       return request("/api/mobile/summary");
+    },
+    async getSystem() {
+      return request("/api/mobile/system");
     },
     async getActions() {
       return request("/api/mobile/actions");
