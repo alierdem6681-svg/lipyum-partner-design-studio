@@ -12,6 +12,10 @@ Panelin hedef sozlesmesi:
 - Read-only snapshot kaynaklari
 - Append-only approval outbox eventleri
 - Dogrudan Google Ads API veya DuckDB baglantisi yok
+- Runtime base URL: `VITE_GOOGLEADS_MOBILE_API_BASE_URL`
+- Runtime API key: `VITE_GOOGLEADS_MOBILE_API_KEY`
+- Env yoksa panel mock mode ile calisir.
+- Contract mismatch varsa panel sade uyari gosterir.
 
 ## UI Kurallari
 
@@ -23,5 +27,6 @@ Panelin hedef sozlesmesi:
 ## Guvenlik
 
 - Onay butonlari canli reklam degisikligi yapmaz.
+- Onay butonlari sadece `POST /api/mobile/outbox` event gonderir.
 - Live pilot butonu sadece `APPROVE_LIVE_PILOT` event sozlesmesine hazirlanir.
 - Production deploy kullanici acikca `canliya al` demeden yapilmaz.

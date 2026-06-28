@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import AppIcon from "../components/ui/AppIcon.vue";
 import AppPage from "../components/ui/AppPage.vue";
 import {
@@ -12,11 +12,14 @@ import {
   managementSummary,
   managementSystemStatus,
 } from "../data/managementPanelModel.js";
+import { createGoogleAdsMobileApiClient, isContractMismatch } from "../services/googleAdsMobileApi.js";
 import { useAppShellStore } from "../stores/appShellStore.js";
 
 const shell = useAppShellStore();
 const updatedAt = ref(managementSummary.lastUpdate);
 const decisions = ref({});
+const apiStatus = ref({ mode: "loading", warning: "" });
+const googleAdsApi = createGoogleAdsMobileApiClient();
 
 function scrollToSection(id) {
   const target = document.getElementById(`management-${id}`);
@@ -28,11 +31,31 @@ function refreshPanel() {
   shell.showToast("Yönetim paneli güncellendi.");
 }
 
-function decideApproval(id, decision) {
+async function decideApproval(id, decision) {
   decisions.value = { ...decisions.value, [id]: decision };
   const label = decision === "approved" ? "onaylandı" : decision === "rejected" ? "reddedildi" : "pilot listesine alındı";
+  const eventType = decision === "approved" ? "APPROVE" : decision === "rejected" ? "REJECT" : "CREATE_PILOT";
+  await googleAdsApi.sendApprovalEvent(id, eventType).catch(() => null);
   shell.showToast(`Aksiyon ${label}.`);
 }
+
+onMounted(async () => {
+  const summary = await googleAdsApi.getSummary().catch(() => ({ ok: false, error: "CONNECTION_FAILED" }));
+  if (summary.error) {
+    apiStatus.value = { mode: "warning", warning: "GoogleADS Mobile API su an okunamiyor; panel mock verilerle calisiyor." };
+    return;
+  }
+  if (summary.mockMode) {
+    apiStatus.value = { mode: "mock", warning: "GoogleADS Mobile API tanimli degil; panel mock verilerle calisiyor." };
+    return;
+  }
+  if (isContractMismatch(summary)) {
+    apiStatus.value = { mode: "warning", warning: "Panel verisi guncel sozlesmeyle uyumlu degil. Sistem ekranindan kontrol edin." };
+    return;
+  }
+  apiStatus.value = { mode: "live", warning: "GoogleADS Mobile API baglantisi aktif." };
+  updatedAt.value = "Canli snapshot";
+});
 </script>
 
 <template>
@@ -65,6 +88,10 @@ function decideApproval(id, decision) {
           <p>Son güncelleme<br><strong>{{ updatedAt }}</strong></p>
         </div>
       </section>
+
+      <p :class="['management-api-status', `is-${apiStatus.mode}`]">
+        {{ apiStatus.warning }}
+      </p>
 
       <nav class="management-quick-row" aria-label="Yönetim kısayolları">
         <button

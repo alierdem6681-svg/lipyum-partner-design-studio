@@ -9975,6 +9975,30 @@
   box-sizing: border-box;
 }
 
+.management-api-status {
+  margin: 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(131, 166, 230, 0.34);
+  border-radius: 14px;
+  background: rgba(239, 246, 255, 0.92);
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.management-api-status.is-live {
+  border-color: rgba(22, 163, 74, 0.28);
+  background: rgba(240, 253, 244, 0.95);
+  color: #166534;
+}
+
+.management-api-status.is-warning {
+  border-color: rgba(245, 158, 11, 0.34);
+  background: rgba(255, 251, 235, 0.95);
+  color: #92400e;
+}
+
 .management-hero,
 .management-quick-row,
 .management-section {
