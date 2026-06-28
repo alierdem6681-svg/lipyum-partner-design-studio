@@ -25,7 +25,6 @@ const requiredRoutes = [
   "/customers",
   "/reviews",
   "/leaderboard",
-  "/management-panel",
   "/subscription",
   "/bonus",
   "/customer-management",
