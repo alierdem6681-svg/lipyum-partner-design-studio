@@ -31,7 +31,6 @@
     "/partner/packages": "/subscription"
   },
   "blankRoutes": [
-    "/jobs",
     "/my-jobs",
     "/calendar",
     "/wallet"

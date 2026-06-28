@@ -34,6 +34,12 @@ export const legacySpriteNames = new Set([
   "map-pin",
   "clock",
   "credit-card",
+  "scale",
+  "wrench",
+  "package",
+  "paperclip",
+  "mic",
+  "check-double",
   "plus",
   "settings",
   "sliders",
@@ -50,6 +56,9 @@ export const legacySpriteNames = new Set([
   "globe",
   "image",
   "info",
+  "grid",
+  "cleaning-home",
+  "hand",
   "instagram",
   "link",
   "lock",
@@ -58,14 +67,17 @@ export const legacySpriteNames = new Set([
   "send",
   "snowflake",
   "sparkles",
+  "paint-roller",
   "crown",
   "headphones",
   "refresh",
+  "shopping-bag",
   "timer",
   "truck",
   "upload",
   "video",
   "wind",
+  "washing-machine",
 ]);
 
 export const svgSpriteMarkup = `
@@ -105,6 +117,12 @@ export const svgSpriteMarkup = `
     <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
     <symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M6 7l-3 6h6z"/><path d="m18 7-3 6h6z"/><path d="M8 21h8"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4.8 4.8 0 0 0-6.2 6.2L3 18l3 3 5.5-5.5a4.8 4.8 0 0 0 6.2-6.2l-3 3-2.7-2.7z"/></symbol>
+    <symbol id="i-package" viewBox="0 0 24 24"><path d="m12 2 8 4.5v9L12 20l-8-4.5v-9z"/><path d="M12 11 4.3 6.7"/><path d="m12 11 7.7-4.3"/><path d="M12 11v9"/></symbol>
+    <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.4 11.6-8.5 8.5a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 1 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></symbol>
+    <symbol id="i-check-double" viewBox="0 0 24 24"><path d="m2 13 4 4L16 7"/><path d="m12 17 2 2 8-12"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.33.62.96 1 1.65 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/></symbol>
     <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></symbol>
@@ -121,6 +139,9 @@ export const svgSpriteMarkup = `
     <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 0 20"/><path d="M12 2a15.3 15.3 0 0 0 0 20"/></symbol>
     <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="m21 15-4.5-4.5L9 18"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></symbol>
+    <symbol id="i-cleaning-home" viewBox="0 0 24 24"><path d="M4.4 11.4 12 5.2l7.6 6.2"/><path d="M6.7 10.6v8.2h10.6v-8.2"/><path d="M15.8 4.9v3.2"/><path d="M17.9 15.4c1.6.5 2.2 1.1 2.7 2.7.5-1.6 1.1-2.2 2.7-2.7-1.6-.5-2.2-1.1-2.7-2.7-.5 1.6-1.1 2.2-2.7 2.7Z"/><path d="M3.9 5.5c1 .32 1.4.72 1.72 1.72.32-1 .72-1.4 1.72-1.72-1-.32-1.4-.72-1.72-1.72-.32 1-.72 1.4-1.72 1.72Z"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M7 11V6a2 2 0 1 1 4 0v5"/><path d="M11 10V5a2 2 0 1 1 4 0v7"/><path d="M15 11V7a2 2 0 1 1 4 0v8a6 6 0 0 1-6 6h-2.5a6 6 0 0 1-4.8-2.4L3.8 16A2 2 0 0 1 7 13.6l1 1.4"/></symbol>
     <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
     <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1 0l-2 2a5 5 0 0 0 7.1 7.1l1.1-1.1"/></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
@@ -129,13 +150,16 @@ export const svgSpriteMarkup = `
     <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
     <symbol id="i-snowflake" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="m17 4-5 5-5-5"/><path d="m17 20-5-5-5 5"/><path d="M2 12h20"/><path d="m4 7 5 5-5 5"/><path d="m20 7-5 5 5 5"/></symbol>
     <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></symbol>
+    <symbol id="i-paint-roller" viewBox="0 0 24 24"><path d="M5.5 5.2h10.6c1.1 0 2 .9 2 2v2.1H5.5V5.2Z"/><path d="M18.1 7.9h.9c1 0 1.8.8 1.8 1.8v1.1c0 1-.8 1.8-1.8 1.8h-6.2v3"/><path d="M10.8 15.6h4v5.1h-4z"/></symbol>
     <symbol id="i-crown" viewBox="0 0 24 24"><path d="m3 7 5 5 4-8 4 8 5-5-2 12H5z"/><path d="M5 19h14"/></symbol>
     <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/><path d="M3 21v-5h5"/><path d="M3 12A9 9 0 0 1 18.4 5.6L21 8"/><path d="M21 3v5h-5"/></symbol>
+    <symbol id="i-shopping-bag" viewBox="0 0 24 24"><path d="M6.2 8.2h11.6l1 12.2H5.2l1-12.2Z"/><path d="M9 8.1V6.8a3 3 0 0 1 6 0v1.3"/></symbol>
     <symbol id="i-timer" viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M12 14l3-3"/><circle cx="12" cy="14" r="8"/></symbol>
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
     <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 20h16"/></symbol>
     <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></symbol>
     <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h13a3 3 0 1 0-3-3"/><path d="M3 12h18"/><path d="M3 16h13a3 3 0 1 1-3 3"/></symbol>
+    <symbol id="i-washing-machine" viewBox="0 0 24 24"><rect x="6" y="3.8" width="12" height="16.4" rx="2"/><path d="M8.3 7h7.4M8.6 5.8h.01M11 5.8h.01"/><circle cx="12" cy="13.4" r="4.1"/><path d="M9.4 13.5c1.1-1 2.1-1 3 .1 1 1.2 2.1 1.1 3.2-.1"/></symbol>
   </svg>
 `;

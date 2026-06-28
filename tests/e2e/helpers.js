@@ -10,6 +10,7 @@ export const routes = [
   "/notifications",
   "/support",
   "/support/new",
+  "/support/tickets",
   "/support/live",
   "/support/customer-service",
   "/satisfaction",
@@ -53,6 +54,7 @@ export const criticalRoutes = [
   "/notifications",
   "/support",
   "/support/new",
+  "/support/tickets",
   "/support/live",
   "/support/customer-service",
   "/satisfaction",
@@ -70,6 +72,10 @@ export const ctaHiddenRoutes = new Set();
 
 export const bottomBarHiddenRoutes = new Set([
   "/profile",
+  "/support",
+  "/support/new",
+  "/support/tickets",
+  "/support/live",
   "/support/customer-service",
   "/subscription",
   "/subscription/compare",
@@ -82,12 +88,9 @@ export const bottomBarHiddenRoutes = new Set([
 ]);
 
 export const blankBottomRoutes = new Set([
-  "/jobs",
   "/my-jobs",
-  "/calendar",
   "/wallet",
   "/support/new",
-  "/support/live",
   "/support/customer-service",
   "/invoices",
 ]);

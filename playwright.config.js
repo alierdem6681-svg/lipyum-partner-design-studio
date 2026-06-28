@@ -4,7 +4,8 @@ const nodeBin = process.platform === "win32"
   ? "node_modules\\node\\bin\\node.exe"
   : "node_modules/node/bin/node";
 const port = process.env.PLAYWRIGHT_PORT || "5174";
-const baseURL = `http://127.0.0.1:${port}`;
+const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL || "";
+const baseURL = externalBaseURL || `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -15,12 +16,14 @@ export default defineConfig({
     baseURL,
     trace: "retain-on-failure",
   },
-  webServer: {
-    command: `${nodeBin} node_modules/vite/bin/vite.js --host 0.0.0.0 --port ${port} --strictPort`,
-    url: baseURL,
-    reuseExistingServer: false,
-    timeout: 60_000,
-  },
+  ...(externalBaseURL ? {} : {
+    webServer: {
+      command: `${nodeBin} node_modules/vite/bin/vite.js --host 0.0.0.0 --port ${port} --strictPort`,
+      url: baseURL,
+      reuseExistingServer: false,
+      timeout: 60_000,
+    },
+  }),
   projects: [
     {
       name: "chromium-mobile",

@@ -1,15 +1,27 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-const blankRoutes = [
-  { route: "/jobs", title: "İş Al", testId: "jobs-page", active: "bottom-cta-job" },
-  { route: "/my-jobs", title: "İşler", testId: "my-jobs-page", active: "bottom-tab-jobs" },
-  { route: "/calendar", title: "Randevu", testId: "calendar-page", active: "bottom-tab-calendar" },
-];
+const blankRoutes = [];
 
 const runtimeScenarios = [
   { name: "default-vue", prefix: "", runtime: "vue" },
 ];
+
+test("default-vue /my-jobs renders the İşler product screen", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("#/my-jobs");
+  await waitForApp(page);
+  await expect(page.locator("html")).toHaveAttribute("data-runtime", "vue");
+  await expect(page.getByTestId("app-header").first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "İşler" })).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
+  await expect(page.getByTestId("bottom-tab-jobs")).toHaveAttribute("aria-current", "page");
+  await expect(page.getByTestId("my-jobs-page")).toBeVisible();
+  await expect(page.getByTestId("my-jobs-tab-actions")).toHaveClass(/is-active/);
+  await expect(page.getByText("Müşteriyi Ara ve Randevu Ver")).toBeVisible();
+  await expectNoAppHorizontalOverflow(page);
+  expect(errors).toEqual([]);
+});
 
 for (const engine of runtimeScenarios) {
   for (const item of blankRoutes) {

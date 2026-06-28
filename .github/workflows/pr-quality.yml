@@ -41,4 +41,5 @@ jobs:
       - name: Release quality gate
         run: npm run test:quality-gate:release
         env:
+          LIPYUM_GATE_TIMINGS_PATH: .local/autonomous-release/github-pr-gate.json
           LIPYUM_RELEASE_VERSION: "v13-fast-finish"

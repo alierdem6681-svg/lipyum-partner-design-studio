@@ -192,6 +192,19 @@ function onHeaderAction(action) {
       note: isFree ? "Gold seçili plan olarak önerilir; Plus veya VIP'i de doğrudan seçebilirsin." : "",
     });
   }
+  if (action === "support-headset") {
+    shell.openSheet({
+      title: "Destek talebi nasıl çalışır?",
+      description: "Konunu seç, doğru ekibe ilet.",
+      body: "Talep konusu ve öncelik bilgisi destek ekibine iletilir. Yanıt geldiğinde bildirim alır, tüm süreci Destek Taleplerim ekranından takip edebilirsin.",
+      scoreItems: [
+        { label: "Doğru konu", value: "Hız", description: "Kategori seçimi talebi doğru ekibe yönlendirir.", tone: "positive", icon: "sliders" },
+        { label: "Ek dosya", value: "Netlik", description: "Ekran görüntüsü veya belge çözüm süresini kısaltabilir.", tone: "positive", icon: "upload" },
+        { label: "Takip", value: "Taleplerim", description: "Durum, yanıt ve ekleri tek ekranda görürsün.", tone: "neutral", icon: "list" },
+      ],
+    });
+  }
+  if (action === "support-filter") navigateTo("/support/tickets");
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {

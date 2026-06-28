@@ -11,6 +11,7 @@ import HomePage from "../pages/HomePage.vue";
 import InvoicesPage from "../pages/InvoicesPage.vue";
 import LeaderboardPage from "../pages/LeaderboardPage.vue";
 import LiveSupportPage from "../pages/LiveSupportPage.vue";
+import ManagementPanelPage from "../pages/ManagementPanelPage.vue";
 import MessagesPage from "../pages/MessagesPage.vue";
 import JobsPage from "../pages/JobsPage.vue";
 import MyJobsPage from "../pages/MyJobsPage.vue";
@@ -29,7 +30,9 @@ import SatisfactionPage from "../pages/SatisfactionPage.vue";
 import PlanComparisonPage from "../pages/PlanComparisonPage.vue";
 import SubscriptionCheckoutPage from "../pages/SubscriptionCheckoutPage.vue";
 import SubscriptionPage from "../pages/SubscriptionPage.vue";
-import SupportPage from "../pages/SupportPage.vue";
+import SupportTicketDetailPage from "../pages/SupportTicketDetailPage.vue";
+import SupportTicketListPage from "../pages/SupportTicketListPage.vue";
+import SupportTicketSuccessPage from "../pages/SupportTicketSuccessPage.vue";
 import UiKitPreviewPage from "../pages/UiKitPreviewPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
 import WalletHistoryPage from "../pages/WalletHistoryPage.vue";
@@ -102,14 +105,16 @@ const dedicatedRouteComponents = {
   "/services": ServicesPage,
   "/notifications": NotificationsPage,
   "/notification-settings": NotificationSettingsPage,
-  "/support": SupportPage,
+  "/support": CreateTicketPage,
   "/support/new": CreateTicketPage,
+  "/support/tickets": SupportTicketListPage,
   "/support/live": LiveSupportPage,
   "/support/customer-service": CustomerServicePage,
   "/messages": MessagesPage,
   "/satisfaction": SatisfactionPage,
   "/reviews": ReviewsPage,
   "/leaderboard": LeaderboardPage,
+  "/management-panel": ManagementPanelPage,
   "/subscription": SubscriptionPage,
   "/subscription/compare": PlanComparisonPage,
   "/subscription/checkout": SubscriptionCheckoutPage,
@@ -162,6 +167,8 @@ const routes = [
   { path: "/ui-kit", name: "ui-kit", component: UiKitPreviewPage },
   { path: "/referral/partner/:id", name: "referral-partner-detail", component: ReferralPartnerDetailPage },
   { path: "/wallet/transaction/:id", name: "wallet-transaction-detail", component: WalletTransactionDetailPage },
+  { path: "/support/tickets/:ticketId", name: "support-ticket-detail", component: SupportTicketDetailPage, meta: { title: "Talep Detayı" } },
+  { path: "/support/success/:ticketId", name: "support-ticket-success", component: SupportTicketSuccessPage, meta: { title: "Talep Oluşturuldu" } },
   { path: "/", redirect: "/home" },
   { path: "/:pathMatch(.*)*", redirect: "/home" },
 ];

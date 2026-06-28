@@ -4,7 +4,7 @@ import { activeRoutePaths } from "../../src/vue/data/activeRouteContent.js";
 import { clickableOutcomes } from "../../src/vue/data/clickableOutcomes.js";
 import { ROUTE_TO_SCREEN } from "../../src/utils/constants.js";
 
-const blankBottomRoutes = new Set(["/jobs", "/my-jobs", "/calendar"]);
+const blankBottomRoutes = new Set(["/calendar"]);
 const blankSidebarRoutes = new Set([
   "/customer-management",
   "/account-transactions",
@@ -12,6 +12,15 @@ const blankSidebarRoutes = new Set([
   "/create-offer",
 ]);
 const dedicatedStandaloneRoutes = new Set([
+  "/jobs",
+  "/my-jobs",
+  "/wallet",
+  "/support/tickets",
+  "/management-panel",
+  "/subscription",
+  "/subscription/compare",
+  "/subscription/checkout",
+  "/performance-score",
   "/performance-improve",
   "/wallet/top-up",
   "/wallet/top-up/success",

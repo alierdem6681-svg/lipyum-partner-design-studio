@@ -32,6 +32,8 @@ const iconForAction = {
   "partner-share": "share",
   "performance-rewards": "trophy",
   "subscription-status": "trophy",
+  "support-headset": "headphones",
+  "support-filter": "sliders",
 };
 
 const labelForAction = {
@@ -53,6 +55,8 @@ const labelForAction = {
   "partner-share": "Partner kartını paylaş",
   "performance-rewards": "Skor rozet avantajları",
   "subscription-status": "Abonelik durumunu görüntüle",
+  "support-headset": "Destek akışı bilgisi",
+  "support-filter": "Destek filtreleri",
 };
 
 const testIdForAction = {
@@ -74,6 +78,8 @@ const testIdForAction = {
   "partner-share": "partner-preview-header-share",
   "performance-rewards": "performance-rewards-button",
   "subscription-status": "subscription-status-button",
+  "support-headset": "support-headset-button",
+  "support-filter": "support-filter-button",
 };
 
 const customerServiceAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-customer-service/`;

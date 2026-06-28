@@ -42,12 +42,7 @@ jobs:
         run: npm run test:quality-gate:release
         env:
           GITHUB_PAGES: "true"
-          LIPYUM_RELEASE_VERSION: "v13-fast-finish"
-
-      - name: Build GitHub Pages artifact
-        run: npm run build
-        env:
-          GITHUB_PAGES: "true"
+          LIPYUM_GATE_TIMINGS_PATH: .local/autonomous-release/github-pages-gate.json
           LIPYUM_RELEASE_VERSION: "v13-fast-finish"
 
       - name: Add SPA fallback

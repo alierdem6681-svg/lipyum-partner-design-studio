@@ -1,14 +1,13 @@
 import { expect, test } from "@playwright/test";
 import { collectConsoleErrors, expectNoAppHorizontalOverflow, waitForApp } from "./helpers.js";
 
-const blankRoutes = [
-  { route: "/jobs", testId: "jobs-page", active: "bottom-cta-job" },
-  { route: "/my-jobs", testId: "my-jobs-page", active: "bottom-tab-jobs" },
-  { route: "/calendar", testId: "calendar-page", active: "bottom-tab-calendar" },
-];
+const blankRoutes = [];
 
 const dedicatedRoutes = [
   { route: "/home", testId: "home-performance-card" },
+  { route: "/jobs", testId: "jobs-page" },
+  { route: "/my-jobs", testId: "my-jobs-page" },
+  { route: "/calendar", testId: "calendar-page" },
   { route: "/about", testId: "route--about" },
   { route: "/profile", testId: "profile-page" },
   { route: "/partner-card-preview", testId: "partner-card-preview-page" },

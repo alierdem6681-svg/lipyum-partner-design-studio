@@ -76,7 +76,7 @@ const titleOverrides = {
   "/calendar": {
     title: "Randevu",
     compactTitle: "Randevu",
-    subtitle: "",
+    subtitle: "Hizmetlerini randevuya aç",
   },
   "/referral": {
     title: "Partner Davet Programı",
@@ -112,18 +112,32 @@ const titleOverrides = {
     trailingActions: ["notification-settings"],
   },
   "/support": {
-    title: "Yardım ve Destek",
-    subtitle: "Sorununu seç, hızlıca çözelim",
+    title: "Destek Talebi",
+    subtitle: "Konunu seç, doğru ekibe hızlıca iletelim.",
+    trailingActions: ["support-headset"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/support/new": {
-    title: "Talep Oluştur",
-    subtitle: "",
-    trailingActions: [],
+    title: "Destek Talebi",
+    subtitle: "Konunu seç, doğru ekibe hızlıca iletelim.",
+    trailingActions: ["support-headset"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
+  },
+  "/support/tickets": {
+    title: "Destek Taleplerim",
+    subtitle: "Açık ve geçmiş taleplerini takip et.",
+    trailingActions: ["support-filter"],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/support/live": {
     title: "Canlı Destek",
     subtitle: "",
     trailingActions: [],
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/support/customer-service": {
     title: "Müşteri Hizmetleri",
@@ -166,6 +180,22 @@ const titleOverrides = {
       note: "Puanlar haftalık güncellenir; amaç aktif, güvenilir ve düzenli hizmet veren partnerleri öne çıkarmaktır.",
     },
   },
+  "/management-panel": {
+    title: "Yönetim Paneli",
+    compactTitle: "Yönetim",
+    subtitle: "Onay, fırsat, pilot ve sistem akışı",
+    trailingActions: ["info"],
+    infoSheet: {
+      title: "Yönetim paneli",
+      description: "Kritik iş akışlarını tek ekranda takip et.",
+      body: "Bu ekran onay bekleyen aksiyonları, günlük görevleri, raporları ve sistem güvenlik durumunu mobil kullanım için sıkı ve okunabilir bir yapıda toplar.",
+      scoreItems: [
+        { label: "Onaylar", value: "Kontrol", description: "Canlıya alınacak adımlar önce burada görünür.", tone: "positive", icon: "check" },
+        { label: "Fırsatlar", value: "Kâr", description: "Net kâr etkisi yüksek iş fırsatları öne çıkar.", tone: "positive", icon: "trend-up" },
+        { label: "Güvenlik", value: "Kapı", description: "Riskli aksiyonlar otomatik uygulanmaz.", tone: "neutral", icon: "shield" },
+      ],
+    },
+  },
   "/subscription": {
     title: "Abonelik",
     subtitle: "Daha güçlü görün, desteğe daha hızlı ulaş.",
@@ -195,10 +225,10 @@ const titleOverrides = {
     trailingActions: [],
   },
   "/wallet": {
-    title: "Cüzdanım",
+    title: "Cüzdan",
     compactTitle: "Cüzdan",
-    subtitle: "",
-    trailingActions: [],
+    subtitle: "Bakiyeni ve bonuslarını yönet.",
+    trailingActions: ["notifications"],
   },
   "/wallet/top-up": {
     title: "Bakiye Yükle",
@@ -352,6 +382,32 @@ export function getRouteMeta(route = "/home") {
       compactTitle: "Partner Detayı",
       subtitle: "Davet edilen partner özeti",
       parentRoute: "/referral/partners",
+    };
+  }
+  if (route.startsWith("/support/tickets/")) {
+    return {
+      ...routeMeta["/support/tickets"],
+      route,
+      title: "Talep Detayı",
+      compactTitle: "Talep Detayı",
+      subtitle: "Talep durumunu ve yanıtları takip et.",
+      parentRoute: "/support/tickets",
+      trailingActions: [],
+      showBottomBar: false,
+      ctaVariant: "hidden",
+    };
+  }
+  if (route.startsWith("/support/success/")) {
+    return {
+      ...routeMeta["/support"],
+      route,
+      title: "Talep Oluşturuldu",
+      compactTitle: "Talep Oluşturuldu",
+      subtitle: "Destek ekibimiz konuyu incelemeye başladı.",
+      parentRoute: "/support/tickets",
+      trailingActions: ["support-headset"],
+      showBottomBar: false,
+      ctaVariant: "hidden",
     };
   }
   return routeMeta[route] || routeMeta["/home"];

@@ -13,5 +13,6 @@ test("V12 core route interactions are wired", async ({ page }) => {
   await page.getByTestId("bottom-cta-job").click();
   await expect(page).toHaveURL(/#\/jobs$/);
   await expect(page.getByTestId("jobs-page")).toBeVisible();
-  await expect(page.locator('[data-testid="jobs-page"] > *')).toHaveCount(0);
+  await expect(page.getByTestId("job-opportunity-list")).toBeVisible();
+  await expect(page.getByText("Size uygun yeni işler")).toBeVisible();
 });

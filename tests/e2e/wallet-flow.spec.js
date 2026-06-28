@@ -15,13 +15,13 @@ test("wallet main, top-up, success, history and settings flow works", async ({ p
   await waitForApp(page);
 
   await expect(page.getByTestId("wallet-page")).toBeVisible();
-  await expect(page.getByTestId("wallet-work-balance-card")).toContainText("İŞ BAKİYESİ");
-  await expect(page.getByTestId("wallet-work-balance-card")).toContainText("₺675");
-  await expect(page.getByTestId("wallet-bonus-balance-card")).toContainText("BONUS BAKİYESİ");
-  await expect(page.getByTestId("wallet-bonus-balance-card")).toContainText("₺240");
+  await expect(page.getByTestId("wallet-balance-card")).toContainText("Cüzdan");
+  await expect(page.getByTestId("wallet-balance-card")).toContainText("₺675");
+  await expect(page.getByTestId("wallet-bonus-card")).toContainText("Bonus");
+  await expect(page.getByTestId("wallet-bonus-card")).toContainText("₺240");
   await expect(page.getByText("İş Bakiyesi + Bonus Bakiyesi")).toHaveCount(0);
-  await page.getByTestId("wallet-info-button").click();
-  await expect(page.getByTestId("app-sheet")).toContainText("Bonus bakiyesi");
+  await page.getByTestId("wallet-usage-info").click();
+  await expect(page.getByTestId("app-sheet")).toContainText("Bakiye ve bonus ayrı takip edilir.");
   await page.getByTestId("sheet-close-button").click();
 
   await page.getByTestId("wallet-top-up-button").click();
@@ -42,10 +42,10 @@ test("wallet main, top-up, success, history and settings flow works", async ({ p
   await page.getByRole("button", { name: "Cüzdana dön" }).click();
 
   await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/wallet");
-  await expect(page.getByTestId("wallet-work-balance-card")).toContainText("₺1.175");
-  await expect(page.getByTestId("wallet-bonus-balance-card")).toContainText("₺120");
+  await expect(page.getByTestId("wallet-balance-card")).toContainText("₺1.175");
+  await expect(page.getByTestId("wallet-bonus-card")).toContainText("₺120");
 
-  await page.getByRole("button", { name: "Tümünü gör" }).click();
+  await page.getByTestId("wallet-recent-transactions").getByRole("button", { name: /Tümü/ }).click();
   await expect.poll(() => page.evaluate(() => window.location.hash)).toContain("/wallet/history");
   await expect(page.getByTestId("wallet-history-page")).toBeVisible();
   await page.getByRole("tab", { name: "Yüklemeler" }).click();
@@ -81,7 +81,7 @@ test("wallet responsive matrix has no horizontal overflow", async ({ page }) => 
     await page.goto("/#/wallet");
     await waitForApp(page);
     await expectNoAppHorizontalOverflow(page);
-    await expect(page.getByTestId("wallet-work-balance-card")).toBeVisible();
+    await expect(page.getByTestId("wallet-balance-card")).toBeVisible();
   }
   expect(errors).toEqual([]);
 });
