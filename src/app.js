@@ -2,21 +2,37 @@ import { resolveDeepLinkRoute } from "./utils/deepLinks.js";
 
 const resolvedDeepLinkRoute = resolveDeepLinkRoute();
 const currentHash = window.location.hash;
+const removedHashRoutePrefixes = ["/management-panel"];
 
-if (!currentHash && !resolvedDeepLinkRoute) {
-  window.history.replaceState(
-    {},
-    "",
-    `${window.location.pathname}${window.location.search}#/home`,
-  );
+function normalizeHashRoute(hash) {
+  const raw = String(hash || "").replace(/^#/, "") || "/";
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
 }
 
-if (resolvedDeepLinkRoute && (!currentHash || currentHash === "#/home")) {
-  window.history.replaceState(
-    {},
-    "",
-    `${window.location.pathname}${window.location.search}#${resolvedDeepLinkRoute}`,
-  );
+function isRemovedHashRoute(hash) {
+  const route = normalizeHashRoute(hash);
+  return removedHashRoutePrefixes.some((prefix) => route === prefix || route.startsWith(`${prefix}/`));
+}
+
+function renderRemovedHashRoute() {
+  const root = document.getElementById("app");
+  document.title = "Baglanti kaldirildi";
+  document.documentElement.dataset.runtime = "removed-route";
+  document.body.dataset.runtime = "removed-route";
+  if (!root) return;
+  root.dataset.runtime = "removed-route";
+  root.innerHTML = `
+    <main data-testid="removed-route" style="min-height: 100vh; display: grid; place-items: center; padding: 24px; font-family: system-ui, -apple-system, Segoe UI, sans-serif; color: #111827; background: #f8fafc;">
+      <section role="status" aria-live="polite" style="width: min(420px, 100%); border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; padding: 20px; box-shadow: 0 12px 32px rgba(15, 23, 42, .08);">
+        <h1 style="margin: 0 0 8px; font-size: 18px;">Bu baglanti kaldirildi</h1>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5;">Bu adres Lipyum uygulamasinda calismaz.</p>
+      </section>
+    </main>
+  `;
 }
 
 function markRuntime(runtime) {
@@ -50,8 +66,6 @@ function renderVueBootError(error) {
   }
 }
 
-markRuntime("vue");
-
 async function bootVue() {
   try {
     const { mountVueApp } = await import("./vue/main.js");
@@ -61,4 +75,25 @@ async function bootVue() {
   }
 }
 
-bootVue();
+if (isRemovedHashRoute(currentHash)) {
+  renderRemovedHashRoute();
+} else {
+  if (!currentHash && !resolvedDeepLinkRoute) {
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}${window.location.search}#/home`,
+    );
+  }
+
+  if (resolvedDeepLinkRoute && (!currentHash || currentHash === "#/home")) {
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}${window.location.search}#${resolvedDeepLinkRoute}`,
+    );
+  }
+
+  markRuntime("vue");
+  bootVue();
+}

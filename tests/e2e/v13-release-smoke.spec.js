@@ -52,6 +52,19 @@ test("boots Vue on normal URLs and does not expose legacy rollback", async ({ pa
   expect(errors).toEqual([]);
 });
 
+test("removed management panel hash does not boot the Lipyum app", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/#/management-panel");
+
+  await expect(page.locator("html")).toHaveAttribute("data-runtime", "removed-route");
+  await expect(page.getByTestId("removed-route")).toBeVisible();
+  await expect(page.getByTestId("app-header")).toHaveCount(0);
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+  await expect(page.getByText("Yonetim Paneli")).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/management-panel");
+  expect(errors).toEqual([]);
+});
+
 for (const [route, testId] of criticalRoutes) {
   test(`critical route opens in final Vue runtime: ${route}`, async ({ page }) => {
     const errors = await collectConsoleErrors(page);
