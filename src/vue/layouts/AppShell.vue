@@ -17,6 +17,7 @@ import MobileLayout from "./MobileLayout.vue";
 import { useAppShellStore } from "../stores/appShellStore.js";
 import { useNavigationStore } from "../stores/navigationStore.js";
 import { useProfileStore } from "../stores/profileStore.js";
+import { useLiveSupportStore } from "../stores/liveSupportStore.js";
 import { useSubscriptionStore } from "../stores/subscriptionStore.js";
 
 const route = useRoute();
@@ -24,12 +25,18 @@ const router = useRouter();
 const shell = useAppShellStore();
 const navigation = useNavigationStore();
 const profile = useProfileStore();
+const liveSupport = useLiveSupportStore();
 const subscription = useSubscriptionStore();
 
 const meta = computed(() => getRouteMeta(route.path));
 const activeTab = computed(() => meta.value.activeBottomTab || "");
 const showBack = computed(() => meta.value.leadingAction === "back");
-const rightActions = computed(() => meta.value.trailingActions || []);
+const liveSupportPlanAction = computed(() => `live-support-plan-${subscription.currentPlan?.id || "free"}`);
+const rightActions = computed(() => {
+  if (route.path === "/support/live" && liveSupport.isActive) return ["live-support-end"];
+  if (route.path === "/support/live") return [liveSupportPlanAction.value];
+  return meta.value.trailingActions || [];
+});
 const contentRef = ref(null);
 const pullDistance = ref(0);
 const isPulling = ref(false);
@@ -170,7 +177,7 @@ function onHeaderAction(action) {
   if (action === "services-edit") window.dispatchEvent(new CustomEvent("lipyum:services-edit"));
   if (action === "partner-share") window.dispatchEvent(new CustomEvent("lipyum:partner-share"));
   if (action === "performance-rewards") window.dispatchEvent(new CustomEvent("lipyum:performance-rewards"));
-  if (action === "subscription-status") {
+  if (action === "subscription-status" || action.startsWith("live-support-plan-")) {
     const plan = subscription.currentPlan;
     const isFree = subscription.status === "free" || plan?.id === "free";
     shell.openSheet({
@@ -205,6 +212,10 @@ function onHeaderAction(action) {
     });
   }
   if (action === "support-filter") navigateTo("/support/tickets");
+  if (action === "live-support-end") {
+    liveSupport.closeConversation();
+    shell.showToast("Konuşma kapatıldı.");
+  }
   if (action === "notification-settings") navigateTo("/notification-settings");
   if (action === "account-transactions") navigateTo("/account-transactions");
   if (action === "wallet-info") {

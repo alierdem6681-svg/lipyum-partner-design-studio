@@ -64,6 +64,20 @@ test("sidebar routes kazanc ortakligi items and closes after navigation", async 
   expect(errors).toEqual([]);
 });
 
+test("sidebar job referral item routes correctly with engine query url", async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto("/?engine=vue#/home");
+  await waitForApp(page);
+
+  await openSidebar(page);
+  await page.locator('[data-testid="sidebar-menu-item"][data-route="/job-referral"]').click();
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#/job-referral");
+  await expect(page.getByTestId("sidebar-drawer")).toHaveCount(0);
+  await expect(page.getByTestId("job-referral-page")).toBeVisible();
+
+  expect(errors).toEqual([]);
+});
+
 test("account transactions stay out of sidebar and wallet route stays clean", async ({ page }) => {
   const errors = await collectConsoleErrors(page);
   await page.goto("/#/home");
@@ -90,6 +104,7 @@ test("sidebar has V10 support entries without duplicate sticky support card", as
   await openSidebar(page);
   await expect(page.getByRole("button", { name: "Yardım ve Destek" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Talep Oluştur" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Destek Taleplerim" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Canlı Destek" })).toHaveCount(1);
   await expect(page.getByRole("button", { name: /Müşteri Hizmetleri/ })).toHaveCount(1);
   await expect(page.locator(".drawer-support-card")).toHaveCount(0);

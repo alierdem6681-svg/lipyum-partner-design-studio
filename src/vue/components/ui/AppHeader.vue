@@ -34,6 +34,11 @@ const iconForAction = {
   "subscription-status": "trophy",
   "support-headset": "headphones",
   "support-filter": "sliders",
+  "live-support-end": "x",
+  "live-support-plan-free": "trophy",
+  "live-support-plan-plus": "crown",
+  "live-support-plan-gold": "crown",
+  "live-support-plan-vip": "crown",
 };
 
 const labelForAction = {
@@ -57,6 +62,11 @@ const labelForAction = {
   "subscription-status": "Abonelik durumunu görüntüle",
   "support-headset": "Destek akışı bilgisi",
   "support-filter": "Destek filtreleri",
+  "live-support-end": "Konuşmayı kapat",
+  "live-support-plan-free": "Mevcut paket: Free",
+  "live-support-plan-plus": "Mevcut paket: Plus",
+  "live-support-plan-gold": "Mevcut paket: Gold",
+  "live-support-plan-vip": "Mevcut paket: VIP",
 };
 
 const testIdForAction = {
@@ -80,6 +90,11 @@ const testIdForAction = {
   "subscription-status": "subscription-status-button",
   "support-headset": "support-headset-button",
   "support-filter": "support-filter-button",
+  "live-support-end": "live-support-end",
+  "live-support-plan-free": "live-support-plan",
+  "live-support-plan-plus": "live-support-plan",
+  "live-support-plan-gold": "live-support-plan",
+  "live-support-plan-vip": "live-support-plan",
 };
 
 const customerServiceAssetBase = `${import.meta.env.BASE_URL}assets/lipyum-customer-service/`;
@@ -102,7 +117,7 @@ function statusAriaLabel(status) {
     class="v-header v-app-header top-nav app-header"
     :class="[
       `${variant || 'subpage'}-header`,
-      rightActions.includes('profile-preview') || rightActions.includes('partner-share') || rightActions.includes('about-edit') || rightActions.includes('services-edit') ? 'has-text-action' : '',
+      rightActions.includes('profile-preview') || rightActions.includes('partner-share') || rightActions.includes('about-edit') || rightActions.includes('services-edit') || rightActions.includes('live-support-end') || rightActions.some((action) => action.startsWith('live-support-plan-')) ? 'has-text-action' : '',
     ]"
     :data-header-variant="variant"
     data-testid="app-header"
@@ -187,6 +202,8 @@ function statusAriaLabel(status) {
             action === 'profile-preview' || action === 'partner-share' ? 'is-text-action' : '',
             action === 'about-edit' ? 'is-text-action' : '',
             action === 'services-edit' ? 'is-text-action' : '',
+            action === 'live-support-end' ? 'is-text-action is-live-support-end-action' : '',
+            action.startsWith('live-support-plan-') ? 'is-text-action is-live-support-plan-action' : '',
             action === 'partner-share' ? 'is-partner-share-action' : '',
             action === 'subscription-status' ? 'is-subscription-status-action' : '',
           ]"
@@ -201,6 +218,11 @@ function statusAriaLabel(status) {
           <span v-if="action === 'partner-share'" class="v-header__action-label">Paylaş</span>
           <span v-if="action === 'about-edit'" class="v-header__action-label">Düzenle</span>
           <span v-if="action === 'services-edit'" class="v-header__action-label">Düzenle</span>
+          <span v-if="action === 'live-support-end'" class="v-header__action-label">Bitir</span>
+          <span v-if="action === 'live-support-plan-free'" class="v-header__action-label">Free</span>
+          <span v-if="action === 'live-support-plan-plus'" class="v-header__action-label">Plus</span>
+          <span v-if="action === 'live-support-plan-gold'" class="v-header__action-label">Gold</span>
+          <span v-if="action === 'live-support-plan-vip'" class="v-header__action-label">VIP</span>
           <span v-if="action === 'notifications'" class="v-header__notify-dot" aria-hidden="true"></span>
         </button>
       </template>

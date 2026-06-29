@@ -92,8 +92,8 @@ test("jobs CTA route opens opportunity list in final Vue runtime", async ({ page
   await page.goto("/#/jobs");
   await expectVueShell(page, "/jobs");
   await expect(page.getByTestId("jobs-page")).toBeVisible();
-  await expect(page.getByTestId("bottom-cta-job")).toHaveAttribute("aria-current", "page");
-  await expect(page.getByTestId("job-opportunity-list")).toBeVisible();
+  await expect(page.getByTestId("app-bottom-bar")).toHaveCount(0);
+  await expect(page.getByTestId("job-swipe-page")).toBeVisible();
   expect(errors).toEqual([]);
 });
 

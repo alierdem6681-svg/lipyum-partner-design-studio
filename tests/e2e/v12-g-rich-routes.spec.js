@@ -89,8 +89,7 @@ test("V12-G live support waits then opens branded chat", async ({ page }) => {
   await page.goto(vueRoute("/support/live"));
   await expectCleanVueShell(page, "/support/live");
 
-  await page.getByTestId("live-support-title").fill("V12-G canli destek");
-  await page.getByTestId("live-support-description").fill("Temsilci baglanti akisi kontrol ediliyor.");
+  await expect(page.getByTestId("live-support-plan-service")).toBeVisible();
   await page.getByTestId("live-support-start").click();
   await expect(page.getByTestId("live-support-waiting")).toBeVisible();
   await expect(page.getByTestId("live-support-create-ticket")).toBeVisible();

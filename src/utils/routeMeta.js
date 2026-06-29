@@ -67,6 +67,8 @@ const titleOverrides = {
     title: "İş Al",
     compactTitle: "İş Al",
     subtitle: "",
+    showBottomBar: false,
+    ctaVariant: "hidden",
   },
   "/my-jobs": {
     title: "İşler",

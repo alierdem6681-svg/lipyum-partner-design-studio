@@ -1,0 +1,29 @@
+{
+  "id": "v20",
+  "createdAt": "2026-06-29T07:27:57+03:00",
+  "source": "origin/main",
+  "startingMainSha": "7c46aefeedf7ea4dca991f2bea80b68354f2cef0",
+  "backupTag": "v20",
+  "archiveBranch": "archive/v20",
+  "releaseBranch": "codex/block-management-panel-trigger",
+  "featureHeadShaAtBackup": "c55310b92ff8047bdefa2074bc99d19c1a3d968a",
+  "productionUrl": "https://alierdem6681-svg.github.io/lipyum-partner-design-studio/",
+  "scope": "Backup before releasing approved Lipyum Partner UI updates from codex/block-management-panel-trigger.",
+  "plannedValidation": [
+    "npm run test:quality-gate:release",
+    "npm run build",
+    "git diff --check",
+    "production smoke test",
+    "production release.json SHA verification",
+    "critical route console and horizontal overflow checks"
+  ],
+  "rollback": {
+    "restoreFromBackup": [
+      "git fetch origin --tags",
+      "git switch main",
+      "git reset --hard v20",
+      "git push origin main --force-with-lease"
+    ],
+    "archiveCheckout": "git switch -c rollback/v20 archive/v20"
+  }
+}

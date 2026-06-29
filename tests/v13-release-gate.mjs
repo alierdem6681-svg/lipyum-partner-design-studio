@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { execFileSync, spawn } from "node:child_process";
+import { closeSync, existsSync, mkdirSync, openSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,7 +21,10 @@ const requestedScopes = cliArgs
   .filter(Boolean);
 const gateStartedAt = new Date();
 const gateTimingsPath = process.env.LIPYUM_GATE_TIMINGS_PATH || "";
+const gateLockPath = path.join(root, ".local", "v13-release-gate.lock.json");
+const gateLockWaitMs = Number(process.env.LIPYUM_GATE_LOCK_WAIT_MS || 120_000);
 const stepResults = [];
+let gateLockAcquired = false;
 
 function e2e(file) {
   return `tests/e2e/${file}`;
@@ -80,6 +83,7 @@ function v13GrepForScopes() {
 
 function classifyFailedStep(stepName) {
   const normalized = stepName.toLowerCase();
+  if (normalized.includes("lock")) return "concurrency-lock";
   if (normalized.includes("dependency")) return "dependency-lock";
   if (normalized.includes("syntax")) return "syntax";
   if (normalized.includes("utf-8")) return "encoding";
@@ -97,6 +101,7 @@ function writeTimings(status, error) {
   if (!gateTimingsPath) return;
   const finishedAt = new Date();
   const failedStep = stepResults.find((step) => step.status === "fail");
+  const errorMessage = error ? String(error instanceof Error ? error.message : error) : "";
   const report = {
     pipeline: "v13-release-gate",
     mode: mode.replace(/^--/, ""),
@@ -105,12 +110,72 @@ function writeTimings(status, error) {
     startedAt: gateStartedAt.toISOString(),
     finishedAt: finishedAt.toISOString(),
     durationMs: finishedAt.getTime() - gateStartedAt.getTime(),
-    failureCategory: failedStep ? classifyFailedStep(failedStep.name) : null,
-    error: error ? String(error instanceof Error ? error.message : error) : null,
+    failureCategory: failedStep ? classifyFailedStep(failedStep.name) : errorMessage.includes("gate lock") ? "concurrency-lock" : null,
+    error: errorMessage || null,
     steps: stepResults,
   };
   mkdirSync(path.dirname(gateTimingsPath), { recursive: true });
   writeFileSync(gateTimingsPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isAlive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readLock() {
+  if (!existsSync(gateLockPath)) return null;
+  try {
+    return JSON.parse(readFileSync(gateLockPath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function tryAcquireGateLock() {
+  mkdirSync(path.dirname(gateLockPath), { recursive: true });
+  try {
+    const fd = openSync(gateLockPath, "wx");
+    writeFileSync(fd, JSON.stringify({
+      pid: process.pid,
+      mode: mode.replace(/^--/, ""),
+      scopes: mode === "--release" ? ["release"] : activeScopes,
+      startedAt: gateStartedAt.toISOString(),
+    }, null, 2));
+    closeSync(fd);
+    gateLockAcquired = true;
+    return true;
+  } catch {
+    const lock = readLock();
+    if (!lock?.pid || !isAlive(lock.pid)) rmSync(gateLockPath, { force: true });
+    return false;
+  }
+}
+
+async function acquireGateLock() {
+  const deadline = Date.now() + gateLockWaitMs;
+  while (Date.now() <= deadline) {
+    if (tryAcquireGateLock()) return;
+    const lock = readLock();
+    console.log(`[v13-release-gate] waiting for existing gate lock pid=${lock?.pid || "unknown"}`);
+    await sleep(2_000);
+  }
+  throw new Error(`Timed out waiting for v13-release-gate lock after ${gateLockWaitMs}ms`);
+}
+
+function releaseGateLock() {
+  if (!gateLockAcquired) return;
+  const lock = readLock();
+  if (!lock || lock.pid === process.pid) rmSync(gateLockPath, { force: true });
+  gateLockAcquired = false;
 }
 
 function canListen(port, host) {
@@ -135,7 +200,30 @@ async function configurePlaywrightPort() {
   throw new Error(`No available Playwright port found from ${startPort}`);
 }
 
-function runStep(step) {
+function cleanupPlaywrightPort() {
+  if (process.platform !== "win32") return;
+  const port = Number(process.env.PLAYWRIGHT_PORT || 0);
+  if (!Number.isInteger(port) || port <= 0 || port === 5173) return;
+  const escapedRoot = root.replace(/'/g, "''");
+  const script = `
+$repo = '${escapedRoot}'
+Get-NetTCPConnection -State Listen -LocalPort ${port} -ErrorAction SilentlyContinue | ForEach-Object {
+  $owner = $_.OwningProcess
+  $process = Get-CimInstance Win32_Process -Filter "ProcessId = $owner" -ErrorAction SilentlyContinue
+  if ($process -and $process.CommandLine -and $process.CommandLine.Contains($repo) -and $process.CommandLine.Contains("node_modules") -and $process.CommandLine.Contains("vite")) {
+    Stop-Process -Id $owner -Force -ErrorAction SilentlyContinue
+  }
+}
+`;
+  spawnSync("powershell", ["-NoProfile", "-Command", script], {
+    cwd: root,
+    stdio: "ignore",
+    windowsHide: true,
+  });
+}
+
+async function runStep(step) {
+  if (step.playwright) await configurePlaywrightPort();
   return new Promise((resolve, reject) => {
     console.log(`\n[v13-release-gate] ${step.name}`);
     const startedAt = new Date();
@@ -166,6 +254,7 @@ function runStep(step) {
       reject(error);
     });
     child.on("exit", (code) => {
+      if (step.playwright) cleanupPlaywrightPort();
       const exitCode = code ?? 1;
       if (exitCode === 0) {
         finish("pass", exitCode, null);
@@ -196,6 +285,7 @@ function playwrightStep(name, files, extraArgs = ["--workers=1", "--trace=off"])
     name,
     command: nodeBin,
     args: [playwrightCli, "test", ...files.map(e2e), ...extraArgs],
+    playwright: true,
   };
 }
 
@@ -207,7 +297,7 @@ const fastSteps = [
   { name: "syntax", command: npmBin, args: ["run", "check"] },
   { name: "runtime and architecture", command: nodeBin, args: ["--test", ...architectureFiles] },
   { name: "route contract smoke", command: nodeBin, args: ["tests/routes.smoke.js"] },
-  { name: "V13 scoped route smoke", command: nodeBin, args: v13SmokeArgs },
+  { name: "V13 scoped route smoke", command: nodeBin, args: v13SmokeArgs, playwright: true },
 ];
 
 const waveScopeSteps = [];
@@ -220,7 +310,7 @@ const waveSteps = [
   ...fastSteps,
   ...(waveScopeSteps.length
     ? waveScopeSteps
-    : [{ name: "profile and navigation interactions", command: nodeBin, args: [playwrightCli, "test", e2e("v13-release-smoke.spec.js"), "--grep", "profile|navigation|support", "--workers=1", "--trace=off"] }]),
+    : [{ name: "profile and navigation interactions", command: nodeBin, args: [playwrightCli, "test", e2e("v13-release-smoke.spec.js"), "--grep", "profile|navigation|support", "--workers=1", "--trace=off"], playwright: true }]),
 ];
 
 const releaseSteps = [
@@ -231,18 +321,20 @@ const releaseSteps = [
   { name: "Vue style debt", command: npmBin, args: ["run", "test:no-vue-style-debt"] },
   { name: "unit and route smoke", command: npmBin, args: ["test"] },
   { name: "runtime and architecture", command: nodeBin, args: ["--test", ...architectureFiles] },
-  { name: "V13 release smoke", command: nodeBin, args: [playwrightCli, "test", e2e("v13-release-smoke.spec.js"), "--workers=1", "--trace=off"] },
-  { name: "performance improve flow", command: nodeBin, args: [playwrightCli, "test", e2e("performance-improve.spec.js"), "--workers=1", "--trace=off"] },
-  { name: "subscription direct purchase flow", command: npmBin, args: ["run", "test:subscription-conversion-no-trial:core"] },
+  { name: "V13 release smoke", command: nodeBin, args: [playwrightCli, "test", e2e("v13-release-smoke.spec.js"), "--workers=1", "--trace=off"], playwright: true },
+  { name: "performance improve flow", command: nodeBin, args: [playwrightCli, "test", e2e("performance-improve.spec.js"), "--workers=1", "--trace=off"], playwright: true },
+  { name: "subscription direct purchase flow", command: npmBin, args: ["run", "test:subscription-conversion-no-trial:core"], playwright: true },
   { name: "build", command: npmBin, args: ["run", "build"] },
   { name: "git diff check", command: "git", args: ["diff", "--check"] },
 ];
 
 const steps = mode === "--fast" ? fastSteps : mode === "--wave" ? waveSteps : releaseSteps;
 
+let exitCode = 0;
+
 try {
+  await acquireGateLock();
   if (mode !== "--release") console.log(`[v13-release-gate] scopes=${activeScopes.join(",")}`);
-  await configurePlaywrightPort();
   for (const step of steps) await runStep(step);
   writeTimings("pass");
   console.log(`\n[v13-release-gate] PASS ${mode}`);
@@ -250,5 +342,9 @@ try {
   writeTimings("fail", error);
   console.error(`\n[v13-release-gate] FAIL ${mode}`);
   console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
+  exitCode = 1;
+} finally {
+  releaseGateLock();
 }
+
+process.exit(exitCode);

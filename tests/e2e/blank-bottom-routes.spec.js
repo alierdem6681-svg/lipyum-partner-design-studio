@@ -17,8 +17,10 @@ test("default-vue /my-jobs renders the İşler product screen", async ({ page })
   await expect(page.getByTestId("app-bottom-bar").first()).toBeVisible();
   await expect(page.getByTestId("bottom-tab-jobs")).toHaveAttribute("aria-current", "page");
   await expect(page.getByTestId("my-jobs-page")).toBeVisible();
-  await expect(page.getByTestId("my-jobs-tab-actions")).toHaveClass(/is-active/);
+  await expect(page.locator(".my-jobs-tabs")).toHaveCount(0);
+  await expect(page.locator(".my-jobs-search-row")).toHaveCount(0);
   await expect(page.getByText("Müşteriyi Ara ve Randevu Ver")).toBeVisible();
+  await expect(page.getByTestId("my-jobs-list")).toBeVisible();
   await expectNoAppHorizontalOverflow(page);
   expect(errors).toEqual([]);
 });
