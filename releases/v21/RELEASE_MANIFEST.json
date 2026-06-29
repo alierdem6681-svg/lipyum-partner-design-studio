@@ -1,0 +1,25 @@
+{
+  "id": "v21",
+  "createdAt": "2026-06-29T07:50:00+03:00",
+  "source": "origin/main",
+  "startingMainSha": "dcbeea5738392d8def853a163e38c34117d58264",
+  "backupTag": "v21",
+  "archiveBranch": "archive/v21",
+  "releaseBranch": "codex/autonomous-dev-windows-hide",
+  "scope": "Backup before publishing the autonomous development helper windowsHide update.",
+  "plannedValidation": [
+    "npm run check",
+    "git diff --check",
+    "GitHub PR checks",
+    "GitHub Pages production workflow"
+  ],
+  "rollback": {
+    "restoreFromBackup": [
+      "git fetch origin --tags",
+      "git switch main",
+      "git reset --hard v21",
+      "git push origin main --force-with-lease"
+    ],
+    "archiveCheckout": "git switch -c rollback/v21 archive/v21"
+  }
+}
