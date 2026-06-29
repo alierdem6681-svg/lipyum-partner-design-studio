@@ -93,7 +93,12 @@ function readJson(file) {
 }
 
 function output(commandPath, args) {
-  const result = spawnSync(commandPath, args, { cwd: root, encoding: "utf8", shell: false });
+  const result = spawnSync(commandPath, args, {
+    cwd: root,
+    encoding: "utf8",
+    shell: false,
+    windowsHide: true,
+  });
   return result.status === 0 ? result.stdout.trim() : "";
 }
 
